@@ -1,0 +1,269 @@
+/* ============================================
+   DISCLOSURE PACK — 7 progressive-reveal patterns
+   Inspired by WatermelonUI: continuous-pagination, dropdown-disclosure,
+   floating-disclosure, layered-progressive-disclosure, switch-disclosure,
+   voice-chat-disclosure, task-widget-disclosure
+   ============================================ */
+
+:where(.dp-cont, .dp-drop, .dp-float, .dp-layer, .dp-switch, .dp-voice, .dp-task) {
+  --d-bg: #14141e;
+  --d-bg-2: #1f1f2e;
+  --d-fg: #f5f5fa;
+  --d-muted: rgba(245, 245, 250, 0.55);
+  --d-line: rgba(255, 255, 255, 0.08);
+  --d-accent: #8b5cf6;
+  color: var(--d-fg);
+}
+
+/* 1. CONTINUOUS PAGINATION — Infinite-scroll affordance */
+.dp-cont {
+  display: grid; gap: 0.5rem;
+  width: 100%; max-width: 420px;
+}
+.dp-cont-item {
+  padding: 0.7rem 0.9rem;
+  background: var(--d-bg);
+  border: 1px solid var(--d-line);
+  border-radius: 10px;
+}
+.dp-cont-load {
+  padding: 0.8rem;
+  text-align: center;
+  color: var(--d-muted);
+  font-size: 0.85rem;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+}
+.dp-cont-load::before {
+  content: '';
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-top-color: var(--d-accent);
+  animation: dp-spin 0.8s linear infinite;
+}
+@keyframes dp-spin { to { transform: rotate(360deg); } }
+
+/* 2. DROPDOWN DISCLOSURE — Inline expandable panel */
+.dp-drop {
+  width: 100%; max-width: 420px;
+  background: var(--d-bg);
+  border: 1px solid var(--d-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.dp-drop-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.dp-drop-head::after {
+  content: ''; width: 0; height: 0;
+  border: 5px solid transparent;
+  border-top-color: var(--d-muted);
+  margin-top: 3px;
+  transition: transform 0.25s ease;
+}
+.dp-drop.is-open .dp-drop-head::after { transform: rotate(180deg); }
+.dp-drop-body {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 1rem;
+  color: var(--d-muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  transition: max-height 0.35s cubic-bezier(0.32, 0.72, 0, 1), padding 0.35s ease;
+}
+.dp-drop.is-open .dp-drop-body { max-height: 400px; padding: 0.4rem 1rem 1rem; }
+
+/* 3. FLOATING DISCLOSURE — Floats over content with absolute positioning */
+.dp-float {
+  position: absolute;
+  top: 100%; left: 0;
+  margin-top: 6px;
+  min-width: 200px;
+  padding: 0.5rem;
+  background: var(--d-bg);
+  border: 1px solid var(--d-line);
+  border-radius: 10px;
+  box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 100;
+}
+.dp-float.is-open {
+  opacity: 1; transform: translateY(0); pointer-events: auto;
+}
+.dp-float-host { position: relative; display: inline-block; }
+.dp-float-item {
+  display: block; padding: 0.45rem 0.7rem;
+  border-radius: 6px; cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--d-fg);
+}
+.dp-float-item:hover { background: var(--d-bg-2); }
+
+/* 4. LAYERED PROGRESSIVE DISCLOSURE — Nested layers slide in */
+.dp-layer {
+  position: relative;
+  overflow: hidden;
+  width: 100%; max-width: 320px;
+  height: 200px;
+  background: var(--d-bg);
+  border: 1px solid var(--d-line);
+  border-radius: 12px;
+}
+.dp-layer > .dp-layer-pane {
+  position: absolute; inset: 0;
+  padding: 1rem;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  background: var(--d-bg);
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.dp-layer > .dp-layer-pane:first-child { transform: translateX(0); }
+.dp-layer > .dp-layer-pane.is-shown { transform: translateX(0); }
+.dp-layer > .dp-layer-pane.is-hidden-back { transform: translateX(-30%); opacity: 0.4; }
+.dp-layer-back {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--d-accent);
+  font: inherit; font-weight: 600; font-size: 0.85rem;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0;
+  text-align: left;
+}
+.dp-layer-back::before { content: '‹'; }
+
+/* 5. SWITCH DISCLOSURE — Toggle reveals options */
+.dp-switch {
+  width: 100%; max-width: 360px;
+  background: var(--d-bg);
+  border: 1px solid var(--d-line);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+}
+.dp-switch-head {
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.dp-switch-head h4 { margin: 0; font-size: 0.92rem; flex: 1; }
+.dp-switch-toggle {
+  appearance: none; border: 0;
+  width: 38px; height: 22px; border-radius: 999px;
+  background: rgba(255,255,255,0.1);
+  cursor: pointer; position: relative;
+  transition: background 0.2s ease;
+}
+.dp-switch-toggle::before {
+  content: ''; position: absolute;
+  top: 2px; left: 2px;
+  width: 18px; height: 18px;
+  border-radius: 50%; background: #fff;
+  transition: transform 0.2s ease;
+}
+.dp-switch.is-on .dp-switch-toggle { background: var(--d-accent); }
+.dp-switch.is-on .dp-switch-toggle::before { transform: translateX(16px); }
+.dp-switch-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.3s ease, margin-top 0.3s ease;
+  font-size: 0.85rem; color: var(--d-muted);
+}
+.dp-switch.is-on .dp-switch-body { max-height: 400px; margin-top: 0.7rem; }
+
+/* 6. VOICE CHAT DISCLOSURE — Voice panel that expands */
+.dp-voice {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.5rem 0.8rem 0.5rem 0.5rem;
+  background: var(--d-bg-2);
+  border-radius: 999px;
+  width: 100%; max-width: 320px;
+  transition: max-width 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  overflow: hidden;
+}
+.dp-voice.is-collapsed { max-width: 48px; }
+.dp-voice-mic {
+  appearance: none; border: 0;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--d-accent); color: #fff;
+  display: grid; place-items: center;
+  flex: 0 0 38px;
+  cursor: pointer;
+}
+.dp-voice-wave {
+  flex: 1 1 auto;
+  display: flex; align-items: center; gap: 2px;
+  height: 24px;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+.dp-voice.is-collapsed .dp-voice-wave { opacity: 0; }
+.dp-voice-wave > i {
+  flex: 1; min-width: 2px;
+  background: var(--d-fg);
+  border-radius: 1px;
+  height: var(--h, 30%);
+  animation: dp-voice-pulse 1s ease-in-out infinite;
+}
+.dp-voice-wave > i:nth-child(2n) { animation-delay: 0.1s; }
+.dp-voice-wave > i:nth-child(3n) { animation-delay: 0.2s; }
+@keyframes dp-voice-pulse {
+  0%, 100% { transform: scaleY(1); }
+  50%      { transform: scaleY(1.6); }
+}
+
+/* 7. TASK WIDGET DISCLOSURE — Compact task → expanded details */
+.dp-task {
+  width: 100%; max-width: 360px;
+  background: var(--d-bg);
+  border: 1px solid var(--d-line);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.dp-task:hover { background: rgba(255,255,255,0.02); }
+.dp-task-head {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.7rem 1rem;
+}
+.dp-task-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: rgba(139, 92, 246, 0.15); color: var(--d-accent);
+  display: grid; place-items: center;
+  flex: 0 0 30px;
+}
+.dp-task-name { font-weight: 600; flex: 1 1 auto; font-size: 0.92rem; }
+.dp-task-meta { font-size: 0.78rem; color: var(--d-muted); }
+.dp-task-body {
+  max-height: 0; overflow: hidden;
+  padding: 0 1rem;
+  transition: max-height 0.35s cubic-bezier(0.32, 0.72, 0, 1), padding 0.35s ease;
+  background: var(--d-bg-2);
+}
+.dp-task.is-open .dp-task-body {
+  max-height: 280px;
+  padding: 0.7rem 1rem 1rem;
+}
+.dp-task-progress {
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  margin-bottom: 0.7rem;
+  overflow: hidden;
+}
+.dp-task-progress > i {
+  display: block;
+  height: 100%;
+  width: var(--pct, 60%);
+  background: linear-gradient(90deg, var(--d-accent), #ec4899);
+}
+.dp-task-row {
+  display: flex; justify-content: space-between;
+  font-size: 0.82rem;
+  padding: 0.25rem 0;
+}
+.dp-task-row span { color: var(--d-muted); }

@@ -1,0 +1,121 @@
+/* ============================================
+   ONBOARDING CHECKLIST — Interactive setup checklist with progress
+   Inspired by WatermelonUI onboarding-checklist (distinct from tour.js
+   which is a spotlight walk-through)
+   ============================================
+   Usage:
+     <div class="ochk" data-ochk>
+       <div class="ochk-head">
+         <h3>Get started</h3>
+         <span class="ochk-progress">2 of 5</span>
+       </div>
+       <div class="ochk-bar"><i></i></div>
+       <ul class="ochk-list">
+         <li class="ochk-item is-done"><button class="ochk-tick"></button>Connect account</li>
+         <li class="ochk-item"><button class="ochk-tick"></button>Invite team <span class="ochk-rew">+50 XP</span></li>
+       </ul>
+     </div>
+
+   Variants: ochk-compact, ochk-floating
+   ============================================ */
+
+.ochk {
+  --o-bg: #14141e;
+  --o-bg-2: #1f1f2e;
+  --o-fg: #f5f5fa;
+  --o-muted: rgba(245, 245, 250, 0.55);
+  --o-line: rgba(255, 255, 255, 0.08);
+  --o-accent: #8b5cf6;
+  --o-done: #10b981;
+  width: 100%; max-width: 380px;
+  background: var(--o-bg);
+  border: 1px solid var(--o-line);
+  border-radius: 16px;
+  padding: 1.2rem 1.4rem;
+  color: var(--o-fg);
+}
+
+.ochk-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 0.8rem;
+}
+.ochk-head h3 { margin: 0; font-size: 1rem; }
+.ochk-progress {
+  font-size: 0.78rem;
+  color: var(--o-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ochk-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.ochk-bar > i {
+  display: block;
+  height: 100%;
+  width: var(--ochk-pct, 40%);
+  background: linear-gradient(90deg, var(--o-accent), var(--o-done));
+  border-radius: inherit;
+  transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.ochk-list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid; gap: 0.2rem;
+}
+.ochk-item {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: background 0.18s ease, opacity 0.3s ease;
+}
+.ochk-item:hover { background: var(--o-bg-2); }
+.ochk-item.is-done { color: var(--o-muted); opacity: 0.7; text-decoration: line-through; }
+
+.ochk-tick {
+  appearance: none; border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center;
+  cursor: pointer;
+  flex: 0 0 22px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  color: transparent;
+}
+.ochk-tick::before {
+  content: '✓';
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.ochk-item.is-done .ochk-tick {
+  background: var(--o-done);
+  border-color: var(--o-done);
+  color: #fff;
+}
+.ochk-rew {
+  margin-left: auto;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* Compact */
+.ochk-compact { padding: 0.8rem 1rem; }
+.ochk-compact .ochk-item { padding: 0.3rem 0.4rem; font-size: 0.85rem; }
+.ochk-compact .ochk-tick { width: 18px; height: 18px; flex: 0 0 18px; }
+
+/* Floating (bottom-right widget) */
+.ochk-floating {
+  position: fixed;
+  bottom: 16px; right: 16px;
+  z-index: 100;
+  box-shadow: 0 12px 36px -10px rgba(0,0,0,0.4);
+}

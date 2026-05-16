@@ -1,0 +1,202 @@
+/* ============================================
+   FLIP CLOCK — Classic mechanical flip-clock display
+   Inspired by WatermelonUI flip-clock, airport flip-board, vintage clocks
+   ============================================
+   Different from text-flipping-board (split-flap per char). This is a digit-
+   pair display optimized for clocks and countdown timers.
+
+   Usage (markup is per-digit; companion JS swaps numbers):
+     <div class="flclk" data-flclk>
+       <div class="flclk-group">
+         <div class="flclk-card" data-flclk-digit="0">
+           <div class="flclk-top">0</div>
+           <div class="flclk-bot">0</div>
+         </div>
+         <div class="flclk-card" data-flclk-digit="9">
+           <div class="flclk-top">9</div>
+           <div class="flclk-bot">9</div>
+         </div>
+       </div>
+       <div class="flclk-sep">:</div>
+       <div class="flclk-group">…</div>
+     </div>
+
+   Variants: flclk-noir, flclk-amber, flclk-cyber, flclk-vintage, flclk-mono
+   Sizes:    flclk-sm, flclk-md (default), flclk-lg, flclk-xl, flclk-hero
+   ============================================ */
+
+.flclk {
+  --fc-bg: #0a0a14;
+  --fc-fg: #ffffff;
+  --fc-divider: rgba(0, 0, 0, 0.6);
+  --fc-radius: 6px;
+  --fc-w: 60px;
+  --fc-h: 80px;
+  --fc-font-size: 3rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 700;
+  color: var(--fc-fg);
+}
+
+.flclk-group {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.flclk-card {
+  position: relative;
+  width: var(--fc-w);
+  height: var(--fc-h);
+  background: var(--fc-bg);
+  border-radius: var(--fc-radius);
+  perspective: 200px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 4px 12px -2px rgba(0, 0, 0, 0.4);
+}
+.flclk-card::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--fc-divider);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.flclk-top,
+.flclk-bot {
+  position: absolute;
+  left: 0; right: 0;
+  height: 50%;
+  display: grid;
+  place-items: center;
+  font-size: var(--fc-font-size);
+  font-weight: 700;
+  overflow: hidden;
+  background: var(--fc-bg);
+  color: var(--fc-fg);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flclk-top {
+  top: 0;
+  align-items: flex-end;
+  line-height: 1;
+}
+.flclk-top > span {
+  display: block;
+  margin-bottom: calc(var(--fc-font-size) * -0.15);
+}
+.flclk-bot {
+  bottom: 0;
+  align-items: flex-start;
+  line-height: 1;
+}
+.flclk-bot > span {
+  display: block;
+  margin-top: calc(var(--fc-font-size) * -0.15);
+}
+
+/* Flipping halves (added by JS) */
+.flclk-card.is-flipping .flclk-top    { animation: flclk-fall 0.45s cubic-bezier(0.55, 0, 0.85, 0.55) forwards; transform-origin: bottom; }
+.flclk-card.is-flipping .flclk-bot-next { animation: flclk-rise 0.45s 0.45s cubic-bezier(0.16, 0.84, 0.44, 1) forwards; transform-origin: top; }
+
+.flclk-bot-next {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  height: 50%;
+  display: grid;
+  place-items: flex-start center;
+  font-size: var(--fc-font-size);
+  font-weight: 700;
+  overflow: hidden;
+  background: var(--fc-bg);
+  color: var(--fc-fg);
+  transform: rotateX(90deg);
+  z-index: 4;
+  line-height: 1;
+}
+.flclk-bot-next > span { display: block; margin-top: calc(var(--fc-font-size) * -0.15); }
+
+@keyframes flclk-fall {
+  0%   { transform: rotateX(0); z-index: 3; }
+  100% { transform: rotateX(-90deg); z-index: 3; }
+}
+@keyframes flclk-rise {
+  0%   { transform: rotateX(90deg); z-index: 4; }
+  100% { transform: rotateX(0); z-index: 4; }
+}
+
+/* Separator */
+.flclk-sep {
+  font-size: calc(var(--fc-font-size) * 0.8);
+  color: var(--fc-fg);
+  font-weight: 700;
+  margin: 0 0.2rem;
+  align-self: center;
+}
+.flclk-sep.is-blinking { animation: flclk-blink 1s steps(2) infinite; }
+@keyframes flclk-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0.35; }
+}
+
+/* Labels under groups */
+.flclk-group { flex-direction: column; }
+.flclk-group .flclk-row { display: inline-flex; gap: 3px; }
+.flclk-label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.4rem;
+  font-family: -apple-system, system-ui, sans-serif;
+}
+
+/* === Variants === */
+.flclk-noir    { --fc-bg: #0a0a14; --fc-fg: #ffffff; }
+.flclk-amber {
+  --fc-bg: #1a1208;
+  --fc-fg: #fcd34d;
+  --fc-divider: rgba(0, 0, 0, 0.6);
+}
+.flclk-amber .flclk-card { box-shadow: 0 0 12px -4px rgba(252, 211, 77, 0.3); }
+.flclk-cyber {
+  --fc-bg: #04081a;
+  --fc-fg: #67e8f9;
+}
+.flclk-cyber .flclk-top, .flclk-cyber .flclk-bot, .flclk-cyber .flclk-bot-next {
+  text-shadow: 0 0 8px currentColor;
+}
+.flclk-vintage {
+  --fc-bg: #1a1610;
+  --fc-fg: #fef3c7;
+  font-family: Georgia, serif;
+}
+.flclk-mono {
+  --fc-bg: #fff;
+  --fc-fg: #0a0a14;
+}
+.flclk-mono .flclk-card { box-shadow: inset 0 1px 0 rgba(0,0,0,0.04), 0 4px 12px -2px rgba(0,0,0,0.15); }
+.flclk-mono::after { background: rgba(0, 0, 0, 0.15); }
+
+/* === Sizes === */
+.flclk-sm    { --fc-w: 36px; --fc-h: 50px; --fc-font-size: 1.8rem; }
+.flclk-md    { --fc-w: 60px; --fc-h: 80px; --fc-font-size: 3rem; }
+.flclk-lg    { --fc-w: 80px; --fc-h: 110px; --fc-font-size: 4.2rem; }
+.flclk-xl    { --fc-w: 110px; --fc-h: 150px; --fc-font-size: 5.5rem; }
+.flclk-hero  { --fc-w: 160px; --fc-h: 220px; --fc-font-size: 8rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flclk-card.is-flipping .flclk-top,
+  .flclk-card.is-flipping .flclk-bot-next { animation: none; }
+}

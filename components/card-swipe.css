@@ -1,0 +1,111 @@
+/* ============================================
+   CARD SWIPE — iOS-style swipe-to-reveal action cards
+   Inspired by WatermelonUI card-swipe (distinct from mobile/swipe-stack
+   which is a Tinder card pile)
+   ============================================
+   Usage:
+     <div class="cswipe" data-cswipe>
+       <div class="cswipe-actions cswipe-actions-left">
+         <button class="cswipe-action cswipe-archive">Archive</button>
+       </div>
+       <div class="cswipe-actions cswipe-actions-right">
+         <button class="cswipe-action cswipe-delete">Delete</button>
+       </div>
+       <div class="cswipe-card">
+         <div class="cswipe-content">…</div>
+       </div>
+     </div>
+
+   Variants:
+     cswipe-stacked (cards stack vertically)
+     cswipe-rounded (extra-round corners)
+   ============================================ */
+
+.cswipe {
+  --cs-bg: #14141e;
+  --cs-fg: #fff;
+  --cs-radius: 14px;
+  --cs-action-w: 88px;
+  position: relative;
+  width: 100%;
+  border-radius: var(--cs-radius);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  touch-action: pan-y;
+  isolation: isolate;
+}
+
+.cswipe-card {
+  position: relative;
+  z-index: 2;
+  background: var(--cs-bg);
+  color: var(--cs-fg);
+  border-radius: var(--cs-radius);
+  padding: 1rem 1.2rem;
+  transform: translateX(0);
+  transition: transform 0.36s cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
+  cursor: grab;
+  user-select: none;
+}
+.cswipe-card.is-dragging {
+  transition: none;
+  cursor: grabbing;
+}
+
+.cswipe-content {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  pointer-events: none;
+}
+
+/* Reveal areas behind card */
+.cswipe-actions {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: stretch;
+  z-index: 1;
+}
+.cswipe-actions-left  { left: 0; }
+.cswipe-actions-right { right: 0; }
+
+.cswipe-action {
+  appearance: none;
+  border: 0;
+  width: var(--cs-action-w);
+  background: #6366f1;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: filter 0.18s ease;
+}
+.cswipe-action:hover { filter: brightness(1.1); }
+
+/* Common action colors */
+.cswipe-archive { background: #f59e0b; }
+.cswipe-flag    { background: #6366f1; }
+.cswipe-pin     { background: #8b5cf6; }
+.cswipe-delete  { background: #ef4444; }
+.cswipe-mark    { background: #10b981; }
+.cswipe-mute    { background: #64748b; }
+
+/* Open states — JS toggles these */
+.cswipe.is-open-left  .cswipe-card { transform: translateX(var(--cs-open-x, var(--cs-action-w))); }
+.cswipe.is-open-right .cswipe-card { transform: translateX(calc(-1 * var(--cs-open-x, var(--cs-action-w)))); }
+
+/* Stacked variant — multiple items in a vertical list */
+.cswipe-stacked { display: flex; flex-direction: column; gap: 0.5rem; background: transparent; }
+.cswipe-stacked > .cswipe { border-radius: 12px; }
+
+/* Rounded variant */
+.cswipe-rounded { --cs-radius: 22px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cswipe-card { transition: none; }
+}

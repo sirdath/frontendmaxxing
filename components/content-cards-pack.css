@@ -1,0 +1,540 @@
+/* ============================================
+   CONTENT CARDS PACK — 20 distinct content card patterns
+   Inspired by WatermelonUI: profile-hero, profile-stats, notion-toggle,
+   folder-stack, action-sheet, share-sheet, onboarding, pricing-tier-pro,
+   feature-card-glow, quote-card, article-card, event-card, contact-card,
+   playlist-card, song-card, podcast-card, recipe-card, character-cards,
+   team-member-pro, album-cover-stack
+   ============================================
+   All classes share namespace `cc-` to avoid clashing with existing cards.css.
+   Each card is independent — drop it where you need it.
+   ============================================ */
+
+/* Shared tokens */
+:where(.cc-profile-hero, .cc-profile-stats, .cc-toggle, .cc-folder-stack,
+       .cc-action-sheet, .cc-share-sheet, .cc-onboarding, .cc-pricing,
+       .cc-feature-glow, .cc-quote, .cc-article, .cc-event, .cc-contact,
+       .cc-playlist, .cc-song, .cc-podcast, .cc-recipe, .cc-character,
+       .cc-team, .cc-album-stack) {
+  --cc-bg: #14141e;
+  --cc-bg-2: #1f1f2e;
+  --cc-fg: #f5f5fa;
+  --cc-muted: rgba(245, 245, 250, 0.55);
+  --cc-line: rgba(255, 255, 255, 0.08);
+  --cc-accent: #8b5cf6;
+  --cc-radius: 16px;
+  color: var(--cc-fg);
+}
+
+/* 1. PROFILE HERO — Banner + avatar + bio */
+.cc-profile-hero {
+  width: 100%; max-width: 380px;
+  background: var(--cc-bg); border-radius: var(--cc-radius);
+  overflow: hidden; border: 1px solid var(--cc-line);
+}
+.cc-profile-hero-cover {
+  height: 100px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899, #f59e0b);
+}
+.cc-profile-hero-body { padding: 0 1.2rem 1.2rem; margin-top: -36px; }
+.cc-profile-hero-avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--cc-bg-2);
+  border: 4px solid var(--cc-bg);
+  display: grid; place-items: center;
+  font-size: 1.6rem; font-weight: 700;
+}
+.cc-profile-hero-name { margin: 0.7rem 0 0.2rem; font-size: 1.2rem; font-weight: 700; }
+.cc-profile-hero-handle { color: var(--cc-muted); font-size: 0.85rem; }
+.cc-profile-hero-bio { margin: 0.7rem 0; font-size: 0.88rem; line-height: 1.5; }
+.cc-profile-hero-stats {
+  display: flex; gap: 1.2rem; padding-top: 0.7rem;
+  border-top: 1px solid var(--cc-line);
+  font-size: 0.82rem;
+}
+.cc-profile-hero-stats b { font-weight: 700; }
+
+/* 2. PROFILE STATS — Triple stat tiles */
+.cc-profile-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;
+  width: 100%; max-width: 380px;
+}
+.cc-profile-stats-tile {
+  background: var(--cc-bg-2);
+  border-radius: 12px;
+  padding: 0.9rem;
+  text-align: center;
+}
+.cc-profile-stats-tile b { display: block; font-size: 1.4rem; font-weight: 700; }
+.cc-profile-stats-tile span { font-size: 0.72rem; color: var(--cc-muted); }
+
+/* 3. NOTION TOGGLE — Disclosure with arrow */
+.cc-toggle {
+  background: var(--cc-bg-2);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  max-width: 420px;
+}
+.cc-toggle-head {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-weight: 600; cursor: pointer; user-select: none;
+}
+.cc-toggle-arrow {
+  display: inline-block; width: 12px; height: 12px;
+  transition: transform 0.25s ease;
+}
+.cc-toggle-arrow::before {
+  content: ''; display: block;
+  width: 0; height: 0;
+  border: 5px solid transparent;
+  border-left-color: currentColor;
+}
+.cc-toggle[open] .cc-toggle-arrow { transform: rotate(90deg); }
+.cc-toggle-body {
+  padding: 0.5rem 0 0 1.5rem;
+  color: var(--cc-muted);
+  font-size: 0.88rem;
+}
+
+/* 4. FOLDER STACK — Fanned folders */
+.cc-folder-stack {
+  position: relative;
+  width: 200px; height: 140px;
+  cursor: pointer;
+}
+.cc-folder-stack > div {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #fbbf24 0%, #fbbf24 18%, #f59e0b 19%, #f59e0b 100%);
+  border-radius: 4px 10px 10px 10px;
+  box-shadow: 0 6px 14px -4px rgba(0,0,0,0.3);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.cc-folder-stack > div::before {
+  content: ''; position: absolute;
+  top: -10px; left: 0;
+  width: 60px; height: 14px;
+  background: #fbbf24;
+  border-radius: 6px 6px 0 0;
+}
+.cc-folder-stack > div:nth-child(1) { transform: translate(-12px, 0) rotate(-6deg); }
+.cc-folder-stack > div:nth-child(2) { transform: translate(0, 4px) rotate(0); }
+.cc-folder-stack > div:nth-child(3) { transform: translate(12px, 8px) rotate(6deg); }
+.cc-folder-stack:hover > div:nth-child(1) { transform: translate(-30px, -6px) rotate(-12deg); }
+.cc-folder-stack:hover > div:nth-child(3) { transform: translate(30px, -2px) rotate(12deg); }
+
+/* 5. ACTION SHEET — iOS-style bottom menu */
+.cc-action-sheet {
+  width: 100%; max-width: 380px;
+  background: var(--cc-bg);
+  border-radius: 18px;
+  padding: 0.4rem;
+  display: grid; gap: 1px;
+  border: 1px solid var(--cc-line);
+}
+.cc-action-sheet-item {
+  appearance: none; border: 0; background: transparent;
+  color: var(--cc-fg);
+  padding: 1rem;
+  text-align: center; font-weight: 600;
+  cursor: pointer; font-size: 0.95rem;
+  border-radius: 14px;
+}
+.cc-action-sheet-item:hover { background: var(--cc-bg-2); }
+.cc-action-sheet-item.danger { color: #ef4444; }
+.cc-action-sheet-cancel {
+  margin-top: 0.5rem; background: var(--cc-bg-2); font-weight: 700;
+}
+
+/* 6. SHARE SHEET — Grid of share targets */
+.cc-share-sheet {
+  width: 100%; max-width: 380px;
+  background: var(--cc-bg); border: 1px solid var(--cc-line);
+  border-radius: var(--cc-radius); padding: 1rem;
+}
+.cc-share-sheet h4 { margin: 0 0 0.8rem; font-size: 0.95rem; }
+.cc-share-sheet-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem;
+}
+.cc-share-sheet-target {
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+  padding: 0.7rem 0.4rem;
+  background: var(--cc-bg-2);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.72rem;
+  color: var(--cc-muted);
+  text-decoration: none;
+}
+.cc-share-sheet-target:hover { background: rgba(255,255,255,0.06); }
+.cc-share-sheet-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  display: grid; place-items: center;
+  font-weight: 700; color: #fff;
+}
+
+/* 7. ONBOARDING CARD — Big number + title + bullets */
+.cc-onboarding {
+  width: 100%; max-width: 340px;
+  background: linear-gradient(160deg, #14141e, #1f1f2e);
+  border-radius: 20px;
+  padding: 1.6rem 1.4rem;
+  border: 1px solid var(--cc-line);
+}
+.cc-onboarding-num {
+  display: inline-grid; place-items: center;
+  width: 36px; height: 36px;
+  background: var(--cc-accent);
+  border-radius: 10px;
+  font-weight: 700; color: #fff;
+}
+.cc-onboarding h3 { font-size: 1.4rem; margin: 0.7rem 0 0.4rem; }
+.cc-onboarding p { color: var(--cc-muted); font-size: 0.9rem; margin: 0 0 0.8rem; }
+.cc-onboarding ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.4rem; }
+.cc-onboarding ul li {
+  padding-left: 1.2rem; position: relative; font-size: 0.85rem;
+}
+.cc-onboarding ul li::before {
+  content: '✓'; position: absolute; left: 0; color: var(--cc-accent); font-weight: 700;
+}
+
+/* 8. PRICING TIER PRO — Featured tier with glow */
+.cc-pricing {
+  position: relative;
+  width: 100%; max-width: 320px;
+  background: var(--cc-bg);
+  border: 1px solid var(--cc-line);
+  border-radius: var(--cc-radius);
+  padding: 1.6rem 1.2rem;
+}
+.cc-pricing-featured {
+  border-color: var(--cc-accent);
+  box-shadow: 0 0 50px -10px rgba(139, 92, 246, 0.4);
+}
+.cc-pricing-featured::before {
+  content: 'Most popular';
+  position: absolute; top: -10px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--cc-accent); color: #fff;
+  font-size: 0.7rem; font-weight: 700;
+  padding: 0.3rem 0.8rem; border-radius: 999px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.cc-pricing h3 { margin: 0 0 0.3rem; font-size: 1.2rem; font-weight: 700; }
+.cc-pricing-price { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; }
+.cc-pricing-price small { font-size: 0.85rem; color: var(--cc-muted); font-weight: 500; }
+.cc-pricing-list { list-style: none; padding: 0; margin: 1rem 0; display: grid; gap: 0.5rem; }
+.cc-pricing-list li::before { content: '✓ '; color: var(--cc-accent); font-weight: 700; }
+.cc-pricing-cta {
+  width: 100%; padding: 0.8rem; border-radius: 10px;
+  background: var(--cc-bg-2); color: var(--cc-fg);
+  border: 1px solid var(--cc-line); font-weight: 600;
+  cursor: pointer;
+}
+.cc-pricing-featured .cc-pricing-cta { background: var(--cc-accent); border-color: transparent; color: #fff; }
+
+/* 9. FEATURE CARD GLOW — Bordered with corner glow */
+.cc-feature-glow {
+  position: relative;
+  width: 100%; max-width: 320px;
+  background: var(--cc-bg);
+  border: 1px solid var(--cc-line);
+  border-radius: var(--cc-radius);
+  padding: 1.4rem; overflow: hidden;
+}
+.cc-feature-glow::before {
+  content: ''; position: absolute;
+  top: -50%; right: -30%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent 60%);
+  pointer-events: none;
+  filter: blur(20px);
+}
+.cc-feature-glow-icon {
+  width: 44px; height: 44px;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--cc-accent);
+  border-radius: 12px;
+  display: grid; place-items: center;
+  margin-bottom: 0.8rem;
+  position: relative;
+}
+.cc-feature-glow h3 { margin: 0 0 0.3rem; font-size: 1.05rem; position: relative; }
+.cc-feature-glow p { color: var(--cc-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; position: relative; }
+
+/* 10. QUOTE CARD — Big quote with attribution */
+.cc-quote {
+  width: 100%; max-width: 480px;
+  background: var(--cc-bg-2);
+  border-radius: var(--cc-radius);
+  padding: 1.6rem;
+  position: relative;
+}
+.cc-quote::before {
+  content: '"';
+  position: absolute;
+  top: -10px; left: 14px;
+  font-size: 5rem; line-height: 1;
+  color: var(--cc-accent); opacity: 0.2;
+  font-family: Georgia, serif;
+}
+.cc-quote blockquote {
+  margin: 0 0 1rem; font-size: 1.1rem;
+  line-height: 1.5; font-weight: 500;
+  position: relative;
+}
+.cc-quote-author { display: flex; align-items: center; gap: 0.7rem; }
+.cc-quote-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.cc-quote-author span { display: block; font-size: 0.78rem; color: var(--cc-muted); }
+.cc-quote-author b { display: block; font-weight: 600; }
+
+/* 11. ARTICLE CARD — Image + meta + title */
+.cc-article {
+  width: 100%; max-width: 320px;
+  background: var(--cc-bg); border: 1px solid var(--cc-line);
+  border-radius: var(--cc-radius);
+  overflow: hidden;
+}
+.cc-article-img {
+  height: 160px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.cc-article-body { padding: 1rem 1.2rem; }
+.cc-article-meta { font-size: 0.72rem; color: var(--cc-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.cc-article-meta b { color: var(--cc-accent); }
+.cc-article h3 { margin: 0.4rem 0; font-size: 1.05rem; line-height: 1.3; }
+.cc-article p { color: var(--cc-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; }
+
+/* 12. EVENT CARD — Date block + title + location */
+.cc-event {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 1rem;
+  width: 100%; max-width: 380px;
+  background: var(--cc-bg); border: 1px solid var(--cc-line);
+  border-radius: var(--cc-radius);
+  padding: 0.8rem 1rem;
+}
+.cc-event-date {
+  background: var(--cc-bg-2);
+  border-radius: 10px;
+  padding: 0.5rem;
+  text-align: center;
+}
+.cc-event-date b { display: block; font-size: 1.4rem; font-weight: 800; line-height: 1; }
+.cc-event-date span { font-size: 0.7rem; color: var(--cc-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.cc-event-body h3 { margin: 0 0 0.2rem; font-size: 1rem; }
+.cc-event-body p { margin: 0; color: var(--cc-muted); font-size: 0.82rem; }
+
+/* 13. CONTACT CARD — vCard-like */
+.cc-contact {
+  width: 100%; max-width: 320px;
+  background: var(--cc-bg); border: 1px solid var(--cc-line);
+  border-radius: var(--cc-radius);
+  padding: 1.2rem; text-align: center;
+}
+.cc-contact-avatar {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  margin: 0 auto 0.7rem;
+  display: grid; place-items: center;
+  font-size: 1.8rem; font-weight: 700;
+}
+.cc-contact h3 { margin: 0; font-size: 1.1rem; }
+.cc-contact-role { color: var(--cc-muted); font-size: 0.85rem; margin-bottom: 0.7rem; }
+.cc-contact-row {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--cc-bg-2); border-radius: 8px;
+  font-size: 0.85rem; margin-bottom: 0.3rem;
+  text-align: left;
+}
+
+/* 14. PLAYLIST CARD — Cover + count */
+.cc-playlist {
+  width: 200px;
+  background: var(--cc-bg); border-radius: var(--cc-radius);
+  overflow: hidden;
+  border: 1px solid var(--cc-line);
+}
+.cc-playlist-cover {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+  position: relative;
+}
+.cc-playlist-cover::after {
+  content: '▶';
+  position: absolute; bottom: 0.7rem; right: 0.7rem;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: #10b981; color: #14141e;
+  display: grid; place-items: center;
+  font-size: 0.9rem;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+}
+.cc-playlist-body { padding: 0.7rem 0.9rem 0.9rem; }
+.cc-playlist h4 { margin: 0; font-size: 0.92rem; }
+.cc-playlist p { margin: 0.2rem 0 0; font-size: 0.78rem; color: var(--cc-muted); }
+
+/* 15. SONG CARD — Album thumb + title + artist + duration */
+.cc-song {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 0.8rem;
+  align-items: center;
+  width: 100%; max-width: 420px;
+  padding: 0.5rem 0.7rem;
+  background: var(--cc-bg-2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+.cc-song:hover { background: rgba(255,255,255,0.08); }
+.cc-song-thumb {
+  width: 48px; height: 48px; border-radius: 6px;
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
+}
+.cc-song-title { font-weight: 600; font-size: 0.9rem; margin: 0; }
+.cc-song-artist { font-size: 0.76rem; color: var(--cc-muted); }
+.cc-song-dur { font-size: 0.78rem; color: var(--cc-muted); font-variant-numeric: tabular-nums; }
+
+/* 16. PODCAST CARD — Square art + episode */
+.cc-podcast {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 1rem;
+  width: 100%; max-width: 420px;
+  padding: 0.8rem; background: var(--cc-bg);
+  border: 1px solid var(--cc-line);
+  border-radius: var(--cc-radius);
+}
+.cc-podcast-art {
+  width: 80px; height: 80px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+}
+.cc-podcast-show { font-size: 0.72rem; color: var(--cc-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.cc-podcast h4 { margin: 0.2rem 0 0.3rem; font-size: 0.95rem; line-height: 1.3; }
+.cc-podcast-meta { font-size: 0.78rem; color: var(--cc-muted); }
+.cc-podcast-play {
+  appearance: none; border: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--cc-accent); color: #fff;
+  display: grid; place-items: center;
+  font-size: 0.7rem; cursor: pointer; margin-top: 0.4rem;
+}
+
+/* 17. RECIPE CARD — Hero img + tags + meta */
+.cc-recipe {
+  width: 100%; max-width: 320px;
+  background: var(--cc-bg); border: 1px solid var(--cc-line);
+  border-radius: var(--cc-radius);
+  overflow: hidden;
+}
+.cc-recipe-hero {
+  height: 180px;
+  background: linear-gradient(135deg, #f97316, #fbbf24);
+  position: relative;
+}
+.cc-recipe-fav {
+  position: absolute; top: 0.7rem; right: 0.7rem;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(0,0,0,0.4); color: #fff;
+  display: grid; place-items: center;
+  border: 0; cursor: pointer; backdrop-filter: blur(8px);
+}
+.cc-recipe-body { padding: 1rem 1.2rem; }
+.cc-recipe h3 { margin: 0 0 0.4rem; font-size: 1rem; }
+.cc-recipe-meta {
+  display: flex; gap: 1rem;
+  font-size: 0.78rem; color: var(--cc-muted);
+}
+.cc-recipe-meta b { color: var(--cc-fg); font-weight: 600; }
+
+/* 18. CHARACTER CARDS — Game-style portrait + level */
+.cc-character {
+  position: relative;
+  width: 160px;
+  background: linear-gradient(160deg, #14141e, #2d2d44);
+  border: 1px solid var(--cc-line);
+  border-radius: 14px;
+  overflow: hidden;
+  text-align: center;
+  padding-bottom: 0.7rem;
+}
+.cc-character::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #fbbf24, #ec4899);
+}
+.cc-character-portrait {
+  width: 100%; aspect-ratio: 1;
+  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.6) 100%),
+              radial-gradient(circle at 50% 40%, #8b5cf6 0%, #14141e 70%);
+}
+.cc-character-name { font-weight: 700; font-size: 0.92rem; margin: 0.4rem 0 0.2rem; }
+.cc-character-level {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  border-radius: 4px;
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* 19. TEAM MEMBER PRO — Square photo + name + socials */
+.cc-team {
+  width: 100%; max-width: 220px;
+  background: var(--cc-bg);
+  border-radius: var(--cc-radius);
+  overflow: hidden;
+  border: 1px solid var(--cc-line);
+  text-align: center;
+}
+.cc-team-photo {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+}
+.cc-team-body { padding: 0.9rem 0.7rem; }
+.cc-team h4 { margin: 0; font-size: 0.95rem; }
+.cc-team-role { color: var(--cc-muted); font-size: 0.78rem; margin-bottom: 0.6rem; }
+.cc-team-socials { display: flex; justify-content: center; gap: 0.4rem; }
+.cc-team-socials a {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--cc-bg-2);
+  color: var(--cc-fg);
+  display: grid; place-items: center;
+  text-decoration: none; font-size: 0.78rem;
+}
+.cc-team-socials a:hover { background: var(--cc-accent); }
+
+/* 20. ALBUM COVER STACK — 3 albums fanned out */
+.cc-album-stack {
+  position: relative;
+  width: 180px; height: 180px;
+}
+.cc-album-stack > div {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  box-shadow: 0 10px 20px -6px rgba(0,0,0,0.4);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.cc-album-stack > div:nth-child(1) { background: linear-gradient(135deg, #ec4899, #f59e0b); transform: rotate(-8deg) translateX(-14px); }
+.cc-album-stack > div:nth-child(2) { background: linear-gradient(135deg, #8b5cf6, #06b6d4); transform: rotate(0); }
+.cc-album-stack > div:nth-child(3) { background: linear-gradient(135deg, #10b981, #fbbf24); transform: rotate(8deg) translateX(14px); }
+.cc-album-stack:hover > div:nth-child(1) { transform: rotate(-16deg) translateX(-34px); }
+.cc-album-stack:hover > div:nth-child(3) { transform: rotate(16deg) translateX(34px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-folder-stack > div,
+  .cc-album-stack > div { transition: none; }
+}

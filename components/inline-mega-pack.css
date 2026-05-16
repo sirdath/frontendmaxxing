@@ -1,0 +1,348 @@
+/* ============================================
+   INLINE MEGA PACK — 8 inline/editable/specialty patterns
+   Inspired by WatermelonUI: inline-disclosure-menu (3-dot confirm),
+   inline-table-control, discrete-tabs (icon→icon+label), journal-navigation,
+   edit-profile-modal, extended-toolbar, pricing-changeable, carousel-tilt
+   ============================================ */
+
+:where(.imp-3dot, .imp-itable, .imp-dtabs, .imp-journal,
+       .imp-edit, .imp-xtool, .imp-pricing, .imp-tilt) {
+  --i-bg: #14141e;
+  --i-bg-2: #1f1f2e;
+  --i-fg: #f5f5fa;
+  --i-muted: rgba(245, 245, 250, 0.55);
+  --i-line: rgba(255, 255, 255, 0.08);
+  --i-accent: #8b5cf6;
+  color: var(--i-fg);
+}
+
+/* 1. 3-DOT MENU WITH CONFIRM — expands to action list then 2-step confirm for delete */
+.imp-3dot {
+  position: relative;
+  display: inline-block;
+}
+.imp-3dot-trig {
+  appearance: none; border: 0;
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--i-fg);
+  cursor: pointer;
+  display: grid; place-items: center;
+  font-size: 1.1rem; line-height: 1;
+}
+.imp-3dot-trig:hover { background: rgba(255,255,255,0.06); }
+.imp-3dot-menu {
+  position: absolute; top: 100%; right: 0;
+  margin-top: 4px;
+  min-width: 160px;
+  background: var(--i-bg);
+  border: 1px solid var(--i-line);
+  border-radius: 10px;
+  padding: 0.3rem;
+  box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
+  opacity: 0; transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 50;
+}
+.imp-3dot.is-open .imp-3dot-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.imp-3dot-item {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  user-select: none;
+}
+.imp-3dot-item:hover { background: var(--i-bg-2); }
+.imp-3dot-item.danger { color: #ef4444; }
+.imp-3dot-item.danger.is-confirming {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+.imp-3dot-item.danger.is-confirming::after { content: ' — confirm?'; opacity: 0.7; font-size: 0.78rem; }
+
+/* 2. INLINE TABLE — Editable expense table */
+.imp-itable {
+  width: 100%; max-width: 560px;
+  background: var(--i-bg);
+  border: 1px solid var(--i-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.imp-itable table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.imp-itable th, .imp-itable td {
+  text-align: left;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--i-line);
+}
+.imp-itable th {
+  background: var(--i-bg-2);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--i-muted);
+  font-weight: 600;
+}
+.imp-itable td[contenteditable="true"] {
+  background: rgba(139, 92, 246, 0.06);
+  outline: 1px solid var(--i-accent);
+  outline-offset: -1px;
+}
+.imp-itable tfoot td { font-weight: 700; background: rgba(139, 92, 246, 0.06); }
+.imp-itable-add {
+  padding: 0.6rem;
+  text-align: center;
+  background: transparent;
+  border: 0;
+  color: var(--i-muted);
+  font: inherit; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+.imp-itable-add:hover { background: rgba(255,255,255,0.04); color: var(--i-fg); }
+
+/* 3. DISCRETE TABS — Active expands icon+label, others icon-only */
+.imp-dtabs {
+  display: inline-flex; gap: 0.3rem;
+  padding: 0.3rem;
+  background: var(--i-bg-2);
+  border-radius: 12px;
+}
+.imp-dtabs-tab {
+  appearance: none; border: 0;
+  display: inline-flex; align-items: center; gap: 0;
+  padding: 0.5rem;
+  background: transparent;
+  color: var(--i-muted);
+  border-radius: 9px;
+  font: inherit; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer;
+  transition: padding 0.3s cubic-bezier(0.32, 0.72, 0, 1), background 0.18s ease, color 0.18s ease, gap 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.imp-dtabs-tab span {
+  max-width: 0; opacity: 0;
+  transition: max-width 0.3s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.2s ease;
+}
+.imp-dtabs-tab:hover { color: var(--i-fg); }
+.imp-dtabs-tab.is-active {
+  background: var(--i-accent); color: #fff;
+  padding: 0.5rem 0.9rem;
+  gap: 0.4rem;
+}
+.imp-dtabs-tab.is-active span { max-width: 100px; opacity: 1; }
+
+/* 4. JOURNAL NAV — Sidebar list with date picker + active entry */
+.imp-journal {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  height: 360px;
+  background: var(--i-bg);
+  border: 1px solid var(--i-line);
+  border-radius: 14px;
+  overflow: hidden;
+  width: 100%; max-width: 560px;
+}
+.imp-journal-side {
+  background: var(--i-bg-2);
+  border-right: 1px solid var(--i-line);
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+.imp-journal-day {
+  display: block;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.imp-journal-day:hover { background: rgba(255,255,255,0.06); }
+.imp-journal-day.is-active { background: rgba(139, 92, 246, 0.15); color: var(--i-accent); font-weight: 600; }
+.imp-journal-day-date { font-size: 0.7rem; color: var(--i-muted); display: block; }
+.imp-journal-day.is-active .imp-journal-day-date { color: var(--i-accent); }
+.imp-journal-main {
+  padding: 1rem 1.2rem;
+  overflow-y: auto;
+}
+.imp-journal-main h3 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+.imp-journal-main p { line-height: 1.6; color: var(--i-fg); font-size: 0.88rem; }
+
+/* 5. EDIT PROFILE MODAL — Live preview pane */
+.imp-edit {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 1.2rem;
+  background: var(--i-bg);
+  border: 1px solid var(--i-line);
+  border-radius: 16px;
+  padding: 1.2rem;
+  width: 100%; max-width: 540px;
+}
+.imp-edit-form { display: grid; gap: 0.5rem; }
+.imp-edit-form label {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--i-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+.imp-edit-form input, .imp-edit-form textarea {
+  width: 100%; box-sizing: border-box;
+  background: var(--i-bg-2);
+  border: 1px solid var(--i-line);
+  color: var(--i-fg);
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  font: inherit; font-size: 0.88rem;
+  outline: 0;
+}
+.imp-edit-form input:focus, .imp-edit-form textarea:focus { border-color: var(--i-accent); }
+.imp-edit-preview {
+  align-self: start;
+  background: var(--i-bg-2);
+  border: 1px solid var(--i-line);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  position: sticky; top: 0;
+}
+.imp-edit-preview-avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  margin: 0 auto 0.5rem;
+}
+.imp-edit-preview b { display: block; font-size: 0.92rem; }
+.imp-edit-preview small { color: var(--i-muted); font-size: 0.78rem; }
+
+/* 6. EXTENDED TOOLBAR — Expanding action toolbar */
+.imp-xtool {
+  display: inline-flex; align-items: center; gap: 0.2rem;
+  padding: 0.3rem;
+  background: var(--i-bg-2);
+  border: 1px solid var(--i-line);
+  border-radius: 999px;
+  max-width: 56px;
+  overflow: hidden;
+  transition: max-width 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.imp-xtool.is-open { max-width: 360px; }
+.imp-xtool-trig {
+  appearance: none; border: 0;
+  width: 38px; height: 38px;
+  background: var(--i-accent); color: #fff;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  cursor: pointer;
+  flex: 0 0 38px;
+  transition: transform 0.3s ease;
+}
+.imp-xtool.is-open .imp-xtool-trig { transform: rotate(45deg); }
+.imp-xtool-act {
+  appearance: none; border: 0;
+  width: 38px; height: 38px;
+  background: transparent;
+  color: var(--i-fg);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  cursor: pointer;
+  flex: 0 0 38px;
+  opacity: 0;
+  transition: opacity 0.18s ease, background 0.18s ease;
+}
+.imp-xtool.is-open .imp-xtool-act { opacity: 1; transition-delay: 0.15s; }
+.imp-xtool-act:hover { background: rgba(255,255,255,0.08); }
+
+/* 7. PRICING CHANGEABLE — Plan card with monthly/yearly + expand features */
+.imp-pricing {
+  width: 100%; max-width: 320px;
+  background: var(--i-bg);
+  border: 1px solid var(--i-line);
+  border-radius: 16px;
+  padding: 1.4rem;
+}
+.imp-pricing-toggle {
+  display: inline-flex;
+  background: var(--i-bg-2);
+  border-radius: 999px;
+  padding: 3px;
+  margin-bottom: 1rem;
+}
+.imp-pricing-toggle button {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--i-muted);
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font: inherit; font-size: 0.78rem; font-weight: 600;
+  cursor: pointer;
+}
+.imp-pricing-toggle button.is-active {
+  background: var(--i-accent); color: #fff;
+}
+.imp-pricing-toggle-save {
+  margin-left: 0.3rem;
+  padding: 0.1rem 0.4rem;
+  background: rgba(16,185,129,0.18); color: #10b981;
+  border-radius: 4px;
+  font-size: 0.62rem; font-weight: 700;
+}
+.imp-pricing-price {
+  font-size: 2.4rem; font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.imp-pricing-price small {
+  font-size: 0.78rem; color: var(--i-muted); font-weight: 500;
+}
+.imp-pricing-feats {
+  list-style: none; margin: 1rem 0 0; padding: 0;
+  display: grid; gap: 0.3rem;
+  max-height: 80px; overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.imp-pricing.is-open .imp-pricing-feats { max-height: 400px; }
+.imp-pricing-feats li::before { content: '✓ '; color: var(--i-accent); }
+.imp-pricing-expand {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--i-accent);
+  font: inherit; font-weight: 600; font-size: 0.82rem;
+  padding: 0.6rem 0;
+  cursor: pointer;
+}
+
+/* 8. CAROUSEL TILT — Tilted-card horizontal carousel */
+.imp-tilt {
+  display: flex;
+  gap: 1.2rem;
+  padding: 2rem 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  perspective: 1200px;
+  scrollbar-width: none;
+}
+.imp-tilt::-webkit-scrollbar { display: none; }
+.imp-tilt > * {
+  flex: 0 0 240px;
+  height: 320px;
+  scroll-snap-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border-radius: 16px;
+  position: relative;
+  box-shadow: 0 20px 40px -12px rgba(0,0,0,0.4);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+.imp-tilt > *:nth-child(2n) { background: linear-gradient(135deg, #06b6d4, #8b5cf6); }
+.imp-tilt > *:nth-child(3n) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.imp-tilt > *:hover { transform: rotateY(-8deg) rotateX(4deg) translateY(-6px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .imp-3dot-menu, .imp-dtabs-tab, .imp-dtabs-tab span,
+  .imp-xtool, .imp-xtool-act, .imp-xtool-trig,
+  .imp-pricing-feats, .imp-tilt > * { transition: none; }
+}

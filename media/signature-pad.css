@@ -1,0 +1,102 @@
+/* ============================================
+   SIGNATURE PAD — Pen-style draw-to-sign canvas
+   Inspired by WatermelonUI draw-signature
+   ============================================
+   Usage:
+     <div class="sigpad" data-sigpad>
+       <canvas class="sigpad-canvas"></canvas>
+       <div class="sigpad-line"></div>
+       <div class="sigpad-hint">Sign above</div>
+       <div class="sigpad-actions">
+         <button class="sigpad-clear">Clear</button>
+         <button class="sigpad-save">Save</button>
+       </div>
+     </div>
+   ============================================ */
+
+.sigpad {
+  --sp-bg: #fff;
+  --sp-fg: #0a0a14;
+  --sp-line: rgba(10, 10, 20, 0.18);
+  --sp-radius: 14px;
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background: var(--sp-bg);
+  border: 1px solid rgba(10, 10, 20, 0.08);
+  border-radius: var(--sp-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.12);
+}
+
+.sigpad-canvas {
+  display: block;
+  width: 100%;
+  height: 180px;
+  background: transparent;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.sigpad-line {
+  position: absolute;
+  left: 12%; right: 12%;
+  bottom: 56px;
+  height: 1px;
+  background: var(--sp-line);
+  pointer-events: none;
+}
+
+.sigpad-hint {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 36px;
+  text-align: center;
+  font-size: 0.72rem;
+  color: rgba(10, 10, 20, 0.4);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.sigpad.is-signed .sigpad-hint { opacity: 0; }
+
+.sigpad-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.7rem;
+  border-top: 1px solid rgba(10, 10, 20, 0.06);
+  gap: 0.5rem;
+}
+
+.sigpad-clear,
+.sigpad-save {
+  appearance: none;
+  border: 0;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+.sigpad-clear { background: transparent; color: rgba(10, 10, 20, 0.55); }
+.sigpad-clear:hover { background: rgba(10, 10, 20, 0.06); }
+.sigpad-save  { background: #0a0a14; color: #fff; }
+.sigpad-save:hover { filter: brightness(1.15); }
+.sigpad-save:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Dark variant */
+.sigpad-dark {
+  --sp-bg: #14141e;
+  --sp-fg: #f5f5fa;
+  --sp-line: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.sigpad-dark .sigpad-hint { color: rgba(255, 255, 255, 0.4); }
+.sigpad-dark .sigpad-clear { color: rgba(255, 255, 255, 0.55); }
+.sigpad-dark .sigpad-clear:hover { background: rgba(255, 255, 255, 0.06); }
+.sigpad-dark .sigpad-save { background: #fff; color: #0a0a14; }
+
+/* Compact size */
+.sigpad-sm .sigpad-canvas { height: 120px; }

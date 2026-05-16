@@ -1,0 +1,97 @@
+/* ============================================
+   TREE MENU — Nested collapsible navigation tree (Finder-style)
+   Inspired by WatermelonUI tree-menu (distinct from components/file-tree which is filesystem-focused)
+   ============================================
+   Usage:
+     <ul class="tmenu" data-tmenu>
+       <li class="tmenu-node">
+         <button class="tmenu-row"><span class="tmenu-arr"></span><span class="tmenu-icon"></span>Section</button>
+         <ul class="tmenu-children">
+           <li class="tmenu-node">…</li>
+         </ul>
+       </li>
+     </ul>
+   ============================================ */
+
+.tmenu, .tmenu-children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tmenu {
+  --tm-fg: #f5f5fa;
+  --tm-muted: rgba(245, 245, 250, 0.6);
+  --tm-accent: #8b5cf6;
+  --tm-hover: rgba(255, 255, 255, 0.06);
+  --tm-active: rgba(139, 92, 246, 0.18);
+  --tm-indent: 18px;
+  color: var(--tm-fg);
+  font-size: 0.88rem;
+  user-select: none;
+}
+.tmenu-children { padding-left: var(--tm-indent); }
+
+.tmenu-row {
+  appearance: none;
+  display: flex; align-items: center; gap: 0.5rem;
+  width: 100%; padding: 0.3rem 0.6rem;
+  background: transparent; border: 0;
+  color: inherit; text-align: left;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  position: relative;
+}
+.tmenu-row:hover { background: var(--tm-hover); }
+.tmenu-node.is-active > .tmenu-row { background: var(--tm-active); color: var(--tm-accent); font-weight: 600; }
+
+.tmenu-arr {
+  display: inline-block;
+  width: 12px; height: 12px;
+  transition: transform 0.2s ease;
+  position: relative;
+  flex: 0 0 12px;
+}
+.tmenu-arr::before {
+  content: '';
+  position: absolute; top: 2px; left: 3px;
+  width: 0; height: 0;
+  border: 4px solid transparent;
+  border-left-color: var(--tm-muted);
+}
+.tmenu-node.is-open > .tmenu-row .tmenu-arr { transform: rotate(90deg); }
+.tmenu-node.is-leaf > .tmenu-row .tmenu-arr { visibility: hidden; }
+
+.tmenu-icon {
+  width: 16px; height: 16px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  flex: 0 0 16px;
+}
+
+.tmenu-children {
+  display: none;
+  position: relative;
+}
+.tmenu-node.is-open > .tmenu-children { display: block; }
+
+/* Guide line */
+.tmenu-children::before {
+  content: '';
+  position: absolute;
+  left: 6px; top: 0; bottom: 0;
+  border-left: 1px solid var(--tm-line, rgba(255, 255, 255, 0.08));
+}
+
+/* Compact variant */
+.tmenu-sm { font-size: 0.82rem; --tm-indent: 14px; }
+.tmenu-sm .tmenu-row { padding: 0.2rem 0.4rem; }
+
+/* Light variant */
+.tmenu-light {
+  --tm-fg: #0f172a;
+  --tm-muted: rgba(15, 23, 42, 0.6);
+  --tm-hover: rgba(15, 23, 42, 0.06);
+  --tm-active: rgba(139, 92, 246, 0.12);
+  --tm-line: rgba(15, 23, 42, 0.08);
+}

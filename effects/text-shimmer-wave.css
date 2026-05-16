@@ -1,0 +1,54 @@
+/* ============================================
+   TEXT SHIMMER WAVE — Word-by-word shimmer wash
+   Inspired by WatermelonUI text-shimmer-wave
+   ============================================
+   Usage:
+     <p class="tshim"><span>One</span> <span>two</span> <span>three</span></p>
+     or auto-wrap via TextShimmer.init('.tshim') if pairing with JS
+
+   Variants: tshim-fast, tshim-rainbow, tshim-glow
+   ============================================ */
+
+.tshim {
+  --tsh-base: rgba(255, 255, 255, 0.25);
+  --tsh-bright: #fff;
+  --tsh-dur: 2.6s;
+  --tsh-delay-step: 0.08s;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.28em;
+  font-weight: 600;
+  color: var(--tsh-base);
+}
+.tshim > * {
+  background: linear-gradient(90deg, var(--tsh-base) 0%, var(--tsh-base) 40%, var(--tsh-bright) 50%, var(--tsh-base) 60%, var(--tsh-base) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: tshim-wash var(--tsh-dur) linear infinite;
+}
+.tshim > *:nth-child(1) { animation-delay: calc(0 * var(--tsh-delay-step)); }
+.tshim > *:nth-child(2) { animation-delay: calc(1 * var(--tsh-delay-step)); }
+.tshim > *:nth-child(3) { animation-delay: calc(2 * var(--tsh-delay-step)); }
+.tshim > *:nth-child(4) { animation-delay: calc(3 * var(--tsh-delay-step)); }
+.tshim > *:nth-child(5) { animation-delay: calc(4 * var(--tsh-delay-step)); }
+.tshim > *:nth-child(6) { animation-delay: calc(5 * var(--tsh-delay-step)); }
+.tshim > *:nth-child(7) { animation-delay: calc(6 * var(--tsh-delay-step)); }
+.tshim > *:nth-child(8) { animation-delay: calc(7 * var(--tsh-delay-step)); }
+.tshim > *:nth-child(n+9) { animation-delay: calc(8 * var(--tsh-delay-step)); }
+
+@keyframes tshim-wash {
+  0%   { background-position: 200% 0; }
+  60%, 100% { background-position: -200% 0; }
+}
+
+.tshim-fast    { --tsh-dur: 1.4s; }
+.tshim-rainbow { --tsh-bright: #ec4899; }
+.tshim-rainbow > *:nth-child(2n) { --tsh-bright: #06b6d4; }
+.tshim-rainbow > *:nth-child(3n) { --tsh-bright: #f59e0b; }
+.tshim-glow > * { filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.35)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tshim > * { animation: none; -webkit-text-fill-color: var(--tsh-bright); }
+}

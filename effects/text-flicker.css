@@ -1,0 +1,43 @@
+/* ============================================
+   TEXT FLICKER — Old neon sign / CRT flicker
+   Inspired by WatermelonUI text-flicker
+   ============================================
+   Usage:
+     <span class="tflk">VACANCY</span>
+   Variants: tflk-slow, tflk-pink, tflk-cyan, tflk-amber, tflk-broken
+   ============================================ */
+
+.tflk {
+  --tfk-c: #fde047;
+  --tfk-glow: rgba(253, 224, 71, 0.55);
+  color: var(--tfk-c);
+  text-shadow:
+    0 0 4px var(--tfk-c),
+    0 0 12px var(--tfk-glow),
+    0 0 24px var(--tfk-glow);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  animation: tflk 3.2s infinite;
+}
+@keyframes tflk {
+  0%, 19%, 21%, 22.9%, 24%, 60%, 62%, 100% { opacity: 1; }
+  20%   { opacity: 0.4; }
+  23%   { opacity: 0.2; }
+  61%   { opacity: 0.5; }
+}
+
+.tflk-slow { animation-duration: 6s; }
+.tflk-pink   { --tfk-c: #f472b6; --tfk-glow: rgba(244, 114, 182, 0.55); }
+.tflk-cyan   { --tfk-c: #22d3ee; --tfk-glow: rgba(34, 211, 238, 0.55); }
+.tflk-amber  { --tfk-c: #fbbf24; --tfk-glow: rgba(251, 191, 36, 0.55); }
+.tflk-broken { animation: tflk-broken 4s infinite; }
+@keyframes tflk-broken {
+  0%, 5%, 12%, 18%, 30%, 33%, 56%, 100% { opacity: 1; }
+  6%, 10% { opacity: 0; }
+  13%, 16% { opacity: 0.3; }
+  31%   { opacity: 0; }
+  55%   { opacity: 0.15; }
+}
+
+@media (prefers-reduced-motion: reduce) { .tflk { animation: none; } }

@@ -1,0 +1,348 @@
+/* ============================================
+   BLOCKS WATERMELON PACK — 12 input/utility patterns in one file
+   Inspired by WatermelonUI: predictive-text, frequency-selector, editable-chip,
+   slot-picker, otp-pin-pro, copy-input, segmented-input, pill-tabs-mini,
+   floating-action-bar, status-pill, avatar-stack-pro, dropdown-button
+   ============================================ */
+
+/* shared */
+:where(.bw-predict, .bw-freq, .bw-chip, .bw-slot, .bw-otp, .bw-copy,
+       .bw-seginp, .bw-piltabs, .bw-fab-bar, .bw-statp, .bw-avstack, .bw-dropbtn) {
+  --bw-bg: #14141e;
+  --bw-bg-2: #1f1f2e;
+  --bw-fg: #f5f5fa;
+  --bw-muted: rgba(245, 245, 250, 0.55);
+  --bw-line: rgba(255, 255, 255, 0.1);
+  --bw-accent: #8b5cf6;
+  color: var(--bw-fg);
+  font-family: inherit;
+}
+
+/* 1. PREDICTIVE TEXT — Input with inline ghost completion */
+.bw-predict {
+  position: relative;
+  display: inline-flex;
+  background: var(--bw-bg-2);
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.95rem;
+  width: 100%; max-width: 320px;
+}
+.bw-predict-input {
+  background: transparent; border: 0; outline: 0;
+  color: var(--bw-fg);
+  flex: 1 1 auto; min-width: 0;
+  font: inherit;
+  position: relative; z-index: 2;
+}
+.bw-predict-ghost {
+  position: absolute;
+  left: 0.9rem; top: 50%;
+  transform: translateY(-50%);
+  color: var(--bw-muted);
+  pointer-events: none;
+  white-space: pre;
+}
+.bw-predict-ghost span { color: transparent; }
+.bw-predict kbd {
+  background: rgba(255,255,255,0.08);
+  padding: 0.1rem 0.4rem; border-radius: 4px;
+  font-size: 0.72rem;
+  align-self: center;
+}
+
+/* 2. FREQUENCY SELECTOR — Daily / Weekly / Monthly chips */
+.bw-freq {
+  display: inline-flex; gap: 0.3rem;
+  background: var(--bw-bg-2);
+  border-radius: 12px;
+  padding: 4px;
+}
+.bw-freq-opt {
+  appearance: none; border: 0; background: transparent;
+  color: var(--bw-muted);
+  padding: 0.5rem 0.9rem;
+  font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; border-radius: 9px;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.bw-freq-opt:hover { color: var(--bw-fg); }
+.bw-freq-opt.is-active { background: var(--bw-accent); color: #fff; }
+
+/* 3. EDITABLE CHIP — Inline-edit tag */
+.bw-chip {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--bw-accent);
+  padding: 0.3rem 0.6rem 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.82rem; font-weight: 600;
+}
+.bw-chip[contenteditable="true"] {
+  outline: 1px solid var(--bw-accent);
+  background: rgba(139, 92, 246, 0.25);
+}
+.bw-chip-x {
+  appearance: none; border: 0; background: transparent;
+  color: var(--bw-accent);
+  width: 16px; height: 16px; border-radius: 50%;
+  display: grid; place-items: center;
+  cursor: pointer; font-size: 0.85rem; line-height: 1;
+  padding: 0;
+}
+.bw-chip-x:hover { background: rgba(139, 92, 246, 0.25); }
+
+/* 4. SLOT PICKER — Drum-roll number picker (vertical scroll-snap) */
+.bw-slot {
+  display: inline-flex; gap: 0.4rem;
+  padding: 0.7rem;
+  background: var(--bw-bg);
+  border: 1px solid var(--bw-line);
+  border-radius: 14px;
+  position: relative;
+}
+.bw-slot::before, .bw-slot::after {
+  content: '';
+  position: absolute; left: 0; right: 0;
+  height: 30px;
+  pointer-events: none;
+  z-index: 2;
+}
+.bw-slot::before {
+  top: 0;
+  background: linear-gradient(180deg, var(--bw-bg), transparent);
+  border-radius: 14px 14px 0 0;
+}
+.bw-slot::after  {
+  bottom: 0;
+  background: linear-gradient(0deg, var(--bw-bg), transparent);
+  border-radius: 0 0 14px 14px;
+}
+.bw-slot-col {
+  height: 132px;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.bw-slot-col::-webkit-scrollbar { display: none; }
+.bw-slot-col-inner { padding: 44px 0; }
+.bw-slot-cell {
+  height: 44px; width: 60px;
+  display: grid; place-items: center;
+  scroll-snap-align: center;
+  font-size: 1.2rem; font-weight: 600;
+  color: var(--bw-muted);
+  transition: color 0.18s ease;
+}
+.bw-slot-cell:focus, .bw-slot-cell:hover { color: var(--bw-fg); }
+
+/* 5. OTP PIN PRO — Boxed pin input */
+.bw-otp {
+  display: inline-flex; gap: 0.5rem;
+}
+.bw-otp-cell {
+  width: 48px; height: 56px;
+  font-size: 1.4rem; font-weight: 700;
+  text-align: center;
+  background: var(--bw-bg-2);
+  border: 2px solid var(--bw-line);
+  color: var(--bw-fg);
+  border-radius: 10px;
+  outline: 0;
+  font-variant-numeric: tabular-nums;
+  caret-color: var(--bw-accent);
+  transition: border-color 0.18s ease;
+}
+.bw-otp-cell:focus { border-color: var(--bw-accent); }
+.bw-otp-cell.is-filled { border-color: var(--bw-accent); background: rgba(139, 92, 246, 0.08); }
+.bw-otp-divider { align-self: center; color: var(--bw-muted); font-size: 1.2rem; }
+
+/* 6. COPY INPUT — Read-only with copy button */
+.bw-copy {
+  display: inline-flex;
+  background: var(--bw-bg-2);
+  border: 1px solid var(--bw-line);
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%; max-width: 380px;
+}
+.bw-copy-input {
+  background: transparent; border: 0; outline: 0;
+  color: var(--bw-fg);
+  padding: 0.6rem 0.9rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  text-overflow: ellipsis;
+}
+.bw-copy-btn {
+  appearance: none; border: 0; border-left: 1px solid var(--bw-line);
+  background: rgba(255,255,255,0.03);
+  color: var(--bw-accent);
+  padding: 0 0.9rem;
+  font-weight: 600; font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+.bw-copy-btn:hover { background: rgba(255,255,255,0.06); }
+.bw-copy.is-copied .bw-copy-btn { color: #10b981; }
+
+/* 7. SEGMENTED INPUT — Split into label + value parts */
+.bw-seginp {
+  display: inline-flex;
+  background: var(--bw-bg-2);
+  border: 1px solid var(--bw-line);
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%; max-width: 320px;
+}
+.bw-seginp-label {
+  background: rgba(255,255,255,0.04);
+  padding: 0.6rem 0.9rem;
+  color: var(--bw-muted);
+  font-size: 0.82rem; font-weight: 600;
+  border-right: 1px solid var(--bw-line);
+}
+.bw-seginp-value {
+  background: transparent; border: 0; outline: 0;
+  color: var(--bw-fg);
+  padding: 0.6rem 0.9rem;
+  flex: 1 1 auto; min-width: 0;
+}
+
+/* 8. PILL TABS MINI — Compact pill tabs (distinct from animated-tabs) */
+.bw-piltabs {
+  display: inline-flex; gap: 0.2rem;
+}
+.bw-piltabs-opt {
+  appearance: none; border: 0;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--bw-muted);
+  font-size: 0.78rem; font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.bw-piltabs-opt:hover { color: var(--bw-fg); }
+.bw-piltabs-opt.is-active {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--bw-fg);
+}
+
+/* 9. FLOATING ACTION BAR — Pill row of icons (FAB cluster) */
+.bw-fab-bar {
+  display: inline-flex; gap: 0.3rem;
+  padding: 0.4rem;
+  background: rgba(20, 20, 30, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--bw-line);
+  border-radius: 999px;
+  box-shadow: 0 10px 24px -6px rgba(0,0,0,0.4);
+}
+.bw-fab-btn {
+  appearance: none; border: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--bw-fg);
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+.bw-fab-btn:hover { background: rgba(255,255,255,0.08); }
+.bw-fab-btn.is-active { background: var(--bw-accent); }
+.bw-fab-divider {
+  width: 1px; align-self: stretch; margin: 0.4rem 0;
+  background: var(--bw-line);
+}
+
+/* 10. STATUS PILL — Dot + text live status */
+.bw-statp {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.25rem 0.6rem 0.25rem 0.5rem;
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border-radius: 999px;
+  font-size: 0.74rem; font-weight: 600;
+}
+.bw-statp::before {
+  content: '';
+  width: 8px; height: 8px; border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 0 currentColor;
+  animation: bw-pulse 1.6s ease-out infinite;
+}
+@keyframes bw-pulse {
+  0%   { box-shadow: 0 0 0 0 currentColor; }
+  100% { box-shadow: 0 0 0 8px transparent; }
+}
+.bw-statp-warn { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.bw-statp-error { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+.bw-statp-info  { background: rgba(6, 182, 212, 0.15); color: #06b6d4; }
+.bw-statp-mute  { background: rgba(245, 245, 250, 0.08); color: var(--bw-muted); }
+
+/* 11. AVATAR STACK PRO — Overlapping with overflow counter */
+.bw-avstack {
+  display: inline-flex; align-items: center;
+}
+.bw-avstack-item {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border: 2px solid var(--bw-bg);
+  margin-left: -10px;
+  display: grid; place-items: center;
+  color: #fff; font-weight: 700; font-size: 0.72rem;
+  transition: transform 0.2s ease;
+}
+.bw-avstack-item:first-child { margin-left: 0; }
+.bw-avstack-item:hover { transform: translateY(-3px); z-index: 2; }
+.bw-avstack-more {
+  background: var(--bw-bg-2);
+  color: var(--bw-muted);
+}
+.bw-avstack-lg .bw-avstack-item { width: 42px; height: 42px; font-size: 0.85rem; margin-left: -12px; }
+.bw-avstack-sm .bw-avstack-item { width: 24px; height: 24px; font-size: 0.62rem; margin-left: -6px; border-width: 1.5px; }
+
+/* 12. DROPDOWN BUTTON — Action + chevron split */
+.bw-dropbtn {
+  display: inline-flex;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bw-accent);
+  color: #fff;
+}
+.bw-dropbtn-main {
+  appearance: none; border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0.55rem 1rem;
+  font-weight: 600; font-size: 0.88rem;
+  cursor: pointer;
+}
+.bw-dropbtn-chev {
+  appearance: none; border: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  background: transparent;
+  color: inherit;
+  padding: 0 0.7rem;
+  cursor: pointer;
+}
+.bw-dropbtn-chev::after {
+  content: ''; display: inline-block;
+  width: 0; height: 0;
+  border: 5px solid transparent;
+  border-top-color: currentColor;
+  margin-top: 4px;
+}
+.bw-dropbtn:hover { filter: brightness(1.1); }
+.bw-dropbtn-outline {
+  background: transparent;
+  color: var(--bw-fg);
+  border: 1px solid var(--bw-line);
+}
+.bw-dropbtn-outline:hover { background: rgba(255,255,255,0.04); filter: none; }

@@ -1,0 +1,63 @@
+/* ============================================
+   FLOATING TAGS — Pill chips that float in/up gently
+   Inspired by WatermelonUI floating-tags
+   ============================================
+   Usage:
+     <ul class="ftag-cloud">
+       <li class="ftag">design</li>
+       <li class="ftag">motion</li>
+       …
+     </ul>
+   Variants: ftag-gradient, ftag-outline, ftag-glow
+   ============================================ */
+
+.ftag-cloud {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+.ftag {
+  --ft-bg: rgba(255, 255, 255, 0.07);
+  --ft-fg: #f5f5fa;
+  --ft-bd: rgba(255, 255, 255, 0.12);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.42rem 0.9rem;
+  background: var(--ft-bg);
+  color: var(--ft-fg);
+  border: 1px solid var(--ft-bd);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: default;
+  animation: ftag-float 6s ease-in-out infinite;
+  transition: transform 0.22s ease, background 0.22s ease;
+}
+.ftag:hover { transform: translateY(-3px) scale(1.04); background: rgba(255, 255, 255, 0.13); }
+
+.ftag:nth-child(1) { animation-delay: 0s; }
+.ftag:nth-child(2) { animation-delay: -1s; }
+.ftag:nth-child(3) { animation-delay: -2s; }
+.ftag:nth-child(4) { animation-delay: -3s; }
+.ftag:nth-child(5) { animation-delay: -4s; }
+.ftag:nth-child(6) { animation-delay: -5s; }
+.ftag:nth-child(n+7) { animation-delay: -1.7s; }
+
+@keyframes ftag-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+.ftag-gradient {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: #fff;
+  border-color: transparent;
+}
+.ftag-outline { background: transparent; border-color: rgba(255, 255, 255, 0.2); }
+.ftag-glow { box-shadow: 0 0 18px rgba(139, 92, 246, 0.35); }
+
+@media (prefers-reduced-motion: reduce) { .ftag { animation: none; } }

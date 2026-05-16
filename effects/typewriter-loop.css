@@ -1,0 +1,47 @@
+/* ============================================
+   TYPEWRITER LOOP — CSS-only single-phrase typing
+   For multi-phrase rotating typewriter use existing typography/text-animations.js
+   ============================================
+   Usage:
+     <div class="twl"><span>Hello world.</span></div>
+   Variants: twl-fast, twl-slow, twl-mono, twl-no-cursor
+   ============================================ */
+
+.twl {
+  --twl-dur: 4s;
+  --twl-chars: 22ch;
+  --twl-c: currentColor;
+  display: inline-block;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  position: relative;
+}
+.twl > span {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: var(--twl-chars);
+  border-right: 2px solid var(--twl-c);
+  width: 0;
+  animation:
+    twl-type var(--twl-dur) steps(22, end) infinite,
+    twl-caret 0.8s steps(2) infinite;
+}
+@keyframes twl-type {
+  0%   { width: 0; }
+  40%  { width: var(--twl-chars); }
+  60%  { width: var(--twl-chars); }
+  100% { width: 0; }
+}
+@keyframes twl-caret {
+  0%, 49% { border-right-color: var(--twl-c); }
+  50%, 100% { border-right-color: transparent; }
+}
+
+.twl-fast { --twl-dur: 2.4s; }
+.twl-slow { --twl-dur: 7s; }
+.twl-mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.twl-no-cursor > span { border-right: 0; animation-name: twl-type; }
+
+@media (prefers-reduced-motion: reduce) {
+  .twl > span { width: var(--twl-chars); animation: none; border-right: 0; }
+}

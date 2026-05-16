@@ -1,0 +1,232 @@
+/* ============================================
+   QUICK PACK — 6 quick-action utility patterns
+   Inspired by WatermelonUI: quick-paste, quick-switcher, quick-option-picker,
+   quick-feedback, fractional-picker, step-indicator
+   ============================================ */
+
+:where(.qp-paste, .qp-switch, .qp-opt, .qp-feed, .qp-frac, .qp-step) {
+  --q-bg: #14141e;
+  --q-bg-2: #1f1f2e;
+  --q-fg: #f5f5fa;
+  --q-muted: rgba(245, 245, 250, 0.55);
+  --q-line: rgba(255, 255, 255, 0.08);
+  --q-accent: #8b5cf6;
+  color: var(--q-fg);
+}
+
+/* 1. QUICK PASTE — Pasteboard with recent items */
+.qp-paste {
+  width: 100%; max-width: 360px;
+  background: var(--q-bg);
+  border: 1px solid var(--q-line);
+  border-radius: 12px;
+  padding: 0.5rem;
+}
+.qp-paste-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.3rem 0.5rem 0.5rem;
+  font-size: 0.78rem;
+  color: var(--q-muted);
+}
+.qp-paste-item {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.qp-paste-item:hover { background: var(--q-bg-2); }
+.qp-paste-item kbd {
+  margin-left: auto;
+  padding: 0.1rem 0.4rem;
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  font-size: 0.7rem; font-family: ui-monospace, monospace;
+  color: var(--q-muted);
+}
+.qp-paste-icon { width: 24px; height: 24px; border-radius: 4px; background: rgba(139,92,246,0.15); color: var(--q-accent); display: grid; place-items: center; font-size: 0.7rem; flex: 0 0 24px; }
+.qp-paste-prev { font-family: ui-monospace, monospace; font-size: 0.8rem; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* 2. QUICK SWITCHER — Tab/window switcher (⌘Tab style) */
+.qp-switch {
+  display: flex; gap: 0.5rem;
+  padding: 0.7rem;
+  background: rgba(20, 20, 30, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--q-line);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px -10px rgba(0,0,0,0.5);
+}
+.qp-switch-tile {
+  width: 80px; height: 64px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+.qp-switch-tile:nth-child(2) { background: linear-gradient(135deg, #06b6d4, #8b5cf6); }
+.qp-switch-tile:nth-child(3) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.qp-switch-tile:nth-child(4) { background: linear-gradient(135deg, #10b981, #06b6d4); }
+.qp-switch-tile:hover { transform: translateY(-3px); }
+.qp-switch-tile.is-active { outline: 2px solid #fff; outline-offset: 2px; }
+.qp-switch-tile-name {
+  position: absolute; bottom: -22px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem; white-space: nowrap;
+}
+
+/* 3. QUICK OPTION PICKER — Compact dropdown of options */
+.qp-opt {
+  display: inline-block;
+  background: var(--q-bg);
+  border: 1px solid var(--q-line);
+  border-radius: 10px;
+  padding: 0.4rem;
+  box-shadow: 0 12px 30px -10px rgba(0,0,0,0.4);
+  min-width: 200px;
+}
+.qp-opt-item {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.88rem;
+}
+.qp-opt-item:hover { background: var(--q-bg-2); }
+.qp-opt-item.is-picked::before { content: '✓'; color: var(--q-accent); margin-right: 0.3rem; }
+.qp-opt-divider { height: 1px; background: var(--q-line); margin: 0.3rem 0; }
+
+/* 4. QUICK FEEDBACK — 1-5 rating + text */
+.qp-feed {
+  display: flex; flex-direction: column; gap: 0.7rem;
+  background: var(--q-bg);
+  border: 1px solid var(--q-line);
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+  max-width: 360px;
+  width: 100%;
+}
+.qp-feed h4 { margin: 0; font-size: 0.95rem; }
+.qp-feed-emojis { display: flex; gap: 0.4rem; }
+.qp-feed-emoji {
+  appearance: none; border: 0;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--q-bg-2);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+.qp-feed-emoji:hover { transform: scale(1.15); }
+.qp-feed-emoji.is-picked {
+  background: rgba(139, 92, 246, 0.18);
+  transform: scale(1.18);
+}
+.qp-feed-text {
+  width: 100%; box-sizing: border-box;
+  background: var(--q-bg-2);
+  border: 1px solid var(--q-line);
+  color: var(--q-fg);
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  font: inherit; font-size: 0.88rem;
+  resize: none; min-height: 60px;
+  outline: 0;
+}
+.qp-feed-send {
+  appearance: none; border: 0;
+  align-self: flex-end;
+  padding: 0.5rem 1rem;
+  background: var(--q-accent); color: #fff;
+  border-radius: 8px;
+  font-weight: 600; font-size: 0.85rem; cursor: pointer;
+}
+
+/* 5. FRACTIONAL PICKER — 1/2, 1/3, 1/4 etc. */
+.qp-frac {
+  display: inline-flex; gap: 0.3rem;
+  padding: 0.3rem;
+  background: var(--q-bg-2);
+  border-radius: 8px;
+}
+.qp-frac-opt {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--q-muted);
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  font: inherit; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer;
+  font-variant-numeric: stacked-fractions;
+  font-feature-settings: 'frac' 1;
+}
+.qp-frac-opt:hover { color: var(--q-fg); }
+.qp-frac-opt.is-picked { background: var(--q-accent); color: #fff; }
+
+/* 6. STEP INDICATOR — Dots / line / labeled */
+.qp-step {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+.qp-step-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.qp-step-dot.is-active {
+  background: var(--q-accent);
+  transform: scale(1.4);
+}
+.qp-step-dot.is-done { background: var(--q-fg); }
+
+.qp-step-line {
+  display: flex; align-items: center; width: 100%;
+}
+.qp-step-line > .qp-step-dot { flex: 0 0 12px; width: 12px; height: 12px; }
+.qp-step-line > .qp-step-link {
+  flex: 1 1 0;
+  height: 2px;
+  background: rgba(255,255,255,0.08);
+}
+.qp-step-line > .qp-step-link.is-done { background: var(--q-accent); }
+
+.qp-step-labeled {
+  display: flex; align-items: flex-start;
+  gap: 0;
+}
+.qp-step-labeled > .qp-step-pill {
+  display: grid;
+  justify-items: center;
+  flex: 1 1 0; position: relative;
+  font-size: 0.78rem;
+  color: var(--q-muted);
+}
+.qp-step-labeled > .qp-step-pill::before {
+  content: counter(qp-step);
+  counter-increment: qp-step;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--q-bg-2);
+  display: grid; place-items: center;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  border: 2px solid transparent;
+}
+.qp-step-labeled { counter-reset: qp-step; }
+.qp-step-labeled > .qp-step-pill.is-active::before { background: var(--q-accent); color: #fff; border-color: rgba(139, 92, 246, 0.4); }
+.qp-step-labeled > .qp-step-pill.is-active { color: var(--q-fg); font-weight: 600; }
+.qp-step-labeled > .qp-step-pill.is-done::before {
+  content: '✓';
+  background: var(--q-accent); color: #fff;
+}
+.qp-step-labeled > .qp-step-pill + .qp-step-pill::after {
+  content: '';
+  position: absolute;
+  top: 13px; left: -50%;
+  width: 100%; height: 2px;
+  background: rgba(255,255,255,0.08);
+  z-index: -1;
+}
+.qp-step-labeled > .qp-step-pill.is-done + .qp-step-pill::after,
+.qp-step-labeled > .qp-step-pill.is-active::after { background: var(--q-accent); }

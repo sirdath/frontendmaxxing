@@ -1,0 +1,41 @@
+/* ============================================
+   MAGNETIC GRID — Dot grid that pulls toward cursor (CSS-only mouse var)
+   Inspired by WatermelonUI magnetic-grid (pair with JS that sets --mx/--my)
+   ============================================
+   Usage:
+     <div class="mgrid" onmousemove="this.style.setProperty('--mx', event.offsetX+'px'); this.style.setProperty('--my', event.offsetY+'px')">
+     </div>
+   Or wire via existing CursorFX/SpotlightReveal.
+
+   Variants: mgrid-tight, mgrid-soft, mgrid-cyan, mgrid-pink, mgrid-amber
+   ============================================ */
+
+.mgrid {
+  --mg-size: 24px;
+  --mg-dot: 1.6px;
+  --mg-color: rgba(255, 255, 255, 0.15);
+  --mg-glow: rgba(139, 92, 246, 0.9);
+  --mg-radius: 180px;
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  background:
+    radial-gradient(circle var(--mg-radius) at var(--mx) var(--my), var(--mg-glow) 0%, transparent 60%),
+    radial-gradient(circle var(--mg-dot) at var(--mg-size) calc(var(--mg-size) / 2), var(--mg-color) 99%, transparent 100%);
+  background-size: 100% 100%, var(--mg-size) var(--mg-size);
+  background-position: 0 0, calc(var(--mx) / 5 * -1) calc(var(--my) / 5 * -1);
+  background-attachment: local, local;
+  background-blend-mode: screen, normal;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: crosshair;
+  transition: background-position 0.12s linear;
+}
+
+.mgrid-tight { --mg-size: 14px; --mg-dot: 1px; }
+.mgrid-soft  { --mg-glow: rgba(244, 114, 182, 0.6); --mg-radius: 240px; }
+.mgrid-cyan  { --mg-glow: rgba(34, 211, 238, 0.9); }
+.mgrid-pink  { --mg-glow: rgba(236, 72, 153, 0.9); }
+.mgrid-amber { --mg-glow: rgba(245, 158, 11, 0.9); }

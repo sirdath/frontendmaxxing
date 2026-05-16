@@ -1,0 +1,221 @@
+/* ============================================
+   RADIAL NAV — Circular pie-menu / radial-menu / radial-carousel
+   Inspired by WatermelonUI radial-nav, radial-carousel, radial-intro
+   ============================================
+   Three patterns in one file:
+     1. radial-menu — pie menu with items around a center
+     2. radial-carousel — items rotating around a center
+     3. radial-intro — radial reveal animation
+
+   Usage:
+     <div class="rnav rnav-menu">
+       <button class="rnav-center">☰</button>
+       <ul class="rnav-items" style="--rnav-count: 6;">
+         <li class="rnav-item" style="--i: 0;">🏠</li>
+         <li class="rnav-item" style="--i: 1;">🔍</li>
+         <li class="rnav-item" style="--i: 2;">✨</li>
+         <li class="rnav-item" style="--i: 3;">📨</li>
+         <li class="rnav-item" style="--i: 4;">⚙️</li>
+         <li class="rnav-item" style="--i: 5;">👤</li>
+       </ul>
+     </div>
+
+   Variants:
+     rnav-menu (default — opens on center click)
+     rnav-carousel (auto-rotating ring)
+     rnav-half (semicircle)
+     rnav-quarter (quarter-circle, corner-anchored)
+   ============================================ */
+
+.rnav {
+  --r-radius: 100px;
+  --r-count: 6;
+  --r-start: 0deg;     /* start angle */
+  --r-spread: 360deg;  /* total arc */
+  --r-bg: #1a1a25;
+  --r-fg: #fff;
+  --r-accent: #8b5cf6;
+  position: relative;
+  display: inline-block;
+  width: 280px;
+  height: 280px;
+}
+
+/* Center button */
+.rnav-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  width: 56px;
+  height: 56px;
+  background: var(--r-bg);
+  color: var(--r-fg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.1rem;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), background 0.32s ease;
+}
+.rnav.is-open .rnav-center {
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--r-accent);
+}
+
+/* Items */
+.rnav-items {
+  position: absolute;
+  inset: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+.rnav-item {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  background: var(--r-bg);
+  color: var(--r-fg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transform: translate(0, 0) scale(0);
+  opacity: 0;
+  transition:
+    transform 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 4;
+}
+.rnav-item:hover { background: var(--r-accent); }
+
+.rnav.is-open .rnav-item {
+  transform:
+    rotate(calc(var(--i) * (var(--r-spread) / var(--r-count)) + var(--r-start)))
+    translate(var(--r-radius))
+    rotate(calc(-1 * (var(--i) * (var(--r-spread) / var(--r-count)) + var(--r-start))))
+    scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: calc(var(--i) * 40ms);
+}
+
+.rnav-item-label {
+  position: absolute;
+  bottom: -1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--r-fg);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.rnav.is-open .rnav-item:hover .rnav-item-label { opacity: 1; }
+
+/* === Carousel: always-visible rotating ring === */
+.rnav-carousel {
+  --r-spread: 360deg;
+}
+.rnav-carousel .rnav-item {
+  transform:
+    rotate(calc(var(--i) * (360deg / var(--r-count))))
+    translate(var(--r-radius))
+    rotate(calc(-1 * var(--i) * (360deg / var(--r-count))));
+  opacity: 1;
+  pointer-events: auto;
+}
+.rnav-carousel .rnav-items {
+  animation: rnav-spin 25s linear infinite;
+  pointer-events: auto;
+}
+.rnav-carousel .rnav-items > * {
+  animation: rnav-counter-spin 25s linear infinite;
+}
+@keyframes rnav-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes rnav-counter-spin {
+  to { transform:
+    rotate(calc(-360deg + var(--i) * (360deg / var(--r-count))))
+    translate(var(--r-radius))
+    rotate(calc(360deg - var(--i) * (360deg / var(--r-count)))); }
+}
+
+/* === Half (semicircle, opens upward) === */
+.rnav-half {
+  --r-start: 180deg;
+  --r-spread: 180deg;
+  --r-radius: 100px;
+  height: 140px;
+}
+
+/* === Quarter (bottom-right corner FAB) === */
+.rnav-quarter {
+  --r-start: 270deg;
+  --r-spread: 90deg;
+  --r-radius: 110px;
+  width: 200px;
+  height: 200px;
+}
+
+/* === Intro animation (one-shot radial reveal) === */
+.rnav-intro .rnav-item {
+  animation: rnav-intro 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  animation-delay: calc(var(--i) * 60ms);
+  opacity: 0;
+}
+@keyframes rnav-intro {
+  0%   { opacity: 0; transform: rotate(0deg) translate(0) rotate(0deg) scale(0.3); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform:
+    rotate(calc(var(--i) * (var(--r-spread) / var(--r-count)) + var(--r-start)))
+    translate(var(--r-radius))
+    rotate(calc(-1 * (var(--i) * (var(--r-spread) / var(--r-count)) + var(--r-start))))
+    scale(1); }
+}
+
+/* Connecting lines from center to items (decorative) */
+.rnav-lines::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--r-radius) * 2);
+  height: 1px;
+  margin: -0.5px 0 0 calc(var(--r-radius) * -1);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from var(--r-start, 0deg),
+      rgba(255, 255, 255, 0.06) 0deg 1deg,
+      transparent 1deg calc(var(--r-spread) / var(--r-count)));
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  margin: 0; left: 0; top: 0;
+  -webkit-mask: radial-gradient(circle at center, transparent calc(var(--r-radius) - 30px), #000 calc(var(--r-radius) - 25px), #000 calc(var(--r-radius) + 5px), transparent calc(var(--r-radius) + 10px));
+          mask: radial-gradient(circle at center, transparent calc(var(--r-radius) - 30px), #000 calc(var(--r-radius) - 25px), #000 calc(var(--r-radius) + 5px), transparent calc(var(--r-radius) + 10px));
+}
+
+/* Size variants */
+.rnav-sm { width: 200px; height: 200px; --r-radius: 70px; }
+.rnav-lg { width: 400px; height: 400px; --r-radius: 150px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rnav-item, .rnav-center { transition: none; }
+  .rnav-carousel .rnav-items, .rnav-carousel .rnav-items > * { animation: none; }
+}

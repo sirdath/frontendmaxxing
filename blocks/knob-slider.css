@@ -1,0 +1,168 @@
+/* ============================================
+   KNOB SLIDER — Rotary knob control (volume / parameter dial)
+   Inspired by WatermelonUI knob-slider, audio mixer knobs
+   ============================================
+   Usage:
+     <div class="knob" data-knob data-min="0" data-max="100" data-value="60">
+       <svg class="knob-arc" viewBox="0 0 100 100">
+         <circle class="knob-track" cx="50" cy="50" r="42"/>
+         <circle class="knob-fill" cx="50" cy="50" r="42"/>
+       </svg>
+       <div class="knob-cap">
+         <div class="knob-indicator"></div>
+       </div>
+       <div class="knob-value">60</div>
+     </div>
+
+   Variants: knob-md (default), knob-sm, knob-lg, knob-xl
+   Themes: knob-neon, knob-chrome, knob-vinyl, knob-amber
+   ============================================ */
+
+.knob {
+  --kn-size: 100px;
+  --kn-c: #8b5cf6;
+  --kn-bg: #1a1a25;
+  --kn-track: rgba(255, 255, 255, 0.08);
+  --kn-value: 60;        /* 0..100 */
+  --kn-min: -135;        /* degrees */
+  --kn-max: 135;
+  position: relative;
+  width: var(--kn-size);
+  height: var(--kn-size);
+  user-select: none;
+  display: inline-grid;
+  place-items: center;
+  cursor: grab;
+}
+.knob:active { cursor: grabbing; }
+
+.knob-arc {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  transform: rotate(135deg);
+}
+.knob-track {
+  fill: none;
+  stroke: var(--kn-track);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 198 264;     /* 75% of circumference (3/4 arc) */
+}
+.knob-fill {
+  fill: none;
+  stroke: var(--kn-c);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: calc((var(--kn-value) / 100) * 198) 264;
+  transition: stroke-dasharray 0.18s ease, stroke 0.18s ease;
+  filter: drop-shadow(0 0 4px var(--kn-c));
+}
+
+.knob-cap {
+  position: relative;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #2a2a35, #14141f);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.4),
+    0 4px 10px rgba(0, 0, 0, 0.4);
+  transform: rotate(calc((var(--kn-value) / 100) * (var(--kn-max) - var(--kn-min)) * 1deg + var(--kn-min) * 1deg));
+  transition: transform 0.18s ease;
+}
+.knob-indicator {
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  width: 3px;
+  height: 22%;
+  margin-left: -1.5px;
+  background: var(--kn-c);
+  border-radius: 2px;
+  box-shadow: 0 0 6px var(--kn-c);
+}
+
+.knob-value {
+  position: absolute;
+  bottom: -1.5rem;
+  font-size: 0.78rem;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+.knob-label {
+  position: absolute;
+  top: -1.4rem;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+/* Sizes */
+.knob-sm { --kn-size: 60px; }
+.knob-md { --kn-size: 100px; }
+.knob-lg { --kn-size: 140px; }
+.knob-xl { --kn-size: 200px; }
+
+/* Themes */
+.knob-neon  { --kn-c: #00ffff; }
+.knob-amber { --kn-c: #fbbf24; }
+.knob-rose  { --kn-c: #fb7185; }
+.knob-mint  { --kn-c: #34d399; }
+.knob-cosmic { --kn-c: #ec4899; }
+.knob-chrome {
+  --kn-c: #94a3b8;
+}
+.knob-chrome .knob-cap {
+  background:
+    linear-gradient(135deg, #fff 0%, #d0d4d8 25%, #fff 50%, #94a3b8 75%, #fff 100%);
+  background-size: 200% 200%;
+}
+.knob-vinyl {
+  --kn-c: #000;
+}
+.knob-vinyl .knob-cap {
+  background:
+    repeating-radial-gradient(circle at center,
+      #1a1a25 0px, #1a1a25 2px,
+      #0a0a14 2px, #0a0a14 3px);
+}
+
+/* Indicator dot version (instead of line) */
+.knob-dot .knob-indicator {
+  top: 10%;
+  height: 8px;
+  width: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+}
+
+/* Tick marks around */
+.knob-ticks::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background:
+    conic-gradient(from -135deg,
+      rgba(255, 255, 255, 0.15) 0deg,
+      rgba(255, 255, 255, 0.15) 1deg,
+      transparent 1deg,
+      transparent calc(270deg / 12),
+      rgba(255, 255, 255, 0.15) calc(270deg / 12),
+      rgba(255, 255, 255, 0.15) calc(270deg / 12 + 1deg),
+      transparent calc(270deg / 12 + 1deg));
+  -webkit-mask: radial-gradient(circle, transparent 65%, #000 70%, #000 80%, transparent 81%);
+          mask: radial-gradient(circle, transparent 65%, #000 70%, #000 80%, transparent 81%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .knob-cap, .knob-fill { transition: none; }
+}

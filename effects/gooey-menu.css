@@ -1,0 +1,148 @@
+/* ============================================
+   GOOEY MENU — SVG-filter morphing menu (Next.js status panel style)
+   Inspired by WatermelonUI gooey-menu
+   ============================================
+   Setup — add this SVG once on the page:
+     <svg width="0" height="0">
+       <defs>
+         <filter id="gooey">
+           <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+           <feColorMatrix in="blur" mode="matrix"
+             values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"/>
+         </filter>
+       </defs>
+     </svg>
+
+   Usage:
+     <div class="gmenu" data-gmenu>
+       <button class="gmenu-trigger">▾</button>
+       <div class="gmenu-items">
+         <div class="gmenu-item"><span>Errors</span><b>20</b></div>
+         <div class="gmenu-item"><span>Route</span><b>Static</b></div>
+         <div class="gmenu-item"><span>Status</span><b>OK</b></div>
+       </div>
+     </div>
+
+   Variants:
+     gmenu-dark (default), gmenu-light
+     gmenu-bottom, gmenu-top
+     gmenu-right (anchor right)
+   ============================================ */
+
+.gmenu {
+  --gm-bg: rgba(15, 15, 22, 0.95);
+  --gm-fg: #fff;
+  --gm-muted: rgba(255, 255, 255, 0.55);
+  --gm-border: rgba(255, 255, 255, 0.1);
+  position: relative;
+  display: inline-block;
+  filter: url(#gooey);
+}
+
+.gmenu-trigger {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: var(--gm-bg);
+  color: var(--gm-fg);
+  border: 0;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.4s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.gmenu-items {
+  position: absolute;
+  top: 100%;
+  margin-top: -20px;     /* pull up so blur merges with trigger */
+  left: 0;
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1;
+  pointer-events: none;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gmenu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--gm-bg);
+  color: var(--gm-fg);
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  height: 40px;
+  width: 40px;
+  overflow: hidden;
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.gmenu-item > span { color: var(--gm-muted); white-space: nowrap; }
+.gmenu-item > b { color: var(--gm-fg); font-weight: 600; font-family: ui-monospace, monospace; font-size: 0.72rem; }
+
+/* Opened state */
+.gmenu.is-open .gmenu-trigger {
+  width: 200px;
+  border-radius: 12px;
+}
+.gmenu.is-open .gmenu-items {
+  width: 200px;
+  pointer-events: auto;
+}
+.gmenu.is-open .gmenu-item {
+  width: 200px;
+  transform: translateY(0);
+  opacity: 1;
+  border-radius: 12px;
+}
+.gmenu.is-open .gmenu-item:nth-child(1) { transition-delay: 0.05s; }
+.gmenu.is-open .gmenu-item:nth-child(2) { transition-delay: 0.1s; }
+.gmenu.is-open .gmenu-item:nth-child(3) { transition-delay: 0.15s; }
+.gmenu.is-open .gmenu-item:nth-child(4) { transition-delay: 0.2s; }
+
+/* Variants */
+.gmenu-light {
+  --gm-bg: rgba(255, 255, 255, 0.95);
+  --gm-fg: #1a1a25;
+  --gm-muted: rgba(0, 0, 0, 0.55);
+  --gm-border: rgba(0, 0, 0, 0.08);
+}
+
+.gmenu-top .gmenu-items {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: -20px;
+  flex-direction: column-reverse;
+}
+.gmenu-top.is-open .gmenu-item { transform: translateY(0); }
+.gmenu-top .gmenu-item { transform: translateY(20px); }
+
+.gmenu-right .gmenu-items {
+  left: auto;
+  right: 0;
+}
+
+/* Status indicator dot in trigger */
+.gmenu-trigger.has-status::after {
+  content: '';
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 8px; height: 8px;
+  background: #34d399;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #34d399;
+}
+.gmenu-trigger.has-status.is-error::after { background: #f87171; box-shadow: 0 0 6px #f87171; }
+.gmenu-trigger.has-status.is-warn::after  { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }

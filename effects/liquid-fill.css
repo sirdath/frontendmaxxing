@@ -1,0 +1,82 @@
+/* ============================================
+   LIQUID FILL — Button/element fills with color from bottom up on hover
+   Inspired by WatermelonUI liquid (distinct from effects/lava-lamp.css
+   and effects/liquid-metal.css)
+   ============================================
+   Usage:
+     <button class="liqf">Hover me</button>
+
+   Variants: liqf-pink, liqf-cyan, liqf-amber, liqf-mint, liqf-foil
+             liqf-down (fills top→bottom), liqf-diag (diagonal sweep)
+             liqf-slow, liqf-icon (icon variant)
+   ============================================ */
+
+.liqf {
+  --lq-fg: #fff;
+  --lq-fill: #8b5cf6;
+  --lq-bg: transparent;
+  --lq-dur: 0.5s;
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  padding: 0.7rem 1.4rem;
+  background: var(--lq-bg);
+  color: var(--lq-fg);
+  border: 2px solid var(--lq-fill);
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+.liqf::before {
+  content: '';
+  position: absolute;
+  left: -10%; right: -10%;
+  bottom: -120%; height: 200%;
+  background: var(--lq-fill);
+  border-radius: 50% 50% 0 0 / 18% 18% 0 0;
+  transition: transform var(--lq-dur) cubic-bezier(0.65, 0, 0.35, 1);
+  transform: translateY(60%);
+  z-index: -1;
+}
+.liqf:hover::before, .liqf:focus-visible::before { transform: translateY(-40%); }
+.liqf:hover, .liqf:focus-visible { color: #fff; }
+.liqf:active { transform: scale(0.97); }
+
+/* Direction variants */
+.liqf-down::before { top: -120%; bottom: auto; border-radius: 0 0 50% 50% / 0 0 18% 18%; transform: translateY(-60%); }
+.liqf-down:hover::before { transform: translateY(40%); }
+.liqf-diag::before {
+  border-radius: 0; top: -50%; left: -50%; right: -50%; bottom: -50%;
+  transform: translate(-100%, 100%) rotate(45deg);
+}
+.liqf-diag:hover::before { transform: translate(0, 0) rotate(45deg); }
+
+.liqf-slow { --lq-dur: 1.2s; }
+
+/* Color variants */
+.liqf-pink  { --lq-fill: #ec4899; }
+.liqf-cyan  { --lq-fill: #06b6d4; }
+.liqf-amber { --lq-fill: #f59e0b; }
+.liqf-mint  { --lq-fill: #10b981; }
+.liqf-foil::before {
+  background: linear-gradient(135deg, #fef3c7, #fce7f3, #ccfbf1, #c7d2fe);
+  background-size: 200% 200%;
+  animation: liqf-foil 4s ease-in-out infinite;
+}
+.liqf-foil:hover, .liqf-foil:focus-visible { color: #14141e; }
+@keyframes liqf-foil { 0%, 100% { background-position: 0 0; } 50% { background-position: 100% 100%; } }
+
+/* Solid background variant (fills from existing color to accent) */
+.liqf-solid { --lq-bg: var(--lq-fill); color: #fff; }
+.liqf-solid::before { background: rgba(255,255,255,0.2); }
+.liqf-solid:hover::before { transform: translateY(-40%); }
+
+/* Icon variant — square */
+.liqf-icon { padding: 0.6rem; aspect-ratio: 1; border-radius: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .liqf::before { transition: none; transform: translateY(0); opacity: 0; }
+  .liqf:hover::before { opacity: 1; }
+}

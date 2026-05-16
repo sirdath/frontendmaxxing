@@ -1,0 +1,103 @@
+/* ============================================
+   BOOK 3D — Animated 3D book that opens on interaction
+   Inspired by WatermelonUI book
+   ============================================
+   Usage:
+     <div class="book3d" data-book3d>
+       <div class="book3d-cover">
+         <div class="book3d-front">Title</div>
+         <div class="book3d-back"></div>
+         <div class="book3d-spine">— Author —</div>
+       </div>
+       <div class="book3d-pages">Inside content…</div>
+     </div>
+
+   Variants: book3d-open (force open), book3d-novel, book3d-tech
+   ============================================ */
+
+.book3d {
+  --bk-w: 180px;
+  --bk-h: 240px;
+  --bk-depth: 36px;
+  --bk-cover-bg: linear-gradient(135deg, #8b5cf6, #6366f1);
+  --bk-page-bg: #fafaf7;
+  --bk-page-fg: #1f2937;
+  position: relative;
+  width: var(--bk-w); height: var(--bk-h);
+  perspective: 1400px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.book3d-cover {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transform: rotateY(0);
+  transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 3;
+}
+.book3d:hover .book3d-cover,
+.book3d.is-open .book3d-cover { transform: rotateY(-150deg); }
+
+.book3d-front, .book3d-back {
+  position: absolute; inset: 0;
+  background: var(--bk-cover-bg);
+  border-radius: 4px 8px 8px 4px;
+  display: grid; place-items: center;
+  color: #fff; font-weight: 700;
+  padding: 1rem;
+  text-align: center;
+  backface-visibility: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+}
+.book3d-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+}
+.book3d-spine {
+  position: absolute;
+  left: -1px; top: 0; bottom: 0;
+  width: var(--bk-depth);
+  transform: translateZ(calc(-1 * var(--bk-depth) / 2)) rotateY(-90deg);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--bk-cover-bg) 60%, #000), var(--bk-cover-bg));
+  color: rgba(255,255,255,0.8);
+  display: grid; place-items: center;
+  font-size: 0.65rem;
+  writing-mode: vertical-rl;
+  letter-spacing: 0.08em;
+}
+
+/* Pages (visible after cover opens) */
+.book3d-pages {
+  position: absolute; inset: 0;
+  background: var(--bk-page-bg);
+  color: var(--bk-page-fg);
+  border-radius: 2px 4px 4px 2px;
+  padding: 1.4rem 1.2rem 1.4rem 1.6rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  z-index: 1;
+  box-shadow:
+    inset 4px 0 0 -2px rgba(0,0,0,0.05),
+    inset 8px 0 0 -6px rgba(0,0,0,0.05);
+}
+.book3d-pages::before {
+  content: '';
+  position: absolute; top: 0; left: 0; bottom: 0;
+  width: 6px;
+  background: linear-gradient(90deg, rgba(0,0,0,0.15), transparent);
+}
+
+/* Variants */
+.book3d-novel { --bk-cover-bg: linear-gradient(135deg, #f59e0b, #b45309); }
+.book3d-tech  { --bk-cover-bg: linear-gradient(135deg, #06b6d4, #1e40af); }
+.book3d-red   { --bk-cover-bg: linear-gradient(135deg, #ef4444, #7f1d1d); }
+.book3d-green { --bk-cover-bg: linear-gradient(135deg, #10b981, #064e3b); }
+
+.book3d-lg { --bk-w: 240px; --bk-h: 320px; --bk-depth: 48px; }
+.book3d-sm { --bk-w: 120px; --bk-h: 160px; --bk-depth: 24px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .book3d-cover { transition: none; }
+}

@@ -1,0 +1,181 @@
+/* ============================================
+   SCROLL ISLAND — Dynamic Island that adapts to scroll position
+   Inspired by WatermelonUI scroll-island, iPhone Dynamic Island
+   ============================================
+   A floating pill at the top of the viewport that expands / morphs to show
+   contextual content based on scroll, notifications, or interactions.
+
+   Usage:
+     <div class="sisl sisl-floating" data-sisl>
+       <div class="sisl-collapsed">
+         <span class="sisl-dot"></span>
+         <span class="sisl-title">Scroll to explore</span>
+       </div>
+       <div class="sisl-expanded">
+         <div class="sisl-row"><b>4</b> new messages</div>
+         <button class="sisl-action">View →</button>
+       </div>
+     </div>
+
+   Variants:
+     sisl-floating (top-centered, floating)
+     sisl-top-attached (attached at top)
+     sisl-progress (shows scroll progress)
+     sisl-notif (notification badge style)
+     sisl-now-playing (music-style)
+   ============================================ */
+
+.sisl {
+  --si-bg: #050510;
+  --si-fg: #ffffff;
+  --si-muted: rgba(255, 255, 255, 0.6);
+  --si-accent: #34d399;
+  position: fixed;
+  top: 0.85rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1500;
+  background: var(--si-bg);
+  color: var(--si-fg);
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  overflow: hidden;
+  max-width: calc(100vw - 1.5rem);
+}
+
+.sisl-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--si-accent);
+  flex-shrink: 0;
+  animation: sisl-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 6px var(--si-accent);
+}
+@keyframes sisl-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.6; transform: scale(1.2); }
+}
+
+.sisl-title {
+  white-space: nowrap;
+}
+
+.sisl-collapsed,
+.sisl-expanded {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s ease;
+}
+
+.sisl-expanded { display: none; }
+
+.sisl-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+.sisl-row b {
+  display: inline-grid;
+  place-items: center;
+  width: 22px; height: 22px;
+  background: var(--si-accent);
+  color: #000;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+.sisl-action {
+  padding: 0.3rem 0.7rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0;
+  color: var(--si-fg);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.sisl-action:hover { background: rgba(255, 255, 255, 0.18); }
+
+/* Expanded state */
+.sisl.is-expanded {
+  padding: 0.6rem 0.9rem;
+  border-radius: 22px;
+  gap: 0.65rem;
+}
+.sisl.is-expanded .sisl-collapsed { display: none; }
+.sisl.is-expanded .sisl-expanded { display: flex; }
+
+/* === Notif variant === */
+.sisl-notif .sisl-dot { background: #ec4899; box-shadow: 0 0 6px #ec4899; }
+.sisl-notif::before {
+  content: '🔔';
+  font-size: 0.9rem;
+}
+
+/* === Now playing === */
+.sisl-now-playing {
+  --si-accent: #4ade80;
+}
+.sisl-now-playing::before {
+  content: '';
+  width: 4px; height: 4px;
+  background: var(--si-accent);
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.3rem;
+  box-shadow: 6px 0 0 var(--si-accent), 12px 0 0 var(--si-accent);
+  animation: sisl-bars 0.7s ease-in-out infinite alternate;
+}
+@keyframes sisl-bars {
+  0%   { box-shadow: 6px 0 0 var(--si-accent), 12px 0 0 var(--si-accent); }
+  50%  { box-shadow: 6px 2px 0 var(--si-accent), 12px -2px 0 var(--si-accent); }
+  100% { box-shadow: 6px -2px 0 var(--si-accent), 12px 2px 0 var(--si-accent); }
+}
+
+/* === Progress variant — fills as user scrolls === */
+.sisl-progress {
+  --p: 0;
+  padding-right: 0;
+  padding-left: 0;
+}
+.sisl-progress::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: calc(var(--p, 0) * 1%);
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5));
+  border-radius: inherit;
+  z-index: 0;
+  transition: width 0.18s ease;
+}
+.sisl-progress > * { position: relative; z-index: 1; padding-left: 0.6rem; padding-right: 0.6rem; }
+
+/* Squish on press */
+.sisl:active { transform: translateX(-50%) scale(0.96); }
+
+/* Theme variants */
+.sisl-light {
+  --si-bg: rgba(255, 255, 255, 0.92);
+  --si-fg: #1a1a25;
+  --si-muted: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sisl, .sisl-dot, .sisl-now-playing::before { animation: none; transition: none; }
+}

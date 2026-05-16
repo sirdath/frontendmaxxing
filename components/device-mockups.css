@@ -1,0 +1,169 @@
+/* ============================================
+   DEVICE MOCKUPS — MacBook / iMac / iPhone / iPad / Watch frames
+   Inspired by WatermelonUI device
+   ============================================
+   Usage:
+     <div class="dev dev-macbook"><div class="dev-screen"><img src="screenshot.png"></div></div>
+     <div class="dev dev-iphone"><div class="dev-screen">…</div></div>
+   Variants: dev-macbook, dev-imac, dev-iphone, dev-ipad, dev-watch, dev-tv
+             dev-light (light bezel), dev-tilted (perspective)
+   ============================================ */
+
+.dev {
+  display: inline-block;
+  background: #1a1a1a;
+  position: relative;
+}
+.dev-screen {
+  display: block;
+  background: #000;
+  overflow: hidden;
+  position: relative;
+}
+.dev-screen > * {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover;
+}
+
+/* MacBook */
+.dev-macbook {
+  width: 100%; max-width: 520px;
+  padding: 14px 14px 22px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+  position: relative;
+}
+.dev-macbook .dev-screen {
+  aspect-ratio: 16/10;
+  border-radius: 4px;
+}
+.dev-macbook::after {
+  content: '';
+  position: absolute;
+  left: -8%; right: -8%; bottom: -14px;
+  height: 14px;
+  background: linear-gradient(180deg, #5a5a5a, #2a2a2a);
+  border-radius: 0 0 16px 16px;
+}
+.dev-macbook::before {
+  content: '';
+  position: absolute;
+  left: 50%; bottom: -14px;
+  transform: translateX(-50%);
+  width: 14%; height: 6px;
+  background: #0e0e0e;
+  border-radius: 0 0 8px 8px;
+  z-index: 1;
+}
+
+/* iMac */
+.dev-imac {
+  width: 100%; max-width: 580px;
+  padding: 18px 18px 0;
+  border-radius: 14px 14px 0 0;
+  background: #1a1a1a;
+}
+.dev-imac .dev-screen {
+  aspect-ratio: 16/10;
+  border-radius: 2px;
+}
+.dev-imac::after {
+  content: '';
+  display: block;
+  width: 130%; height: 60px;
+  margin-left: -15%;
+  margin-top: -2px;
+  background: linear-gradient(180deg, #2a2a2a 0%, #2a2a2a 40%, #1a1a1a 100%);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  clip-path: polygon(0 0, 100% 0, 88% 90%, 12% 90%);
+}
+
+/* iPhone */
+.dev-iphone {
+  width: 100%; max-width: 240px;
+  padding: 12px;
+  border-radius: 36px;
+  background: linear-gradient(160deg, #2a2a2a, #1a1a1a);
+  position: relative;
+}
+.dev-iphone .dev-screen {
+  aspect-ratio: 9/19.5;
+  border-radius: 26px;
+}
+.dev-iphone::before {
+  content: '';
+  position: absolute;
+  top: 24px; left: 50%;
+  transform: translateX(-50%);
+  width: 90px; height: 26px;
+  background: #000;
+  border-radius: 99px;
+  z-index: 2;
+}
+
+/* iPad */
+.dev-ipad {
+  width: 100%; max-width: 440px;
+  padding: 16px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, #2a2a2a, #1a1a1a);
+}
+.dev-ipad .dev-screen {
+  aspect-ratio: 4/3;
+  border-radius: 10px;
+}
+
+/* Watch */
+.dev-watch {
+  width: 160px;
+  padding: 8px;
+  border-radius: 32px;
+  background: linear-gradient(160deg, #2a2a2a, #1a1a1a);
+  position: relative;
+}
+.dev-watch .dev-screen {
+  aspect-ratio: 5/6;
+  border-radius: 26px;
+}
+.dev-watch::before, .dev-watch::after {
+  content: '';
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  width: 80%; height: 80px;
+  background: linear-gradient(180deg, #444, #222);
+  z-index: -1;
+}
+.dev-watch::before { top: -50px; border-radius: 12px 12px 4px 4px; }
+.dev-watch::after  { bottom: -50px; border-radius: 4px 4px 12px 12px; }
+
+/* TV — wide screen + stand */
+.dev-tv {
+  width: 100%; max-width: 600px;
+  padding: 10px 10px 0;
+  border-radius: 10px;
+  background: #0a0a0a;
+}
+.dev-tv .dev-screen {
+  aspect-ratio: 16/9;
+  border-radius: 2px;
+}
+.dev-tv::after {
+  content: '';
+  display: block;
+  width: 30%; height: 16px;
+  margin: 4px auto 0;
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+  border-radius: 0 0 8px 8px;
+}
+
+/* Light variant */
+.dev-light {
+  background: linear-gradient(180deg, #f3f4f6, #e5e7eb);
+}
+.dev-light .dev-screen { background: #fff; }
+
+/* Tilted perspective */
+.dev-tilted {
+  transform: perspective(1200px) rotateY(-12deg) rotateX(4deg);
+  filter: drop-shadow(20px 30px 40px rgba(0,0,0,0.4));
+}

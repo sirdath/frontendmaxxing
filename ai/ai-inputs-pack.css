@@ -1,0 +1,206 @@
+/* ============================================
+   AI INPUTS PACK — 5 distinctive AI composer input variants
+   Inspired by WatermelonUI ai-input-001 through 005, Skiper Input series
+   ============================================
+   Usage:
+     <div class="aip aip-1">
+       <input class="aip-field" placeholder="Ask anything…">
+       <div class="aip-actions">
+         <button class="aip-action">＋</button>
+         <button class="aip-action">🌐</button>
+         <button class="aip-model">GPT-4o ▾</button>
+       </div>
+       <button class="aip-send">↑</button>
+     </div>
+
+   Variants: aip-1 through aip-5
+     aip-1 — clean rectangular composer with model picker
+     aip-2 — pill composer with floating actions
+     aip-3 — large pad-style with bottom toolbar
+     aip-4 — minimal underline-only
+     aip-5 — gradient-bordered with attachments tray
+   ============================================ */
+
+.aip {
+  --aip-bg: rgba(255, 255, 255, 0.04);
+  --aip-border: rgba(255, 255, 255, 0.08);
+  --aip-fg: #ffffff;
+  --aip-muted: rgba(255, 255, 255, 0.55);
+  --aip-accent: #8b5cf6;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--aip-bg);
+  border: 1px solid var(--aip-border);
+  border-radius: 12px;
+  color: var(--aip-fg);
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.aip-field {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: var(--aip-fg);
+  font: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  padding: 0.4rem 0;
+  min-width: 0;
+}
+.aip-field::placeholder { color: var(--aip-muted); }
+
+.aip-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.aip-action {
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 0;
+  color: var(--aip-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.95rem;
+}
+.aip-action:hover { background: rgba(255, 255, 255, 0.12); color: var(--aip-fg); }
+
+.aip-model {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.55rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--aip-border);
+  color: var(--aip-fg);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.aip-model:hover { background: rgba(255, 255, 255, 0.1); }
+
+.aip-send {
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--aip-accent), #ec4899);
+  border: 0;
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  transition: transform 0.15s ease;
+}
+.aip-send:hover { transform: scale(1.08); }
+.aip-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* === Variant 1: Clean rectangular (default look) === */
+.aip-1 { border-radius: 12px; }
+
+/* === Variant 2: Pill composer with floating actions === */
+.aip-2 {
+  border-radius: 999px;
+  padding: 0.45rem 0.5rem 0.45rem 1.1rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+.aip-2 .aip-action { border-radius: 50%; }
+
+/* === Variant 3: Large pad with bottom toolbar === */
+.aip-3 {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0.8rem 0.8rem 0.5rem;
+  gap: 0.6rem;
+  border-radius: 14px;
+}
+.aip-3 .aip-field {
+  font-size: 1.05rem;
+  padding: 0.3rem;
+  min-height: 60px;
+}
+.aip-3 .aip-actions {
+  justify-content: space-between;
+  margin-top: 0.2rem;
+}
+.aip-3 .aip-send { align-self: flex-end; }
+
+/* === Variant 4: Minimal underline === */
+.aip-4 {
+  background: transparent;
+  border: 0;
+  border-bottom: 1.5px solid var(--aip-border);
+  border-radius: 0;
+  padding: 0.5rem 0;
+}
+.aip-4:focus-within {
+  border-bottom-color: var(--aip-accent);
+}
+.aip-4 .aip-action { background: transparent; }
+
+/* === Variant 5: Gradient bordered with attachments tray === */
+.aip-5 {
+  background:
+    linear-gradient(rgba(20, 20, 30, 1), rgba(20, 20, 30, 1)) padding-box,
+    linear-gradient(135deg, var(--aip-accent), #ec4899, #06b6d4) border-box;
+  border: 1.5px solid transparent;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0.85rem 0.95rem;
+  gap: 0.65rem;
+  border-radius: 14px;
+}
+.aip-5 .aip-attach-tray {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--aip-border);
+}
+.aip-5 .aip-actions { justify-content: space-between; }
+
+/* Attachment chip (compose with above) */
+.aip-attach {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.45rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--aip-border);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  color: var(--aip-fg);
+}
+.aip-attach button {
+  background: transparent;
+  border: 0;
+  color: var(--aip-muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0;
+  margin-left: 0.1rem;
+}
+
+/* Background watermark text (Skiper-style) */
+.aip-watermark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: rgba(255, 255, 255, 0.025);
+  pointer-events: none;
+  z-index: -1;
+  text-transform: uppercase;
+}

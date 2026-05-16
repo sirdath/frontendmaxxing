@@ -1,0 +1,61 @@
+/* ============================================
+   GLITCH BURST — Single-shot RGB glitch on hover/click
+   Inspired by WatermelonUI glitch-burst (distinct from
+   blocks/loaders glitch and effects/glitch.css)
+   ============================================
+   Usage:
+     <span class="gburst" data-text="HELLO">HELLO</span>
+   Variants: gburst-strong, gburst-mint, gburst-orange
+   ============================================ */
+
+.gburst {
+  --gb-r: #ff006e;
+  --gb-g: #06b6d4;
+  --gb-shift: 3px;
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+  color: inherit;
+  cursor: pointer;
+}
+.gburst::before,
+.gburst::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+.gburst::before { color: var(--gb-r); }
+.gburst::after  { color: var(--gb-g); }
+
+.gburst:hover::before,
+.gburst:focus-visible::before,
+.gburst.is-burst::before { animation: gburst-r 0.5s steps(6) 1; }
+.gburst:hover::after,
+.gburst:focus-visible::after,
+.gburst.is-burst::after  { animation: gburst-g 0.5s steps(6) 1; }
+
+@keyframes gburst-r {
+  0%   { transform: translate(0, 0); opacity: 0; clip-path: inset(0 0 80% 0); }
+  20%  { transform: translate(calc(-1 * var(--gb-shift)), 1px); opacity: 1; clip-path: inset(10% 0 70% 0); }
+  40%  { transform: translate(calc(-1 * var(--gb-shift)), -1px); clip-path: inset(40% 0 30% 0); }
+  60%  { transform: translate(calc(-1 * var(--gb-shift)), 2px); clip-path: inset(70% 0 10% 0); }
+  100% { transform: translate(0, 0); opacity: 0; }
+}
+@keyframes gburst-g {
+  0%   { transform: translate(0, 0); opacity: 0; clip-path: inset(70% 0 10% 0); }
+  20%  { transform: translate(var(--gb-shift), -1px); opacity: 1; clip-path: inset(40% 0 30% 0); }
+  40%  { transform: translate(var(--gb-shift), 1px); clip-path: inset(10% 0 70% 0); }
+  60%  { transform: translate(var(--gb-shift), -2px); clip-path: inset(0 0 80% 0); }
+  100% { transform: translate(0, 0); opacity: 0; }
+}
+
+.gburst-strong { --gb-shift: 6px; }
+.gburst-mint   { --gb-r: #34d399; --gb-g: #818cf8; }
+.gburst-orange { --gb-r: #fb923c; --gb-g: #a78bfa; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gburst::before, .gburst::after { animation: none !important; }
+}

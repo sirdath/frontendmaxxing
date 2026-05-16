@@ -1,0 +1,107 @@
+/* ============================================
+   VOICE TRANSCRIBE — Live mic → text card (distinct from ai/voice-input.js
+   which is mic + waveform; this surfaces the running transcript text)
+   Inspired by WatermelonUI voice-transcribe / transcribe-voice-message
+   ============================================
+   Usage:
+     <div class="vtra" data-vtra>
+       <div class="vtra-head">
+         <div class="vtra-status"><i></i> Listening…</div>
+         <div class="vtra-dur">0:00</div>
+       </div>
+       <div class="vtra-text">
+         <span class="vtra-final"></span>
+         <span class="vtra-interim"></span>
+       </div>
+       <div class="vtra-actions">
+         <button class="vtra-pause">Pause</button>
+         <button class="vtra-stop">Stop</button>
+       </div>
+     </div>
+   ============================================ */
+
+.vtra {
+  --v-bg: #14141e;
+  --v-bg-2: #1f1f2e;
+  --v-fg: #f5f5fa;
+  --v-muted: rgba(245, 245, 250, 0.55);
+  --v-line: rgba(255, 255, 255, 0.08);
+  --v-accent: #ef4444;
+  width: 100%; max-width: 440px;
+  background: var(--v-bg);
+  border: 1px solid var(--v-line);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  color: var(--v-fg);
+}
+
+.vtra-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 0.8rem;
+}
+.vtra-status {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.82rem; color: var(--v-muted);
+}
+.vtra-status > i {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--v-accent);
+  animation: vtra-pulse 1.2s ease-out infinite;
+}
+@keyframes vtra-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.4); opacity: 0.7; }
+}
+.vtra.is-paused .vtra-status > i { animation: none; opacity: 0.4; }
+.vtra-dur { font-size: 0.78rem; color: var(--v-muted); font-variant-numeric: tabular-nums; }
+
+.vtra-text {
+  background: var(--v-bg-2);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  min-height: 96px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.vtra-final { color: var(--v-fg); }
+.vtra-interim { color: var(--v-muted); font-style: italic; }
+.vtra-text:empty::before {
+  content: 'Speak to begin...';
+  color: var(--v-muted);
+}
+
+.vtra-actions { display: flex; gap: 0.5rem; margin-top: 0.7rem; justify-content: flex-end; }
+.vtra-pause, .vtra-stop {
+  appearance: none; border: 0;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-weight: 600; font-size: 0.82rem;
+  cursor: pointer;
+}
+.vtra-pause { background: var(--v-bg-2); color: var(--v-fg); }
+.vtra-pause:hover { background: rgba(255,255,255,0.08); }
+.vtra-stop { background: var(--v-accent); color: #fff; }
+.vtra-stop:hover { filter: brightness(1.1); }
+
+.vtra-meter {
+  height: 4px; background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px; overflow: hidden; margin-top: 0.5rem;
+}
+.vtra-meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444);
+  width: var(--lvl, 30%);
+  transition: width 0.06s linear;
+}
+
+.vtra-compact {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--v-bg-2);
+  border-radius: 999px;
+  border: 1px solid var(--v-line);
+}
+.vtra-compact .vtra-text {
+  background: transparent; padding: 0; min-height: 0;
+}

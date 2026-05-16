@@ -1,0 +1,230 @@
+/* ============================================
+   INLINE EDIT PACK — 6 inline-editing primitives
+   Inspired by WatermelonUI: inline-edit, inline-action, floating-input,
+   label-selector, status-picker, split-button
+   ============================================ */
+
+:where(.iep-edit, .iep-action, .iep-floatin, .iep-labels,
+       .iep-status, .iep-splitbtn) {
+  --ie-bg: #14141e;
+  --ie-bg-2: #1f1f2e;
+  --ie-fg: #f5f5fa;
+  --ie-muted: rgba(245, 245, 250, 0.55);
+  --ie-line: rgba(255, 255, 255, 0.1);
+  --ie-accent: #8b5cf6;
+  color: var(--ie-fg);
+  font-family: inherit;
+}
+
+/* 1. INLINE EDIT — Click to edit field (Notion-style) */
+.iep-edit {
+  display: inline-block;
+  padding: 0.3rem 0.5rem;
+  margin: -0.3rem -0.5rem;
+  border-radius: 6px;
+  cursor: text;
+  outline: 0;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+  font: inherit;
+  min-width: 60px;
+}
+.iep-edit:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.iep-edit:focus, .iep-edit[contenteditable="true"]:focus {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 2px var(--ie-accent);
+}
+.iep-edit[data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: var(--ie-muted);
+}
+
+/* 2. INLINE ACTION — Row of buttons that appear inline (Linear-style) */
+.iep-action {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.25rem;
+  background: var(--ie-bg-2);
+  border-radius: 8px;
+  border: 1px solid var(--ie-line);
+}
+.iep-action-btn {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--ie-fg);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.78rem; font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+}
+.iep-action-btn:hover { background: rgba(255,255,255,0.08); }
+.iep-action-btn.is-primary { background: var(--ie-accent); color: #fff; }
+.iep-action-btn kbd {
+  padding: 0.05rem 0.3rem;
+  background: rgba(0,0,0,0.2);
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-family: ui-monospace, monospace;
+  color: var(--ie-muted);
+}
+
+/* 3. FLOATING INPUT — Label that floats up on focus/fill */
+.iep-floatin {
+  position: relative;
+  display: block;
+  width: 100%; max-width: 320px;
+}
+.iep-floatin input,
+.iep-floatin textarea {
+  width: 100%;
+  padding: 1.1rem 0.85rem 0.4rem;
+  background: var(--ie-bg-2);
+  border: 1px solid var(--ie-line);
+  color: var(--ie-fg);
+  border-radius: 8px;
+  font: inherit; font-size: 0.92rem;
+  outline: 0;
+  transition: border-color 0.18s ease;
+}
+.iep-floatin input:focus,
+.iep-floatin textarea:focus { border-color: var(--ie-accent); }
+.iep-floatin label {
+  position: absolute;
+  left: 0.85rem; top: 0.85rem;
+  font-size: 0.92rem;
+  color: var(--ie-muted);
+  pointer-events: none;
+  transition: transform 0.18s cubic-bezier(0.32, 0.72, 0, 1), font-size 0.18s ease, color 0.18s ease;
+  background: transparent;
+  padding: 0 0.2rem;
+}
+.iep-floatin input:focus + label,
+.iep-floatin textarea:focus + label,
+.iep-floatin input:not(:placeholder-shown) + label,
+.iep-floatin textarea:not(:placeholder-shown) + label {
+  transform: translate(-0.1rem, -0.55rem);
+  font-size: 0.68rem;
+  color: var(--ie-accent);
+}
+/* Variant: outlined with cutout */
+.iep-floatin-outlined input + label,
+.iep-floatin-outlined textarea + label {
+  background: var(--ie-bg-2);
+}
+
+/* 4. LABEL SELECTOR — Multi-pick chip list */
+.iep-labels {
+  display: flex; flex-wrap: wrap; gap: 0.3rem;
+}
+.iep-label {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.25rem 0.6rem;
+  background: var(--ie-bg-2);
+  border: 1px solid var(--ie-line);
+  color: var(--ie-fg);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+.iep-label::before {
+  content: ''; width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--label-c, #94a3b8);
+}
+.iep-label.is-picked {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: var(--ie-accent);
+  color: var(--ie-accent);
+}
+.iep-label-bug    { --label-c: #ef4444; }
+.iep-label-feat   { --label-c: #10b981; }
+.iep-label-docs   { --label-c: #06b6d4; }
+.iep-label-design { --label-c: #ec4899; }
+.iep-label-perf   { --label-c: #f59e0b; }
+
+/* 5. STATUS PICKER — Dropdown for status (Linear/Asana) */
+.iep-status {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  background: var(--ie-bg-2);
+  border: 1px solid var(--ie-line);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.82rem; font-weight: 500;
+  transition: background 0.18s ease;
+}
+.iep-status:hover { background: rgba(255, 255, 255, 0.06); }
+.iep-status::before {
+  content: ''; width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--status-c, #94a3b8);
+  border: 2px solid var(--status-c-bd, #94a3b8);
+  box-sizing: border-box;
+}
+.iep-status::after {
+  content: ''; margin-left: 0.2rem;
+  border: 4px solid transparent;
+  border-top-color: var(--ie-muted);
+  display: inline-block;
+}
+.iep-status-backlog  { --status-c: transparent; --status-c-bd: #94a3b8; }
+.iep-status-todo     { --status-c: transparent; --status-c-bd: #06b6d4; }
+.iep-status-doing    {
+  --status-c: #f59e0b;
+  --status-c-bd: #f59e0b;
+  background: radial-gradient(circle at center, var(--ie-bg-2) 30%, transparent 30%);
+}
+.iep-status-doing::before {
+  background: conic-gradient(#f59e0b 60%, transparent 0);
+  border: 0;
+}
+.iep-status-done {
+  --status-c: #10b981;
+  --status-c-bd: #10b981;
+}
+.iep-status-done::before {
+  background: #10b981; border-color: #10b981;
+}
+
+/* 6. SPLIT BUTTON — Primary action + dropdown for variants */
+.iep-splitbtn {
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--ie-accent);
+  color: #fff;
+}
+.iep-splitbtn-main {
+  appearance: none; border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0.5rem 0.9rem;
+  font: inherit; font-weight: 600; font-size: 0.85rem;
+  cursor: pointer;
+}
+.iep-splitbtn-toggle {
+  appearance: none; border: 0;
+  border-left: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: inherit;
+  padding: 0 0.6rem;
+  font: inherit;
+  cursor: pointer;
+}
+.iep-splitbtn-toggle::after {
+  content: ''; display: inline-block;
+  width: 0; height: 0;
+  border: 4px solid transparent;
+  border-top-color: currentColor;
+  margin-top: 4px;
+}
+.iep-splitbtn:hover { filter: brightness(1.1); }
+.iep-splitbtn-mute {
+  background: var(--ie-bg-2);
+  color: var(--ie-fg);
+  border: 1px solid var(--ie-line);
+}
+.iep-splitbtn-mute .iep-splitbtn-toggle { border-left-color: var(--ie-line); }
+.iep-splitbtn-mute:hover { filter: none; background: rgba(255, 255, 255, 0.06); }

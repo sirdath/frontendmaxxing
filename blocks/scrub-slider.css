@@ -1,0 +1,126 @@
+/* ============================================
+   SCRUB SLIDER — Video-scrub style tick slider with magnetic feel
+   Inspired by WatermelonUI scrub-slider, iOS Camera scrub bar
+   ============================================
+   Usage:
+     <div class="scrub" data-scrub data-value="50" data-min="0" data-max="100">
+       <div class="scrub-ticks"></div>
+       <div class="scrub-cursor"></div>
+       <div class="scrub-value">50</div>
+     </div>
+
+   Variants: scrub-md (default), scrub-sm, scrub-lg, scrub-mono, scrub-rainbow
+   ============================================ */
+
+.scrub {
+  --sc-c: #8b5cf6;
+  --sc-bg: rgba(255, 255, 255, 0.04);
+  --sc-tick: rgba(255, 255, 255, 0.25);
+  --sc-tick-active: #fff;
+  --sc-h: 60px;
+  --sc-value-pct: 50;
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  height: var(--sc-h);
+  background: var(--sc-bg);
+  border-radius: 10px;
+  padding: 1rem;
+  user-select: none;
+  cursor: grab;
+  overflow: hidden;
+}
+.scrub:active { cursor: grabbing; }
+
+.scrub-ticks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: calc(100% / 32);
+  padding: 0 16px;
+  pointer-events: none;
+}
+.scrub-ticks::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: calc(100% - 24px);
+  background-image:
+    repeating-linear-gradient(90deg,
+      var(--sc-tick) 0 1px,
+      transparent 1px calc(100% / 32));
+  background-position-x: 50%;
+  -webkit-mask-image: radial-gradient(ellipse 50% 100% at center, #000 30%, transparent 90%);
+          mask-image: radial-gradient(ellipse 50% 100% at center, #000 30%, transparent 90%);
+}
+
+.scrub-cursor {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--sc-value-pct) * 1%);
+  width: 3px;
+  height: 70%;
+  background: var(--sc-tick-active);
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px var(--sc-c), 0 0 16px var(--sc-c);
+  z-index: 2;
+  transition: left 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+.scrub.is-dragging .scrub-cursor { transition: none; }
+
+.scrub-value {
+  position: absolute;
+  top: 50%;
+  right: 0.85rem;
+  transform: translateY(-50%);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  z-index: 3;
+  pointer-events: none;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.scrub-min, .scrub-max {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+  z-index: 3;
+  pointer-events: none;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.scrub-min { left: 0.6rem; }
+.scrub-max { right: 0.6rem; }
+
+/* Sizes */
+.scrub-sm { --sc-h: 44px; padding: 0.7rem 0.85rem; max-width: 240px; }
+.scrub-lg { --sc-h: 80px; max-width: 480px; }
+
+/* Themes */
+.scrub-mono   { --sc-c: rgba(255, 255, 255, 0.85); --sc-tick-active: #fff; }
+.scrub-rainbow .scrub-cursor { background: linear-gradient(180deg, #ff006e, #fb5607, #ffbe0b, #8338ec); box-shadow: 0 0 12px #ec4899; }
+.scrub-amber  { --sc-c: #fbbf24; }
+.scrub-cyan   { --sc-c: #22d3ee; }
+.scrub-mint   { --sc-c: #34d399; }
+
+/* Compact inline variant */
+.scrub-inline {
+  display: inline-flex;
+  width: 240px;
+  height: 32px;
+  padding: 0.4rem 0.65rem;
+  border-radius: 6px;
+}
+.scrub-inline .scrub-value { font-size: 0.72rem; right: 0.45rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scrub-cursor { transition: none; }
+}

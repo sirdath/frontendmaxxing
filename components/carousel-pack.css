@@ -1,0 +1,209 @@
+/* ============================================
+   CAROUSEL PACK — 5 carousel/disclosure patterns
+   Inspired by WatermelonUI: minimal-carousel, motion-carousel,
+   radial-carousel, card-split-accordion, collection-grid-disclosure
+   ============================================ */
+
+:where(.car-min, .car-mot, .car-rad, .car-split, .car-grid) {
+  --c-bg: #14141e;
+  --c-bg-2: #1f1f2e;
+  --c-fg: #f5f5fa;
+  --c-muted: rgba(245, 245, 250, 0.55);
+  --c-line: rgba(255, 255, 255, 0.08);
+  --c-accent: #8b5cf6;
+  color: var(--c-fg);
+}
+
+/* 1. MINIMAL CAROUSEL — Scroll-snap horizontal with no chrome */
+.car-min {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 0.4rem;
+  scroll-padding: 0 1rem;
+}
+.car-min::-webkit-scrollbar { display: none; }
+.car-min > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  width: 280px;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: 14px;
+  padding: 1.2rem;
+}
+.car-min-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* 2. MOTION CAROUSEL — Items animate in scale + opacity as they enter */
+.car-mot {
+  display: flex; gap: 1.2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 1rem;
+  perspective: 800px;
+  scrollbar-width: none;
+}
+.car-mot::-webkit-scrollbar { display: none; }
+.car-mot > * {
+  flex: 0 0 auto;
+  width: 240px;
+  scroll-snap-align: center;
+  background: linear-gradient(160deg, var(--c-bg-2), var(--c-bg));
+  border: 1px solid var(--c-line);
+  border-radius: 18px;
+  padding: 1.2rem;
+  transform: scale(0.92) translateZ(-40px);
+  opacity: 0.7;
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.4s ease;
+  animation: car-mot-in 0.6s both;
+}
+.car-mot > *:hover { transform: scale(1.02); opacity: 1; }
+@keyframes car-mot-in {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to   { opacity: 0.7; transform: scale(0.92); }
+}
+.car-mot > *:nth-child(1) { animation-delay: 0s; }
+.car-mot > *:nth-child(2) { animation-delay: 0.08s; }
+.car-mot > *:nth-child(3) { animation-delay: 0.16s; }
+.car-mot > *:nth-child(4) { animation-delay: 0.24s; }
+
+/* 3. RADIAL CAROUSEL — Items arranged in a ring around a center */
+.car-rad {
+  position: relative;
+  width: 320px; height: 320px;
+  margin: 0 auto;
+}
+.car-rad-center {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  display: grid; place-items: center;
+  color: #fff; font-weight: 700;
+  z-index: 2;
+}
+.car-rad-item {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 80px; height: 80px;
+  margin: -40px;
+  border-radius: 50%;
+  background: var(--c-bg-2);
+  border: 1px solid var(--c-line);
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1), background 0.2s ease;
+  --r: 130px;
+  --angle: 0deg;
+  transform: rotate(var(--angle)) translateY(calc(-1 * var(--r))) rotate(calc(-1 * var(--angle)));
+}
+.car-rad-item:nth-child(2) { --angle: 60deg; }
+.car-rad-item:nth-child(3) { --angle: 120deg; }
+.car-rad-item:nth-child(4) { --angle: 180deg; }
+.car-rad-item:nth-child(5) { --angle: 240deg; }
+.car-rad-item:nth-child(6) { --angle: 300deg; }
+.car-rad-item:nth-child(7) { --angle: 360deg; }
+.car-rad-item:hover {
+  background: rgba(139, 92, 246, 0.18);
+  transform: rotate(var(--angle)) translateY(calc(-1 * var(--r) - 8px)) rotate(calc(-1 * var(--angle))) scale(1.08);
+}
+
+/* 4. CARD SPLIT ACCORDION — Card that splits open to reveal more */
+.car-split {
+  width: 100%; max-width: 380px;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.car-split-head {
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  user-select: none;
+}
+.car-split-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--c-accent);
+  display: grid; place-items: center;
+  flex: 0 0 36px;
+}
+.car-split-title { font-weight: 600; flex: 1 1 auto; }
+.car-split-toggle {
+  width: 24px; height: 24px;
+  background: var(--c-bg-2);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  transition: transform 0.3s ease;
+}
+.car-split-toggle::before {
+  content: '';
+  width: 0; height: 0;
+  border: 5px solid transparent;
+  border-top-color: var(--c-fg);
+  margin-top: 3px;
+}
+.car-split.is-open .car-split-toggle { transform: rotate(180deg); }
+.car-split-body {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 1.2rem;
+  transition: max-height 0.4s cubic-bezier(0.32, 0.72, 0, 1), padding 0.4s ease;
+  border-top: 1px solid var(--c-line);
+  border-top-color: transparent;
+  color: var(--c-muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.car-split.is-open .car-split-body {
+  max-height: 400px;
+  padding: 1rem 1.2rem 1.2rem;
+  border-top-color: var(--c-line);
+}
+
+/* 5. COLLECTION GRID DISCLOSURE — Grid that expands inline on click */
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.6rem;
+}
+.car-grid-item {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease;
+}
+.car-grid-item:nth-child(2n)  { background: linear-gradient(135deg, #06b6d4, #8b5cf6); }
+.car-grid-item:nth-child(3n)  { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.car-grid-item:nth-child(5n)  { background: linear-gradient(135deg, #10b981, #06b6d4); }
+.car-grid-item:hover { transform: scale(1.04); }
+.car-grid-item.is-open {
+  grid-column: span 2; grid-row: span 2;
+  z-index: 2;
+}
+.car-grid-item-cap {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 0.6rem 0.8rem;
+  background: linear-gradient(0deg, rgba(0,0,0,0.6), transparent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .car-mot > *, .car-rad-item, .car-split-body, .car-split-toggle, .car-grid-item { transition: none; animation: none; }
+}

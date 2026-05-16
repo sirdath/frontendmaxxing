@@ -1,0 +1,38 @@
+/* ============================================
+   HOVER LIFT 3D — Card lifts + tilts on hover (CSS-only, no JS)
+   Inspired by WatermelonUI hover-lift-3d (distinct from cards-3d.js which uses pointer tilt)
+   ============================================
+   Usage:
+     <div class="hl3"> … </div>
+   Variants: hl3-strong, hl3-soft, hl3-flip, hl3-shadow-pink/cyan/amber/violet
+   ============================================ */
+
+.hl3 {
+  --h3-lift: -10px;
+  --h3-rx: 6deg;
+  --h3-ry: -6deg;
+  --h3-shadow: rgba(0, 0, 0, 0.35);
+  --h3-glow: rgba(139, 92, 246, 0.4);
+  transform-style: preserve-3d;
+  transform: perspective(800px) rotateX(0) rotateY(0) translateY(0);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.4s ease;
+  box-shadow: 0 6px 14px -6px var(--h3-shadow);
+  will-change: transform;
+}
+.hl3:hover {
+  transform: perspective(800px) rotateX(var(--h3-rx)) rotateY(var(--h3-ry)) translateY(var(--h3-lift));
+  box-shadow:
+    0 24px 40px -16px var(--h3-shadow),
+    0 0 30px -10px var(--h3-glow);
+}
+
+.hl3-strong { --h3-lift: -18px; --h3-rx: 10deg; --h3-ry: -10deg; }
+.hl3-soft   { --h3-lift: -4px;  --h3-rx: 3deg;  --h3-ry: -3deg; }
+.hl3-flip   { --h3-ry: 6deg; }
+
+.hl3-shadow-pink   { --h3-glow: rgba(236, 72, 153, 0.5); }
+.hl3-shadow-cyan   { --h3-glow: rgba(34, 211, 238, 0.5); }
+.hl3-shadow-amber  { --h3-glow: rgba(245, 158, 11, 0.5); }
+.hl3-shadow-violet { --h3-glow: rgba(139, 92, 246, 0.5); }
+
+@media (prefers-reduced-motion: reduce) { .hl3 { transition: none; } }

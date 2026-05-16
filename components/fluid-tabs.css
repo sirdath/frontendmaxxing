@@ -1,0 +1,134 @@
+/* ============================================
+   FLUID TABS — Morphing sliding-pill tabs with gooey transition
+   Inspired by WatermelonUI fluid-tabs, continuous-tabs
+   ============================================
+   Usage:
+     <div class="ftab" data-ftab>
+       <button class="ftab-btn is-active" data-ftab-id="home">Home</button>
+       <button class="ftab-btn" data-ftab-id="lib">Library</button>
+       <button class="ftab-btn" data-ftab-id="profile">Profile</button>
+       <div class="ftab-pill"></div>
+     </div>
+
+   Variants:
+     ftab (default — pill slides under buttons)
+     ftab-segmented (segmented control, iOS-style)
+     ftab-underline (animated underline below)
+     ftab-vertical (vertical column)
+     ftab-pill-glow (glowing pill)
+     ftab-gooey (gooey morph between active)
+   ============================================ */
+
+.ftab {
+  --ft-bg: rgba(255, 255, 255, 0.04);
+  --ft-fg: rgba(255, 255, 255, 0.65);
+  --ft-fg-active: #ffffff;
+  --ft-pill: rgba(255, 255, 255, 0.1);
+  --ft-accent: #8b5cf6;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  padding: 0.3rem;
+  background: var(--ft-bg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+.ftab-btn {
+  position: relative;
+  z-index: 2;
+  padding: 0.45rem 0.95rem;
+  background: transparent;
+  border: 0;
+  color: var(--ft-fg);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.32s ease;
+}
+.ftab-btn.is-active { color: var(--ft-fg-active); }
+
+.ftab-pill {
+  position: absolute;
+  z-index: 1;
+  top: 0.3rem;
+  bottom: 0.3rem;
+  left: 0.3rem;
+  width: 60px;
+  background: var(--ft-pill);
+  border-radius: 999px;
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+              width 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* === Segmented (rounded rectangle) === */
+.ftab-segmented {
+  border-radius: 8px;
+  padding: 0.2rem;
+}
+.ftab-segmented .ftab-btn { border-radius: 6px; padding: 0.4rem 0.85rem; }
+.ftab-segmented .ftab-pill { border-radius: 6px; top: 0.2rem; bottom: 0.2rem; left: 0.2rem; }
+
+/* === Underline (no pill bg) === */
+.ftab-underline {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  padding: 0;
+  gap: 0.4rem;
+}
+.ftab-underline .ftab-btn { padding: 0.65rem 0.85rem; border-radius: 0; }
+.ftab-underline .ftab-pill {
+  top: auto; bottom: -1px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--ft-accent);
+  border-radius: 1px;
+}
+
+/* === Vertical === */
+.ftab-vertical {
+  flex-direction: column;
+  border-radius: 12px;
+  align-items: stretch;
+}
+.ftab-vertical .ftab-btn { text-align: left; padding: 0.6rem 0.9rem; }
+.ftab-vertical .ftab-pill {
+  top: 0;
+  bottom: auto;
+  left: 0;
+  right: 0;
+  width: auto;
+  height: 38px;
+}
+
+/* === Glowing pill === */
+.ftab-pill-glow .ftab-pill {
+  background: linear-gradient(135deg, var(--ft-accent), #ec4899);
+  box-shadow: 0 4px 12px -2px rgba(139, 92, 246, 0.5);
+}
+.ftab-pill-glow .ftab-btn.is-active { color: #fff; font-weight: 600; }
+
+/* === Gooey morph (requires gooey SVG filter on page) === */
+.ftab-gooey {
+  filter: url(#gooey);
+}
+.ftab-gooey .ftab-pill { background: var(--ft-accent); }
+.ftab-gooey .ftab-btn.is-active { color: #fff; }
+
+/* Icon-only variant */
+.ftab-icons .ftab-btn { padding: 0.5rem; width: 36px; display: grid; place-items: center; font-size: 1rem; }
+.ftab-icons .ftab-pill { width: 36px; }
+
+/* Size variants */
+.ftab-sm .ftab-btn { padding: 0.35rem 0.75rem; font-size: 0.75rem; }
+.ftab-lg .ftab-btn { padding: 0.6rem 1.2rem; font-size: 0.92rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ftab-pill, .ftab-btn { transition: none; }
+}

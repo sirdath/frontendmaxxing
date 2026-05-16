@@ -1,0 +1,82 @@
+/* ============================================
+   TEXT REVEAL MASK — Bar/box wipe reveals text
+   Inspired by WatermelonUI text-reveal-mask (CSS-only, distinct from
+   effects/text-reveal.js which is char/word stagger)
+   ============================================
+   Usage:
+     <span class="trvm">REVEALED</span>
+     <span class="trvm trvm-bar">REVEALED</span>
+   Variants: trvm-bar, trvm-cyan, trvm-pink, trvm-amber, trvm-slow, trvm-left, trvm-vertical
+   ============================================ */
+
+.trvm {
+  --tm-c: #fff;
+  --tm-mask: linear-gradient(90deg, transparent 0%, #000 20%, #000 80%, transparent 100%);
+  color: var(--tm-c);
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: var(--tm-mask);
+          mask-image: var(--tm-mask);
+  -webkit-mask-size: 200% 100%;
+          mask-size: 200% 100%;
+  -webkit-mask-position: 100% 0;
+          mask-position: 100% 0;
+  animation: trvm-sweep 1.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  font-weight: 700;
+}
+@keyframes trvm-sweep {
+  to { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+}
+
+.trvm-left {
+  -webkit-mask-position: 0 0;
+          mask-position: 0 0;
+}
+.trvm-left { animation-name: trvm-sweep-left; }
+@keyframes trvm-sweep-left {
+  to { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+}
+
+.trvm-vertical {
+  --tm-mask: linear-gradient(180deg, transparent 0%, #000 20%, #000 80%, transparent 100%);
+  -webkit-mask-size: 100% 200%;
+          mask-size: 100% 200%;
+  -webkit-mask-position: 0 100%;
+          mask-position: 0 100%;
+  animation-name: trvm-sweep-vertical;
+}
+@keyframes trvm-sweep-vertical {
+  to { -webkit-mask-position: 0 0%; mask-position: 0 0%; }
+}
+
+/* Bar version — solid sliding bar reveals text underneath */
+.trvm-bar {
+  position: relative;
+  -webkit-mask-image: none; mask-image: none;
+  animation: none;
+}
+.trvm-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--tm-c);
+  transform-origin: left;
+  animation: trvm-bar 1.4s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+}
+@keyframes trvm-bar {
+  0%   { transform: scaleX(0); transform-origin: left; }
+  50%  { transform: scaleX(1); transform-origin: left; }
+  51%  { transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+
+.trvm-cyan  { --tm-c: #22d3ee; }
+.trvm-pink  { --tm-c: #f472b6; }
+.trvm-amber { --tm-c: #fbbf24; }
+.trvm-slow  { animation-duration: 3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .trvm { animation: none; -webkit-mask-image: none; mask-image: none; }
+  .trvm-bar::before { animation: none; transform: scaleX(0); }
+}

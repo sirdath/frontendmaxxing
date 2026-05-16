@@ -1,0 +1,191 @@
+/* ============================================
+   MORPHING BUTTON — Button that morphs into a panel / form / spinner
+   Inspired by WatermelonUI morphing-button, "stateful CTA" pattern
+   ============================================
+   Usage:
+     <button class="morph-btn" data-morph-btn data-morph-target="#panel">Subscribe</button>
+     <div id="panel" class="morph-panel" hidden>
+       <input placeholder="Email">
+       <button class="morph-submit">Join →</button>
+     </div>
+
+   Variants:
+     morph-btn-inflate (pill → form expands)
+     morph-btn-circular (pill → circle → expanded card)
+     morph-btn-loading (collapses to spinner, then ✓)
+     morph-btn-stretch (stretches into input)
+   ============================================ */
+
+.morph-btn {
+  --m-bg: linear-gradient(135deg, #8b5cf6, #ec4899);
+  --m-fg: #fff;
+  padding: 0.7rem 1.4rem;
+  background: var(--m-bg);
+  color: var(--m-fg);
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    width 0.5s cubic-bezier(0.65, 0, 0.35, 1),
+    height 0.5s cubic-bezier(0.65, 0, 0.35, 1),
+    border-radius 0.5s cubic-bezier(0.65, 0, 0.35, 1),
+    padding 0.4s ease,
+    box-shadow 0.32s ease;
+  display: inline-grid;
+  place-items: center;
+  white-space: nowrap;
+}
+
+/* === Loading state — collapses to circle + spinner === */
+.morph-btn.is-loading {
+  width: 40px;
+  padding: 0;
+  border-radius: 50%;
+  color: transparent;
+}
+.morph-btn.is-loading::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: morph-spin 0.9s linear infinite;
+  color: #fff;
+}
+@keyframes morph-spin { to { transform: rotate(360deg); } }
+
+/* === Success state === */
+.morph-btn.is-success {
+  width: 40px;
+  padding: 0;
+  border-radius: 50%;
+  background: #34d399;
+  color: transparent;
+}
+.morph-btn.is-success::after {
+  content: '✓';
+  position: absolute;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 800;
+  animation: morph-check-pop 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+@keyframes morph-check-pop {
+  0%   { transform: scale(0.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* === Error state === */
+.morph-btn.is-error {
+  background: #f87171;
+  animation: morph-shake 0.5s;
+}
+@keyframes morph-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+/* === Inflate variant — expands to form === */
+.morph-btn-inflate.is-expanded {
+  width: 320px;
+  height: 64px;
+  border-radius: 14px;
+  padding: 0.5rem;
+  color: transparent;
+}
+
+/* === Stretch variant — becomes input === */
+.morph-btn-stretch.is-expanded {
+  width: 280px;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  cursor: text;
+}
+
+/* === Circular collapse === */
+.morph-btn-circular {
+  border-radius: 999px;
+}
+.morph-btn-circular.is-collapsed {
+  width: 44px;
+  padding: 0;
+  border-radius: 50%;
+  color: transparent;
+}
+.morph-btn-circular.is-collapsed::after {
+  content: '+';
+  position: absolute;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 300;
+}
+
+/* === Companion panel (expands inline) === */
+.morph-panel {
+  display: none;
+  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  gap: 0.5rem;
+  align-items: center;
+  transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.morph-panel.is-open {
+  display: inline-flex;
+}
+.morph-panel input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.7rem;
+  outline: none;
+}
+
+/* Discovery-bar variant: collapsed pill that morphs into a search bar */
+.morph-discovery {
+  width: 200px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  text-align: left;
+  padding: 0.55rem 1rem;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+.morph-discovery::before {
+  content: '⌕  ';
+  font-weight: 700;
+  margin-right: 0.3rem;
+}
+.morph-discovery:hover {
+  width: 320px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.morph-discovery.is-expanded {
+  width: 100%;
+  max-width: 480px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-radius: 12px;
+  padding: 0.8rem 1.1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .morph-btn, .morph-panel { transition: none; }
+  .morph-btn.is-loading::after { animation: none; }
+}

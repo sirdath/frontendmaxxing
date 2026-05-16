@@ -1,0 +1,110 @@
+/* ============================================
+   RIBBON BANNER — Corner / shoulder / award ribbons
+   Inspired by WatermelonUI ribbon-banner
+   ============================================
+   Usage:
+     <div class="rib-host">
+       <span class="rib rib-corner">NEW</span>
+       …card content…
+     </div>
+
+   Variants:
+     rib-corner (top-left default), rib-corner-tr, rib-corner-bl, rib-corner-br
+     rib-shoulder (over top edge)
+     rib-banner   (full-width with folds)
+     rib-award    (medal-style with tails)
+     Colors: rib-pink, rib-mint, rib-cyan, rib-amber, rib-violet
+   ============================================ */
+
+.rib-host { position: relative; overflow: hidden; }
+
+/* Corner ribbon (45° diagonal across corner) */
+.rib {
+  --r-bg: #ec4899;
+  --r-fg: #fff;
+  position: absolute;
+  background: var(--r-bg);
+  color: var(--r-fg);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+.rib-corner {
+  top: 14px;
+  left: -36px;
+  transform: rotate(-45deg);
+  padding: 0.3rem 2.4rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.rib-corner-tr { top: 14px; right: -36px; left: auto; transform: rotate(45deg); padding: 0.3rem 2.4rem; }
+.rib-corner-bl { bottom: 14px; left: -36px; top: auto; transform: rotate(45deg); padding: 0.3rem 2.4rem; }
+.rib-corner-br { bottom: 14px; right: -36px; top: auto; left: auto; transform: rotate(-45deg); padding: 0.3rem 2.4rem; }
+
+/* Shoulder ribbon (hangs over top edge with fold) */
+.rib-shoulder {
+  position: absolute;
+  top: -8px;
+  left: 1rem;
+  padding: 0.4rem 0.8rem 0.5rem;
+  background: var(--r-bg);
+  color: var(--r-fg);
+  font-weight: 700;
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 8px), 0 100%);
+}
+.rib-shoulder::before,
+.rib-shoulder::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  width: 8px;
+  height: 8px;
+  background: color-mix(in srgb, var(--r-bg) 75%, #000);
+}
+.rib-shoulder::before { left: 0; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.rib-shoulder::after  { right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+
+/* Full-width banner with V-cut ends */
+.rib-banner {
+  display: inline-block;
+  padding: 0.5rem 2rem;
+  background: var(--r-bg);
+  color: var(--r-fg);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%, 14px 50%);
+}
+
+/* Award medal-style */
+.rib-award {
+  display: inline-block;
+  position: relative;
+  padding: 0.5rem 1.2rem;
+  background: var(--r-bg);
+  color: var(--r-fg);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: 4px;
+}
+.rib-award::before,
+.rib-award::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  width: 14px;
+  height: 18px;
+  background: var(--r-bg);
+}
+.rib-award::before { left: 6px;  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%); }
+.rib-award::after  { right: 6px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%); }
+
+.rib-pink   { --r-bg: #ec4899; }
+.rib-mint   { --r-bg: #10b981; }
+.rib-cyan   { --r-bg: #06b6d4; }
+.rib-amber  { --r-bg: #f59e0b; }
+.rib-violet { --r-bg: #8b5cf6; }

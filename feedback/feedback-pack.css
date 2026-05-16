@@ -1,0 +1,288 @@
+/* ============================================
+   FEEDBACK PACK — 8 user-feedback patterns in one file
+   Inspired by WatermelonUI: reveal-copy, timed-undo, qr-display,
+   emoji-chips, snackbar-stack, banner-update, coin-flip, floating-balloon
+   ============================================ */
+
+:where(.fbk-revcopy, .fbk-undo, .fbk-qr, .fbk-emo, .fbk-snack-host, .fbk-banup,
+       .fbk-coin, .fbk-balloon) {
+  --fb-bg: #14141e;
+  --fb-bg-2: #1f1f2e;
+  --fb-fg: #f5f5fa;
+  --fb-muted: rgba(245, 245, 250, 0.55);
+  --fb-line: rgba(255, 255, 255, 0.1);
+  --fb-accent: #8b5cf6;
+  color: var(--fb-fg);
+}
+
+/* 1. REVEAL COPY — Hover reveals copyable value */
+.fbk-revcopy {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  background: var(--fb-bg-2);
+  border: 1px solid var(--fb-line);
+  border-radius: 8px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  user-select: none;
+}
+.fbk-revcopy:hover { background: rgba(255, 255, 255, 0.06); }
+.fbk-revcopy-val {
+  display: inline-block;
+  filter: blur(6px);
+  transition: filter 0.2s ease;
+  letter-spacing: 0.04em;
+}
+.fbk-revcopy:hover .fbk-revcopy-val,
+.fbk-revcopy.is-revealed .fbk-revcopy-val { filter: blur(0); }
+.fbk-revcopy-hint {
+  font-size: 0.7rem;
+  color: var(--fb-muted);
+  padding: 0.1rem 0.4rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+.fbk-revcopy.is-copied .fbk-revcopy-hint { color: #10b981; }
+
+/* 2. TIMED UNDO — Toast with shrinking progress bar */
+.fbk-undo {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 0.8rem;
+  padding: 0.7rem 1rem;
+  background: var(--fb-bg);
+  border: 1px solid var(--fb-line);
+  border-radius: 10px;
+  font-size: 0.88rem;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.4);
+  min-width: 280px;
+  overflow: hidden;
+}
+.fbk-undo-msg { flex: 1 1 auto; }
+.fbk-undo-btn {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--fb-accent);
+  font-weight: 700; font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+.fbk-undo-btn:hover { background: rgba(139, 92, 246, 0.12); }
+.fbk-undo::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 3px;
+  background: var(--fb-accent);
+  transform-origin: left;
+  animation: fbk-undo-bar var(--fbk-undo-dur, 4s) linear forwards;
+}
+@keyframes fbk-undo-bar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+/* 3. QR DISPLAY — Code presentation card (uses JS to render canvas/svg, this is layout only) */
+.fbk-qr {
+  display: inline-block;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.25);
+  max-width: 240px;
+}
+.fbk-qr-canvas {
+  width: 200px; height: 200px;
+  background:
+    repeating-conic-gradient(#0a0a14 0% 25%, #fff 25% 50%) 0/16px 16px,
+    #fff;
+  border-radius: 4px;
+  margin: 0 auto 0.6rem;
+  /* Default decorative pattern when no canvas is rendered yet */
+}
+.fbk-qr canvas, .fbk-qr svg { width: 200px; height: 200px; display: block; margin: 0 auto 0.6rem; }
+.fbk-qr-label {
+  font-family: ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: #14141e;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.fbk-qr-dark {
+  background: var(--fb-bg);
+  color: var(--fb-fg);
+}
+.fbk-qr-dark .fbk-qr-label { color: var(--fb-fg); }
+
+/* 4. EMOJI CHIPS — Reaction picker row */
+.fbk-emo {
+  display: inline-flex; gap: 0.3rem;
+  padding: 0.4rem;
+  background: var(--fb-bg-2);
+  border-radius: 999px;
+  border: 1px solid var(--fb-line);
+}
+.fbk-emo-btn {
+  appearance: none; border: 0;
+  background: transparent;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.fbk-emo-btn:hover { background: rgba(255, 255, 255, 0.08); transform: scale(1.18); }
+.fbk-emo-btn.is-picked { background: rgba(139, 92, 246, 0.2); transform: scale(1.12); }
+.fbk-emo-count {
+  display: inline-flex; align-items: center; gap: 0.2rem;
+  padding: 0.2rem 0.4rem;
+  margin-left: 0.1rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  font-size: 0.72rem; color: var(--fb-muted);
+  align-self: center;
+}
+
+/* 5. SNACKBAR STACK — Bottom-left stacked toasts */
+.fbk-snack-host {
+  position: fixed;
+  bottom: 16px; left: 16px;
+  display: flex; flex-direction: column-reverse; gap: 0.5rem;
+  z-index: 9999;
+  pointer-events: none;
+}
+.fbk-snack {
+  pointer-events: auto;
+  background: var(--fb-bg);
+  border: 1px solid var(--fb-line);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  box-shadow: 0 12px 28px -10px rgba(0,0,0,0.5);
+  font-size: 0.88rem;
+  min-width: 240px; max-width: 360px;
+  animation: fbk-snack-in 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.fbk-snack.is-leaving { animation: fbk-snack-out 0.3s ease forwards; }
+@keyframes fbk-snack-in {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fbk-snack-out {
+  to { opacity: 0; transform: translateX(-30px) scale(0.95); }
+}
+.fbk-snack-icon {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: var(--fb-accent);
+  flex: 0 0 24px;
+  display: grid; place-items: center;
+  color: #fff; font-weight: 700;
+}
+.fbk-snack-success .fbk-snack-icon { background: #10b981; }
+.fbk-snack-error   .fbk-snack-icon { background: #ef4444; }
+.fbk-snack-warn    .fbk-snack-icon { background: #f59e0b; }
+
+/* 6. BANNER UPDATE — App update banner with dismiss */
+.fbk-banup {
+  display: flex; align-items: center; gap: 0.8rem;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.88rem;
+  border-radius: 12px;
+}
+.fbk-banup-icon {
+  width: 28px; height: 28px; flex: 0 0 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: grid; place-items: center;
+  font-weight: 700;
+}
+.fbk-banup-body { flex: 1 1 auto; }
+.fbk-banup-body b { display: block; }
+.fbk-banup-body small { opacity: 0.85; }
+.fbk-banup-cta {
+  appearance: none; border: 0;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  font-weight: 600; font-size: 0.82rem;
+  cursor: pointer;
+}
+.fbk-banup-cta:hover { background: rgba(255,255,255,0.28); }
+.fbk-banup-x {
+  appearance: none; border: 0;
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center;
+  cursor: pointer; font-size: 1rem;
+}
+
+/* 7. COIN FLIP — 3D coin flip animation */
+.fbk-coin {
+  display: inline-block;
+  width: 80px; height: 80px;
+  perspective: 600px;
+  cursor: pointer;
+}
+.fbk-coin-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.fbk-coin.is-heads .fbk-coin-inner { transform: rotateY(0); }
+.fbk-coin.is-tails .fbk-coin-inner { transform: rotateY(1980deg); }
+.fbk-coin.is-flipping .fbk-coin-inner { transform: rotateY(2520deg); }
+.fbk-coin-face {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fde047, #b45309);
+  display: grid; place-items: center;
+  font-weight: 800; font-size: 1.6rem;
+  color: #5a2a04;
+  backface-visibility: hidden;
+  box-shadow: inset 0 0 0 4px rgba(0,0,0,0.15), 0 6px 16px -4px rgba(0,0,0,0.3);
+}
+.fbk-coin-back {
+  transform: rotateY(180deg);
+  background: radial-gradient(circle at 30% 30%, #d1d5db, #4b5563);
+  color: #1f2937;
+}
+
+/* 8. FLOATING BALLOON — Hover tooltip-like balloon */
+.fbk-balloon {
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 0.8rem;
+  background: var(--fb-accent);
+  color: #fff;
+  border-radius: 12px;
+  font-size: 0.82rem; font-weight: 600;
+  box-shadow: 0 8px 20px -6px rgba(139, 92, 246, 0.55);
+  animation: fbk-bob 3s ease-in-out infinite;
+}
+.fbk-balloon::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px; height: 12px;
+  background: var(--fb-accent);
+}
+.fbk-balloon-bottom::after { top: -6px; bottom: auto; }
+@keyframes fbk-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.fbk-balloon-pink  { background: #ec4899; box-shadow: 0 8px 20px -6px rgba(236, 72, 153, 0.55); }
+.fbk-balloon-pink::after { background: #ec4899; }
+.fbk-balloon-mint  { background: #10b981; box-shadow: 0 8px 20px -6px rgba(16, 185, 129, 0.55); }
+.fbk-balloon-mint::after { background: #10b981; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fbk-undo::after, .fbk-coin-inner, .fbk-balloon { animation: none; transition: none; }
+}

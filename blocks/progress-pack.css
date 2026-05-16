@@ -1,0 +1,205 @@
+/* ============================================
+   PROGRESS PACK — 3 progress/gauge patterns
+   Inspired by WatermelonUI: gauge, adaptive-slider, labeled-progress-indicator
+   ============================================ */
+
+:where(.gauge, .aslider, .lprog) {
+  --p-bg: #1f1f2e;
+  --p-fg: #f5f5fa;
+  --p-muted: rgba(245, 245, 250, 0.55);
+  --p-line: rgba(255, 255, 255, 0.08);
+  --p-accent: #8b5cf6;
+  color: var(--p-fg);
+}
+
+/* 1. GAUGE — Animated circular gauge with threshold color + glow */
+.gauge {
+  --g-pct: 65;
+  --g-size: 160px;
+  --g-stroke: 14px;
+  --g-color: var(--p-accent);
+  --g-track: rgba(255, 255, 255, 0.08);
+  width: var(--g-size); height: var(--g-size);
+  position: relative;
+  display: inline-grid; place-items: center;
+}
+.gauge::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(var(--g-color) calc(var(--g-pct) * 1%), var(--g-track) 0);
+  -webkit-mask: radial-gradient(transparent calc(50% - var(--g-stroke)), #000 calc(50% - var(--g-stroke) + 1px));
+          mask: radial-gradient(transparent calc(50% - var(--g-stroke)), #000 calc(50% - var(--g-stroke) + 1px));
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--g-color) 50%, transparent));
+  transition: --g-pct 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+@property --g-pct {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+.gauge-val {
+  font-size: calc(var(--g-size) * 0.2); font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.gauge-val small {
+  font-size: 0.45em; color: var(--p-muted); font-weight: 500; margin-left: 0.1em;
+}
+.gauge-label {
+  position: absolute; bottom: 18%;
+  font-size: 0.72rem; color: var(--p-muted);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* Thresholds: green low, amber mid, red high (auto via CSS variables) */
+.gauge-warn { --g-color: #f59e0b; }
+.gauge-bad  { --g-color: #ef4444; }
+.gauge-good { --g-color: #10b981; }
+.gauge-sm { --g-size: 100px; --g-stroke: 10px; }
+.gauge-lg { --g-size: 220px; --g-stroke: 18px; }
+
+/* Speedometer (half-circle) variant */
+.gauge-speedo {
+  height: calc(var(--g-size) * 0.55);
+  overflow: hidden;
+}
+.gauge-speedo::before {
+  height: var(--g-size);
+  background: conic-gradient(from 180deg, var(--g-color) calc(var(--g-pct) * 0.5%), var(--g-track) 0);
+}
+.gauge-speedo .gauge-val { transform: translateY(-30%); }
+
+/* 2. ADAPTIVE SLIDER — Range slider with adaptive labels + visible ticks */
+.aslider {
+  --as-bg: rgba(255,255,255,0.08);
+  --as-fill: var(--p-accent);
+  --as-pct: 50%;
+  position: relative;
+  display: block;
+  width: 100%; max-width: 320px;
+  padding: 1.4rem 0 1.6rem;
+}
+.aslider-track {
+  height: 6px;
+  background: var(--as-bg);
+  border-radius: 3px;
+  position: relative;
+}
+.aslider-track > i {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: var(--as-pct);
+  background: var(--as-fill);
+  border-radius: inherit;
+}
+.aslider-thumb {
+  position: absolute;
+  top: 50%; left: var(--as-pct);
+  width: 22px; height: 22px;
+  background: var(--as-fill);
+  border: 4px solid var(--p-bg);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  box-shadow: 0 4px 12px -2px rgba(139, 92, 246, 0.6);
+  transition: transform 0.18s ease;
+}
+.aslider-thumb:hover { transform: translate(-50%, -50%) scale(1.18); }
+.aslider-thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(1.1); }
+.aslider-bubble {
+  position: absolute;
+  bottom: calc(100% + 6px); left: var(--as-pct);
+  transform: translateX(-50%);
+  padding: 0.18rem 0.5rem;
+  background: var(--as-fill);
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.75rem; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.aslider-bubble::after {
+  content: ''; position: absolute;
+  top: 100%; left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--as-fill);
+}
+.aslider-labels {
+  display: flex; justify-content: space-between;
+  padding: 0.4rem 0 0;
+  font-size: 0.7rem; color: var(--p-muted);
+}
+.aslider-ticks { position: absolute; inset: 1.4rem 0 1.6rem; display: flex; justify-content: space-between; pointer-events: none; }
+.aslider-ticks i {
+  width: 1px; height: 6px;
+  background: rgba(255,255,255,0.12);
+  margin-top: 6px;
+}
+
+/* 3. LABELED PROGRESS — Bar with cycling status labels + shimmer */
+.lprog {
+  width: 100%; max-width: 360px;
+  background: var(--p-bg);
+  border: 1px solid var(--p-line);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+}
+.lprog-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 0.6rem;
+  font-size: 0.85rem;
+}
+.lprog-stage {
+  color: var(--p-muted);
+  position: relative;
+  overflow: hidden;
+  height: 1.2em;
+}
+.lprog-stage > span {
+  display: block;
+  animation: lprog-cycle 6s cubic-bezier(0.32, 0.72, 0, 1) infinite;
+}
+.lprog-stage > span:nth-child(2) { animation-delay: 1.5s; }
+.lprog-stage > span:nth-child(3) { animation-delay: 3s; }
+.lprog-stage > span:nth-child(4) { animation-delay: 4.5s; }
+@keyframes lprog-cycle {
+  0%   { transform: translateY(100%); opacity: 0; }
+  8%   { transform: translateY(0); opacity: 1; }
+  25%  { transform: translateY(0); opacity: 1; }
+  33%  { transform: translateY(-100%); opacity: 0; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+.lprog-pct { font-weight: 700; font-variant-numeric: tabular-nums; }
+.lprog-bar {
+  height: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.lprog-bar > i {
+  display: block;
+  height: 100%;
+  width: var(--lprog-pct, 30%);
+  background: linear-gradient(90deg, var(--p-accent), #ec4899);
+  border-radius: inherit;
+  transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  position: relative;
+  overflow: hidden;
+}
+.lprog-bar > i::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: lprog-shimmer 1.6s linear infinite;
+}
+@keyframes lprog-shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gauge::before, .lprog-bar > i, .lprog-stage > span, .lprog-bar > i::after { transition: none; animation: none; }
+}

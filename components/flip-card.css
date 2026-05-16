@@ -1,0 +1,112 @@
+/* ============================================
+   FLIP CARD — Front/back flip card on hover or click
+   Inspired by WatermelonUI flip-card
+   ============================================
+   Usage:
+     <div class="flipc" data-flipc>
+       <div class="flipc-inner">
+         <div class="flipc-face flipc-front">Front</div>
+         <div class="flipc-face flipc-back">Back</div>
+       </div>
+     </div>
+
+   Variants:
+     flipc-hover (default — flips on hover)
+     flipc-click (flips on .is-flipped toggle by JS)
+     flipc-h (horizontal flip — default)
+     flipc-v (vertical flip)
+     flipc-3d (more dramatic perspective)
+     flipc-stack (card flips with stack effect behind)
+   ============================================ */
+
+.flipc {
+  --fc-front-bg: linear-gradient(135deg, #8b5cf6, #ec4899);
+  --fc-back-bg: linear-gradient(135deg, #06b6d4, #8b5cf6);
+  --fc-w: 240px;
+  --fc-h: 320px;
+  perspective: 1000px;
+  width: var(--fc-w);
+  height: var(--fc-h);
+  display: inline-block;
+}
+
+.flipc-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.flipc-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1.4rem;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.flipc-front {
+  background: var(--fc-front-bg);
+}
+.flipc-back {
+  background: var(--fc-back-bg);
+  transform: rotateY(180deg);
+}
+
+/* === Hover flip === */
+.flipc-hover:hover .flipc-inner,
+.flipc.is-flipped .flipc-inner {
+  transform: rotateY(180deg);
+}
+
+/* === Vertical flip === */
+.flipc-v .flipc-back { transform: rotateX(180deg); }
+.flipc-v.flipc-hover:hover .flipc-inner,
+.flipc-v.is-flipped .flipc-inner { transform: rotateX(180deg); }
+
+/* === 3D dramatic === */
+.flipc-3d {
+  perspective: 600px;
+}
+.flipc-3d:hover .flipc-inner,
+.flipc-3d.is-flipped .flipc-inner {
+  transform: rotateY(180deg) scale(1.05);
+}
+
+/* === Stack (card behind) === */
+.flipc-stack { position: relative; }
+.flipc-stack::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--fc-back-bg);
+  border-radius: 14px;
+  transform: translate(8px, 8px) scale(0.96);
+  z-index: -1;
+  filter: blur(0.5px) brightness(0.7);
+}
+
+/* Click variant just uses .is-flipped — no extra rule needed */
+
+/* Size variants */
+.flipc-sm { --fc-w: 160px; --fc-h: 220px; }
+.flipc-lg { --fc-w: 320px; --fc-h: 440px; }
+
+/* Color presets */
+.flipc-aurora { --fc-front-bg: linear-gradient(135deg, #a855f7, #ec4899); --fc-back-bg: linear-gradient(135deg, #06b6d4, #34d399); }
+.flipc-sunset { --fc-front-bg: linear-gradient(135deg, #f97316, #ec4899); --fc-back-bg: linear-gradient(135deg, #fbbf24, #f97316); }
+.flipc-noir   { --fc-front-bg: #0a0a14; --fc-back-bg: linear-gradient(135deg, #1e293b, #0f172a); }
+.flipc-cyber  { --fc-front-bg: #000019; --fc-back-bg: linear-gradient(135deg, #00ffff, #ff00ff); }
+
+@media (prefers-reduced-motion: reduce) {
+  .flipc-inner { transition: none; }
+}

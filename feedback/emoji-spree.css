@@ -1,0 +1,65 @@
+/* ============================================
+   EMOJI SPREE — Chips that emit floating celebration emojis on click
+   Inspired by WatermelonUI emoji-spree-choice-chips
+   ============================================
+   Usage:
+     <div class="espree" data-espree>
+       <button class="espree-chip">😀 Happy</button>
+       <button class="espree-chip">🎉 Celebrate</button>
+       <button class="espree-chip">🔥 Fire</button>
+     </div>
+
+   JS auto-spawns floating emojis from the click point.
+   Variants: espree-vertical (emojis drift down), espree-burst (radial)
+   ============================================ */
+
+.espree {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+  position: relative;
+}
+.espree-chip {
+  appearance: none; border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f5f5fa;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  font: inherit; font-size: 0.85rem; font-weight: 500;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  transition: transform 0.2s ease, background 0.2s ease;
+  user-select: none;
+}
+.espree-chip:hover { background: rgba(255, 255, 255, 0.08); transform: scale(1.05); }
+.espree-chip:active { transform: scale(0.96); }
+.espree-chip.is-picked {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: var(--es-accent, #8b5cf6);
+}
+
+.espree-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 1.4rem;
+  user-select: none;
+  animation: espree-float 1.4s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  will-change: transform, opacity;
+}
+@keyframes espree-float {
+  0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 1; }
+  20%  { transform: translate(-50%, -120%) scale(1.4); opacity: 1; }
+  100% { transform: translate(-50%, -260%) scale(1) rotate(var(--rot, 0deg)); opacity: 0; }
+}
+
+/* Vertical drift variant */
+.espree-vertical .espree-particle {
+  animation: espree-fall 2s linear forwards;
+}
+@keyframes espree-fall {
+  0%   { transform: translate(-50%, -50%); opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--drift, 0px)), 320px) rotate(var(--rot, 0deg)); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .espree-particle { animation-duration: 0.3s; }
+}

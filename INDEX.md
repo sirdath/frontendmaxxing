@@ -1980,3 +1980,264 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **command-pill.css** `components/command-pill.css` (CSS) — tags: command-pill floating-pill linear vercel arc bottom-anchored action-bar quick-actions primary glass shortcut count auto-hide selection-toolbar
   Floating action pill (Linear/Arc/Vercel-style). `.cpill > .cpill-btn / .cpill-primary / .cpill-sep / .cpill-shortcut / .cpill-count`. Variants: glass, light, floating-right, mini, hidden-on-scroll, selection (anchored above text selection).
+
+**Phase 17 — WatermelonUI ports (top 100 picks)**
+
+**ai-inputs-pack.css** `ai/ai-inputs-pack.css` (CSS) — tags: ai-input composer prompt-box textarea send chatgpt claude perplexity gradient-border minimal underline pill large-pad
+  5 AI composer input variants in one file: `.aip-1` through `.aip-5` — clean, pill, large pad, minimal underline, gradient-bordered.
+
+**knob-slider.css** `blocks/knob-slider.css` (CSS) — tags: knob rotary control dial daw synth audio plugin sensitivity drag svg-arc indicator
+  Rotary knob control SVG ring + cap + indicator. Sensitivity-based pointer drag.
+
+**knob-slider.js** `blocks/knob-slider.js` (JS, global: `KnobSlider`) — tags: knob rotary drag pointer sensitivity onChange onCommit angle
+  `KnobSlider.init('.knob', {min, max, value, sensitivity, snap, onChange, onCommit})`. Vertical-drag value change with arc updates.
+
+**scrub-slider.css** `blocks/scrub-slider.css` (CSS) — tags: scrub slider video-scrub timeline ticks magnetic snap drag pointer cuepoint
+  Video-scrub style tick slider — 32 ticks with magnetic snap, drag-to-scrub progress fill.
+
+**scrub-slider.js** `blocks/scrub-slider.js` (JS, global: `ScrubSlider`) — tags: scrub slider drag snap tick value onChange onCommit
+  `ScrubSlider.init('.scrub', {tickCount, snap, onChange, onCommit})`. Drag along ticks with magnetic snap behavior.
+
+**signature-pad.css** `media/signature-pad.css` (CSS) — tags: signature pad sign canvas pen draw input form esign agreement legal dark sm
+  Pen-style signature input canvas. `.sigpad > .sigpad-canvas + .sigpad-line + .sigpad-hint + .sigpad-actions`. Variants: dark, sm.
+
+**signature-pad.js** `media/signature-pad.js` (JS, global: `SignaturePad`) — tags: signature canvas pen draw smooth quadratic dpr clear save dataurl
+  `SignaturePad.init('[data-sigpad]', {strokeColor, strokeWidth, smoothing, onChange, onSave})`. Smoothed quadratic-curve drawing with `.clear()`, `.toDataURL()`, `.isEmpty()`.
+
+**gooey-menu.css** `effects/gooey-menu.css` (CSS) — tags: gooey menu morph svg-filter goo blob fab next-status submenu liquid
+  SVG-filter morphing menu (Next.js status panel style). Items appear to "ooze" out from the trigger. Requires `<filter id="gooey">`.
+
+**morphing-button.css** `components/morphing-button.css` (CSS) — tags: morphing-button morph form spinner check success error loading expand collapse state
+  Button that morphs into form/spinner/check/error/expanded panel. States: `is-loading`, `is-success`, `is-error`, `is-expanded`. Companion `.morph-panel`.
+
+**fluid-tabs.css** `components/fluid-tabs.css` (CSS) — tags: fluid-tabs sliding-pill flip resize-observer underline rounded vertical
+  Sliding-pill tabs with FLIP. `.ftab > .ftab-list > .ftab-btn + .ftab-pill`. Variants: underline, rounded, vertical.
+
+**fluid-tabs.js** `components/fluid-tabs.js` (JS, global: `FluidTabs`) — tags: fluid-tabs slide pill flip resize observer onChange index
+  `FluidTabs.init('[data-ftab]', {panels, onChange})`. Auto-positions pill via ResizeObserver; flips between buttons.
+
+**scroll-island.css** `components/scroll-island.css` (CSS) — tags: scroll-island dynamic-island scroll-aware pill collapsed expanded floating notification now-playing progress
+  Dynamic Island clone. Variants: `.sci-floating`, `.sci-notif`, `.sci-nowplaying` (animated music bars), `.sci-progress`.
+
+**radial-nav.css** `components/radial-nav.css` (CSS) — tags: radial nav pie-menu circular carousel intro orbit trig css-vars
+  Circular pie menu / radial carousel / radial intro. CSS vars `--r-radius`, `--r-count`, `--r-start`, `--r-spread` drive trig positioning.
+
+**flip-card.css** `components/flip-card.css` (CSS) — tags: flip-card front back hover click horizontal vertical 3d-dramatic stack-behind
+  Front/back flip card. Variants: `.fcard-hover` / `.fcard-click`, horizontal/vertical, `.fcard-dramatic` (3D), `.fcard-stack` (stack-behind preview).
+
+**flip-clock.css** `components/flip-clock.css` (CSS) — tags: flip-clock split-flap countdown timer mechanical noir amber cyber vintage mono lg md sm
+  Mechanical flip-clock with 5 themes (noir/amber/cyber/vintage/mono), 5 sizes. JS adds `.is-flipping` for the half-fold animation.
+
+**wiggling-cards.css** `components/wiggling-cards.css` (CSS) — tags: wiggling-cards hover playful tilt pulse shake dance bounce swing sway jelly rubber wobble
+  10 playful hover animations: `.wig-tilt/-pulse/-shake/-dance/-bounce/-swing/-sway/-jelly/-rubber/-wobble`.
+
+**dialog-stack.css** `components/dialog-stack.css` (CSS) — tags: dialog-stack notification-center apple stacked cards fan spread reveal counter dismiss
+  Apple Notification Center-style stacked dialog cards. `.dstack > .dstack-card`. Variants: default fan-reveal, spread, fan.
+
+**card-swipe.css** `components/card-swipe.css` (CSS) — tags: card-swipe ios swipe-to-reveal actions archive delete pin flag mute mark stacked rounded
+  iOS-style swipe-to-reveal action card. `.cswipe > .cswipe-actions-left/-right + .cswipe-card`. Action colors: archive/flag/pin/delete/mark/mute.
+
+**card-swipe.js** `components/card-swipe.js` (JS, global: `CardSwipe`) — tags: card-swipe drag pointer threshold rubber-band open close onAction
+  `CardSwipe.init('[data-cswipe]', {threshold, maxOverDrag, closeOnTapOutside, onOpen, onClose, onAction})`. Pointer-drag with rubber-band; `.open(dir)/.close()`.
+
+**text-shimmer-wave.css** `effects/text-shimmer-wave.css` (CSS) — tags: text-shimmer wave word-by-word stagger gradient-wash rainbow glow fast
+  Word-by-word shimmer wash. `.tshim > span`. Variants: fast, rainbow, glow.
+
+**glitch-burst.css** `effects/glitch-burst.css` (CSS) — tags: glitch burst rgb-split chromatic-aberration hover click strong mint orange one-shot
+  Single-shot RGB glitch on hover/click. Uses `data-text` attr. Variants: strong, mint, orange.
+
+**sticker-peel.css** `effects/sticker-peel.css` (CSS) — tags: sticker peel corner foil hover pink mint cyan amber rotate
+  Hover/tap peels sticker corner. `.stkr + .stkr-corner`. Positions: tl/tr (default)/bl/br. Colors + foil holographic variant.
+
+**text-decoder.css** `effects/text-decoder.css` (CSS) — tags: text-decoder cypher matrix scramble cursor blink monospace green amber cyan
+  Cypher/Matrix-style monospace look with blinking cursor. Pair with `TextReveal.scramble()` for the animated decode behavior.
+
+**text-flicker.css** `effects/text-flicker.css` (CSS) — tags: text-flicker neon sign crt vacancy broken slow pink cyan amber
+  Neon-sign flicker. Variants: slow, pink, cyan, amber, broken (more erratic).
+
+**ribbon-banner.css** `effects/ribbon-banner.css` (CSS) — tags: ribbon banner corner shoulder award medal v-cut fold pink mint cyan amber violet
+  Corner / shoulder / award ribbons. `.rib-corner` (4 positions), `.rib-shoulder`, `.rib-banner` (V-cut ends), `.rib-award` (medal w/ tails).
+
+**magnetic-grid.css** `effects/magnetic-grid.css` (CSS) — tags: magnetic-grid dot-grid cursor mouse-tracking glow spotlight tight soft cyan pink amber
+  Dot grid with mouse-following glow spotlight. Set `--mx`/`--my` on pointermove. Variants: tight, soft, cyan, pink, amber.
+
+**hover-lift-3d.css** `effects/hover-lift-3d.css` (CSS) — tags: hover-lift 3d perspective rotateX rotateY tilt shadow glow strong soft flip
+  Card lifts + tilts on hover. CSS-only — no JS needed. Variants: strong, soft, flip, shadow-pink/cyan/amber/violet.
+
+**typewriter-loop.css** `effects/typewriter-loop.css` (CSS) — tags: typewriter loop type single-phrase caret monospace css-only fast slow no-cursor
+  CSS-only looping single-phrase typewriter. Variants: fast, slow, mono, no-cursor.
+
+**swipe-deck-fade.css** `effects/swipe-deck-fade.css` (CSS) — tags: swipe-deck stack cards depth fade hover-lift static-stack tinder-visual
+  Static visual stack-of-cards with depth fade + rotate. Distinct from interactive mobile/swipe-stack.
+
+**floating-tags.css** `effects/floating-tags.css` (CSS) — tags: floating-tags chips cloud pills bob gradient outline glow
+  Pill chips that float in/up gently with stagger. Variants: gradient, outline, glow.
+
+**text-reveal-mask.css** `effects/text-reveal-mask.css` (CSS) — tags: text-reveal mask bar wipe css-only sweep left vertical cyan pink amber slow
+  Bar / mask wipe that reveals text. CSS-only. Variants: bar, left, vertical, cyan, pink, amber, slow.
+
+**fintech-pack.css** `components/fintech-pack.css` (CSS) — tags: fintech swap-card send-money family-receive credit-usage budget fund-widget wallet-card transaction-list keypad ring sparkline
+  8 distinct money widgets: `.fin-swap`, `.fin-send`, `.fin-recv`, `.fin-credit` (ring), `.fin-budget` (bar), `.fin-fund` (sparkline up/down), `.fin-wallet` (credit-card), `.fin-tx` (list).
+
+**content-cards-pack.css** `components/content-cards-pack.css` (CSS) — tags: content-cards profile-hero profile-stats notion-toggle folder-stack action-sheet share-sheet onboarding pricing-tier feature-glow quote article event contact playlist song podcast recipe character team album-stack
+  20 content card patterns in one file: profile-hero, stats, notion-toggle, folder-stack, action-sheet, share-sheet, onboarding, pricing-pro, feature-glow, quote, article, event, contact, playlist, song, podcast, recipe, character, team, album-stack.
+
+**tree-menu.css** `components/tree-menu.css` (CSS) — tags: tree-menu nested collapsible finder-style indent guide-line keyboard sm light
+  Nested collapsible tree (Finder-style). `.tmenu > .tmenu-node > .tmenu-row + .tmenu-children`. Variants: sm, light.
+
+**tree-menu.js** `components/tree-menu.js` (JS, global: `TreeMenu`) — tags: tree-menu toggle keyboard nav arrow-keys expand collapse onSelect
+  `TreeMenu.init('[data-tmenu]', {expandAll, onSelect})`. Click + keyboard (←/→/↑/↓) nav with `.expandAll()`/`.collapseAll()`.
+
+**nav-pack.css** `components/nav-pack.css` (CSS) — tags: nav-pack sidebar collapsible header-glass segment-control github-stars notification-bell sticky frosted blur ring
+  5 nav patterns: `.sbcp` (collapsible sidebar), `.hglass` (sticky frosted header), `.segctl` (sliding-pill segment), `.ghs` (GitHub stars button), `.nbell` (notification bell with badge + ring).
+
+**nav-pack.js** `components/nav-pack.js` (JS, global: `NavPack`) — tags: nav-pack sidebar segment github-stars bell ring fetch api
+  `NavPack.sidebar()`, `.segment({onChange})`, `.githubStars({owner, repo})` (fetches star count), `.bell({count, ring, onClick})`.
+
+**blocks-watermelon-pack.css** `blocks/blocks-watermelon-pack.css` (CSS) — tags: blocks-pack predictive-text ghost frequency-selector editable-chip slot-picker otp-pin copy-input segmented-input pill-tabs floating-action-bar status-pill avatar-stack dropdown-button
+  12 block patterns: predictive-text, frequency-selector, editable-chip, slot-picker, otp-pin-pro, copy-input, segmented-input, pill-tabs-mini, floating-action-bar, status-pill (live), avatar-stack-pro, dropdown-button.
+
+**blocks-watermelon-pack.js** `blocks/blocks-watermelon-pack.js` (JS, global: `BlocksWM`) — tags: blocks-pack predict ghost completion freq chip editable otp copy piltabs dropbtn
+  `BlocksWM.predict({suggestions})`, `.freq({onChange})`, `.chip({onChange, onRemove})`, `.otp({length, onComplete})`, `.copy({onCopy})`, `.piltabs({onChange})`, `.dropbtn({onMenu})`.
+
+**feedback-pack.css** `feedback/feedback-pack.css` (CSS) — tags: feedback-pack reveal-copy timed-undo qr-display emoji-chips snackbar-stack banner-update coin-flip floating-balloon undo timer
+  8 feedback patterns: reveal-copy (blur until hover), timed-undo (toast w/ bar), qr-display, emoji-chips (reactions), snackbar-stack, banner-update, coin-flip (3D), floating-balloon (tooltip).
+
+**feedback-pack.js** `feedback/feedback-pack.js` (JS, global: `FeedbackPack`) — tags: feedback-pack snack undo coinflip revealcopy qr canvas timer
+  `FeedbackPack.snack(msg, {type, duration})`, `.undo(msg, {duration, onUndo})`, `.coinFlip({onResult})`, `.revealCopy()`, `.qr({text, size, foreground, background})`.
+
+**ai-watermelon-pack.css** `ai/ai-watermelon-pack.css` (CSS) — tags: ai-pack voice-note contextual-ai-bar thinking-bubble chat-bubble-pro suggestion-chip cmd-k waveform gradient-border sparkle
+  5 AI patterns: voice-note (waveform + duration + play), contextual-ai-bar (⌘K + sparkle), thinking-bubble (3-dot), chat-bubble-pro (gradient border + tools), suggestion-chip (✦).
+
+**ai-watermelon-pack.js** `ai/ai-watermelon-pack.js` (JS, global: `AIWmPack`) — tags: ai-pack voice playback ctxbar hotkey cmdk submit
+  `AIWmPack.voice({duration, peaks, bars})` (waveform playback sim), `.ctxbar({hotkey, onSubmit})` (cmd+K binding).
+
+**misc-watermelon-pack.css** `components/misc-watermelon-pack.css` (CSS) — tags: misc-pack theme-toggler dragstack info-card stat-glance menu-item preview-hover skill-card footer-mini marquee-pause hover-blob breadcrumb-trail drawer-bottom modal-action-grid stack-fan-reveal
+  14 misc patterns: theme-toggler (sun↔moon), draggable-card-stack, info-card (4 types), stat-glance, menu-item-cards, preview-card-hover, skill-card (bars), footer-mini, marquee-pause-hover, hover-blob-button, breadcrumb-chip-trail, drawer-bottom, modal-action-grid (3x3), stack-fan-reveal.
+
+**misc-watermelon-pack.js** `components/misc-watermelon-pack.js` (JS, global: `MiscWMPack`) — tags: misc-pack theme drag-stack blob drawer cursor swipe
+  `MiscWMPack.theme({onChange})`, `.dragstack({onSwipe})`, `.blob('.mwm-bbtn')` (cursor tracking), `.drawer({onOpen, onClose})`.
+
+**Phase 18 — WatermelonUI deep cuts (next 50+ patterns, ~23 files)**
+
+**widget-pack.css** `components/widget-pack.css` (CSS) — tags: widget-pack activities-rings weight-widget trade-summary preview-link-card deployment-card integration-card meeting-card event-reminders compose-email files-card stripe-style vercel-style
+  10 specialized widgets in one file: activities-rings (3-ring fitness), weight-widget (big metric + trend), trade-summary (buy/sell), preview-link-card (OG card), deployment-card (Vercel build status), integration-card (toggle row), meeting-card (Zoom-style), event-reminders, compose-email-card, files-card.
+
+**code-tabs.css** `components/code-tabs.css` (CSS) — tags: code-tabs docs api stripe-docs tabs language-switcher copy clipboard syntax monospace dark light
+  Tabbed code snippet display (Stripe-style docs). `.ctabs > .ctabs-head > .ctabs-tab + .ctabs-copy` then `.ctabs-panels > .ctabs-panel > pre > code`. Light variant + simple token classes.
+
+**code-tabs.js** `components/code-tabs.js` (JS, global: `CodeTabs`) — tags: code-tabs switcher copy clipboard tabs language onChange
+  `CodeTabs.init('[data-ctabs]', {onChange})`. Tab switching + clipboard copy of active panel.
+
+**browser-chrome.css** `components/browser-chrome.css` (CSS) — tags: browser-chrome fake-browser frame screenshot mockup product-shot mac win mobile tabs light dark url-bar lights
+  Fake browser frame for product screenshots. `.bchrm > .bchrm-bar (.bchrm-lights + .bchrm-url) + .bchrm-body`. Variants: bchrm-mac (default), bchrm-win, bchrm-mobile (phone frame with notch), bchrm-tabs (with tab bar), bchrm-light.
+
+**macos-sidebar.css** `components/macos-sidebar.css` (CSS) — tags: macos-sidebar finder mail-app rail vibrancy blur translucent traffic-lights sections rows active-pill light dark
+  Finder/Mail-style sidebar with translucent vibrancy rail. `.msb > .msb-traffic + .msb-section + .msb-row (.msb-ico + .msb-meta)`. Variants: light (default), dark, blur (backdrop-filter), with .msb-layout helper.
+
+**inline-edit-pack.css** `blocks/inline-edit-pack.css` (CSS) — tags: inline-edit pack notion linear edit-in-place contenteditable inline-action floating-input label-selector status-picker split-button
+  6 inline-editing primitives: inline-edit (contenteditable click-to-edit), inline-action (toolbar row), floating-input (label that floats up), label-selector (multi-pick chips), status-picker (Linear-style dot indicator), split-button.
+
+**inline-edit-pack.js** `blocks/inline-edit-pack.js` (JS, global: `InlineEditPack`) — tags: inline-edit-pack edit contenteditable status-cycle labels picked split-button onCommit
+  `InlineEditPack.edit({onCommit})`, `.status({options, onChange})`, `.splitBtn({onMain, onMenu})`, `.labels({onChange})`.
+
+**audio-player-pro.css** `media/audio-player-pro.css` (CSS) — tags: audio-player-pro waveform play pause time duration mini card gradient album-art track
+  Full audio player card with waveform bars, time, controls, more menu. `.apro > .apro-play + .apro-body (.apro-title + .apro-wave + .apro-time) + .apro-more`. Variants: mini (pill), card (with album art), gradient.
+
+**audio-player-pro.js** `media/audio-player-pro.js` (JS, global: `AudioPlayerPro`) — tags: audio-player html5 audio bars waveform peaks click-seek time progress
+  `AudioPlayerPro.init('[data-apro]', {src, bars, peaks, onPlay, onPause, onTimeUpdate, onEnd})`. HTMLAudio-backed; click bars to seek; auto-bar generation from random peaks if none provided.
+
+**voice-transcribe.css** `ai/voice-transcribe.css` (CSS) — tags: voice-transcribe live-transcript speech-to-text stt mic listening pause stop duration interim final meter compact
+  Live mic → text card. `.vtra > .vtra-head (status+dur) + .vtra-text (final+interim) + .vtra-actions + .vtra-meter`. Variants: compact (pill shape).
+
+**voice-transcribe.js** `ai/voice-transcribe.js` (JS, global: `VoiceTranscribe`) — tags: voice-transcribe webspeech recognition continuous interim getUserMedia analyser level meter pause stop
+  `VoiceTranscribe.init('[data-vtra]', {lang, continuous, interimResults, onFinal, onInterim, onLevel, onStop})`. Web Speech API + Web Audio Analyser meter; pause/stop controls.
+
+**social-pack.css** `components/social-pack.css` (CSS) — tags: social-pack x-post twitter verified retweet like comment share user-presence away busy offline award medal gold silver bronze edit-profile community user-card
+  6 social patterns: x-post (Twitter card with verified + actions), create-community (setup card), user-presence-avatar (online/away/busy/offline dot), award (gold/silver/bronze/platinum medal with hover wobble), edit-profile, user-card (chip).
+
+**crypto-pack.css** `components/crypto-pack.css` (CSS) — tags: crypto-pack defi aave-swap uniswap-dialog swap-currency returns-calc gas slippage health-factor token-input pink swap-flip
+  6 DeFi/crypto patterns: aave-swap (health factor bar), uniswap-dialog (token-in/out + flip), swap-currency (FX), returns-calc (ROI), gas (live gauge), slippage (auto/custom pills).
+
+**carousel-pack.css** `components/carousel-pack.css` (CSS) — tags: carousel-pack minimal motion radial split-accordion grid-disclosure scroll-snap perspective ring expand inline
+  5 carousel/disclosure patterns: minimal (scroll-snap), motion (perspective + stagger-in), radial (items in ring), card-split-accordion (expand), collection-grid-disclosure (item expands inline).
+
+**carousel-pack.js** `components/carousel-pack.js` (JS, global: `CarouselPack`) — tags: carousel-pack split-accordion toggle grid-pick expand
+  `CarouselPack.split({onToggle})`, `.grid({onPick})`.
+
+**inline-toast.css** `feedback/inline-toast.css` (CSS) — tags: inline-toast in-place success error warn info loading banner action dismissible
+  In-place ephemeral message (not floating). `.itoast + variants`. Types: success/error/warn/info/loading (spinner). `.itoast-action`, `.itoast-x`, `.itoast-banner` full-width.
+
+**onboarding-checklist.css** `components/onboarding-checklist.css` (CSS) — tags: onboarding-checklist setup checklist progress tick xp reward compact floating
+  Interactive setup checklist with progress bar. `.ochk > .ochk-head + .ochk-bar + .ochk-list > .ochk-item (.ochk-tick + .ochk-rew)`. Variants: compact, floating.
+
+**onboarding-checklist.js** `components/onboarding-checklist.js` (JS, global: `OnboardingChecklist`) — tags: onboarding-checklist tick localStorage progress onComplete onProgress persist
+  `OnboardingChecklist.init('[data-ochk]', {storageKey, onComplete, onProgress})`. Tick toggling + localStorage persistence + progress recompute.
+
+**mobile-video-player.css** `components/mobile-video-player.css` (CSS) — tags: mobile-video-player tiktok reels portrait 9-16 fullscreen overlay author follow caption rail like share progress mute fade
+  TikTok/Reels-style portrait video player. `.mvp > .mvp-video + .mvp-overlay + .mvp-rail (acts) + .mvp-progress`. Includes mute toggle, pause overlay, gradient fades.
+
+**mobile-video-player.js** `components/mobile-video-player.js` (JS, global: `MobileVideoPlayer`) — tags: mobile-video tap-pause autoplay loop muted progress like share
+  `MobileVideoPlayer.init('[data-mvp]', {autoplay, onLike, onShare})`. Tap-to-pause, progress fill, like toggle, mute.
+
+**quick-pack.css** `blocks/quick-pack.css` (CSS) — tags: quick-pack quick-paste quick-switcher option-picker quick-feedback fractional-picker step-indicator dots line labeled stacked-fraction
+  6 quick-utility patterns: quick-paste (clipboard list), quick-switcher (cmd-tab tiles), quick-option-picker (compact dropdown), quick-feedback (1-5 emoji + text), fractional-picker (1/2 1/3 1/4 typography), step-indicator (dots/line/labeled).
+
+**disclosure-pack.css** `components/disclosure-pack.css` (CSS) — tags: disclosure-pack continuous-pagination dropdown floating layered switch voice-chat task-widget progressive-reveal accordion-inline
+  7 progressive-reveal patterns: continuous-pagination (infinite-scroll spinner), dropdown-disclosure (inline expand), floating-disclosure (absolute popup), layered-progressive (slide-in panes), switch-disclosure (toggle reveals), voice-chat-disclosure (collapsible mic+wave), task-widget-disclosure.
+
+**disclosure-pack.js** `components/disclosure-pack.js` (JS, global: `DisclosurePack`) — tags: disclosure-pack drop switch float layer task pane back-button onChange
+  `DisclosurePack.drop()`, `.switch_({onChange})`, `.float()` (click-away close), `.layer()` (slide between panes via data-dp-next + .dp-layer-back), `.task()`.
+
+**Phase 19 — WatermelonUI final batch (21 more patterns, ~17 files)**
+
+**liquid-fill.css** `effects/liquid-fill.css` (CSS) — tags: liquid-fill button hover fill bottom-up wave pink cyan amber mint foil down diag slow solid icon
+  Button/element fills with color from bottom up on hover. `.liqf + variants`. Directions: default (up), down, diag. Colors: pink/cyan/amber/mint/foil. Variants: solid, icon (square), slow.
+
+**decorative-cursor.css** `effects/decorative-cursor.css` (CSS) — tags: decorative-cursor pointer follow svg unicode star hide-native pulse rotate pink cyan mint amber trail
+  CSS for decorative cursor that follows the pointer. `.dc-host` (hides native cursor), `.dc-dot` (replacement glyph). Variants: pulse, rotate, color presets, trail.
+
+**decorative-cursor.js** `effects/decorative-cursor.js` (JS, global: `DecorativeCursor`) — tags: decorative-cursor pointer follow hide-native hover-target trail destroy
+  `DecorativeCursor.init({shape, size, color, hideNative, trail, hoverSelector})` / `.destroy()`. Hover targets enlarge cursor; optional particle trail.
+
+**progress-pack.css** `blocks/progress-pack.css` (CSS) — tags: progress-pack gauge animated speedometer threshold warn bad good adaptive-slider thumb ticks labels bubble labeled-progress shimmer cycling-text
+  3 progress patterns: gauge (animated ring + @property + auto-threshold colors + speedometer variant), adaptive-slider (range slider with bubble + ticks + labels), labeled-progress (bar with cycling text labels + shimmer sweep).
+
+**progress-pack.js** `blocks/progress-pack.js` (JS, global: `ProgressPack`) — tags: progress-pack gauge slider lprog tween value autoThreshold drag onChange onInput
+  `ProgressPack.gauge({value, autoThreshold})`, `.slider({min, max, step, value, onInput, onChange})`, `.lprog({value, onComplete})`.
+
+**device-mockups.css** `components/device-mockups.css` (CSS) — tags: device-mockups macbook imac iphone ipad watch tv frame bezel screenshot showcase product-shot tilted light dark
+  Device-frame mockups: MacBook (with hinge/notch), iMac (with chin), iPhone (notch + radius), iPad, Watch (with strap), TV (with stand). `.dev + .dev-screen` inside. Variants: light, tilted (perspective).
+
+**book-3d.css** `components/book-3d.css` (CSS) — tags: book-3d 3d open animation cover spine pages perspective hover novel tech red green lg sm
+  3D book with cover/back/spine + pages that rotates open on hover. `.book3d > .book3d-cover (.book3d-front + .book3d-back + .book3d-spine) + .book3d-pages`. Color presets: novel, tech, red, green.
+
+**scheduler-pack.css** `components/scheduler-pack.css` (CSS) — tags: scheduler-pack availability week-grid drag-select 7-day 24-hour timeline-drag row-to-row calendar-strip horizontal-days
+  3 time/calendar patterns: availability (7×24 drag-paint grid), timeline-drag (rows with draggable slots), calendar-strip (horizontal scrollable day chips).
+
+**scheduler-pack.js** `components/scheduler-pack.js` (JS, global: `SchedulerPack`) — tags: scheduler avail paint-grid drag tldrag move-between-rows strip date-pick days hours
+  `SchedulerPack.avail({days, hours, onChange})`, `.tldrag({onMove})` (drag time slot between rows), `.strip({onPick})`.
+
+**feature-tour.css** `components/feature-tour.css` (CSS) — tags: feature-tour modal carousel walkthrough intro onboarding step illustration dots backdrop blur
+  Self-contained modal carousel walking through features. `.ftour > .ftour-card > .ftour-stage > .ftour-step + .ftour-foot (dots + skip + next)`. Distinct from existing `tour.js` which spotlights existing UI.
+
+**feature-tour.js** `components/feature-tour.js` (JS, global: `FeatureTour`) — tags: feature-tour carousel modal step keyboard arrow autoOpen onComplete onSkip
+  `FeatureTour.init('[data-ftour]', {autoOpen, onStep, onComplete, onSkip})`. Methods: `.open()`, `.close()`, `.next()`, `.prev()`, `.go(i)`. Arrow keys + Escape.
+
+**wallet-auth-drawer.css** `components/wallet-auth-drawer.css` (CSS) — tags: wallet-auth-drawer family-wallet sign-in email phone passkey metamask coinbase walletconnect tabs drawer bottom-sheet
+  Bottom-sheet drawer with tabbed email/phone/passkey sign-in + crypto wallet buttons. `.wad > .wad-card > h3 + .wad-tabs + .wad-panel + .wad-divider + .wad-wallets`.
+
+**wallet-auth-drawer.js** `components/wallet-auth-drawer.js` (JS, global: `WalletAuthDrawer`) — tags: wallet-auth-drawer tab switcher submit wallet open close
+  `WalletAuthDrawer.init('[data-wad]', {onTab, onSubmit, onWallet})`. `.open()`, `.close()`. Backdrop click closes.
+
+**inline-mega-pack.css** `components/inline-mega-pack.css` (CSS) — tags: inline-mega 3dot-menu confirm-delete inline-table contenteditable discrete-tabs icon-only journal-nav edit-profile-modal extended-toolbar pricing-changeable carousel-tilt
+  8 advanced patterns: 3-dot-menu (with 2-step danger confirm), inline-editable table (dblclick to edit cells), discrete-tabs (active expands icon+label, inactive icon-only), journal-nav (sidebar + entry pane), edit-profile-modal (form + live preview pane), extended-toolbar (FAB → row of actions), pricing-changeable (monthly/yearly + expandable features), carousel-tilt (3D-tilted card scroll).
+
+**inline-mega-pack.js** `components/inline-mega-pack.js` (JS, global: `InlineMega`) — tags: inline-mega threeDot confirm itable contenteditable dtabs journal xtool pricing toggle expand
+  `InlineMega.threeDot({onAction})` (2-step confirm for danger items), `.itable({onChange, onAdd})`, `.dtabs({onChange})`, `.journal({onPick})`, `.xtool()`, `.pricing({onPeriod, onExpand})`.
+
+**emoji-spree.css** `feedback/emoji-spree.css` (CSS) — tags: emoji-spree chips celebration particles float burst pick vertical drift
+  Chips that spawn floating celebration emoji particles on click. `.espree > .espree-chip`. `.espree-particle` is the floating sprite. Variants: vertical (drift down).
+
+**emoji-spree.js** `feedback/emoji-spree.js` (JS, global: `EmojiSpree`) — tags: emoji-spree burst particles spawn count extra toggle picked onPick
+  `EmojiSpree.init('[data-espree]', {count, extra, toggle, onPick})`. Auto-extracts emoji from chip text; spawns N particles drifting up + rotating. Also `EmojiSpree.burst(x, y, pool, count, vertical)` for direct calls.

@@ -1,0 +1,299 @@
+/* ============================================
+   FINTECH PACK — 8 distinct money/finance widgets in one file
+   Inspired by WatermelonUI: swap-card, send-money, family-receive,
+   credit-usage-card, budget-card, fund-widget, wallet-card, transaction-list
+   ============================================
+   Usage:
+     <div class="fin-swap"> … </div>     // swap-card
+     <div class="fin-send"> … </div>     // send-money
+     <div class="fin-recv"> … </div>     // family-receive
+     <div class="fin-credit"> … </div>   // credit-usage
+     <div class="fin-budget"> … </div>   // budget
+     <div class="fin-fund"> … </div>     // fund-widget
+     <div class="fin-wallet"> … </div>   // wallet card
+     <ul class="fin-tx"> … </ul>         // transaction-list
+   ============================================ */
+
+/* Shared tokens */
+.fin-swap, .fin-send, .fin-recv, .fin-credit, .fin-budget, .fin-fund, .fin-wallet, .fin-tx {
+  --fin-bg: #14141e;
+  --fin-bg-2: #1f1f2e;
+  --fin-fg: #f5f5fa;
+  --fin-muted: rgba(245, 245, 250, 0.55);
+  --fin-line: rgba(255, 255, 255, 0.08);
+  --fin-accent: #8b5cf6;
+  --fin-up: #10b981;
+  --fin-down: #ef4444;
+  --fin-radius: 18px;
+  font-family: inherit;
+  color: var(--fin-fg);
+}
+
+/* === SWAP CARD === Token A ↔ Token B with swap button */
+.fin-swap {
+  background: var(--fin-bg);
+  border: 1px solid var(--fin-line);
+  border-radius: var(--fin-radius);
+  padding: 1rem;
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+}
+.fin-swap-row {
+  background: var(--fin-bg-2);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.4rem;
+  align-items: center;
+}
+.fin-swap-label { grid-column: 1 / -1; font-size: 0.72rem; color: var(--fin-muted); }
+.fin-swap-amount {
+  font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em;
+  background: transparent; border: 0; color: var(--fin-fg); width: 100%;
+  outline: 0;
+}
+.fin-swap-token {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px; font-weight: 600; font-size: 0.85rem;
+  cursor: pointer; border: 0; color: var(--fin-fg);
+}
+.fin-swap-token-icon { width: 22px; height: 22px; border-radius: 50%; background: var(--fin-accent); display: inline-block; }
+.fin-swap-flip {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px; height: 36px;
+  border-radius: 12px;
+  background: var(--fin-bg);
+  border: 4px solid var(--fin-bg-2);
+  color: var(--fin-fg);
+  display: grid; place-items: center;
+  cursor: pointer; font-size: 1.1rem;
+  transition: transform 0.25s ease;
+}
+.fin-swap-flip:hover { transform: translate(-50%, -50%) rotate(180deg); }
+.fin-swap-cta {
+  margin-top: 0.6rem;
+  background: var(--fin-accent);
+  color: #fff;
+  border: 0;
+  padding: 0.9rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* === SEND MONEY === Big amount entry */
+.fin-send {
+  background: linear-gradient(160deg, #14141e, #1f1f2e);
+  border-radius: var(--fin-radius);
+  padding: 1.4rem 1.2rem;
+  width: 100%; max-width: 380px;
+  text-align: center;
+}
+.fin-send-to { font-size: 0.78rem; color: var(--fin-muted); margin-bottom: 0.5rem; }
+.fin-send-recipient {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.4rem 0.7rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px; margin-bottom: 1.2rem;
+  font-weight: 600; font-size: 0.85rem;
+}
+.fin-send-amount {
+  font-size: 3.2rem; font-weight: 800; letter-spacing: -0.04em;
+  display: flex; justify-content: center; align-items: baseline; gap: 0.1em;
+}
+.fin-send-amount-currency { font-size: 1.4rem; color: var(--fin-muted); font-weight: 600; }
+.fin-send-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-top: 1rem; }
+.fin-send-key {
+  appearance: none; border: 0;
+  padding: 0.9rem; font-size: 1.2rem; font-weight: 600;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--fin-fg);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.fin-send-key:active { background: rgba(255, 255, 255, 0.12); }
+.fin-send-cta {
+  margin-top: 1rem;
+  background: #fff; color: #14141e;
+  border: 0; padding: 0.9rem;
+  border-radius: 999px; width: 100%;
+  font-weight: 700; cursor: pointer;
+}
+
+/* === FAMILY RECEIVE === Avatars with incoming arrow */
+.fin-recv {
+  background: var(--fin-bg);
+  border: 1px solid var(--fin-line);
+  border-radius: var(--fin-radius);
+  padding: 1.2rem; width: 100%; max-width: 360px;
+  display: grid; gap: 0.8rem;
+}
+.fin-recv-title { font-weight: 700; margin: 0; }
+.fin-recv-people { display: flex; align-items: center; }
+.fin-recv-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border: 3px solid var(--fin-bg);
+  margin-left: -10px;
+  display: grid; place-items: center;
+  color: #fff; font-weight: 700; font-size: 0.85rem;
+}
+.fin-recv-avatar:first-child { margin-left: 0; }
+.fin-recv-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.6rem 0.8rem; background: var(--fin-bg-2);
+  border-radius: 12px;
+}
+.fin-recv-amount { color: var(--fin-up); font-weight: 700; }
+
+/* === CREDIT USAGE === Ring + breakdown */
+.fin-credit {
+  background: var(--fin-bg); border: 1px solid var(--fin-line);
+  border-radius: var(--fin-radius); padding: 1.2rem;
+  width: 100%; max-width: 320px;
+  text-align: center;
+}
+.fin-credit-ring {
+  --pct: 65;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background:
+    conic-gradient(var(--fin-accent) calc(var(--pct) * 1%), rgba(255,255,255,0.08) 0);
+  margin: 0 auto 0.8rem;
+  position: relative;
+  display: grid; place-items: center;
+}
+.fin-credit-ring::before {
+  content: '';
+  position: absolute; inset: 12px;
+  background: var(--fin-bg); border-radius: 50%;
+}
+.fin-credit-pct {
+  position: relative;
+  font-size: 1.6rem; font-weight: 700;
+}
+.fin-credit-pct small { display: block; font-size: 0.7rem; color: var(--fin-muted); font-weight: 500; }
+.fin-credit-amounts { display: flex; justify-content: space-between; font-size: 0.85rem; margin-top: 0.5rem; }
+.fin-credit-amounts span { color: var(--fin-muted); }
+
+/* === BUDGET CARD === Category + progress bar */
+.fin-budget {
+  background: var(--fin-bg-2); border-radius: var(--fin-radius);
+  padding: 1rem 1.2rem; width: 100%; max-width: 320px;
+  display: grid; gap: 0.5rem;
+}
+.fin-budget-head { display: flex; justify-content: space-between; align-items: center; }
+.fin-budget-cat { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+.fin-budget-cat-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--fin-accent);
+  display: grid; place-items: center; font-size: 1rem;
+}
+.fin-budget-amount { font-weight: 700; font-size: 1.1rem; }
+.fin-budget-bar {
+  height: 8px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;
+}
+.fin-budget-fill {
+  height: 100%; background: linear-gradient(90deg, var(--fin-accent), #ec4899);
+  border-radius: inherit;
+  width: var(--fin-pct, 60%);
+  transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.fin-budget-meta { display: flex; justify-content: space-between; color: var(--fin-muted); font-size: 0.78rem; }
+
+/* === FUND WIDGET === Investment growth */
+.fin-fund {
+  background: var(--fin-bg); border: 1px solid var(--fin-line);
+  border-radius: var(--fin-radius); padding: 1rem 1.2rem;
+  width: 100%; max-width: 320px;
+}
+.fin-fund-head { display: flex; justify-content: space-between; align-items: center; }
+.fin-fund-name { font-weight: 600; font-size: 0.9rem; color: var(--fin-muted); }
+.fin-fund-amount { font-size: 1.7rem; font-weight: 700; margin: 0.2rem 0; }
+.fin-fund-change { font-size: 0.85rem; font-weight: 600; }
+.fin-fund-up { color: var(--fin-up); }
+.fin-fund-down { color: var(--fin-down); }
+.fin-fund-spark {
+  height: 56px; margin-top: 0.5rem;
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.18), transparent);
+  clip-path: polygon(0 70%, 12% 60%, 25% 75%, 40% 50%, 55% 55%, 68% 30%, 82% 35%, 100% 10%, 100% 100%, 0 100%);
+}
+.fin-fund-spark-down {
+  background: linear-gradient(180deg, rgba(239, 68, 68, 0.18), transparent);
+  clip-path: polygon(0 10%, 15% 30%, 30% 25%, 45% 50%, 60% 45%, 75% 70%, 100% 90%, 100% 100%, 0 100%);
+}
+
+/* === WALLET CARD === Credit-card style */
+.fin-wallet {
+  position: relative;
+  width: 100%; max-width: 340px;
+  aspect-ratio: 1.586;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+  border-radius: 18px;
+  padding: 1.2rem;
+  color: #fff;
+  display: flex; flex-direction: column; justify-content: space-between;
+  overflow: hidden;
+  isolation: isolate;
+}
+.fin-wallet::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.25), transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(0,0,0,0.2), transparent 50%);
+  z-index: -1;
+}
+.fin-wallet-brand { font-weight: 700; letter-spacing: 0.08em; font-size: 0.78rem; }
+.fin-wallet-chip {
+  width: 36px; height: 28px;
+  background: linear-gradient(135deg, #fde047, #f59e0b);
+  border-radius: 5px;
+}
+.fin-wallet-num { font-family: ui-monospace, monospace; font-size: 1.1rem; letter-spacing: 0.18em; }
+.fin-wallet-foot { display: flex; justify-content: space-between; font-size: 0.72rem; opacity: 0.85; }
+.fin-wallet-foot strong { font-size: 0.85rem; letter-spacing: 0.04em; }
+.fin-wallet-dark { background: linear-gradient(135deg, #14141e, #2d2d44); }
+.fin-wallet-gold { background: linear-gradient(135deg, #d4a017, #fcd34d, #b45309); }
+
+/* === TRANSACTION LIST === */
+.fin-tx { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.2rem; max-width: 420px; }
+.fin-tx-item {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.7rem 0.8rem;
+  background: var(--fin-bg-2);
+  border-radius: 12px;
+}
+.fin-tx-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--fin-accent);
+  display: grid; place-items: center;
+  font-weight: 700;
+}
+.fin-tx-title { font-weight: 600; font-size: 0.92rem; margin: 0; }
+.fin-tx-sub { font-size: 0.74rem; color: var(--fin-muted); }
+.fin-tx-amt { font-weight: 700; font-variant-numeric: tabular-nums; }
+.fin-tx-amt.up { color: var(--fin-up); }
+.fin-tx-amt.down { color: var(--fin-fg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fin-swap-flip { transition: none; }
+  .fin-budget-fill { transition: none; }
+}
