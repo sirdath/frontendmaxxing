@@ -62,7 +62,10 @@ async function resolveLibraryRoot() {
 // INDEX.md parser
 // =====================================================
 
-const ENTRY_RE = /^\*\*([\w\-\.]+\.(?:css|js|glsl\.js))\*\*\s+`([^`]+)`\s+\((CSS|JS)(?:,\s*global:\s*`([^`]+)`)?\)\s*[—-]\s*tags:\s*(.+)$/;
+// Match any entry, capturing the meta block (everything between CSS|JS and `)`) raw.
+// We parse globals out of the meta string after the fact so we can handle
+// single-global, multi-global, and zero-global forms uniformly.
+const ENTRY_RE = /^\*\*([\w\-\.]+\.(?:css|js|glsl\.js))\*\*\s+`([^`]+)`\s+\((CSS|JS)([^)]*)\)\s*[—-]\s*tags:\s*(.+)$/;
 
 function parseIndex(text) {
   const entries = [];
@@ -70,16 +73,20 @@ function parseIndex(text) {
   for (let i = 0; i < lines.length; i++) {
     const m = lines[i].match(ENTRY_RE);
     if (!m) continue;
-    const [, file, rawPath, kind, globalName, tags] = m;
+    const [, file, rawPath, kind, meta, tags] = m;
     const path = rawPath.replace(/\\/g, '/');
     const folder = path.split('/')[0];
     const desc = (lines[i + 1] || '').trim();
+    // Extract every backtick-wrapped identifier from meta as a global
+    const globalMatches = Array.from(meta.matchAll(/`([^`]+)`/g));
+    const globals = globalMatches.map(gm => gm[1]);
     entries.push({
       file,
       path,
       folder,
       kind,                                // 'CSS' | 'JS'
-      global: globalName || null,
+      global: globals[0] || null,
+      globals,                             // all declared globals (may be empty)
       tags: tags.split(/\s+/).filter(Boolean),
       tagsText: tags.trim(),
       desc,

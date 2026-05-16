@@ -60,27 +60,33 @@
   };
 
   // ===== INDEX.md parser =====
+  // Permissive regex: capture meta block raw, then extract any backticked globals
+  // so we handle (CSS) / (JS) / (JS, global: `A`) / (JS, global: `A`, `B`) / (JS, globals: `A`, `B`, `C`)
   function parseIndex(text) {
     var entries = [];
     var lines = text.split('\n');
     for (var i = 0; i < lines.length; i++) {
-      var m = lines[i].match(/^\*\*([\w\-\.]+\.(?:css|js|glsl\.js))\*\*\s+`([^`]+)`\s+\((CSS|JS)(?:,\s*global:\s*`([^`]+)`)?\)\s*[—-]\s*tags:\s*(.+)$/);
+      var m = lines[i].match(/^\*\*([\w\-\.]+\.(?:css|js|glsl\.js))\*\*\s+`([^`]+)`\s+\((CSS|JS)([^)]*)\)\s*[—-]\s*tags:\s*(.+)$/);
       if (!m) continue;
       var file = m[1];
       var rawPath = m[2].replace(/\\/g, '/');
       var kind = m[3];
-      var globalName = m[4] || null;
+      var meta = m[4] || '';
       var tags = m[5].trim();
       var folder = rawPath.split('/')[0];
-      var desc = (lines[i + 1] || '').trim();
-      // Strip leading spaces from desc
-      desc = desc.replace(/^\s+/, '');
+      var desc = (lines[i + 1] || '').trim().replace(/^\s+/, '');
+      // Extract any `Name` from meta as a global
+      var globals = [];
+      var gm;
+      var rx = /`([^`]+)`/g;
+      while ((gm = rx.exec(meta)) !== null) globals.push(gm[1]);
       entries.push({
         folder: folder,
         file: file,
         path: rawPath,
         kind: kind,
-        global: globalName,
+        global: globals[0] || null,
+        globals: globals,
         tags: tags,
         desc: desc,
         key: folder + '/' + file
