@@ -1,0 +1,791 @@
+/* ============================================
+   DEMO APP — Chrome styling for the snippet showcase
+   ============================================
+   Sidebar nav + content area + per-snippet preview cards.
+   Dark theme by default.
+   ============================================ */
+
+:root {
+  --bg: #0a0a14;
+  --bg-2: #0f0f1c;
+  --bg-3: #14141f;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --fg: #f5f5fa;
+  --muted: rgba(255, 255, 255, 0.55);
+  --muted-2: rgba(255, 255, 255, 0.35);
+  --accent: #8b5cf6;
+  --accent-2: #ec4899;
+  --accent-3: #06b6d4;
+  --shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.5);
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.08), transparent 60%),
+    radial-gradient(ellipse at bottom left, rgba(236, 72, 153, 0.06), transparent 60%),
+    var(--bg);
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* === Sidebar === */
+.dapp-sidebar {
+  background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.dapp-brand {
+  padding: 1.2rem 1.25rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+.dapp-brand-logo {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: conic-gradient(from 0deg, var(--accent), var(--accent-2), var(--accent-3), var(--accent));
+  flex-shrink: 0;
+}
+.dapp-brand-text {
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+.dapp-brand-meta {
+  font-size: 0.65rem;
+  color: var(--muted);
+  margin-left: auto;
+  padding: 0.1rem 0.4rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Search */
+.dapp-search {
+  padding: 0.85rem 0.85rem 0.6rem;
+  flex-shrink: 0;
+}
+.dapp-search input {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.18s ease;
+}
+.dapp-search input::placeholder { color: var(--muted-2); }
+.dapp-search input:focus { border-color: var(--accent); }
+
+/* Nav list */
+.dapp-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.3rem 0 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.dapp-nav::-webkit-scrollbar { width: 8px; }
+.dapp-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.dapp-group {
+  padding: 0.45rem 0.85rem 0.15rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.dapp-group-count {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.dapp-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+  border-left: 2px solid transparent;
+}
+.dapp-item:hover { background: rgba(255, 255, 255, 0.04); color: var(--fg); }
+.dapp-item.is-active {
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--fg);
+  border-left-color: var(--accent);
+  font-weight: 500;
+}
+.dapp-item-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--border-strong);
+  flex-shrink: 0;
+}
+.dapp-item.is-active .dapp-item-dot { background: var(--accent); }
+.dapp-item-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.74rem;
+}
+.dapp-item-tag {
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 0.05rem 0.3rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  color: var(--muted-2);
+  text-transform: uppercase;
+}
+
+/* Sidebar footer */
+.dapp-sidebar-foot {
+  padding: 0.85rem 0.95rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.dapp-sidebar-foot a {
+  color: var(--muted);
+  transition: color 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.dapp-sidebar-foot a:hover { color: var(--fg); }
+
+/* === Content === */
+.dapp-content {
+  padding: 0 0 4rem;
+  overflow-x: hidden;
+  min-width: 0;
+}
+
+.dapp-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.95rem 2rem;
+  background: rgba(10, 10, 20, 0.8);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-bottom: 1px solid var(--border);
+}
+.dapp-crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.dapp-crumb-sep {
+  color: var(--muted-2);
+  font-size: 0.7rem;
+}
+.dapp-crumb-current {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.dapp-header-actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.dapp-btn {
+  padding: 0.4rem 0.7rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.dapp-btn:hover { background: rgba(255, 255, 255, 0.12); }
+.dapp-btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-color: transparent;
+  color: #fff;
+}
+
+/* === Landing === */
+.dapp-landing {
+  padding: 4rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.dapp-landing-hero {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.dapp-landing-hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin: 0 0 0.7rem;
+  background: linear-gradient(135deg, #fff 0%, #fff 50%, #8b8b8b 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.05;
+}
+.dapp-landing-hero p {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin: 0 auto;
+  max-width: 600px;
+  line-height: 1.6;
+}
+.dapp-landing-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1.5rem auto 0;
+  padding: 0.65rem 1.2rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.dapp-landing-meta strong { color: var(--fg); font-weight: 700; }
+
+.dapp-landing-ctas {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-top: 2rem;
+}
+.dapp-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.06);
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+.dapp-cta:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-strong);
+}
+.dapp-cta-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-color: transparent;
+  color: #fff;
+  background-size: 200% 200%;
+}
+.dapp-cta-primary:hover { background-position: 100% 50%; }
+.dapp-cta-icon {
+  width: 18px; height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dapp-landing-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.dapp-stat {
+  text-align: center;
+  min-width: 110px;
+}
+.dapp-stat-num {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2), var(--accent-3));
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+.dapp-stat-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  margin-top: 0.3rem;
+}
+
+.dapp-section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 3.5rem 0 1rem;
+  gap: 0.8rem;
+}
+.dapp-section-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.dapp-section-sub {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+
+.dapp-featured {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+}
+.dapp-featured-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+.dapp-featured-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+}
+.dapp-featured-preview {
+  height: 120px;
+  display: grid;
+  place-items: center;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.03), transparent 70%);
+}
+.dapp-featured-body {
+  padding: 0.7rem 0.85rem;
+}
+.dapp-featured-name {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+.dapp-featured-desc {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dapp-landing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 0.9rem;
+  margin-top: 2.5rem;
+}
+
+.dapp-cat-card {
+  display: block;
+  padding: 1.1rem 1.1rem 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.dapp-cat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  background: rgba(255, 255, 255, 0.05);
+}
+.dapp-cat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cat-c, var(--accent)), transparent);
+  opacity: 0.5;
+}
+.dapp-cat-icon {
+  font-size: 1.6rem;
+  margin-bottom: 0.45rem;
+}
+.dapp-cat-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.dapp-cat-count {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-bottom: 0.45rem;
+}
+.dapp-cat-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* === Component view === */
+.dapp-view {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 4rem;
+}
+
+.dapp-view-head {
+  margin-bottom: 1.5rem;
+}
+.dapp-view-title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.4rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.dapp-view-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.dapp-view-path {
+  padding: 0.15rem 0.45rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--fg);
+}
+.dapp-view-pill {
+  padding: 0.1rem 0.45rem;
+  background: rgba(139, 92, 246, 0.18);
+  color: #c4b5fd;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.dapp-view-pill.is-js  { background: rgba(251, 191, 36, 0.18); color: #fcd34d; }
+.dapp-view-pill.is-css { background: rgba(34, 211, 238, 0.18); color: #67e8f9; }
+
+.dapp-view-desc {
+  font-size: 0.95rem;
+  color: var(--fg);
+  margin: 1rem 0 0.4rem;
+  line-height: 1.55;
+}
+.dapp-view-tags {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.dapp-tag {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* Preview area */
+.dapp-preview {
+  margin-top: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.dapp-preview-head {
+  display: flex;
+  align-items: center;
+  padding: 0.55rem 0.85rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.dapp-preview-tabs {
+  display: inline-flex;
+  gap: 0.1rem;
+}
+.dapp-preview-tab {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.dapp-preview-tab:hover { color: var(--fg); background: rgba(255, 255, 255, 0.05); }
+.dapp-preview-tab.is-active {
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.08);
+}
+.dapp-preview-actions {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.dapp-preview-body {
+  padding: 2.5rem 2rem;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.02), transparent 70%);
+}
+.dapp-preview-body.is-dark {
+  background:
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.02), transparent 70%),
+    #050510;
+}
+.dapp-preview-body.is-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+  justify-content: stretch;
+}
+.dapp-preview-body.is-grid > * {
+  align-self: center;
+  justify-self: center;
+}
+
+/* Source pane */
+.dapp-source {
+  display: none;
+  padding: 0;
+  background: #050510;
+}
+.dapp-source.is-open { display: block; }
+.dapp-source pre {
+  margin: 0;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #d4d4dc;
+  max-height: 520px;
+  white-space: pre;
+}
+
+.dapp-empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 2.5rem 1rem;
+}
+.dapp-empty-hint {
+  font-size: 0.75rem;
+  color: var(--muted-2);
+  margin-top: 0.5rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* Folder index — list of all snippets in folder */
+.dapp-folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.7rem;
+  margin-top: 1.5rem;
+}
+.dapp-folder-card {
+  display: block;
+  padding: 0.85rem 0.95rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+.dapp-folder-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.05);
+}
+.dapp-folder-card-name {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: var(--fg);
+}
+.dapp-folder-card-desc {
+  font-size: 0.76rem;
+  color: var(--muted);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.dapp-folder-card-foot {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+/* Loading / error */
+.dapp-spin {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: dapp-spin 0.9s linear infinite;
+  display: inline-block;
+}
+@keyframes dapp-spin { to { transform: rotate(360deg); } }
+
+/* Mobile */
+@media (max-width: 760px) {
+  body { grid-template-columns: 1fr; }
+  .dapp-sidebar {
+    position: fixed;
+    z-index: 100;
+    left: -280px;
+    transition: left 0.3s ease;
+    box-shadow: 8px 0 24px -8px rgba(0, 0, 0, 0.4);
+  }
+  body.is-sidebar-open .dapp-sidebar { left: 0; }
+  .dapp-mobile-toggle {
+    display: inline-flex !important;
+  }
+}
+
+.dapp-mobile-toggle {
+  display: none;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+/* Category color hints */
+.dapp-cat-3d           { --cat-c: #f87171; }
+.dapp-cat-ai           { --cat-c: #67e8f9; }
+.dapp-cat-animations   { --cat-c: #c4b5fd; }
+.dapp-cat-backgrounds  { --cat-c: #fbcfe8; }
+.dapp-cat-blocks       { --cat-c: #fcd34d; }
+.dapp-cat-borders      { --cat-c: #fb7185; }
+.dapp-cat-components   { --cat-c: #8b5cf6; }
+.dapp-cat-data-viz     { --cat-c: #34d399; }
+.dapp-cat-effects      { --cat-c: #ec4899; }
+.dapp-cat-feedback     { --cat-c: #fbbf24; }
+.dapp-cat-interactions { --cat-c: #a5b4fc; }
+.dapp-cat-layout       { --cat-c: #93c5fd; }
+.dapp-cat-media        { --cat-c: #f0abfc; }
+.dapp-cat-micro        { --cat-c: #6ee7b7; }
+.dapp-cat-responsive   { --cat-c: #94a3b8; }
+.dapp-cat-scroll       { --cat-c: #fdba74; }
+.dapp-cat-shaders      { --cat-c: #06b6d4; }
+.dapp-cat-svg          { --cat-c: #d8b4fe; }
+.dapp-cat-transitions  { --cat-c: #fb923c; }
+.dapp-cat-typography   { --cat-c: #84cc16; }
+.dapp-cat-utils        { --cat-c: #64748b; }
