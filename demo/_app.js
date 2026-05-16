@@ -431,26 +431,167 @@
 
   function renderPreviewInto(target, entry, opts) {
     opts = opts || {};
-    // 1. Use custom preview if registered
+    // 1. Use custom preview if registered (hand-crafted for ~40 high-impact files)
     var Previews = window.DemoPreviews || {};
     var fn = Previews[entry.folder + '/' + entry.file] || Previews[entry.file];
     if (fn) {
       try { fn(target, entry, opts); return; }
       catch (e) { console.warn('Preview error for', entry.path, e); }
     }
-    // 2. Default preview
-    renderGenericPreview(target, entry, opts);
+    // 2. Auto-preview: extract Usage block from header, render any HTML found,
+    //    auto-init JS globals on the rendered markup.
+    renderAutoPreview(target, entry, opts);
   }
 
-  function renderGenericPreview(target, entry, opts) {
+  // Extract the Usage block from a source file's header comment.
+  // Looks between `Usage:` and the next section heading (Variants/Modifiers/etc) or block close.
+  function extractUsageBlock(source) {
+    var lines = source.split('\n');
+    var start = -1;
+    for (var i = 0; i < Math.min(lines.length, 200); i++) {
+      if (/^\s*(?:\*\s+)?Usage\s*:\s*$/i.test(lines[i])) { start = i + 1; break; }
+    }
+    if (start === -1) return null;
+    var out = [];
+    for (var j = start; j < lines.length; j++) {
+      var line = lines[j];
+      // Stop at next section heading or end of comment block
+      if (/^\s*(?:\*\s+)?(?:Variants|Modifiers|Methods|States|Sizes|Shape|Behaviors|Modes|Color|Color modes|Frequencies|Color presets|Hooks|Color variants|Special|Decorations|Group|Color modes|Modifiers|Setup|Note|Notes|Params|Parameters|Options|Returns|Examples|Pre-set|Type|Type-based|Sizing|Shapes|Direction)\s*:/i.test(line)) break;
+      if (/^\s*\*\/\s*$/.test(line)) break;
+      if (/^\s*={5,}/.test(line)) break;
+      // Strip "   * " comment prefix and leading "   " indentation (the 5-space block indent inside our comment template)
+      var cleaned = line.replace(/^\s*\*\s?/, '').replace(/^\s{5}/, '').replace(/^\s{4}/, '').replace(/^\s{3}/, '').replace(/^\s{2}/, '');
+      out.push(cleaned);
+    }
+    return out.join('\n').replace(/\s+$/, '');
+  }
+
+  // Find contiguous HTML blocks in extracted Usage text.
+  // Heuristic: lines starting with `<` are HTML; continuation lines (indented or empty)
+  // belong to the current block until a non-HTML line.
+  function extractHtmlBlock(usageText) {
+    if (!usageText) return null;
+    var lines = usageText.split('\n');
+    var blocks = [];
+    var cur = [];
+    var inBlock = false;
+    var openTagsOpen = 0;
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var trimmed = line.trimStart();
+      // Require `<` followed by a tag letter or `!` (comment) — avoids matching JS `<` operators
+      var startsTag = /^<[a-zA-Z!]/.test(trimmed);
+      if (startsTag) {
+        if (!inBlock) { inBlock = true; cur = []; }
+        cur.push(line);
+        // Track unclosed tags to detect multi-line elements
+        openTagsOpen += (line.match(/<[a-zA-Z][^/>]*[^/>]>/g) || []).length;
+        openTagsOpen -= (line.match(/<\/[a-zA-Z][^>]*>/g) || []).length;
+        openTagsOpen -= (line.match(/<[^>]*\/>/g) || []).length;
+      } else if (inBlock && (openTagsOpen > 0 || /^\s+/.test(line))) {
+        // Continuation (inside an open tag) or indented content
+        cur.push(line);
+      } else if (inBlock && line.trim() === '') {
+        // Single blank line — keep adding (could be between siblings)
+        cur.push(line);
+        if (i + 1 < lines.length && !lines[i + 1].trimStart().startsWith('<') && openTagsOpen <= 0) {
+          // End block
+          blocks.push(cur.join('\n'));
+          cur = [];
+          inBlock = false;
+          openTagsOpen = 0;
+        }
+      } else if (inBlock) {
+        blocks.push(cur.join('\n'));
+        cur = [];
+        inBlock = false;
+        openTagsOpen = 0;
+      }
+    }
+    if (cur.length) blocks.push(cur.join('\n'));
+    if (!blocks.length) return null;
+    // Join all blocks with a separator (we'll render them all)
+    return blocks.map(function (b) { return b.trim(); }).filter(Boolean).join('\n\n');
+  }
+
+  // Try to auto-init a JS module on the rendered preview.
+  // Looks for the entry's global (from INDEX) and calls .init/.create/.bind on
+  // the first selector mentioned in the Usage block, or on a child of target.
+  function tryAutoInit(target, entry, usageText) {
+    if (!entry.global || !window[entry.global]) return;
+    var Module = window[entry.global];
+    var methods = ['init', 'bind', 'create', 'attach', 'apply'];
+    // Try to find a selector hint in the usage text — e.g. .init('.foo')
+    var selectorMatch = usageText && usageText.match(/\.\s*(?:init|bind|create|attach)\s*\(\s*['"]([^'"]+)['"]/);
+    var selector = selectorMatch ? selectorMatch[1] : null;
+    var attempt = selector
+      ? (function () { try { return target.querySelector(selector); } catch (e) { return null; } })()
+      : target.firstElementChild;
+    if (!attempt) return;
+    for (var m = 0; m < methods.length; m++) {
+      var fn = Module[methods[m]];
+      if (typeof fn === 'function') {
+        try { fn.call(Module, attempt); return; }
+        catch (e) { /* try next */ }
+      }
+    }
+  }
+
+  function renderAutoPreview(target, entry, opts) {
+    // Placeholder while loading
     target.innerHTML =
-      '<div style="text-align:center;color:rgba(255,255,255,0.65);padding:2rem 1rem;">' +
-        '<div style="font-size:2rem;margin-bottom:0.4rem;">' + (FOLDER_DESCRIPTIONS[entry.folder] && FOLDER_DESCRIPTIONS[entry.folder].icon || '•') + '</div>' +
-        '<div style="font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:0.35rem;">' + esc(entry.file) + '</div>' +
-        '<div style="font-size:0.78rem;max-width:480px;margin:0 auto 0.8rem;line-height:1.5;">' + esc(entry.desc) + '</div>' +
-        '<div style="font-size:0.72rem;color:rgba(255,255,255,0.45);">' +
-          'Open <code style="background:rgba(255,255,255,0.06);padding:0.05rem 0.3rem;border-radius:3px;">' + esc(entry.path) + '</code> for usage examples in the file header.' +
-        '</div>' +
+      '<div style="display:flex;align-items:center;gap:0.5rem;color:rgba(255,255,255,0.5);font-size:0.78rem;padding:1.5rem;">' +
+        '<span class="dapp-spin"></span>' +
+        '<span>Building preview from ' + esc(entry.path) + '…</span>' +
+      '</div>';
+
+    loadSource(entry.path).then(function (source) {
+      if (!source) {
+        return renderFallback(target, entry, null);
+      }
+      var usage = extractUsageBlock(source);
+      var html = extractHtmlBlock(usage);
+
+      if (!html) {
+        // No HTML found — show code preview of Usage block
+        return renderFallback(target, entry, usage);
+      }
+
+      // Render the HTML
+      target.innerHTML =
+        '<div class="dapp-auto-preview" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:0.85rem;">' +
+          '<div class="dapp-auto-stage" style="width:100%;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0.6rem;min-height:60px;">' +
+            html +
+          '</div>' +
+          '<details style="width:100%;max-width:540px;font-size:0.7rem;color:rgba(255,255,255,0.45);">' +
+            '<summary style="cursor:pointer;user-select:none;padding:0.25rem 0;">Show usage source</summary>' +
+            '<pre style="margin:0.3rem 0 0;padding:0.6rem 0.75rem;background:rgba(0,0,0,0.4);border-radius:6px;font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.7rem;line-height:1.5;overflow-x:auto;color:#d4d4dc;">' + esc(usage || html) + '</pre>' +
+          '</details>' +
+        '</div>';
+
+      // Try to auto-initialize the component on the rendered markup
+      var stage = target.querySelector('.dapp-auto-stage');
+      if (stage && entry.kind === 'JS') {
+        // Brief delay to let CSS apply
+        setTimeout(function () { tryAutoInit(stage, entry, usage); }, 30);
+      }
+    }).catch(function () {
+      renderFallback(target, entry, null);
+    });
+  }
+
+  function renderFallback(target, entry, usage) {
+    var icon = (FOLDER_DESCRIPTIONS[entry.folder] && FOLDER_DESCRIPTIONS[entry.folder].icon) || '•';
+    var hasUsage = usage && usage.trim().length;
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.85rem;padding:1.5rem 1rem;text-align:center;width:100%;">' +
+        '<div style="font-size:1.8rem;">' + icon + '</div>' +
+        '<div style="font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.85rem;font-weight:600;color:#fff;">' + esc(entry.file) + '</div>' +
+        '<div style="font-size:0.78rem;color:rgba(255,255,255,0.65);max-width:480px;line-height:1.5;">' + esc(entry.desc) + '</div>' +
+        (hasUsage
+          ? '<pre style="margin:0.4rem 0 0;padding:0.7rem 0.9rem;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.72rem;line-height:1.55;text-align:left;max-width:580px;width:100%;overflow-x:auto;color:#d4d4dc;white-space:pre-wrap;">' + esc(usage) + '</pre>'
+          : '<div style="font-size:0.72rem;color:rgba(255,255,255,0.4);">No usage example in header. Click <b>Source</b> tab for the full file.</div>'
+        ) +
       '</div>';
   }
 
