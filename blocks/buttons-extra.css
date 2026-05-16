@@ -1,0 +1,336 @@
+/* ============================================
+   BUTTONS EXTRA — 20 distinctive button styles not covered elsewhere
+   ============================================
+   Usage:
+     <button class="xbtn xbtn-brutalist">Brutalist</button>
+     <button class="xbtn xbtn-pixel">8-Bit</button>
+
+   Variants: brutalist, retro-pixel, emboss, deboss, sticker, paper, tape,
+   torn, hand-drawn, ink-stamp, neon-frame, glass-deep, lifted, embossed-3d,
+   debossed-3d, sci-fi, terminal, cassette, polaroid, vintage
+   ============================================ */
+
+.xbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1.4rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background: #fff;
+  color: #000;
+  border: 0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Brutalist — thick black border, no rounding, hard shadow */
+.xbtn-brutalist {
+  background: #fde047;
+  color: #000;
+  border: 3px solid #000;
+  border-radius: 0;
+  box-shadow: 6px 6px 0 0 #000;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.xbtn-brutalist:hover  { transform: translate(2px, 2px); box-shadow: 4px 4px 0 0 #000; }
+.xbtn-brutalist:active { transform: translate(6px, 6px); box-shadow: 0 0 0 0 #000; }
+
+/* Retro pixel — 8-bit style */
+.xbtn-retro-pixel {
+  background: #f0a830;
+  color: #000;
+  border: 0;
+  border-radius: 0;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow:
+    inset -3px -3px 0 #b07820,
+    inset 3px 3px 0 #ffd97a;
+  image-rendering: pixelated;
+}
+.xbtn-retro-pixel:active {
+  box-shadow:
+    inset 3px 3px 0 #b07820,
+    inset -3px -3px 0 #ffd97a;
+  transform: translateY(1px);
+}
+
+/* Emboss — raised */
+.xbtn-emboss {
+  background: linear-gradient(180deg, #e8e8ed, #c0c0c8);
+  color: #2a2a35;
+  border-radius: 8px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Deboss — pushed in */
+.xbtn-deboss {
+  background: #d8d8e0;
+  color: #4a4a55;
+  border-radius: 8px;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Sticker — round with white border halo */
+.xbtn-sticker {
+  background: #ec4899;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.75rem 1.5rem;
+  box-shadow:
+    0 0 0 4px #fff,
+    0 0 0 6px #000,
+    0 8px 18px -6px rgba(236, 72, 153, 0.6);
+  font-weight: 800;
+}
+
+/* Paper — slight shadow, soft edges */
+.xbtn-paper {
+  background: #fefcf6;
+  color: #2a2a2a;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.04),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+}
+.xbtn-paper:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); transform: translateY(-1px); }
+
+/* Tape — looks like washi tape */
+.xbtn-tape {
+  background: linear-gradient(90deg, rgba(236, 72, 153, 0.85), rgba(168, 85, 247, 0.85));
+  color: #fff;
+  border-radius: 2px;
+  padding: 0.7rem 1.8rem;
+  position: relative;
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+.xbtn-tape::before,
+.xbtn-tape::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 3px, rgba(0, 0, 0, 0.15) 3px 5px);
+}
+.xbtn-tape::before { left: 0; mask: linear-gradient(90deg, transparent, #000); -webkit-mask: linear-gradient(90deg, transparent, #000); }
+.xbtn-tape::after  { right: 0; mask: linear-gradient(-90deg, transparent, #000); -webkit-mask: linear-gradient(-90deg, transparent, #000); }
+
+/* Torn paper edge */
+.xbtn-torn {
+  background: #fff;
+  color: #000;
+  font-weight: 700;
+  -webkit-mask:
+    radial-gradient(8px at 50% 0, transparent 98%, #000 100%) 50% 0 / 16px 8px repeat-x,
+    radial-gradient(8px at 50% 100%, transparent 98%, #000 100%) 50% 100% / 16px 8px repeat-x,
+    linear-gradient(#000, #000);
+  -webkit-mask-composite: source-over;
+          mask:
+    radial-gradient(8px at 50% 0, transparent 98%, #000 100%) 50% 0 / 16px 8px repeat-x,
+    radial-gradient(8px at 50% 100%, transparent 98%, #000 100%) 50% 100% / 16px 8px repeat-x,
+    linear-gradient(#000, #000);
+  padding: 1.2rem 1.6rem;
+}
+
+/* Hand-drawn — irregular wavy border */
+.xbtn-hand-drawn {
+  background: #fff;
+  color: #000;
+  border: 2.5px solid #000;
+  border-radius: 250px 15px 220px 15px / 15px 220px 15px 250px;
+  font-family: 'Comic Sans MS', 'Comic Neue', cursive;
+  font-weight: 700;
+  transform: rotate(-1deg);
+}
+.xbtn-hand-drawn:hover { transform: rotate(1deg) scale(1.04); }
+
+/* Ink stamp */
+.xbtn-ink-stamp {
+  background: transparent;
+  color: #b91c1c;
+  border: 3px solid #b91c1c;
+  border-radius: 0;
+  font-family: 'Times New Roman', serif;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+  opacity: 0.85;
+  padding: 0.6rem 1.5rem;
+  filter: contrast(1.1);
+  background-image:
+    repeating-linear-gradient(45deg, transparent 0 4px, rgba(185, 28, 28, 0.06) 4px 6px);
+}
+
+/* Neon frame */
+.xbtn-neon-frame {
+  background: #050010;
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  border-radius: 4px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow:
+    0 0 8px #00ffff,
+    inset 0 0 8px rgba(0, 255, 255, 0.2);
+  text-shadow: 0 0 6px #00ffff;
+}
+
+/* Glass deep — thick blur */
+.xbtn-glass-deep {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Lifted — heavy shadow, modern */
+.xbtn-lifted {
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  color: #fff;
+  border-radius: 14px;
+  font-weight: 700;
+  box-shadow:
+    0 10px 30px -6px rgba(139, 92, 246, 0.5),
+    0 2px 4px -2px rgba(0, 0, 0, 0.3);
+}
+.xbtn-lifted:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 16px 40px -8px rgba(139, 92, 246, 0.6),
+    0 4px 8px -2px rgba(0, 0, 0, 0.4);
+}
+
+/* 3D emboss — chunky depth */
+.xbtn-3d-emboss {
+  background: #8b5cf6;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 700;
+  box-shadow:
+    0 4px 0 0 #6d28d9,
+    0 6px 12px -2px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.xbtn-3d-emboss:active { transform: translateY(3px); box-shadow: 0 1px 0 0 #6d28d9; }
+
+/* Sci-fi — angular bracket cut */
+.xbtn-sci-fi {
+  background: #0a0a14;
+  color: #00ffff;
+  border: 1px solid #00ffff;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  clip-path: polygon(8% 0, 100% 0, 100% 70%, 92% 100%, 0 100%, 0 30%);
+  padding: 0.7rem 1.6rem;
+}
+
+/* Terminal — typewriter feel */
+.xbtn-terminal {
+  background: #0a0a14;
+  color: #4ade80;
+  border: 1px solid #4ade80;
+  border-radius: 0;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.6rem 1.3rem;
+}
+.xbtn-terminal::before { content: '$ '; opacity: 0.7; }
+.xbtn-terminal::after { content: '_'; margin-left: 0.2em; animation: xbtn-blink 1s steps(2) infinite; }
+@keyframes xbtn-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+/* Cassette tape */
+.xbtn-cassette {
+  background: linear-gradient(180deg, #2a2a35 0%, #1a1a25 100%);
+  color: #fbbf24;
+  border-radius: 4px;
+  border: 1px solid #44444a;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.65rem 1.6rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 4px 8px -2px rgba(0, 0, 0, 0.4);
+}
+
+/* Polaroid */
+.xbtn-polaroid {
+  background: #fff;
+  color: #000;
+  border-radius: 4px;
+  padding: 0.7rem 1.3rem 1.4rem;
+  font-family: 'Caveat', 'Comic Sans MS', cursive;
+  font-size: 1.1rem;
+  font-weight: 700;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: rotate(-3deg);
+}
+
+/* Vintage rounded */
+.xbtn-vintage {
+  background: #c08454;
+  color: #fefce8;
+  border-radius: 999px;
+  border: 2px solid #6b4423;
+  font-family: Georgia, serif;
+  font-weight: 700;
+  font-style: italic;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.15);
+  padding: 0.6rem 1.5rem;
+}
+
+/* Comic — boldly outlined */
+.xbtn-comic {
+  background: #fde047;
+  color: #000;
+  border: 3px solid #000;
+  border-radius: 8px;
+  font-family: 'Bangers', 'Impact', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 #fff;
+  box-shadow: 4px 4px 0 0 #ec4899;
+}
+.xbtn-comic:active { transform: translate(4px, 4px); box-shadow: 0 0 0 0 #ec4899; }
+
+/* Lo-fi blur */
+.xbtn-lofi {
+  background: linear-gradient(135deg, #a78bfa, #f0abfc);
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  filter: blur(0.2px);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 20px -4px rgba(167, 139, 250, 0.5);
+}

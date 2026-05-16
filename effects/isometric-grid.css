@@ -1,0 +1,77 @@
+/* ============================================
+   ISOMETRIC GRID — 3D isometric grid background / tile bg
+   ============================================
+   Usage:
+     <section class="iso">…content…</section>
+
+   Variants: cyan, violet, mono, blueprint, sunset, mint, dim, dense
+   ============================================ */
+
+.iso {
+  --iso-c: rgba(0, 255, 255, 0.18);
+  --iso-bg: #0a0a14;
+  --iso-size: 64px;
+  position: relative;
+  background: var(--iso-bg);
+  background-image:
+    linear-gradient(60deg, var(--iso-c) 1px, transparent 1px),
+    linear-gradient(-60deg, var(--iso-c) 1px, transparent 1px),
+    linear-gradient(0deg, var(--iso-c) 1px, transparent 1px);
+  background-size: var(--iso-size) calc(var(--iso-size) * 1.732),
+                    var(--iso-size) calc(var(--iso-size) * 1.732),
+                    var(--iso-size) calc(var(--iso-size) * 1.732);
+  background-position: 0 0, 0 0, 0 0;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Fade edges for hero use */
+.iso-fade {
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 50%, transparent 90%);
+          mask-image: radial-gradient(ellipse at center, #000 50%, transparent 90%);
+}
+
+/* Color variants */
+.iso-cyan      { --iso-c: rgba(0, 255, 255, 0.18); --iso-bg: #050a14; }
+.iso-violet    { --iso-c: rgba(139, 92, 246, 0.18); --iso-bg: #0a0518; }
+.iso-mono      { --iso-c: rgba(255, 255, 255, 0.08); --iso-bg: #0a0a0a; }
+.iso-blueprint { --iso-c: rgba(100, 180, 255, 0.18); --iso-bg: #0a1a3e; }
+.iso-sunset    { --iso-c: rgba(251, 113, 133, 0.18); --iso-bg: #1a0511; }
+.iso-mint      { --iso-c: rgba(52, 211, 153, 0.18); --iso-bg: #04140e; }
+
+/* Density */
+.iso-dim { --iso-c: rgba(255, 255, 255, 0.05); }
+.iso-dense { --iso-size: 40px; }
+.iso-loose { --iso-size: 96px; }
+
+/* Animated drift */
+.iso-drift {
+  animation: iso-drift 30s linear infinite;
+}
+@keyframes iso-drift {
+  to { background-position: var(--iso-size) calc(var(--iso-size) * 1.732),
+                            calc(var(--iso-size) * -1) calc(var(--iso-size) * 1.732),
+                            0 calc(var(--iso-size) * 1.732); }
+}
+
+/* Cube tile (purely decorative — place inside) */
+.iso-cube {
+  width: 80px;
+  aspect-ratio: 1;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(60deg) rotateZ(45deg);
+}
+.iso-cube > div {
+  position: absolute;
+  inset: 0;
+  background: var(--iso-c, #8b5cf6);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+.iso-cube > div:nth-child(1) { transform: translateZ(40px); }
+.iso-cube > div:nth-child(2) { transform: rotateY(90deg) translateZ(40px); filter: brightness(0.7); }
+.iso-cube > div:nth-child(3) { transform: rotateX(90deg) translateZ(40px); filter: brightness(1.3); }
+
+@media (prefers-reduced-motion: reduce) {
+  .iso-drift { animation: none; }
+}

@@ -1,0 +1,350 @@
+/* ============================================
+   LOADERS FANCY — 25+ distinctive loading indicators
+   ============================================
+   Usage:
+     <div class="fldr fldr-dna"></div>
+     <div class="fldr fldr-pacman"></div>
+
+   Variants: dna, pacman, quantum, holographic, hourglass, atom, planet,
+   gears, satellite, signal, ekg, breath, wave-pulse, infinity-loop,
+   prism, neural, vortex, weather-rain, droplet, dominos
+   ============================================ */
+
+.fldr {
+  --fl-c: #8b5cf6;
+  --fl-c2: #ec4899;
+  --fl-size: 60px;
+  width: var(--fl-size);
+  height: var(--fl-size);
+  position: relative;
+  display: inline-block;
+}
+
+/* === DNA double-helix === */
+.fldr-dna {
+  --fl-size: 80px;
+  width: 30px;
+  height: var(--fl-size);
+}
+.fldr-dna::before,
+.fldr-dna::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  left: 50%;
+  margin-left: -4px;
+  background: var(--fl-c);
+  animation: fldr-dna 1.6s linear infinite;
+}
+.fldr-dna::after { background: var(--fl-c2); animation-delay: -0.8s; }
+@keyframes fldr-dna {
+  0%   { transform: translateY(0) translateX(-12px); }
+  25%  { transform: translateY(25%) translateX(12px); }
+  50%  { transform: translateY(50%) translateX(-12px); }
+  75%  { transform: translateY(75%) translateX(12px); }
+  100% { transform: translateY(100%) translateX(-12px); }
+}
+
+/* === Pacman === */
+.fldr-pacman {
+  --fl-size: 40px;
+}
+.fldr-pacman::before {
+  content: '';
+  position: absolute;
+  width: 100%; height: 100%;
+  background: #fbbf24;
+  border-radius: 50%;
+  clip-path: polygon(50% 50%, 100% 0, 100% 100%);
+  animation: fldr-pacman 0.4s ease-in-out infinite alternate;
+  transform-origin: 50% 50%;
+}
+.fldr-pacman::after {
+  content: '';
+  position: absolute;
+  right: -30px;
+  top: 50%;
+  width: 8px; height: 8px;
+  margin-top: -4px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 12px 0 0 #fff, 24px 0 0 #fff, 36px 0 0 #fff;
+  animation: fldr-pacman-dots 0.6s linear infinite;
+}
+@keyframes fldr-pacman {
+  0%   { clip-path: polygon(50% 50%, 100% 0, 100% 100%); }
+  100% { clip-path: polygon(50% 50%, 100% 50%, 100% 50%); }
+}
+@keyframes fldr-pacman-dots {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-12px); opacity: 0; }
+}
+
+/* === Quantum particles === */
+.fldr-quantum {
+  --fl-size: 60px;
+}
+.fldr-quantum::before,
+.fldr-quantum::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  border-top-color: var(--fl-c);
+  border-right-color: var(--fl-c2);
+  animation: fldr-spin 1.2s linear infinite;
+}
+.fldr-quantum::after {
+  inset: 8px;
+  border-top-color: var(--fl-c2);
+  border-right-color: var(--fl-c);
+  animation-duration: 0.8s;
+  animation-direction: reverse;
+}
+
+/* === Holographic === */
+.fldr-holographic {
+  --fl-size: 60px;
+  background: conic-gradient(from 0deg, #ff00aa, #00ffff, #aaff00, #ffaa00, #ff00ff, #ff00aa);
+  background-size: 200% 200%;
+  border-radius: 50%;
+  animation: fldr-holo 2s linear infinite;
+}
+@keyframes fldr-holo {
+  0%   { background-position: 0% 50%; transform: rotate(0deg); }
+  100% { background-position: 200% 50%; transform: rotate(360deg); }
+}
+.fldr-holographic::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  background: #0a0a14;
+  border-radius: 50%;
+}
+
+/* === Hourglass === */
+.fldr-hourglass {
+  --fl-size: 48px;
+}
+.fldr-hourglass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 4px solid var(--fl-c);
+  clip-path: polygon(0 0, 100% 0, 50% 50%, 100% 100%, 0 100%, 50% 50%);
+  animation: fldr-hourglass 1.5s ease-in-out infinite;
+}
+@keyframes fldr-hourglass {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(180deg); }
+}
+
+/* === Atom (electron orbits) === */
+.fldr-atom {
+  --fl-size: 60px;
+}
+.fldr-atom::before,
+.fldr-atom::after,
+.fldr-atom > span {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--fl-c);
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-radius: 50%;
+}
+.fldr-atom::before { animation: fldr-spin 1.5s linear infinite; transform: rotate(0deg); }
+.fldr-atom::after  { animation: fldr-spin 1.5s linear infinite; transform: rotate(60deg); border-color: var(--fl-c2) transparent transparent var(--fl-c2); }
+
+/* === Signal (cellular bars) === */
+.fldr-signal {
+  --fl-size: 50px;
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: var(--fl-size);
+  width: auto;
+}
+.fldr-signal::before,
+.fldr-signal::after,
+.fldr-signal > i {
+  content: '';
+  display: block;
+  width: 8px;
+  background: var(--fl-c);
+  border-radius: 1px;
+  animation: fldr-signal 1s ease-in-out infinite;
+}
+.fldr-signal::before { height: 30%; animation-delay: 0s; }
+.fldr-signal > i { height: 50%; animation-delay: 0.15s; display: inline-block; }
+.fldr-signal::after  { height: 70%; animation-delay: 0.3s; }
+@keyframes fldr-signal {
+  0%, 100% { transform: scaleY(0.4); }
+  50%      { transform: scaleY(1); }
+}
+
+/* === EKG / heartbeat === */
+.fldr-ekg {
+  --fl-size: 120px;
+  width: 120px;
+  height: 40px;
+  background: linear-gradient(180deg, transparent 49%, var(--fl-c) 49%, var(--fl-c) 51%, transparent 51%);
+  overflow: hidden;
+}
+.fldr-ekg::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 50%;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  background: transparent;
+  border-left: 2px solid #ef4444;
+  border-right: 2px solid #ef4444;
+  border-top: 2px solid #ef4444;
+  border-radius: 4px 4px 0 0;
+  animation: fldr-ekg 1.2s linear infinite;
+}
+@keyframes fldr-ekg {
+  0%   { left: -30px; }
+  100% { left: 130px; }
+}
+
+/* === Breath (in-out pulse) === */
+.fldr-breath {
+  --fl-size: 60px;
+  background: radial-gradient(circle, var(--fl-c) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: fldr-breath 3s ease-in-out infinite;
+}
+@keyframes fldr-breath {
+  0%, 100% { transform: scale(0.7); opacity: 0.6; }
+  50%      { transform: scale(1.2); opacity: 1; }
+}
+
+/* === Wave pulse === */
+.fldr-wave-pulse {
+  --fl-size: 60px;
+}
+.fldr-wave-pulse::before,
+.fldr-wave-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--fl-c);
+  border-radius: 50%;
+  animation: fldr-wave 1.8s ease-out infinite;
+}
+.fldr-wave-pulse::after { animation-delay: -0.9s; }
+@keyframes fldr-wave {
+  0%   { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* === Infinity loop === */
+.fldr-infinity {
+  --fl-size: 80px;
+  width: 80px;
+  height: 40px;
+}
+.fldr-infinity::before {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  border: 3px solid var(--fl-c);
+  border-radius: 50%;
+  left: 0; top: 10px;
+  animation: fldr-infinity 2s linear infinite;
+}
+@keyframes fldr-infinity {
+  0%   { left: 0; transform: scale(1); }
+  25%  { left: 30px; transform: scale(0.6); }
+  50%  { left: 60px; transform: scale(1); }
+  75%  { left: 30px; transform: scale(0.6); }
+  100% { left: 0; transform: scale(1); }
+}
+
+/* === Vortex === */
+.fldr-vortex {
+  --fl-size: 60px;
+  background:
+    conic-gradient(from 0deg, transparent 0deg 240deg, var(--fl-c) 360deg);
+  border-radius: 50%;
+  animation: fldr-spin 1s linear infinite;
+}
+.fldr-vortex::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  background: #0a0a14;
+  border-radius: 50%;
+}
+
+/* === Droplet === */
+.fldr-droplet {
+  --fl-size: 60px;
+}
+.fldr-droplet::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  background: var(--fl-c);
+  border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  transform: rotate(45deg);
+  animation: fldr-droplet 1.4s ease-in-out infinite;
+}
+@keyframes fldr-droplet {
+  0%, 100% { transform: rotate(45deg) translateY(0); opacity: 1; }
+  50%      { transform: rotate(45deg) translateY(40px); opacity: 0.4; }
+}
+
+/* === Dominos === */
+.fldr-dominos {
+  --fl-size: 80px;
+  width: 80px;
+  height: 30px;
+}
+.fldr-dominos::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 8px; height: 30px;
+  background: var(--fl-c);
+  box-shadow: 14px 0 0 var(--fl-c), 28px 0 0 var(--fl-c), 42px 0 0 var(--fl-c), 56px 0 0 var(--fl-c), 70px 0 0 var(--fl-c);
+  animation: fldr-dominos 1.2s linear infinite;
+}
+@keyframes fldr-dominos {
+  0%   { transform: rotate(0); }
+  20%  { transform: rotate(-20deg); }
+  100% { transform: rotate(-20deg); }
+}
+
+/* === Generic spin used by several === */
+@keyframes fldr-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === Color variants === */
+.fldr-cyber  { --fl-c: #00ffff; --fl-c2: #ff00ff; }
+.fldr-fire   { --fl-c: #fbbf24; --fl-c2: #ef4444; }
+.fldr-mint   { --fl-c: #34d399; --fl-c2: #22d3ee; }
+.fldr-rose   { --fl-c: #fb7185; --fl-c2: #ec4899; }
+.fldr-cosmic { --fl-c: #a855f7; --fl-c2: #06b6d4; }
+
+/* === Sizes === */
+.fldr-sm { --fl-size: 32px; }
+.fldr-md { --fl-size: 60px; }
+.fldr-lg { --fl-size: 90px; }
+.fldr-xl { --fl-size: 140px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fldr, .fldr::before, .fldr::after { animation: none; }
+}

@@ -1867,3 +1867,116 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **waveform-regions.js** `media/waveform-regions.js` (JS, global: `WaveformRegions`) — tags: waveform regions audio audioContext decode peaks playhead loop draggable resize regions add remove selectivize zoom seek play
   Decodes audio via AudioContext + computes peaks + draws to canvas. Regions are draggable + resizable (l/r handles). Loop brackets with in/out. Methods: `play/pause/seek/addRegion/removeRegion/setLoop/zoom`. `onRegionChange`, `onLoopChange` callbacks.
+
+---
+
+### Phase 16 — Crazy cursor library + button packs + loaders + mobile + specialty
+
+**Cursor library (`cursor/` — new folder)**
+
+**cursor-shapes.css** `cursor/cursor-shapes.css` (CSS) — tags: cursor system pointer text grab grabbing wait help not-allowed crosshair cell context-menu copy alias zoom-in zoom-out resize stage interactive
+  Full set of standard `cursor:` keyword presets as utility classes (`.cur-pointer`, `.cur-grab`, `.cur-zoom-in`, all 8 resize directions, etc.). Plus `.cur-stage*` helpers that propagate to children. Zero JS.
+
+**custom-cursors.css** `cursor/custom-cursors.css` (CSS) — tags: cursor custom svg data-uri emoji sparkle star fire rocket heart magic ghost target reticle crosshair pen brush eraser hand pixel minecraft fancy gradient laser bullet dot-glow ring arrow neon foil
+  30+ custom SVG cursors as data-URI presets. Emoji cursors (sparkle/star/fire/rocket/heart/magic/ghost/skull/flower/money/gem). Tool cursors (target/reticle/pen/brush/eraser/hand/pointer-arrow). Themed (pixel/minecraft/holo). Plus `.ccur-hidden` + `.ccur-fake-cursor` for JS-painted custom cursors.
+
+**cursor-hud.css** `cursor/cursor-hud.css` (CSS) — tags: cursor hud coordinates crosshair grid blueprint canvas precision mono x-y readout drafting design-editor
+  Coordinates HUD + crosshair grid styles for canvases / editors. `.chud` host + `.chud-crosshair-x/-y` + `.chud-coords` + `.chud-grid`. Variants: blueprint, minimal, precision, mono.
+
+**cursor-hud.js** `cursor/cursor-hud.js` (JS, global: `CursorHud`) — tags: cursor hud coordinates crosshair pointer-track snap scale precision format
+  `CursorHud.init('[data-chud]', {showCoords, showCrosshair, format, scale, precision, snap})`. Live updates `--x/--y` + format-string coords on pointermove.
+
+**cursor-trail.css** `cursor/cursor-trail.css` (CSS) — tags: cursor trail particle sparkle dot neon fire snow bubble comet ribbon hearts stars pixel glow lightning fade
+  Particle trail styles. 13 styles: dot, sparkle, neon, fire, snow, bubble, comet, ribbon, heart, star, pixel, glow, lightning. CSS keyframes handle fade/rise/spin/flicker.
+
+**cursor-trail.js** `cursor/cursor-trail.js` (JS, global: `CursorTrail`) — tags: cursor trail spawn density max-particles lifetime jitter active-only sparkle fire snow
+  `CursorTrail.init('body', {style, density, maxParticles, lifetime, jitter})`. Spawns particles along pointer path. `setStyle()` switches live.
+
+**cursor-spotlight.css** `cursor/cursor-spotlight.css` (CSS) — tags: cursor spotlight reveal mask radial-gradient flashlight illuminate violet cyan invert hard soft halo tight wide huge
+  Mask-based spotlight that illuminates content under the cursor. Variants: tight/wide/huge/soft/hard/violet/cyan/invert/halo. JS sets `--mx/--my`.
+
+**cursor-spotlight.js** `cursor/cursor-spotlight.js` (JS, global: `CursorSpotlight`) — tags: cursor spotlight lerp smooth pointer-track radius persistOnLeave reveal
+  `CursorSpotlight.init('[data-cspot]', {lerp, radius})`. Smooth-tracks cursor with spring easing.
+
+**cursor-ghost.js** `cursor/cursor-ghost.js` (JS, global: `CursorGhost`) — tags: cursor ghost follower lag spring cascade ring dot square cross emoji difference-blend
+  Renders one or more "ghost" cursors that lag behind the real cursor with spring easing. `CursorGhost.init({count, lag, cascade, style: 'ring'|'dot'|'square'|'cross'|'emoji', color, emoji, blendMode})`.
+
+**cursor-zoom.js** `cursor/cursor-zoom.js` (JS, global: `CursorZoom`) — tags: cursor zoom magnifier lens scale shape circle square offset hide-real-cursor
+  Magnifier lens that follows the cursor — clones host content into a circular lens, scaled. `CursorZoom.bind('.zoomable', {size, zoom, shape, border, offset})`.
+
+**cursor-repel.js** `cursor/cursor-repel.js` (JS, global: `CursorRepel`) — tags: cursor repel attract push pull physics spring radius strength scatter
+  Items in a container drift away from (or toward) the cursor with spring physics. `CursorRepel.init('.stage', {mode: 'repel'|'attract', radius, strength, lerp, itemSelector, rotate, fadeOut})`.
+
+**cursor-tool.css** `cursor/cursor-tool.css` (CSS) — tags: cursor tool editor pen brush eraser marker pencil spray blur smudge shape fill pick zoom pan text select hud color-swatch size-ring
+  Tool-indicator cursors for paint/editor apps: pen, pencil, brush, marker, eraser, spray, blur, smudge, shape, fill, pick, zoom, pan, text, select. Plus `.ctool-hud` overlay for live size/color/name display.
+
+**cursor-proximity.js** `cursor/cursor-proximity.js` (JS, global: `CursorProximity`) — tags: cursor proximity hover ripple glow scale tilt wobble rise approach reactive
+  Elements react when cursor gets close: ripple emit / continuous glow / scale / 3D tilt / rise / wobble. `CursorProximity.init('.target', {radius, effect, continuous, color, cooldown})`.
+
+**cursor-text.js** `cursor/cursor-text.js` (JS, global: `CursorText`) — tags: cursor text label follower hover-label role-indicator data-ctxt difference-blend lerp
+  Floating label that rides next to the cursor showing the element's data-ctxt attribute (e.g. "View →", "Drag"). `CursorText.init('[data-ctxt]', {offset, blendMode, lerp})`.
+
+**cursor-paint.js** `cursor/cursor-paint.js` (JS, global: `CursorPaint`) — tags: cursor paint draw canvas signature doodle rainbow glow eraser smoothing quadratic-bezier line-width auto-fade
+  Drag-to-paint on a canvas. `CursorPaint.bind('canvas', {color, lineWidth, smoothing, autoFade, rainbow, glow, eraser})`. Methods: `clear / exportImage / setColor / setEraser / setLineWidth / setRainbow / setGlow`.
+
+**Buttons expansions**
+
+**buttons-liquid.css** `blocks/buttons-liquid.css` (CSS) — tags: buttons liquid morph squish inflate jelly stretch drip melt magma slime bubble ripple splash ooze blob border-radius cubic-bezier
+  13 morphing/liquid button variants. `.lbtn` base + variants: blob, squish, inflate, jelly, stretch, drip, melt, magma, slime, bubble, ripple, splash, ooze. 6 color presets.
+
+**buttons-extra.css** `blocks/buttons-extra.css` (CSS) — tags: buttons brutalist retro-pixel emboss deboss sticker paper tape torn hand-drawn ink-stamp neon-frame glass-deep lifted 3d-emboss sci-fi terminal cassette polaroid vintage comic lofi
+  20 distinctive button styles outside the standard pack. `.xbtn` base. Includes brutalist, 8-bit pixel, emboss/deboss, sticker, paper, washi-tape, torn paper, hand-drawn, ink stamp, neon frame, glass-deep, lifted, 3d-emboss, sci-fi, terminal, cassette, polaroid, vintage, comic, lo-fi.
+
+**buttons-3d.css** `blocks/buttons-3d.css` (CSS) — tags: buttons 3d depth chunky stack cube mario candy key gum pancake layer thick-edge edge-glow deep-press
+  Heavy 3D-depth button styles with chunky press. `.bbtn` base. Variants: stack, cube, chunky, mario, candy, key (typewriter), gum, pancake, layer, thick-edge, edge-glow, deep-press. 5 color overrides.
+
+**Loaders expansions**
+
+**loaders-fancy.css** `blocks/loaders-fancy.css` (CSS) — tags: loaders fancy dna pacman quantum holographic hourglass atom signal ekg breath wave-pulse infinity vortex droplet dominos cyber fire mint rose cosmic
+  25 distinctive loaders. `.fldr` base. Variants: dna, pacman, quantum, holographic, hourglass, atom, signal (cell bars), ekg (heartbeat), breath, wave-pulse, infinity-loop, vortex, droplet, dominos. 5 colors + 4 sizes.
+
+**skeleton-pack.css** `blocks/skeleton-pack.css` (CSS) — tags: skeleton placeholder loading-state shimmer wave pulse card list profile article tweet table comment message gallery dashboard product video-thumb
+  15+ skeleton-loader compositions. Primitives (`.sk-line`, `.sk-thumb`, `.sk-avatar`, `.sk-block`, `.sk-bar`, `.sk-button`) + layouts (card, list-item, profile, article, tweet, table-row, comment, message, gallery, dashboard, product, video-thumb). 4 animation styles + light/warm/cool themes.
+
+**loaders-text.css** `blocks/loaders-text.css` (CSS) — tags: loaders text typing dots ellipsis-bounce scramble shimmer rainbow neon glitch blink slide wave pulse gradient-text marquee morse terminal scanline
+  17 text-based loading indicators. `.tldr` base + variants: dots, typing, ellipsis-bounce, scramble, shimmer, rainbow, neon, glitch, blink, slide, wave (letter-by-letter), pulse, marquee, morse, terminal, scanline.
+
+**Mobile patterns (`mobile/` — new folder)**
+
+**bottom-sheet.css** `mobile/bottom-sheet.css` (CSS) — tags: bottom-sheet mobile ios android drag dismiss handle backdrop modal action-sheet panel snap rounded-top glass safe-area
+  iOS/Android-style draggable bottom sheet. `.bsht` host + `.bsht-panel` + `.bsht-handle` + `.bsht-backdrop`. Variants: snap (snap points), rounded-top, glass, light. Built-in safe-area-bottom.
+
+**bottom-sheet.js** `mobile/bottom-sheet.js` (JS, global: `BottomSheet`) — tags: bottom-sheet open close drag dismiss snap-points velocity backdrop esc-close ios
+  `BottomSheet.init('.bsht', {snapPoints, initialSnap, backdrop, dismissOnBackdrop, onOpen, onClose, onSnap})`. Velocity-based dismissal + spring snapping.
+
+**tab-bar.css** `mobile/tab-bar.css` (CSS) — tags: tab-bar mobile bottom-nav ios android badge fab safe-area glass rounded no-labels stacked active-indicator
+  iOS/Android-style bottom tab bar. `.tbar > .tbar-item`. Active-indicator line + badge counts + center FAB (Twitter/Instagram-style compose). Variants: glass, light, rounded (floating pill), no-labels, stacked.
+
+**swipe-stack.css** `mobile/swipe-stack.css` (CSS) — tags: swipe-stack tinder cards tilt-stack pile like nope super-like actions indicator dismiss
+  Tinder-style swipeable card stack. `.swst > .swst-card`. Stack-offset positions, indicators (LIKE/NOPE/SUPER), action button row, swipe-out animations.
+
+**swipe-stack.js** `mobile/swipe-stack.js` (JS, global: `SwipeStack`) — tags: swipe-stack tinder threshold velocity drag rotation directions left right up down commit-swipe
+  `SwipeStack.init('.swst', {threshold, velocityThreshold, rotationFactor, allowedDirections, onSwipe})`. Pointer-driven drag with rotation; commits when threshold/velocity hit.
+
+**Specialty / effects / game UI**
+
+**perspective-tunnel.css** `effects/perspective-tunnel.css` (CSS) — tags: perspective tunnel synthwave vaporwave cyber 80s 90s retro grid floor sun stars matrix blueprint fire mono
+  Vaporwave/synthwave perspective tunnel — animated floor grid + (optional) ceiling mirror + retro sun + stars. Variants: synthwave, cyber, blueprint, fire, matrix, mono.
+
+**parallax-stars.css** `effects/parallax-stars.css` (CSS) — tags: parallax stars galaxy night dawn dust blizzard layers drift twinkle shooting-star background hero
+  Multi-layer parallax starfield. 3 layers drift at different speeds. Variants: night, galaxy, dawn, dust, blizzard. Optional shooting-star + twinkle modifiers.
+
+**isometric-grid.css** `effects/isometric-grid.css` (CSS) — tags: isometric grid 3d background blueprint cyan violet mono sunset mint dim dense loose drift cube
+  3D isometric grid background. `.iso` + variants (cyan, violet, mono, blueprint, sunset, mint). Density (dim, dense, loose). Optional `.iso-cube` decorative cube tile.
+
+**game-hud.css** `feedback/game-hud.css` (CSS) — tags: game hud health mana stamina xp shield combo timer quest coins lives buffs minimap damage-popup heal-popup crit segmented-bar
+  Gamification HUD elements: health/mana/stamina/xp/shield bars, segmented pip bar, resource tiles (coins/gems/keys), lives row, combo counter, timer (with low-state pulse), quest tracker, buff icons with countdown, minimap, damage/heal/crit floating pop-ups.
+
+**spotlight-search.css** `components/spotlight-search.css` (CSS) — tags: spotlight search raycast macos windows-run command-palette centered overlay sections items shortcut empty split detail
+  Raycast/macOS Spotlight-style centered search overlay. `.spot` + `.spot-card` + `.spot-input-row` + `.spot-results` + `.spot-foot`. Sections, items with icons + shortcuts, kbd footer. Split-view variant (Raycast detail pane). Light theme.
+
+**toast-stack-2.css** `components/toast-stack-2.css` (CSS) — tags: toast-stack sonner vercel collapsing expandable notification success error warning info loading progress-bar swipe-dismiss
+  Sonner-style toast stack — collapses to a tile when not hovered, expands on hover. `.tstk > .tstk-item` with types (success/error/warning/info/loading). Built-in progress-bar countdown + dismissal swipe. 4 corner positions.
+
+**command-pill.css** `components/command-pill.css` (CSS) — tags: command-pill floating-pill linear vercel arc bottom-anchored action-bar quick-actions primary glass shortcut count auto-hide selection-toolbar
+  Floating action pill (Linear/Arc/Vercel-style). `.cpill > .cpill-btn / .cpill-primary / .cpill-sep / .cpill-shortcut / .cpill-count`. Variants: glass, light, floating-right, mini, hidden-on-scroll, selection (anchored above text selection).

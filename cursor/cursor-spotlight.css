@@ -1,0 +1,114 @@
+/* ============================================
+   CURSOR SPOTLIGHT — Illuminates content under the cursor (mask-based)
+   ============================================
+   Companion `cursor-spotlight.js` sets `--mx` / `--my` CSS variables on the host.
+
+   Usage:
+     <section class="cspot" data-cspot>
+       <!-- content is dim except where the cursor is -->
+     </section>
+
+   Variants:
+     cspot              (default — dark overlay, content illuminated)
+     cspot-invert       (light overlay, content darkened around cursor)
+     cspot-tight        — small spotlight (120px)
+     cspot-wide         — wide spotlight (480px)
+     cspot-colored      — colored spotlight bleed
+     cspot-soft         — soft falloff
+   ============================================ */
+
+.cspot {
+  --mx: 50%;
+  --my: 50%;
+  --cs-r: 280px;
+  --cs-color: rgba(0, 0, 0, 0.85);
+  --cs-mix: rgba(255, 255, 255, 0.05);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.cspot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--cs-color);
+  -webkit-mask-image: radial-gradient(circle var(--cs-r) at var(--mx) var(--my), transparent 0%, transparent 30%, #000 95%);
+          mask-image: radial-gradient(circle var(--cs-r) at var(--mx) var(--my), transparent 0%, transparent 30%, #000 95%);
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+
+/* Tint variant — colored bleed in spotlight area */
+.cspot-colored::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle var(--cs-r) at var(--mx) var(--my), rgba(139, 92, 246, 0.18), transparent 80%);
+  mix-blend-mode: screen;
+}
+
+.cspot > * { position: relative; z-index: 0; }
+
+/* Sizes */
+.cspot-tight  { --cs-r: 120px; }
+.cspot-wide   { --cs-r: 480px; }
+.cspot-huge   { --cs-r: 720px; }
+
+/* Soft falloff (bigger gradient) */
+.cspot-soft::before {
+  -webkit-mask-image: radial-gradient(circle var(--cs-r) at var(--mx) var(--my), transparent 0%, rgba(0,0,0,0.4) 60%, #000 95%);
+          mask-image: radial-gradient(circle var(--cs-r) at var(--mx) var(--my), transparent 0%, rgba(0,0,0,0.4) 60%, #000 95%);
+}
+
+/* Color variants */
+.cspot-violet { --cs-color: rgba(0, 0, 0, 0.9); }
+.cspot-violet::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle calc(var(--cs-r) * 0.7) at var(--mx) var(--my), rgba(139, 92, 246, 0.22), transparent 80%);
+  mix-blend-mode: screen;
+}
+.cspot-cyan::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle calc(var(--cs-r) * 0.7) at var(--mx) var(--my), rgba(34, 211, 238, 0.2), transparent 80%);
+  mix-blend-mode: screen;
+}
+
+/* Invert — light overlay, dark spot */
+.cspot-invert {
+  --cs-color: rgba(255, 255, 255, 0.85);
+}
+.cspot-invert::before {
+  -webkit-mask-image: radial-gradient(circle var(--cs-r) at var(--mx) var(--my), #000 0%, #000 30%, transparent 95%);
+          mask-image: radial-gradient(circle var(--cs-r) at var(--mx) var(--my), #000 0%, #000 30%, transparent 95%);
+}
+
+/* Hard edge (flashlight beam) */
+.cspot-hard::before {
+  -webkit-mask-image: radial-gradient(circle var(--cs-r) at var(--mx) var(--my), transparent 0%, transparent 70%, #000 70%);
+          mask-image: radial-gradient(circle var(--cs-r) at var(--mx) var(--my), transparent 0%, transparent 70%, #000 70%);
+}
+
+/* Rim halo around spot edge */
+.cspot-halo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle var(--cs-r) at var(--mx) var(--my),
+    transparent 0%, transparent 50%,
+    rgba(255, 255, 255, 0.18) 70%, rgba(255, 255, 255, 0.05) 80%, transparent 90%);
+}

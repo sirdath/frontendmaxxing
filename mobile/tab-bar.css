@@ -1,0 +1,160 @@
+/* ============================================
+   TAB BAR — iOS / Android-style bottom navigation
+   ============================================
+   Usage:
+     <nav class="tbar">
+       <a class="tbar-item is-active" href="#home"><span class="tbar-ico">🏠</span><span class="tbar-label">Home</span></a>
+       <a class="tbar-item" href="#search"><span class="tbar-ico">🔍</span><span class="tbar-label">Search</span></a>
+       <a class="tbar-item tbar-fab" href="#new"><span class="tbar-ico">+</span></a>
+       <a class="tbar-item" href="#inbox"><span class="tbar-ico">📨</span><span class="tbar-label">Inbox<span class="tbar-badge">3</span></span></a>
+       <a class="tbar-item" href="#profile"><span class="tbar-ico">👤</span><span class="tbar-label">Me</span></a>
+     </nav>
+
+   Variants:
+     tbar-glass, tbar-light, tbar-rounded (floating pill),
+     tbar-no-labels (icons only), tbar-stacked
+   ============================================ */
+
+.tbar {
+  --tb-bg: rgba(20, 20, 30, 0.95);
+  --tb-fg: rgba(255, 255, 255, 0.55);
+  --tb-fg-active: #ffffff;
+  --tb-accent: #8b5cf6;
+  --tb-border: rgba(255, 255, 255, 0.08);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  background: var(--tb-bg);
+  border-top: 1px solid var(--tb-border);
+  padding: 0.4rem 0 calc(env(safe-area-inset-bottom, 0) + 0.4rem);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
+.tbar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.45rem 0.3rem;
+  color: var(--tb-fg);
+  text-decoration: none;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  position: relative;
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+.tbar-item.is-active {
+  color: var(--tb-fg-active);
+}
+.tbar-item.is-active .tbar-ico {
+  transform: scale(1.12);
+  color: var(--tb-accent);
+}
+
+.tbar-ico {
+  font-size: 1.2rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  transition: transform 0.18s ease, color 0.18s ease;
+  position: relative;
+}
+
+.tbar-label {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+
+.tbar-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 4px;
+  background: #f87171;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--tb-bg);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Active indicator (line on top) */
+.tbar-item.is-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 30%; right: 30%;
+  height: 2px;
+  background: var(--tb-accent);
+  border-radius: 0 0 2px 2px;
+}
+
+/* Center FAB (Instagram / Twitter compose-style) */
+.tbar-fab {
+  position: relative;
+  margin: 0 0.25rem;
+}
+.tbar-fab .tbar-ico {
+  background: linear-gradient(135deg, var(--tb-accent), #ec4899);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  margin-top: -16px;
+  box-shadow: 0 8px 16px -4px rgba(139, 92, 246, 0.5);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.tbar-fab .tbar-label { display: none; }
+
+/* Variants */
+.tbar-no-labels .tbar-label { display: none; }
+.tbar-no-labels .tbar-item { gap: 0; }
+
+.tbar-rounded {
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  border-radius: 28px;
+  border: 1px solid var(--tb-border);
+  padding: 0.4rem 0.6rem calc(env(safe-area-inset-bottom, 0) + 0.4rem);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.4);
+}
+.tbar-rounded .tbar-item.is-active::before { display: none; }
+.tbar-rounded .tbar-item.is-active .tbar-label,
+.tbar-rounded .tbar-item.is-active .tbar-ico {
+  color: var(--tb-accent);
+}
+
+.tbar-light {
+  --tb-bg: rgba(255, 255, 255, 0.97);
+  --tb-fg: rgba(0, 0, 0, 0.55);
+  --tb-fg-active: #000;
+  --tb-border: rgba(0, 0, 0, 0.08);
+}
+
+.tbar-glass {
+  --tb-bg: rgba(20, 20, 30, 0.55);
+}
+
+.tbar-stacked .tbar-item { flex-direction: row; gap: 0.4rem; justify-content: flex-start; padding-left: 1rem; }
+.tbar-stacked { flex-direction: column; padding: 0.5rem 0; }

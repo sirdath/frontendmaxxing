@@ -1,0 +1,273 @@
+/* ============================================
+   LOADERS TEXT — Text-based loading indicators ("Loading…")
+   ============================================
+   Usage:
+     <span class="tldr tldr-dots">Loading</span>
+     <span class="tldr tldr-typing">Thinking</span>
+     <span class="tldr tldr-rainbow">Working</span>
+
+   Variants: dots, typing, ellipsis-bounce, scramble, shimmer, rainbow,
+   neon, glitch, blink, slide, wave, pulse, gradient-text, marquee,
+   morse, terminal, scanline
+   ============================================ */
+
+.tldr {
+  display: inline-flex;
+  align-items: center;
+  font: inherit;
+  color: inherit;
+  position: relative;
+}
+
+/* Dots: "Loading..." → "Loading.." → "Loading." */
+.tldr-dots::after {
+  content: '...';
+  display: inline-block;
+  width: 1.2em;
+  text-align: left;
+  overflow: hidden;
+  animation: tldr-dots 1.4s steps(4) infinite;
+}
+@keyframes tldr-dots {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+  100% { content: ''; }
+}
+
+/* Typing: blinking cursor */
+.tldr-typing::after {
+  content: '▌';
+  margin-left: 0.15em;
+  animation: tldr-blink 1s steps(2) infinite;
+  color: currentColor;
+}
+@keyframes tldr-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Ellipsis bounce — 3 dots bouncing */
+.tldr-ellipsis-bounce::after {
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 1em;
+  vertical-align: bottom;
+  background:
+    radial-gradient(circle 4px at 5px 50%, currentColor 99%, transparent 100%),
+    radial-gradient(circle 4px at 15px 50%, currentColor 99%, transparent 100%),
+    radial-gradient(circle 4px at 25px 50%, currentColor 99%, transparent 100%);
+  background-size: 30px 100%;
+  background-repeat: no-repeat;
+  margin-left: 0.4em;
+  animation: tldr-bounce-dots 1s ease-in-out infinite;
+}
+@keyframes tldr-bounce-dots {
+  0%, 100% { background-position: 0 0, 0 0, 0 0; }
+  33%      { background-position: 0 -4px, 0 0, 0 0; }
+  66%      { background-position: 0 0, 0 -4px, 0 0; }
+  100%     { background-position: 0 0, 0 0, 0 -4px; }
+}
+
+/* Scramble — wraps the text in JS (CSS provides only the look) */
+.tldr-scramble {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  letter-spacing: 0.04em;
+  color: #00ffff;
+  text-shadow: 0 0 4px #00ffff;
+}
+
+/* Shimmer — gradient sweeps across text */
+.tldr-shimmer {
+  background: linear-gradient(90deg, currentColor 0%, currentColor 40%, #fff 50%, currentColor 60%, currentColor 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: tldr-shimmer 1.8s linear infinite;
+}
+@keyframes tldr-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Rainbow — animated hue */
+.tldr-rainbow {
+  background: linear-gradient(90deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff, #ff006e);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: tldr-rainbow 2s linear infinite;
+  font-weight: 700;
+}
+@keyframes tldr-rainbow {
+  0%   { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Neon glow */
+.tldr-neon {
+  color: #00ffff;
+  text-shadow: 0 0 4px #00ffff, 0 0 12px #00ffff, 0 0 24px rgba(0, 255, 255, 0.5);
+  animation: tldr-neon-flicker 2s ease-in-out infinite;
+}
+@keyframes tldr-neon-flicker {
+  0%, 100% { opacity: 1; }
+  4%   { opacity: 0.3; }
+  6%   { opacity: 1; }
+  10%  { opacity: 0.6; }
+  12%  { opacity: 1; }
+}
+
+/* Glitch */
+.tldr-glitch {
+  position: relative;
+  color: #fff;
+  font-weight: 700;
+}
+.tldr-glitch::before,
+.tldr-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.tldr-glitch::before {
+  color: #ff00ff;
+  animation: tldr-glitch-1 2s steps(8) infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+}
+.tldr-glitch::after {
+  color: #00ffff;
+  animation: tldr-glitch-2 2s steps(8) infinite reverse;
+  clip-path: polygon(0 66%, 100% 66%, 100% 100%, 0 100%);
+}
+@keyframes tldr-glitch-1 {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(-2px); }
+}
+@keyframes tldr-glitch-2 {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(2px); }
+}
+
+/* Blink (whole text) */
+.tldr-blink { animation: tldr-blink 1s steps(2) infinite; }
+
+/* Slide — text slides in cycling */
+.tldr-slide {
+  display: inline-block;
+  overflow: hidden;
+  height: 1.2em;
+  vertical-align: middle;
+}
+.tldr-slide::after {
+  content: 'Loading';
+  display: block;
+  animation: tldr-slide 3s ease-in-out infinite;
+}
+@keyframes tldr-slide {
+  0%, 30%  { transform: translateY(0); }
+  35%, 65% { transform: translateY(-1.2em); }
+  70%, 100% { transform: translateY(-2.4em); }
+}
+
+/* Wave — letter-by-letter wave */
+.tldr-wave {
+  font-weight: 700;
+}
+.tldr-wave > span {
+  display: inline-block;
+  animation: tldr-wave 1.2s ease-in-out infinite;
+}
+.tldr-wave > span:nth-child(2) { animation-delay: 0.1s; }
+.tldr-wave > span:nth-child(3) { animation-delay: 0.2s; }
+.tldr-wave > span:nth-child(4) { animation-delay: 0.3s; }
+.tldr-wave > span:nth-child(5) { animation-delay: 0.4s; }
+.tldr-wave > span:nth-child(6) { animation-delay: 0.5s; }
+.tldr-wave > span:nth-child(7) { animation-delay: 0.6s; }
+.tldr-wave > span:nth-child(8) { animation-delay: 0.7s; }
+@keyframes tldr-wave {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-0.4em); }
+}
+
+/* Pulse */
+.tldr-pulse { animation: tldr-pulse 1.4s ease-in-out infinite; }
+@keyframes tldr-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.6; transform: scale(0.96); }
+}
+
+/* Marquee scroll */
+.tldr-marquee {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 200px;
+  vertical-align: middle;
+}
+.tldr-marquee > span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: tldr-marquee 6s linear infinite;
+}
+@keyframes tldr-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Morse — beeps */
+.tldr-morse {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  letter-spacing: 0.3em;
+  font-weight: 700;
+}
+.tldr-morse::after {
+  content: '— · · · —';
+  margin-left: 0.6em;
+  animation: tldr-morse 1.2s steps(2) infinite;
+}
+@keyframes tldr-morse {
+  0%, 50%  { content: '— · · · —'; }
+  51%, 100%{ content: '· — — · ·'; }
+}
+
+/* Terminal prompt */
+.tldr-terminal {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  color: #4ade80;
+}
+.tldr-terminal::before { content: '$ '; opacity: 0.7; }
+.tldr-terminal::after {
+  content: '▌';
+  margin-left: 0.15em;
+  animation: tldr-blink 1s steps(2) infinite;
+}
+
+/* Scanline overlay */
+.tldr-scanline {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+.tldr-scanline::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 255, 0, 0.15) 50%, transparent 100%);
+  pointer-events: none;
+  animation: tldr-scanline 1.6s linear infinite;
+}
+@keyframes tldr-scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tldr, .tldr::before, .tldr::after, .tldr > span { animation: none; }
+}

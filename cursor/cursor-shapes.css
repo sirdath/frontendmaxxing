@@ -1,0 +1,60 @@
+/* ============================================
+   CURSOR SHAPES — System cursor presets via the `cursor:` CSS property
+   ============================================
+   The simplest cursor library. Apply these classes to any element to
+   change the cursor when it hovers them. No JS needed.
+
+   Usage:
+     <button class="cur-pointer">Click me</button>
+     <div class="cur-grab">Drag handle</div>
+     <a class="cur-help">Tooltip target</a>
+
+   Includes the full set of standard `cursor` keywords + niche/contextual ones
+   that browsers support but designers forget exist.
+   ============================================ */
+
+.cur-default      { cursor: default; }
+.cur-pointer      { cursor: pointer; }
+.cur-text         { cursor: text; }
+.cur-move         { cursor: move; }
+.cur-grab         { cursor: grab; }
+.cur-grabbing     { cursor: grabbing; }
+.cur-wait         { cursor: wait; }
+.cur-progress     { cursor: progress; }
+.cur-help         { cursor: help; }
+.cur-not-allowed  { cursor: not-allowed; }
+.cur-no-drop      { cursor: no-drop; }
+.cur-crosshair    { cursor: crosshair; }
+.cur-cell         { cursor: cell; }
+.cur-context-menu { cursor: context-menu; }
+.cur-copy         { cursor: copy; }
+.cur-alias        { cursor: alias; }
+.cur-zoom-in      { cursor: zoom-in; }
+.cur-zoom-out     { cursor: zoom-out; }
+.cur-vertical-text { cursor: vertical-text; }
+.cur-all-scroll   { cursor: all-scroll; }
+.cur-col-resize   { cursor: col-resize; }
+.cur-row-resize   { cursor: row-resize; }
+.cur-n-resize     { cursor: n-resize; }
+.cur-s-resize     { cursor: s-resize; }
+.cur-e-resize     { cursor: e-resize; }
+.cur-w-resize     { cursor: w-resize; }
+.cur-ne-resize    { cursor: ne-resize; }
+.cur-nw-resize    { cursor: nw-resize; }
+.cur-se-resize    { cursor: se-resize; }
+.cur-sw-resize    { cursor: sw-resize; }
+.cur-ns-resize    { cursor: ns-resize; }
+.cur-ew-resize    { cursor: ew-resize; }
+.cur-nesw-resize  { cursor: nesw-resize; }
+.cur-nwse-resize  { cursor: nwse-resize; }
+.cur-none         { cursor: none; }
+
+/* Composite class: standard interactive defaults */
+.cur-interactive { cursor: pointer; }
+.cur-interactive[aria-disabled="true"],
+.cur-interactive:disabled { cursor: not-allowed; }
+
+/* Apply across whole sections quickly */
+.cur-stage *      { cursor: inherit; }
+.cur-stage-pointer { cursor: pointer; }
+.cur-stage-pointer * { cursor: inherit; }

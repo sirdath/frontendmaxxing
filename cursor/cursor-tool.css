@@ -1,0 +1,161 @@
+/* ============================================
+   CURSOR TOOL — Tool-indicator cursors for editors (pen/eraser/brush/select)
+   ============================================
+   Wraps `custom-cursors.css` patterns with tool-specific HUD overlays
+   (size indicator ring, color swatch, label).
+
+   Usage:
+     <div class="ctool ctool-pen" data-ctool="pen">
+       <canvas></canvas>
+       <div class="ctool-hud">
+         <span class="ctool-name">Pen</span>
+         <span class="ctool-size">2px</span>
+       </div>
+     </div>
+
+   Tool variants (apply via class or data-ctool):
+     ctool-pen, ctool-brush, ctool-eraser, ctool-marker, ctool-pencil,
+     ctool-spray, ctool-blur, ctool-smudge, ctool-shape, ctool-fill,
+     ctool-pick, ctool-zoom, ctool-pan, ctool-text, ctool-select
+   ============================================ */
+
+.ctool {
+  position: relative;
+  isolation: isolate;
+  user-select: none;
+}
+
+/* HUD floats top-right; tools update its text */
+.ctool-hud {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.72rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 500;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.ctool-name {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  color: var(--ctool-c, #fff);
+}
+.ctool-size {
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.6);
+}
+.ctool-color {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Tool cursors */
+.ctool-pen,
+.ctool[data-ctool="pen"] {
+  --ctool-c: #00ffff;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M4 28 L24 8 L28 12 L8 32 Z' fill='%2300ffff' stroke='%23000' stroke-width='1.5'/></svg>") 4 28, crosshair;
+}
+.ctool-pencil,
+.ctool[data-ctool="pencil"] {
+  --ctool-c: #fde047;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M4 28 L24 8 L28 12 L8 32 Z' fill='%23fde047' stroke='%23000' stroke-width='1.2'/><path d='M22 10 L30 18' stroke='%23000' stroke-width='1.5'/></svg>") 4 28, crosshair;
+}
+.ctool-brush,
+.ctool[data-ctool="brush"] {
+  --ctool-c: #ec4899;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='16' cy='16' r='10' fill='%23ec4899' stroke='%23fff' stroke-width='1.5' opacity='0.75'/></svg>") 16 16, crosshair;
+}
+.ctool-marker,
+.ctool[data-ctool="marker"] {
+  --ctool-c: #fbbf24;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><rect x='6' y='12' width='20' height='8' rx='2' fill='%23fbbf24' stroke='%23000' stroke-width='1.2'/><rect x='4' y='16' width='4' height='4' fill='%23000'/></svg>") 4 18, crosshair;
+}
+.ctool-eraser,
+.ctool[data-ctool="eraser"] {
+  --ctool-c: #f87171;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><rect x='6' y='14' width='20' height='10' rx='2' fill='%23fde047' stroke='%23000' stroke-width='1.2'/><rect x='6' y='10' width='20' height='6' rx='2' fill='%23f87171' stroke='%23000' stroke-width='1.2'/></svg>") 16 18, cell;
+}
+.ctool-spray,
+.ctool[data-ctool="spray"] {
+  --ctool-c: #a78bfa;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='16' cy='16' r='2' fill='%23a78bfa'/><circle cx='12' cy='14' r='1' fill='%23a78bfa'/><circle cx='20' cy='13' r='1' fill='%23a78bfa'/><circle cx='14' cy='20' r='1' fill='%23a78bfa'/><circle cx='22' cy='19' r='1' fill='%23a78bfa'/><circle cx='10' cy='18' r='0.8' fill='%23a78bfa'/><circle cx='18' cy='22' r='0.8' fill='%23a78bfa'/></svg>") 16 16, crosshair;
+}
+.ctool-blur,
+.ctool[data-ctool="blur"] {
+  --ctool-c: #94a3b8;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='16' cy='16' r='10' fill='%2394a3b8' opacity='0.4'/><circle cx='16' cy='16' r='6' fill='%2394a3b8' opacity='0.6'/></svg>") 16 16, crosshair;
+}
+.ctool-smudge,
+.ctool[data-ctool="smudge"] {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 4 C20 8 28 12 22 22 C18 30 14 24 16 16 C14 8 12 0 16 4' fill='%23fef3c7' stroke='%23000' stroke-width='1.2'/></svg>") 16 16, crosshair;
+}
+.ctool-shape,
+.ctool[data-ctool="shape"] {
+  --ctool-c: #67e8f9;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><rect x='6' y='6' width='12' height='12' fill='none' stroke='%2367e8f9' stroke-width='2'/></svg>") 12 12, crosshair;
+}
+.ctool-fill,
+.ctool[data-ctool="fill"] {
+  --ctool-c: #fb7185;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 6 L24 14 L18 22 L10 14 Z' fill='%23fb7185' stroke='%23000' stroke-width='1.2'/><path d='M24 16 L28 22 Q28 26 24 26 Q20 26 20 22 L24 16' fill='%23fb7185' stroke='%23000' stroke-width='1.2'/></svg>") 16 20, crosshair;
+}
+.ctool-pick,
+.ctool[data-ctool="pick"] {
+  --ctool-c: #c4b5fd;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M22 4 L28 10 L18 20 L20 22 L8 32 L4 28 L14 16 L16 14 L22 4 Z' fill='%23c4b5fd' stroke='%23000' stroke-width='1.2'/></svg>") 4 28, copy;
+}
+.ctool-zoom,
+.ctool[data-ctool="zoom"] {
+  --ctool-c: #fff;
+  cursor: zoom-in;
+}
+.ctool-zoom-out,
+.ctool[data-ctool="zoom-out"] {
+  --ctool-c: #fff;
+  cursor: zoom-out;
+}
+.ctool-pan,
+.ctool[data-ctool="pan"] {
+  --ctool-c: #fde047;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M12 16 V8 a2 2 0 0 1 4 0 V14 V6 a2 2 0 0 1 4 0 V14 V8 a2 2 0 0 1 4 0 V18 a8 8 0 0 1-8 8 H12 a4 4 0 0 1-4-4 V14 a2 2 0 0 1 4 0 V18' fill='%23fde047' stroke='%23000' stroke-width='1.2'/></svg>") 16 10, grab;
+}
+.ctool-pan:active,
+.ctool[data-ctool="pan"]:active { cursor: grabbing; }
+.ctool-text,
+.ctool[data-ctool="text"] {
+  --ctool-c: #fff;
+  cursor: text;
+}
+.ctool-select,
+.ctool[data-ctool="select"] {
+  --ctool-c: #fff;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M2 2 L2 18 L7 14 L11 22 L13 21 L9 13 L16 13 Z' fill='%23fff' stroke='%23000' stroke-width='1.2'/></svg>") 2 2, default;
+}
+
+/* Size ring overlay (use JS to position) */
+.ctool-ring {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99990;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--ctool-c, #fff);
+  mix-blend-mode: difference;
+}

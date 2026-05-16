@@ -1,0 +1,218 @@
+/* ============================================
+   BUTTONS 3D — Heavy 3D depth + chunky press effects
+   ============================================
+   Usage:
+     <button class="bbtn bbtn-stack">Press me</button>
+     <button class="bbtn bbtn-cube">3D</button>
+
+   Variants: stack, cube, chunky, mario, candy, key, gum, pancake, layer,
+   thick-edge, edge-glow, deep-press
+   ============================================ */
+
+.bbtn {
+  --bb-c: #8b5cf6;
+  --bb-c-dark: #5b21b6;
+  --bb-fg: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.6rem;
+  background: var(--bb-c);
+  color: var(--bb-fg);
+  border: 0;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+/* Stack — 6 thick layers */
+.bbtn-stack {
+  box-shadow:
+    0 1px 0 0 color-mix(in srgb, var(--bb-c-dark) 100%, transparent),
+    0 2px 0 0 var(--bb-c-dark),
+    0 3px 0 0 var(--bb-c-dark),
+    0 4px 0 0 var(--bb-c-dark),
+    0 5px 0 0 var(--bb-c-dark),
+    0 6px 0 0 var(--bb-c-dark),
+    0 10px 16px -4px rgba(0, 0, 0, 0.4);
+}
+.bbtn-stack:active {
+  transform: translateY(6px);
+  box-shadow: 0 1px 0 0 var(--bb-c-dark), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Cube — 3D box via skew */
+.bbtn-cube {
+  background: var(--bb-c);
+  border-radius: 6px;
+  box-shadow:
+    8px 8px 0 0 var(--bb-c-dark),
+    8px 8px 16px -4px rgba(0, 0, 0, 0.4);
+}
+.bbtn-cube:active {
+  transform: translate(4px, 4px);
+  box-shadow: 4px 4px 0 0 var(--bb-c-dark), 4px 4px 8px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Chunky — really thick edge */
+.bbtn-chunky {
+  border-radius: 14px;
+  box-shadow:
+    0 9px 0 0 var(--bb-c-dark),
+    0 9px 18px -4px rgba(0, 0, 0, 0.4);
+  padding: 1rem 2rem;
+  font-size: 1.05rem;
+}
+.bbtn-chunky:active { transform: translateY(7px); box-shadow: 0 2px 0 0 var(--bb-c-dark); }
+
+/* Mario — gold star vibes */
+.bbtn-mario {
+  --bb-c: #fbbf24;
+  --bb-c-dark: #a16207;
+  --bb-fg: #2a1a02;
+  border-radius: 12px;
+  border: 3px solid #78350f;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 -4px 0 #a16207,
+    inset 0 2px 0 #fde047,
+    0 5px 0 #78350f;
+}
+.bbtn-mario:active { transform: translateY(5px); box-shadow: 0 0 0 #78350f, inset 0 -4px 0 #a16207, inset 0 2px 0 #fde047; }
+
+/* Candy — bright glossy */
+.bbtn-candy {
+  --bb-c: #fb7185;
+  --bb-c-dark: #be123c;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fda4af 0%, #fb7185 50%, #e11d48 100%);
+  box-shadow:
+    inset 0 -4px 8px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5),
+    0 6px 0 #9f1239,
+    0 10px 18px -4px rgba(225, 29, 72, 0.5);
+}
+.bbtn-candy:active { transform: translateY(6px); box-shadow: inset 0 -4px 8px rgba(0,0,0,0.2), 0 0 0 #9f1239; }
+
+/* Key — old-school typewriter key */
+.bbtn-key {
+  --bb-c: #fefefe;
+  --bb-fg: #1a1a1a;
+  border-radius: 8px 8px 16px 16px;
+  border: 1px solid #c0c0c0;
+  background: linear-gradient(180deg, #fff 0%, #d4d4dc 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -3px 6px rgba(0, 0, 0, 0.12),
+    0 5px 0 #94a3b8,
+    0 8px 12px -2px rgba(0, 0, 0, 0.3);
+  padding: 0.85rem 1.2rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 600;
+}
+.bbtn-key:active { transform: translateY(5px); box-shadow: inset 0 1px 0 #fff, inset 0 -3px 6px rgba(0,0,0,0.12), 0 0 0 #94a3b8; }
+
+/* Gum — soft, bouncy */
+.bbtn-gum {
+  --bb-c: #f0abfc;
+  --bb-c-dark: #c026d3;
+  --bb-fg: #4a044e;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #f5d0fe 0%, #f0abfc 60%, #e879f9 100%);
+  box-shadow:
+    inset 0 -5px 0 #c026d3,
+    inset 0 2px 6px rgba(255, 255, 255, 0.5),
+    0 6px 12px -2px rgba(192, 38, 211, 0.4);
+  transition: transform 0.18s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+.bbtn-gum:hover { transform: scale(1.08); }
+.bbtn-gum:active { transform: scale(0.92); }
+
+/* Pancake — stacked layers visible from side */
+.bbtn-pancake {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+  --bb-c-dark: #b45309;
+  --bb-fg: #422006;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 2px 0 #fde68a,
+    0 3px 0 -1px #d97706,
+    0 6px 0 -2px #b45309,
+    0 9px 0 -3px #92400e,
+    0 12px 16px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* Layered — 3 distinct color layers */
+.bbtn-layer {
+  background: #ec4899;
+  --bb-c-dark: #be185d;
+  border-radius: 10px;
+  box-shadow:
+    0 3px 0 #f472b6,
+    0 6px 0 #c084fc,
+    0 9px 0 #818cf8,
+    0 12px 16px -4px rgba(0, 0, 0, 0.4);
+}
+.bbtn-layer:active { transform: translateY(9px); box-shadow: 0 0 0 transparent; }
+
+/* Thick edge — extreme bottom face */
+.bbtn-thick-edge {
+  border-radius: 4px;
+  box-shadow:
+    0 14px 0 0 var(--bb-c-dark),
+    0 16px 30px -6px rgba(0, 0, 0, 0.5);
+  margin-bottom: 14px;
+}
+.bbtn-thick-edge:active { transform: translateY(14px); box-shadow: 0 0 0 0 var(--bb-c-dark); }
+
+/* Edge glow — neon side */
+.bbtn-edge-glow {
+  --bb-c: #0a0a14;
+  --bb-fg: #00ffff;
+  border: 1px solid #00ffff;
+  border-radius: 6px;
+  box-shadow:
+    0 5px 0 -1px #00cccc,
+    0 7px 0 -2px #008888,
+    0 8px 16px -2px rgba(0, 255, 255, 0.4);
+  text-shadow: 0 0 4px #00ffff;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.bbtn-edge-glow:active { transform: translateY(5px); box-shadow: 0 0 0 -1px #00cccc; }
+
+/* Deep press — exaggerated depth */
+.bbtn-deep-press {
+  border-radius: 999px;
+  box-shadow:
+    inset 0 -8px 0 var(--bb-c-dark),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    0 8px 0 -2px var(--bb-c-dark),
+    0 12px 24px -6px rgba(0, 0, 0, 0.4);
+  padding: 0.9rem 2rem;
+}
+.bbtn-deep-press:active {
+  box-shadow:
+    inset 0 -2px 0 var(--bb-c-dark),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(6px);
+}
+
+/* Color overrides */
+.bbtn-cyan    { --bb-c: #06b6d4; --bb-c-dark: #155e75; }
+.bbtn-pink    { --bb-c: #ec4899; --bb-c-dark: #9d174d; }
+.bbtn-amber   { --bb-c: #f59e0b; --bb-c-dark: #92400e; }
+.bbtn-mint    { --bb-c: #34d399; --bb-c-dark: #047857; }
+.bbtn-rose    { --bb-c: #fb7185; --bb-c-dark: #be123c; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bbtn { transition: none; }
+}

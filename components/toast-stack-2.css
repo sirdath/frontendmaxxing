@@ -1,0 +1,189 @@
+/* ============================================
+   TOAST STACK 2 — Sonner-style stacked toasts that collapse on hover
+   ============================================
+   Sonner/Vercel toast notification style — stack collapses to a single
+   tile when not hovered, expands into a list when hovered. Different from
+   the existing blocks/toasts.css which shows one at a time.
+
+   Usage:
+     <div class="tstk" data-tstk>
+       <div class="tstk-item" data-tstk-id="1" data-tstk-type="success">
+         <span class="tstk-icon">✓</span>
+         <div class="tstk-body">
+           <div class="tstk-title">Saved</div>
+           <div class="tstk-desc">Your changes have been saved.</div>
+         </div>
+         <button class="tstk-close" aria-label="Dismiss">✕</button>
+       </div>
+       <!-- more items below… -->
+     </div>
+
+   Variants:
+     tstk-top-right (default), tstk-top-left, tstk-bottom-right, tstk-bottom-left
+   Types (via data-tstk-type):
+     success, error, warning, info, loading
+   ============================================ */
+
+.tstk {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.4rem;
+  width: 360px;
+  max-width: calc(100vw - 2rem);
+  pointer-events: none;
+}
+
+.tstk.tstk-top-right    { top: 1.5rem; bottom: auto; flex-direction: column; }
+.tstk.tstk-top-left     { top: 1.5rem; bottom: auto; left: 1.5rem; right: auto; flex-direction: column; }
+.tstk.tstk-bottom-left  { left: 1.5rem; right: auto; }
+
+.tstk-item {
+  --t-c: rgba(255, 255, 255, 0.85);
+  --t-bg: rgba(20, 20, 30, 0.95);
+  --t-border: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.75rem 0.9rem;
+  background: var(--t-bg);
+  border: 1px solid var(--t-border);
+  border-radius: 10px;
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  pointer-events: auto;
+  color: var(--t-c);
+  font-size: 0.85rem;
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.32s ease;
+  animation: tstk-in 0.32s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+  position: relative;
+}
+
+@keyframes tstk-in {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* Collapsed stack — items behind are scaled+offset */
+.tstk:not(:hover) .tstk-item:not(:last-child):not(:nth-last-child(1)) {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.tstk:not(:hover) .tstk-item:nth-last-child(1) { transform: scale(1) translateY(0); z-index: 5; }
+.tstk:not(:hover) .tstk-item:nth-last-child(2) { transform: scale(0.96) translateY(-6px); z-index: 4; opacity: 0.95; }
+.tstk:not(:hover) .tstk-item:nth-last-child(3) { transform: scale(0.92) translateY(-12px); z-index: 3; opacity: 0.85; }
+.tstk:not(:hover) .tstk-item:nth-last-child(n+4) { transform: scale(0.88) translateY(-18px); z-index: 2; opacity: 0; pointer-events: none; }
+
+.tstk-icon {
+  width: 22px; height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.tstk-body {
+  flex: 1;
+  min-width: 0;
+}
+.tstk-title {
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+.tstk-desc {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.4;
+}
+.tstk-close {
+  width: 20px; height: 20px;
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.tstk-close:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+.tstk-action {
+  padding: 0.25rem 0.5rem;
+  margin-left: 0.45rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 0;
+  color: var(--t-c);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.tstk-action:hover { background: rgba(255, 255, 255, 0.14); }
+
+/* Types */
+.tstk-item[data-tstk-type="success"] {
+  border-left: 3px solid #34d399;
+}
+.tstk-item[data-tstk-type="success"] .tstk-icon { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+
+.tstk-item[data-tstk-type="error"] {
+  border-left: 3px solid #f87171;
+}
+.tstk-item[data-tstk-type="error"] .tstk-icon { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+
+.tstk-item[data-tstk-type="warning"] {
+  border-left: 3px solid #fbbf24;
+}
+.tstk-item[data-tstk-type="warning"] .tstk-icon { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+
+.tstk-item[data-tstk-type="info"] {
+  border-left: 3px solid #60a5fa;
+}
+.tstk-item[data-tstk-type="info"] .tstk-icon { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
+
+.tstk-item[data-tstk-type="loading"] {
+  border-left: 3px solid #a78bfa;
+}
+.tstk-item[data-tstk-type="loading"] .tstk-icon {
+  background: transparent;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: tstk-spin 0.9s linear infinite;
+}
+.tstk-item[data-tstk-type="loading"] .tstk-icon::before { content: ''; }
+@keyframes tstk-spin { to { transform: rotate(360deg); } }
+
+/* Progress bar (lifetime indicator) */
+.tstk-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--t-c);
+  border-radius: 0 0 10px 0;
+  width: 100%;
+  transform-origin: left;
+  animation: tstk-progress linear forwards;
+}
+@keyframes tstk-progress {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+/* Dismissal swipe — JS adds is-dismissing class */
+.tstk-item.is-dismissing {
+  transform: translateX(120%) !important;
+  opacity: 0;
+}

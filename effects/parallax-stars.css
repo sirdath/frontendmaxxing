@@ -1,0 +1,137 @@
+/* ============================================
+   PARALLAX STARS — Multi-layer parallax starfield background
+   ============================================
+   Pure CSS — 3 layers of stars drift at different speeds, creating depth.
+
+   Usage:
+     <section class="pstars">
+       <div class="pstars-layer pstars-layer-1"></div>
+       <div class="pstars-layer pstars-layer-2"></div>
+       <div class="pstars-layer pstars-layer-3"></div>
+       <h1>Hero content here</h1>
+     </section>
+
+   Variants:
+     pstars-night (default)
+     pstars-galaxy (purple + pink + cyan)
+     pstars-dawn (warm with sparse stars)
+     pstars-dust (subtle, sparse)
+     pstars-blizzard (lots of stars + fast)
+   ============================================ */
+
+.pstars {
+  --ps-bg: linear-gradient(180deg, #000010 0%, #0a0a2a 50%, #1a0a3a 100%);
+  --ps-speed: 60s;
+  position: relative;
+  background: var(--ps-bg);
+  min-height: 400px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.pstars-layer {
+  position: absolute;
+  inset: -10%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pstars-layer-1 {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px,  rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 100px 120px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 200px 80px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 300px 200px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1.5px 1.5px at 400px 150px, rgba(255,255,255,0.85), transparent),
+    radial-gradient(1px 1px at 500px 50px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 50px 250px, rgba(255,255,255,0.5), transparent),
+    radial-gradient(2px 2px at 250px 320px, rgba(255,255,255,0.9), transparent),
+    radial-gradient(1px 1px at 380px 280px, rgba(255,255,255,0.7), transparent),
+    radial-gradient(1px 1px at 450px 380px, rgba(255,255,255,0.55), transparent);
+  background-size: 600px 400px;
+  animation: pstars-drift var(--ps-speed) linear infinite;
+}
+
+.pstars-layer-2 {
+  background-image:
+    radial-gradient(1px 1px at 60px 80px,  rgba(196,181,253,0.7), transparent),
+    radial-gradient(2px 2px at 180px 30px, rgba(196,181,253,0.85), transparent),
+    radial-gradient(1px 1px at 280px 240px, rgba(196,181,253,0.55), transparent),
+    radial-gradient(1.5px 1.5px at 380px 100px, rgba(196,181,253,0.8), transparent),
+    radial-gradient(1px 1px at 480px 200px, rgba(196,181,253,0.6), transparent),
+    radial-gradient(2px 2px at 100px 360px, rgba(196,181,253,0.9), transparent);
+  background-size: 600px 400px;
+  animation: pstars-drift calc(var(--ps-speed) * 1.5) linear infinite reverse;
+}
+
+.pstars-layer-3 {
+  background-image:
+    radial-gradient(3px 3px at 80px 150px, rgba(252,207,232,0.95), transparent),
+    radial-gradient(2.5px 2.5px at 240px 50px, rgba(252,207,232,0.9), transparent),
+    radial-gradient(3px 3px at 400px 280px, rgba(252,207,232,0.95), transparent),
+    radial-gradient(2px 2px at 520px 130px, rgba(252,207,232,0.8), transparent);
+  background-size: 600px 400px;
+  animation: pstars-drift calc(var(--ps-speed) * 2.5) linear infinite;
+  filter: blur(0.3px);
+}
+
+@keyframes pstars-drift {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(-300px, -200px); }
+}
+
+/* Optional shooting star */
+.pstars-shoot {
+  position: absolute;
+  top: 20%;
+  left: -5%;
+  width: 100px;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #fff);
+  pointer-events: none;
+  animation: pstars-shoot 6s linear infinite;
+  animation-delay: 3s;
+  opacity: 0;
+}
+@keyframes pstars-shoot {
+  0%   { transform: translate(0, 0) rotate(20deg); opacity: 0; }
+  5%   { opacity: 1; }
+  20%  { transform: translate(120vw, 60vh) rotate(20deg); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Variants */
+.pstars-galaxy {
+  --ps-bg:
+    radial-gradient(ellipse at 70% 30%, rgba(168, 85, 247, 0.25), transparent 50%),
+    radial-gradient(ellipse at 20% 80%, rgba(236, 72, 153, 0.18), transparent 50%),
+    linear-gradient(180deg, #050010 0%, #1a0a2a 100%);
+}
+.pstars-dawn {
+  --ps-bg: linear-gradient(180deg, #1a0a2a 0%, #3a1c71 30%, #d76d77 70%, #ffaf7b 100%);
+}
+.pstars-dust {
+  --ps-bg: #0a0a14;
+}
+.pstars-dust .pstars-layer-1 { opacity: 0.4; }
+.pstars-dust .pstars-layer-2 { opacity: 0.25; }
+.pstars-dust .pstars-layer-3 { opacity: 0.55; }
+
+.pstars-blizzard { --ps-speed: 20s; }
+.pstars-blizzard .pstars-layer-1 { filter: blur(0.4px); }
+
+/* Twinkle (random opacity flicker) */
+.pstars-twinkle .pstars-layer-1 { animation: pstars-drift var(--ps-speed) linear infinite, pstars-twinkle 4s ease-in-out infinite; }
+@keyframes pstars-twinkle {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+
+.pstars > *:not(.pstars-layer):not(.pstars-shoot) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pstars-layer, .pstars-shoot { animation: none; }
+}

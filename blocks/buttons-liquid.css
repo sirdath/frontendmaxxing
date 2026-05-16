@@ -1,0 +1,177 @@
+/* ============================================
+   BUTTONS LIQUID — Morphing, squishing, inflating buttons
+   ============================================
+   Usage:
+     <button class="lbtn lbtn-blob">Click</button>
+     <button class="lbtn lbtn-squish">Press</button>
+
+   Variants: blob, squish, inflate, jelly, stretch, drip, melt, magma,
+             slime, bubble, ripple, splash, ooze
+   ============================================ */
+
+.lbtn {
+  --lb-c1: #8b5cf6;
+  --lb-c2: #ec4899;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.6rem;
+  background: linear-gradient(135deg, var(--lb-c1), var(--lb-c2));
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: visible;
+}
+
+/* Blob — morphing border-radius */
+.lbtn-blob {
+  animation: lbtn-blob 6s ease-in-out infinite;
+}
+@keyframes lbtn-blob {
+  0%, 100% { border-radius: 999px; }
+  25%      { border-radius: 50% 30% 70% 40% / 60% 40% 60% 40%; }
+  50%      { border-radius: 30% 70% 40% 60% / 40% 60% 40% 60%; }
+  75%      { border-radius: 40% 60% 50% 50% / 50% 50% 40% 60%; }
+}
+.lbtn-blob:hover { animation-duration: 2s; transform: scale(1.04); }
+
+/* Squish — flattens on hover/active */
+.lbtn-squish:hover  { transform: scale(1.08, 0.92); }
+.lbtn-squish:active { transform: scale(0.94, 1.04); }
+
+/* Inflate — grows huge on hover */
+.lbtn-inflate:hover  { transform: scale(1.18); border-radius: 16px; }
+.lbtn-inflate:active { transform: scale(0.96); }
+
+/* Jelly — wobble */
+.lbtn-jelly:hover { animation: lbtn-jelly 0.6s; }
+@keyframes lbtn-jelly {
+  0%, 100% { transform: scale(1); }
+  30%      { transform: scale(1.2, 0.8); }
+  40%      { transform: scale(0.9, 1.1); }
+  50%      { transform: scale(1.1, 0.95); }
+  65%      { transform: scale(0.95, 1.05); }
+  75%      { transform: scale(1.05, 0.98); }
+}
+
+/* Stretch — pulls wider on hover */
+.lbtn-stretch:hover { transform: scaleX(1.18); border-radius: 8px; }
+
+/* Drip — bottom oozes */
+.lbtn-drip { overflow: visible; }
+.lbtn-drip::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 50%;
+  width: 0; height: 8px;
+  background: var(--lb-c2);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+.lbtn-drip:hover::after { width: 20px; height: 24px; }
+
+/* Melt — extends downward, blob trail */
+.lbtn-melt { filter: blur(0); transition: all 0.5s ease; }
+.lbtn-melt:hover {
+  filter: blur(0.5px) url(#lbtn-goo);
+  transform: scaleY(1.15);
+}
+
+/* Magma — lava-like glow */
+.lbtn-magma {
+  background: linear-gradient(135deg, #fbbf24, #f97316, #ef4444);
+  background-size: 200% 200%;
+  animation: lbtn-magma 4s ease-in-out infinite;
+  box-shadow: 0 8px 24px -4px rgba(239, 68, 68, 0.5);
+}
+@keyframes lbtn-magma {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* Slime — sticky elongation */
+.lbtn-slime { transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+.lbtn-slime:hover { transform: scale(1.04) translateY(-2px); border-radius: 12px 12px 60% 60% / 12px 12px 30% 30%; }
+
+/* Bubble — circular pop */
+.lbtn-bubble {
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  transition: all 0.32s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+.lbtn-bubble:hover { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(139, 92, 246, 0.25); }
+
+/* Ripple — pulse ring on click */
+.lbtn-ripple { overflow: hidden; }
+.lbtn-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+.lbtn-ripple:active::after { animation: lbtn-ripple 0.5s ease-out; }
+@keyframes lbtn-ripple {
+  0%   { transform: scale(0); opacity: 0.8; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* Splash — explodes outward */
+.lbtn-splash::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+  border: 2px solid var(--lb-c2);
+  opacity: 0;
+  pointer-events: none;
+  transition: inset 0.4s ease, opacity 0.4s ease;
+}
+.lbtn-splash:hover::before {
+  inset: -16px;
+  opacity: 0.55;
+}
+
+/* Ooze — multi-layer blob */
+.lbtn-ooze {
+  position: relative;
+  background: var(--lb-c1);
+}
+.lbtn-ooze::before,
+.lbtn-ooze::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lb-c2);
+  z-index: -1;
+  transition: transform 0.45s ease;
+}
+.lbtn-ooze::before { transform: translate(-6px, 4px); opacity: 0.7; }
+.lbtn-ooze::after  { transform: translate(6px, -4px); opacity: 0.5; }
+.lbtn-ooze:hover::before { transform: translate(-12px, 8px); }
+.lbtn-ooze:hover::after  { transform: translate(12px, -8px); }
+
+/* Color presets */
+.lbtn-cyber   { --lb-c1: #00ffff; --lb-c2: #ff00ff; color: #000; }
+.lbtn-fire    { --lb-c1: #fbbf24; --lb-c2: #ef4444; }
+.lbtn-mint    { --lb-c1: #34d399; --lb-c2: #22d3ee; }
+.lbtn-cosmic  { --lb-c1: #6d28d9; --lb-c2: #db2777; }
+.lbtn-sunset  { --lb-c1: #f97316; --lb-c2: #ec4899; }
+.lbtn-rose    { --lb-c1: #fb7185; --lb-c2: #ec4899; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lbtn, .lbtn-blob, .lbtn-magma, .lbtn-jelly:hover { animation: none; transition: none; }
+}

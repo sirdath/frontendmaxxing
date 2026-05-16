@@ -1,0 +1,109 @@
+/* ============================================
+   CUSTOM CURSORS — Replace the system cursor with SVG / emoji / icons
+   ============================================
+   Apply these classes to any element. The cursor becomes a custom SVG (inline
+   data URI — no extra HTTP requests). 30+ presets covering moods + tools.
+
+   Usage:
+     <body class="ccur ccur-sparkle">…</body>
+     <section class="ccur ccur-target">…</section>
+     <div class="ccur ccur-paint">Drag to draw</div>
+
+   Each cursor sets a hotspot near the visual focal point. Fallback to a
+   sensible system cursor (pointer / crosshair / etc.) for browsers that
+   can't render the SVG.
+   ============================================ */
+
+/* ====== Emoji cursors (use any emoji as the cursor) ====== */
+.ccur-sparkle    { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>✨</text></svg>") 4 28, pointer; }
+.ccur-star       { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>⭐</text></svg>") 4 28, pointer; }
+.ccur-fire       { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>🔥</text></svg>") 4 28, pointer; }
+.ccur-rocket     { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>🚀</text></svg>") 4 28, pointer; }
+.ccur-heart      { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>❤️</text></svg>") 8 24, pointer; }
+.ccur-magic      { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>🪄</text></svg>") 4 28, pointer; }
+.ccur-bolt       { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>⚡</text></svg>") 12 24, pointer; }
+.ccur-eye        { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>👁️</text></svg>") 16 16, pointer; }
+.ccur-finger     { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>👆</text></svg>") 12 4, pointer; }
+.ccur-ghost      { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>👻</text></svg>") 16 16, pointer; }
+.ccur-skull      { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>💀</text></svg>") 16 16, pointer; }
+.ccur-flower     { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>🌸</text></svg>") 16 16, pointer; }
+.ccur-money      { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>💰</text></svg>") 16 16, pointer; }
+.ccur-gem        { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='28'>💎</text></svg>") 16 16, pointer; }
+
+/* ====== Tool cursors (SVG shapes for editors / canvases) ====== */
+.ccur-target {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='16' cy='16' r='12' fill='none' stroke='%23ff0080' stroke-width='2'/><circle cx='16' cy='16' r='3' fill='%23ff0080'/><line x1='16' y1='0' x2='16' y2='8' stroke='%23ff0080' stroke-width='2'/><line x1='16' y1='24' x2='16' y2='32' stroke='%23ff0080' stroke-width='2'/><line x1='0' y1='16' x2='8' y2='16' stroke='%23ff0080' stroke-width='2'/><line x1='24' y1='16' x2='32' y2='16' stroke='%23ff0080' stroke-width='2'/></svg>") 16 16, crosshair;
+}
+.ccur-reticle {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' fill='none' stroke='%2300ffff' stroke-width='1.5'/><circle cx='12' cy='12' r='1.5' fill='%2300ffff'/></svg>") 12 12, crosshair;
+}
+.ccur-crosshair-thin {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><line x1='12' y1='0' x2='12' y2='24' stroke='%23fff' stroke-width='1'/><line x1='0' y1='12' x2='24' y2='12' stroke='%23fff' stroke-width='1'/></svg>") 12 12, crosshair;
+}
+.ccur-plus {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' fill='%238b5cf6'/><line x1='6' y1='12' x2='18' y2='12' stroke='%23fff' stroke-width='2'/><line x1='12' y1='6' x2='12' y2='18' stroke='%23fff' stroke-width='2'/></svg>") 12 12, copy;
+}
+.ccur-pen {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M4 28 L24 8 L28 12 L8 32 Z' fill='%2300ffff' stroke='%23000' stroke-width='1.5'/><path d='M4 28 L2 30 L0 32' stroke='%23000' stroke-width='1.5' fill='none'/></svg>") 4 28, crosshair;
+}
+.ccur-brush {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='16' cy='16' r='12' fill='%23ec4899' stroke='%23fff' stroke-width='2' opacity='0.7'/></svg>") 16 16, crosshair;
+}
+.ccur-eraser {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><rect x='6' y='14' width='20' height='10' rx='2' fill='%23fde047' stroke='%23000' stroke-width='1.5'/><rect x='6' y='10' width='20' height='6' rx='2' fill='%23f87171' stroke='%23000' stroke-width='1.5'/></svg>") 16 18, cell;
+}
+.ccur-hand {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M12 16 V8 a2 2 0 0 1 4 0 V14 V6 a2 2 0 0 1 4 0 V14 V8 a2 2 0 0 1 4 0 V18 a8 8 0 0 1-8 8 H12 a4 4 0 0 1-4-4 V14 a2 2 0 0 1 4 0 V18' fill='%23fde047' stroke='%23000' stroke-width='1.2'/></svg>") 16 10, grab;
+}
+.ccur-pointer-arrow {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M2 2 L2 18 L7 14 L11 22 L13 21 L9 13 L16 13 Z' fill='%23fff' stroke='%23000' stroke-width='1.2'/></svg>") 2 2, default;
+}
+.ccur-pointer-fancy {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%238b5cf6'/><stop offset='1' stop-color='%23ec4899'/></linearGradient></defs><path d='M2 2 L2 20 L8 15 L12 24 L15 23 L11 14 L19 14 Z' fill='url(%23g)' stroke='%23fff' stroke-width='1.5'/></svg>") 2 2, default;
+}
+.ccur-laser {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><circle cx='8' cy='8' r='3' fill='%23ff0040'/><circle cx='8' cy='8' r='6' fill='%23ff0040' opacity='0.3'/><circle cx='8' cy='8' r='8' fill='%23ff0040' opacity='0.15'/></svg>") 8 8, crosshair;
+}
+.ccur-bullet {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><circle cx='6' cy='6' r='2.5' fill='%23fbbf24' stroke='%23000' stroke-width='1'/></svg>") 6 6, none;
+}
+.ccur-dot-glow {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='16' fill='%2300ffff' opacity='0.15'/><circle cx='20' cy='20' r='10' fill='%2300ffff' opacity='0.3'/><circle cx='20' cy='20' r='4' fill='%2300ffff'/></svg>") 20 20, none;
+}
+.ccur-ring {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='17' fill='none' stroke='%23fff' stroke-width='2'/></svg>") 20 20, none;
+}
+.ccur-arrow-thick {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path d='M3 3 L3 20 L8 16 L11 21 L14 20 L11 14 L18 14 Z' fill='%23000' stroke='%23fff' stroke-width='2'/></svg>") 3 3, default;
+}
+.ccur-arrow-neon {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><path d='M3 3 L3 22 L9 17 L13 24 L16 23 L12 16 L20 16 Z' fill='%2300ffff' stroke='%23ff00ff' stroke-width='1.5'/></svg>") 3 3, default;
+}
+
+/* ====== Brand / themed cursors ====== */
+.ccur-pixel    { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' shape-rendering='crispEdges'><rect x='0' y='0' width='2' height='2' fill='%23fff'/><rect x='0' y='2' width='4' height='2' fill='%23fff'/><rect x='0' y='4' width='6' height='2' fill='%23fff'/><rect x='0' y='6' width='8' height='2' fill='%23fff'/><rect x='0' y='8' width='10' height='2' fill='%23fff'/><rect x='0' y='10' width='6' height='2' fill='%23fff'/><rect x='0' y='12' width='4' height='2' fill='%23fff'/><rect x='4' y='12' width='2' height='2' fill='%23fff'/><rect x='6' y='14' width='2' height='2' fill='%23fff'/></svg>") 0 0, default; }
+.ccur-minecraft { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' shape-rendering='crispEdges'><rect x='6' y='0' width='2' height='14' fill='%23fff' stroke='%23000'/><rect x='0' y='6' width='14' height='2' fill='%23fff' stroke='%23000'/></svg>") 7 7, crosshair; }
+
+/* ====== Hide cursor (use with JS-rendered fake cursor) ====== */
+.ccur-hidden,
+.ccur-hidden * { cursor: none !important; }
+
+/* Visual ring for ccur-hidden custom-painted cursors */
+.ccur-fake-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.18s ease, height 0.18s ease;
+  color: #fff;
+}
+.ccur-fake-cursor.is-hovering {
+  width: 50px;
+  height: 50px;
+  border-width: 1.5px;
+  mix-blend-mode: difference;
+}

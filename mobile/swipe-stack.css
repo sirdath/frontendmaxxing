@@ -1,0 +1,128 @@
+/* ============================================
+   SWIPE STACK — Tinder-style swipeable card stack
+   ============================================
+   Usage:
+     <div class="swst" data-swst>
+       <div class="swst-card">Card 1</div>
+       <div class="swst-card">Card 2</div>
+       <div class="swst-card">Card 3</div>
+     </div>
+
+     SwipeStack.init('.swst', {
+       onSwipe: function (direction, card) {},   // 'left' | 'right' | 'up' | 'down'
+       threshold: 100
+     });
+
+   Variants:
+     swst-tilt-stack (default — cards offset behind)
+     swst-pile (random rotation per card)
+   ============================================ */
+
+.swst {
+  --st-card-bg: #1a1a25;
+  --st-card-fg: #fff;
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 2 / 3;
+  margin: 0 auto;
+  perspective: 1200px;
+}
+
+.swst-card {
+  position: absolute;
+  inset: 0;
+  background: var(--st-card-bg);
+  color: var(--st-card-fg);
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.4);
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  touch-action: none;
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  overflow: hidden;
+}
+.swst-card:active { cursor: grabbing; }
+
+/* Stack offset for cards behind */
+.swst-card[data-pos="1"] { transform: translateY(8px) scale(0.96); z-index: 4; }
+.swst-card[data-pos="2"] { transform: translateY(16px) scale(0.92); z-index: 3; }
+.swst-card[data-pos="3"] { transform: translateY(24px) scale(0.88); z-index: 2; }
+.swst-card[data-pos="4"] { transform: translateY(32px) scale(0.84); z-index: 1; opacity: 0.6; }
+.swst-card[data-pos="0"] { z-index: 5; }
+
+.swst-pile .swst-card:nth-child(2) { transform: rotate(-3deg) translateY(4px); }
+.swst-pile .swst-card:nth-child(3) { transform: rotate(2deg) translateY(8px); }
+.swst-pile .swst-card:nth-child(4) { transform: rotate(-1.5deg) translateY(12px); }
+
+/* During drag, JS sets --tx/--ty/--rot */
+.swst-card.is-dragging {
+  transition: none;
+  transform: translate(var(--tx, 0px), var(--ty, 0px)) rotate(var(--rot, 0deg)) !important;
+}
+
+/* Swipe-out animations (added by JS) */
+.swst-card.is-out-left  { transform: translate(-150%, -20%) rotate(-30deg) !important; opacity: 0; }
+.swst-card.is-out-right { transform: translate(150%, -20%) rotate(30deg) !important; opacity: 0; }
+.swst-card.is-out-up    { transform: translateY(-150%) rotate(0deg) !important; opacity: 0; }
+.swst-card.is-out-down  { transform: translateY(150%) rotate(0deg) !important; opacity: 0; }
+
+/* Direction indicators (revealed during drag) */
+.swst-card-indicator {
+  position: absolute;
+  top: 1.5rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 3px solid currentColor;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+.swst-card-indicator.is-like    { right: 1.5rem; color: #34d399; transform: rotate(-15deg); }
+.swst-card-indicator.is-nope    { left: 1.5rem;  color: #f87171; transform: rotate(15deg); }
+.swst-card-indicator.is-super   { left: 50%; top: auto; bottom: 1.5rem; transform: translateX(-50%); color: #60a5fa; }
+
+.swst-card[data-tx-sign="1"] .swst-card-indicator.is-like { opacity: 1; }
+.swst-card[data-tx-sign="-1"] .swst-card-indicator.is-nope { opacity: 1; }
+.swst-card[data-ty-sign="-1"] .swst-card-indicator.is-super { opacity: 1; }
+
+/* Empty state */
+.swst-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+}
+
+/* Action buttons row */
+.swst-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.swst-actions button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+.swst-actions button:hover  { transform: scale(1.1); background: rgba(255, 255, 255, 0.12); }
+.swst-actions button:active { transform: scale(0.94); }
+.swst-actions .swst-btn-like { background: rgba(52, 211, 153, 0.18); color: #34d399; }
+.swst-actions .swst-btn-nope { background: rgba(248, 113, 113, 0.18); color: #f87171; }
+.swst-actions .swst-btn-super { background: rgba(96, 165, 250, 0.18); color: #60a5fa; }

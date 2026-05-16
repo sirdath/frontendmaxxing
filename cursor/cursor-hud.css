@@ -1,0 +1,129 @@
+/* ============================================
+   CURSOR HUD — Coordinates display + crosshair grid for canvases/editors
+   ============================================
+   Companion `cursor-hud.js` wires up the live numbers and crosshair position.
+
+   Usage:
+     <div class="chud" data-chud>
+       <div class="chud-crosshair-x"></div>
+       <div class="chud-crosshair-y"></div>
+       <div class="chud-coords">0, 0</div>
+       <div class="chud-grid"></div>
+     </div>
+
+   Variants:
+     chud-minimal     — coords only, no crosshair
+     chud-blueprint   — blue grid + cyan crosshair
+     chud-precision   — finer grid + degree readout
+   ============================================ */
+
+.chud {
+  --hud-c: #00ffff;
+  --hud-bg: rgba(0, 255, 255, 0.04);
+  --hud-grid: rgba(0, 255, 255, 0.08);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  cursor: crosshair;
+  background: var(--hud-bg);
+}
+
+.chud-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--hud-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hud-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.chud-crosshair-x,
+.chud-crosshair-y {
+  --x: 50%;
+  --y: 50%;
+  position: absolute;
+  pointer-events: none;
+  background: var(--hud-c);
+  opacity: 0.5;
+  z-index: 2;
+  mix-blend-mode: difference;
+}
+.chud-crosshair-x {
+  left: 0; right: 0;
+  top: var(--y, 50%);
+  height: 1px;
+}
+.chud-crosshair-y {
+  top: 0; bottom: 0;
+  left: var(--x, 50%);
+  width: 1px;
+}
+
+.chud-coords {
+  --x-val: 0;
+  --y-val: 0;
+  position: absolute;
+  top: 0.6rem;
+  right: 0.7rem;
+  z-index: 3;
+  padding: 0.25rem 0.5rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--hud-c);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  border: 1px solid rgba(0, 255, 255, 0.18);
+}
+
+.chud-dot {
+  position: absolute;
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: var(--hud-c);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 4;
+  box-shadow: 0 0 8px var(--hud-c);
+}
+
+/* Variants */
+.chud-blueprint {
+  --hud-c: #67e8f9;
+  --hud-bg: #0a1a3e;
+  --hud-grid: rgba(103, 232, 249, 0.08);
+}
+.chud-minimal .chud-crosshair-x,
+.chud-minimal .chud-crosshair-y,
+.chud-minimal .chud-grid { display: none; }
+
+.chud-precision .chud-grid {
+  background-size: 12px 12px, 12px 12px;
+}
+
+.chud-mono {
+  --hud-c: rgba(255, 255, 255, 0.65);
+  --hud-bg: #0a0a14;
+  --hud-grid: rgba(255, 255, 255, 0.05);
+}
+
+/* Labels for X/Y axis */
+.chud-axis-x,
+.chud-axis-y {
+  position: absolute;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.6rem;
+  color: var(--hud-c);
+  opacity: 0.7;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+.chud-axis-x { top: 0.4rem; left: 0.5rem; }
+.chud-axis-y { bottom: 0.4rem; left: 0.5rem; }
