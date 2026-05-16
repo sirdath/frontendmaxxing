@@ -1,0 +1,85 @@
+/* ============================================
+   QUANTITY STEPPER — Standalone numeric stepper input
+   Inspired by Stripe / Shopify quantity inputs
+   ============================================
+   Usage:
+     <div class="qstep" data-qstep>
+       <button data-qstep-dec>−</button>
+       <input type="number" value="1" min="1" max="99">
+       <button data-qstep-inc>+</button>
+     </div>
+     QuantityStepper.init('[data-qstep]', { min: 1, max: 99 });
+
+   Variants:
+     qstep-pill     — Fully rounded
+     qstep-lg       — Larger
+     qstep-glass
+     qstep-vertical
+   ============================================ */
+
+.qstep {
+  --qstep-bg: rgba(255, 255, 255, 0.04);
+  --qstep-border: rgba(255, 255, 255, 0.12);
+  --qstep-fg: #ffffff;
+  --qstep-hover: rgba(255, 255, 255, 0.08);
+  --qstep-radius: 8px;
+  --qstep-size: 36px;
+  display: inline-flex;
+  align-items: stretch;
+  background: var(--qstep-bg);
+  border: 1px solid var(--qstep-border);
+  border-radius: var(--qstep-radius);
+  overflow: hidden;
+}
+
+.qstep > button {
+  width: var(--qstep-size);
+  height: var(--qstep-size);
+  background: transparent;
+  border: none;
+  color: var(--qstep-fg);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.12s ease;
+}
+.qstep > button:hover:not([disabled]) { background: var(--qstep-hover); }
+.qstep > button[disabled] { opacity: 0.4; cursor: not-allowed; }
+
+.qstep > input {
+  width: 48px;
+  background: transparent;
+  border: none;
+  color: var(--qstep-fg);
+  font: inherit;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+  -moz-appearance: textfield;
+}
+.qstep > input::-webkit-outer-spin-button,
+.qstep > input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Variants */
+.qstep-pill { border-radius: 999px; }
+.qstep-lg   { --qstep-size: 44px; }
+.qstep-lg > input { width: 56px; font-size: 1.05rem; }
+.qstep-sm   { --qstep-size: 28px; }
+.qstep-sm > input { width: 36px; font-size: 0.85rem; }
+
+.qstep-glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.qstep-vertical {
+  flex-direction: column-reverse;
+}
+.qstep-vertical > input { width: 100%; }
+.qstep-vertical > button { width: 100%; height: calc(var(--qstep-size) - 6px); }
+
+.qstep-bordered > button:first-child { border-right: 1px solid var(--qstep-border); }
+.qstep-bordered > button:last-child  { border-left:  1px solid var(--qstep-border); }

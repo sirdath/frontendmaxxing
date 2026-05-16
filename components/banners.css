@@ -1,0 +1,110 @@
+/* ============================================
+   BANNERS — Full-width inline alerts (success, error, warning, info, promo)
+   Inspired by GitHub flash messages / Stripe alerts / Linear banners
+   ============================================
+   Usage:
+     <div class="bnr bnr-info">
+       <div class="bnr-icon">ⓘ</div>
+       <div class="bnr-body">
+         <strong class="bnr-title">Heads up.</strong>
+         <span class="bnr-text">Some feature is changing on March 1st.</span>
+       </div>
+       <button class="bnr-close" aria-label="Dismiss">×</button>
+     </div>
+
+   Types:
+     bnr-info / bnr-success / bnr-warning / bnr-danger / bnr-neutral / bnr-promo
+   Variants:
+     bnr-bordered    — Border instead of bg fill
+     bnr-soft        — Soft tint
+     bnr-card        — Card style with shadow
+     bnr-rounded-lg
+   ============================================ */
+
+.bnr {
+  --bnr-bg: rgba(129, 140, 248, 0.1);
+  --bnr-border: rgba(129, 140, 248, 0.4);
+  --bnr-fg: #c7d2fe;
+  --bnr-icon-bg: rgba(129, 140, 248, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: var(--bnr-bg);
+  border: 1px solid var(--bnr-border);
+  border-radius: 10px;
+  color: var(--bnr-fg);
+}
+
+.bnr-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bnr-icon-bg);
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.bnr-body {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.bnr-title {
+  font-weight: 600;
+  margin-right: 0.35rem;
+}
+.bnr-text { opacity: 0.95; }
+
+.bnr-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+.bnr-actions button {
+  padding: 0.35rem 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: inherit;
+  border-radius: 7px;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.bnr-actions button:hover { background: rgba(255, 255, 255, 0.16); }
+
+.bnr-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.65;
+  padding: 0 0.25rem;
+}
+.bnr-close:hover { opacity: 1; }
+
+/* ── Types ── */
+.bnr-info     { --bnr-bg: rgba(34, 211, 238, 0.1); --bnr-border: rgba(34, 211, 238, 0.4); --bnr-fg: #a5f3fc; --bnr-icon-bg: rgba(34, 211, 238, 0.25); }
+.bnr-success  { --bnr-bg: rgba(34, 197, 94, 0.1); --bnr-border: rgba(34, 197, 94, 0.4); --bnr-fg: #bbf7d0; --bnr-icon-bg: rgba(34, 197, 94, 0.25); }
+.bnr-warning  { --bnr-bg: rgba(251, 191, 36, 0.1); --bnr-border: rgba(251, 191, 36, 0.4); --bnr-fg: #fde68a; --bnr-icon-bg: rgba(251, 191, 36, 0.25); }
+.bnr-danger   { --bnr-bg: rgba(239, 68, 68, 0.1); --bnr-border: rgba(239, 68, 68, 0.4); --bnr-fg: #fecaca; --bnr-icon-bg: rgba(239, 68, 68, 0.25); }
+.bnr-neutral  { --bnr-bg: rgba(255, 255, 255, 0.04); --bnr-border: rgba(255, 255, 255, 0.1); --bnr-fg: #e5e7eb; --bnr-icon-bg: rgba(255, 255, 255, 0.08); }
+
+.bnr-promo {
+  --bnr-bg: linear-gradient(90deg, rgba(129, 140, 248, 0.18), rgba(244, 114, 182, 0.18));
+  --bnr-border: rgba(129, 140, 248, 0.4);
+  --bnr-fg: #ffffff;
+  --bnr-icon-bg: linear-gradient(135deg, #818cf8, #f472b6);
+}
+
+/* ── Modifiers ── */
+.bnr-bordered { background: transparent; border-width: 1.5px; }
+.bnr-soft     { border: none; }
+.bnr-card     { box-shadow: 0 6px 20px -8px rgba(0, 0, 0, 0.3); }
+.bnr-rounded-lg { border-radius: 16px; }

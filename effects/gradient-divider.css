@@ -1,0 +1,143 @@
+/* ============================================
+   GRADIENT DIVIDER — Animated separator lines & accents
+   Inspired by Vercel section dividers, Apple horizontal rules, Linear underlines
+   ============================================
+   Usage:
+     <hr class="gdiv gdiv-aurora">
+     <div class="gdiv gdiv-thick gdiv-sunset gdiv-anim"></div>
+
+   Variants (color):
+     gdiv-aurora, gdiv-sunset, gdiv-cyber, gdiv-ocean, gdiv-cosmic, gdiv-rose,
+     gdiv-mint, gdiv-fire, gdiv-gold, gdiv-mono, gdiv-rainbow
+   Thickness:
+     gdiv-hair (1px), gdiv (2px default), gdiv-thick (4px), gdiv-bar (8px)
+   Modifiers:
+     gdiv-anim          — flowing animated gradient
+     gdiv-fade          — fades at both ends (mask)
+     gdiv-dotted        — dotted gradient
+     gdiv-double        — two lines
+     gdiv-glow          — adds shadow halo
+     gdiv-vertical      — rotate 90deg, full height
+   ============================================ */
+
+.gdiv {
+  --gdv-c1: #8b5cf6;
+  --gdv-c2: #ec4899;
+  --gdv-c3: #06b6d4;
+  --gdv-h: 2px;
+  border: 0;
+  height: var(--gdv-h);
+  width: 100%;
+  background: linear-gradient(90deg, var(--gdv-c1), var(--gdv-c2) 50%, var(--gdv-c3));
+  background-size: 200% 100%;
+  margin: 1.25rem 0;
+  border-radius: 999px;
+}
+
+/* Colors */
+.gdiv-aurora { --gdv-c1: #a855f7; --gdv-c2: #ec4899; --gdv-c3: #06b6d4; }
+.gdiv-sunset { --gdv-c1: #f97316; --gdv-c2: #ec4899; --gdv-c3: #f59e0b; }
+.gdiv-cyber  { --gdv-c1: #00ffff; --gdv-c2: #ff00ff; --gdv-c3: #00ff7f; }
+.gdiv-ocean  { --gdv-c1: #0ea5e9; --gdv-c2: #06b6d4; --gdv-c3: #14b8a6; }
+.gdiv-cosmic { --gdv-c1: #6d28d9; --gdv-c2: #db2777; --gdv-c3: #0891b2; }
+.gdiv-rose   { --gdv-c1: #fb7185; --gdv-c2: #f43f5e; --gdv-c3: #ec4899; }
+.gdiv-mint   { --gdv-c1: #34d399; --gdv-c2: #22d3ee; --gdv-c3: #14b8a6; }
+.gdiv-fire   { --gdv-c1: #fbbf24; --gdv-c2: #f97316; --gdv-c3: #ef4444; }
+.gdiv-gold   { --gdv-c1: #fef3c7; --gdv-c2: #fbbf24; --gdv-c3: #d97706; }
+.gdiv-mono   { --gdv-c1: #475569; --gdv-c2: #64748b; --gdv-c3: #94a3b8; }
+.gdiv-rainbow {
+  background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+}
+
+/* Thickness */
+.gdiv-hair  { --gdv-h: 1px; }
+.gdiv-thick { --gdv-h: 4px; }
+.gdiv-bar   { --gdv-h: 8px; }
+.gdiv-band  { --gdv-h: 16px; }
+
+/* Animated flowing gradient */
+.gdiv-anim { animation: gdiv-flow 4s linear infinite; }
+@keyframes gdiv-flow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: -200% 50%; }
+}
+
+/* Fade ends */
+.gdiv-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 15%, #000 85%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0%, #000 15%, #000 85%, transparent 100%);
+}
+
+/* Dotted gradient via mask */
+.gdiv-dotted {
+  -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 8px);
+          mask-image: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 8px);
+}
+
+/* Glow halo */
+.gdiv-glow {
+  box-shadow:
+    0 0 12px -2px var(--gdv-c1),
+    0 0 20px -4px var(--gdv-c2),
+    0 0 30px -6px var(--gdv-c3);
+}
+
+/* Vertical orientation */
+.gdiv-vertical {
+  width: var(--gdv-h);
+  height: 100%;
+  background: linear-gradient(180deg, var(--gdv-c1), var(--gdv-c2) 50%, var(--gdv-c3));
+  display: inline-block;
+}
+.gdiv-vertical.gdiv-fade {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 15%, #000 85%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 15%, #000 85%, transparent 100%);
+}
+
+/* Double-line variant */
+.gdiv-double {
+  height: 12px;
+  background:
+    linear-gradient(90deg, var(--gdv-c1), var(--gdv-c2), var(--gdv-c3)) 0 0 / 100% 2px no-repeat,
+    linear-gradient(90deg, var(--gdv-c3), var(--gdv-c2), var(--gdv-c1)) 0 100% / 100% 2px no-repeat;
+  background-color: transparent;
+}
+
+/* Decorative center dot */
+.gdiv-with-dot {
+  position: relative;
+}
+.gdiv-with-dot::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--gdv-c2);
+  box-shadow: 0 0 14px var(--gdv-c2);
+}
+
+/* Text divider (with centered label) */
+.gdiv-text {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gdv-c2);
+}
+.gdiv-text::before,
+.gdiv-text::after {
+  content: '';
+  flex: 1;
+  height: var(--gdv-h, 1px);
+  background: linear-gradient(90deg, transparent, var(--gdv-c2), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gdiv-anim { animation: none; }
+}

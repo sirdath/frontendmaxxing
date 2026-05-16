@@ -1,0 +1,106 @@
+/* ============================================
+   SHINE BORDER — Animated gradient border that breathes
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <div class="shine-border">
+       <div class="shine-border-content">...</div>
+     </div>
+
+   Variants:
+     .shine-border-double — Two gradient stops chasing
+     .shine-border-soft   — Softer, slower
+     .shine-border-vivid  — Vivid neon palette
+   ============================================ */
+
+.shine-border {
+  --shine-size: 1.5px;
+  --shine-duration: 14s;
+  --shine-radius: 14px;
+  --shine-c1: #c084fc;
+  --shine-c2: #38bdf8;
+  --shine-c3: #f472b6;
+  position: relative;
+  border-radius: var(--shine-radius);
+  isolation: isolate;
+  background: var(--surface, #0c0c14);
+}
+
+.shine-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--shine-size);
+  background: conic-gradient(
+    from var(--shine-angle, 0deg),
+    var(--shine-c1),
+    var(--shine-c2),
+    var(--shine-c3),
+    var(--shine-c1)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: shine-border-spin var(--shine-duration) linear infinite;
+  pointer-events: none;
+}
+
+@property --shine-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes shine-border-spin {
+  to { --shine-angle: 360deg; }
+}
+
+@supports not (background: conic-gradient(from var(--shine-angle), red, blue)) {
+  .shine-border::before {
+    animation: shine-border-fallback var(--shine-duration) linear infinite;
+  }
+  @keyframes shine-border-fallback {
+    to { transform: rotate(360deg); }
+  }
+}
+
+.shine-border-content {
+  position: relative;
+  border-radius: calc(var(--shine-radius) - var(--shine-size));
+  background: inherit;
+  padding: 1.5rem;
+  z-index: 1;
+}
+
+/* ── Variants ── */
+.shine-border-soft {
+  --shine-duration: 22s;
+  --shine-c1: rgba(192, 132, 252, 0.5);
+  --shine-c2: rgba(56, 189, 248, 0.5);
+  --shine-c3: rgba(244, 114, 182, 0.5);
+}
+
+.shine-border-vivid {
+  --shine-c1: #ff00d4;
+  --shine-c2: #00f0ff;
+  --shine-c3: #ffea00;
+}
+
+.shine-border-double::before {
+  background: conic-gradient(
+    from var(--shine-angle, 0deg),
+    transparent 0deg,
+    var(--shine-c1) 30deg,
+    transparent 60deg,
+    transparent 180deg,
+    var(--shine-c2) 210deg,
+    transparent 240deg,
+    transparent 360deg
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shine-border::before { animation: none; }
+}

@@ -1,0 +1,149 @@
+/* ============================================
+   MESH BG STRIPE — Stripe-homepage-style animated mesh gradient backgrounds
+   Inspired by stripe.com hero, Linear marketing pages
+   ============================================
+   Usage:
+     <div class="meshbg meshbg-stripe">...</div>
+
+   Variants:
+     meshbg-stripe, meshbg-stripe-v2, meshbg-shopify, meshbg-vercel,
+     meshbg-linear, meshbg-supabase, meshbg-arc, meshbg-figma,
+     meshbg-notion, meshbg-spotify, meshbg-anthropic, meshbg-discord
+   Modifiers:
+     meshbg-still     — pause animation
+     meshbg-fast/slow — speed
+     meshbg-light     — light theme variant
+   ============================================ */
+
+.meshbg {
+  --mbg-speed: 30s;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: #08081a;
+  background-size: 220% 220%;
+  animation: mbg-flow var(--mbg-speed) ease-in-out infinite alternate;
+}
+
+@keyframes mbg-flow {
+  0%   { background-position: 0% 0%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 50% 100%; }
+}
+
+/* Stripe homepage (purple/blue/pink/orange wash) */
+.meshbg-stripe {
+  background-image:
+    radial-gradient(at 20% 25%, hsla(280, 70%, 60%, 0.6) 0px, transparent 50%),
+    radial-gradient(at 80% 15%, hsla(190, 90%, 65%, 0.55) 0px, transparent 50%),
+    radial-gradient(at 70% 80%, hsla(330, 85%, 65%, 0.55) 0px, transparent 50%),
+    radial-gradient(at 15% 70%, hsla(220, 80%, 55%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, hsla(30, 95%, 60%, 0.35) 0px, transparent 60%);
+  background-color: #0a0428;
+}
+
+.meshbg-stripe-v2 {
+  background-image:
+    radial-gradient(at 30% 30%, hsla(260, 90%, 65%, 0.7) 0px, transparent 50%),
+    radial-gradient(at 70% 30%, hsla(200, 95%, 60%, 0.65) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, hsla(330, 90%, 65%, 0.6) 0px, transparent 50%);
+  background-color: #050218;
+}
+
+.meshbg-shopify {
+  background-image:
+    radial-gradient(at 25% 25%, hsla(140, 70%, 50%, 0.6) 0px, transparent 50%),
+    radial-gradient(at 75% 25%, hsla(180, 80%, 55%, 0.55) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, hsla(100, 75%, 60%, 0.5) 0px, transparent 50%);
+  background-color: #021407;
+}
+
+.meshbg-vercel {
+  background-image:
+    radial-gradient(at 25% 30%, hsla(330, 90%, 55%, 0.6) 0px, transparent 50%),
+    radial-gradient(at 75% 25%, hsla(270, 85%, 60%, 0.55) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, hsla(195, 95%, 55%, 0.55) 0px, transparent 50%),
+    radial-gradient(at 85% 75%, hsla(220, 90%, 60%, 0.45) 0px, transparent 60%);
+  background-color: #000;
+}
+
+.meshbg-linear {
+  background-image:
+    radial-gradient(at 20% 25%, hsla(240, 60%, 55%, 0.7) 0px, transparent 50%),
+    radial-gradient(at 80% 30%, hsla(270, 65%, 55%, 0.6) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, hsla(210, 70%, 50%, 0.55) 0px, transparent 50%);
+  background-color: #08081a;
+}
+
+.meshbg-supabase {
+  background-image:
+    radial-gradient(at 25% 30%, hsla(150, 80%, 45%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 75% 75%, hsla(155, 75%, 50%, 0.5) 0px, transparent 50%);
+  background-color: #050a07;
+}
+
+.meshbg-arc {
+  background-image:
+    radial-gradient(at 20% 20%, hsla(20, 95%, 65%, 0.55) 0px, transparent 50%),
+    radial-gradient(at 80% 30%, hsla(330, 90%, 65%, 0.55) 0px, transparent 50%),
+    radial-gradient(at 50% 85%, hsla(45, 95%, 60%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 15% 75%, hsla(280, 85%, 65%, 0.45) 0px, transparent 50%);
+  background-color: #1a0a14;
+}
+
+.meshbg-figma {
+  background-image:
+    radial-gradient(at 20% 20%, hsla(345, 95%, 65%, 0.55) 0px, transparent 50%),
+    radial-gradient(at 80% 20%, hsla(265, 80%, 60%, 0.55) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, hsla(195, 95%, 55%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 85% 75%, hsla(140, 75%, 55%, 0.45) 0px, transparent 50%);
+  background-color: #0a0518;
+}
+
+.meshbg-notion {
+  background-image:
+    radial-gradient(at 25% 25%, hsla(30, 30%, 50%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 75% 75%, hsla(0, 0%, 40%, 0.5) 0px, transparent 50%);
+  background-color: #1a1714;
+}
+
+.meshbg-spotify {
+  background-image:
+    radial-gradient(at 30% 30%, hsla(140, 75%, 45%, 0.65) 0px, transparent 50%),
+    radial-gradient(at 70% 70%, hsla(140, 60%, 25%, 0.7) 0px, transparent 50%);
+  background-color: #050a07;
+}
+
+.meshbg-anthropic {
+  background-image:
+    radial-gradient(at 25% 25%, hsla(25, 90%, 55%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 75% 75%, hsla(15, 70%, 45%, 0.5) 0px, transparent 50%);
+  background-color: #1a0e07;
+}
+
+.meshbg-discord {
+  background-image:
+    radial-gradient(at 30% 30%, hsla(235, 85%, 65%, 0.6) 0px, transparent 50%),
+    radial-gradient(at 70% 70%, hsla(235, 70%, 50%, 0.55) 0px, transparent 50%);
+  background-color: #050614;
+}
+
+/* Light variants */
+.meshbg-light {
+  background-color: #fafaff;
+}
+.meshbg-light.meshbg-stripe {
+  background-image:
+    radial-gradient(at 20% 25%, hsla(280, 90%, 75%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 80% 15%, hsla(190, 95%, 75%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 70% 80%, hsla(330, 95%, 75%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 15% 70%, hsla(220, 90%, 70%, 0.45) 0px, transparent 50%);
+}
+
+.meshbg-still { animation: none; }
+.meshbg-fast { --mbg-speed: 12s; }
+.meshbg-slow { --mbg-speed: 60s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .meshbg { animation: none; }
+}

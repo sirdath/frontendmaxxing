@@ -1,0 +1,85 @@
+/* ============================================
+   PULL TO REFRESH — Mobile-style pull-down refresh indicator
+   Inspired by Twitter/Material PTR
+   ============================================
+   Usage:
+     <div class="ptr" data-ptr>
+       <div class="ptr-indicator">
+         <div class="ptr-spinner"></div>
+         <span class="ptr-label">Release to refresh</span>
+       </div>
+       <div class="ptr-content"> … scrollable content … </div>
+     </div>
+     PullToRefresh.init('.ptr', { onRefresh: function () { return fetch(...); } });
+
+   States (added to .ptr by JS):
+     .is-pulling   — user is dragging down
+     .is-ready     — pull crossed the threshold
+     .is-refreshing — onRefresh in flight
+   ============================================ */
+
+.ptr {
+  --ptr-trigger: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ptr-indicator {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: var(--ptr-trigger);
+  margin-top: calc(-1 * var(--ptr-trigger));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--text-muted, rgba(255, 255, 255, 0.65));
+  font-size: 0.875rem;
+  transition: margin-top 0.18s ease-out;
+  pointer-events: none;
+}
+
+.ptr-content {
+  position: relative;
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+}
+
+.ptr.is-pulling .ptr-indicator,
+.ptr.is-pulling .ptr-content {
+  transition: none;
+}
+
+.ptr.is-refreshing .ptr-indicator { margin-top: 0; }
+.ptr.is-refreshing .ptr-content { transform: translateY(var(--ptr-trigger)); }
+
+.ptr-spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  transform-origin: center;
+  transition: transform 0.18s ease-out;
+}
+
+.ptr.is-pulling .ptr-spinner {
+  transform: rotate(calc(var(--ptr-progress, 0) * 360deg));
+  transition: none;
+}
+
+.ptr.is-refreshing .ptr-spinner {
+  animation: ptr-spin 0.7s linear infinite;
+}
+
+.ptr.is-ready .ptr-spinner { transform: rotate(360deg); }
+
+@keyframes ptr-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ptr-label::before {
+  content: 'Pull to refresh';
+}
+.ptr.is-ready .ptr-label::before { content: 'Release to refresh'; }
+.ptr.is-refreshing .ptr-label::before { content: 'Refreshing…'; }

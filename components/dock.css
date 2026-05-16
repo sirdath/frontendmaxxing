@@ -1,0 +1,101 @@
+/* ============================================
+   DOCK — macOS-style magnification dock
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <div class="dock">
+       <button class="dock-item">A</button>
+       <button class="dock-item">B</button>
+       <button class="dock-item">C</button>
+     </div>
+     Dock.init('.dock');
+
+   Variants:
+     .dock-floating — Pinned to bottom of viewport
+     .dock-vertical — Vertical column layout
+     .dock-glass    — Glassmorphic background
+   ============================================ */
+
+.dock {
+  --dock-size: 48px;
+  --dock-magnify: 80px;
+  --dock-gap: 0.5rem;
+  --dock-pad: 0.5rem;
+  --dock-radius: 18px;
+  display: inline-flex;
+  align-items: flex-end;
+  gap: var(--dock-gap);
+  padding: var(--dock-pad);
+  border-radius: var(--dock-radius);
+  background: var(--surface-2, rgba(20, 20, 31, 0.85));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  isolation: isolate;
+}
+
+.dock-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--dock-w, var(--dock-size));
+  height: var(--dock-h, var(--dock-size));
+  background: var(--surface-3, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 12px;
+  color: var(--text, #fff);
+  cursor: pointer;
+  font: inherit;
+  transition: width 0.18s ease, height 0.18s ease, transform 0.18s ease, background 0.18s ease;
+  will-change: width, height;
+  flex-shrink: 0;
+}
+
+.dock-item:hover {
+  background: var(--surface-4, rgba(255, 255, 255, 0.12));
+}
+
+/* ── Variants ── */
+.dock-floating {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+}
+
+.dock-vertical {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.dock-glass {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(20, 20, 31, 0.5);
+}
+
+.dock-light {
+  --surface-2: rgba(255, 255, 255, 0.85);
+  --surface-3: rgba(0, 0, 0, 0.04);
+  --surface-4: rgba(0, 0, 0, 0.08);
+  --text: #0c0c14;
+  --border: rgba(0, 0, 0, 0.08);
+}
+
+/* Item label tooltip */
+.dock-item[data-label]:hover::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.25rem 0.5rem;
+  background: var(--surface-2, #14141f);
+  color: var(--text, #fff);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.dock-item { position: relative; }

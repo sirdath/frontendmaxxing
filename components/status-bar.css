@@ -1,0 +1,95 @@
+/* ============================================
+   STATUS BAR — Fixed footer bar with status indicators (IDE / app bottom)
+   Inspired by VSCode / Linear bottom bar / Slack channel header
+   ============================================
+   Usage:
+     <footer class="sbar">
+       <div class="sbar-left">
+         <span class="sbar-item sbar-item-ok"><span class="sbar-dot"></span> Connected</span>
+         <span class="sbar-item">main · 0 changes</span>
+       </div>
+       <div class="sbar-right">
+         <span class="sbar-item">UTF-8</span>
+         <span class="sbar-item">JavaScript</span>
+         <span class="sbar-item">Ln 12, Col 4</span>
+       </div>
+     </footer>
+
+   Variants:
+     sbar-static     — Inline (not fixed)
+     sbar-glass
+     sbar-accent     — Accent-colored bar
+   ============================================ */
+
+.sbar {
+  --sbar-bg: #0a0a14;
+  --sbar-fg: rgba(255, 255, 255, 0.85);
+  --sbar-muted: rgba(255, 255, 255, 0.5);
+  --sbar-border: rgba(255, 255, 255, 0.06);
+  --sbar-accent: #818cf8;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  height: 28px;
+  padding: 0 0.85rem;
+  background: var(--sbar-bg);
+  border-top: 1px solid var(--sbar-border);
+  font-size: 0.75rem;
+  color: var(--sbar-fg);
+  font-family: ui-monospace, monospace;
+}
+.sbar-static { position: static; }
+
+.sbar-left, .sbar-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sbar-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0 0.4rem;
+  height: 22px;
+  border-radius: 5px;
+  cursor: default;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+.sbar-item:hover { background: rgba(255, 255, 255, 0.06); cursor: pointer; }
+
+.sbar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sbar-muted);
+}
+
+.sbar-item-ok      .sbar-dot { background: #4ade80; box-shadow: 0 0 6px rgba(74, 222, 128, 0.6); }
+.sbar-item-warning .sbar-dot { background: #fbbf24; }
+.sbar-item-error   .sbar-dot { background: #f87171; }
+
+.sbar-item.is-active {
+  background: var(--sbar-accent);
+  color: #fff;
+}
+
+.sbar-spacer { flex: 1; }
+
+.sbar-glass {
+  background: rgba(20, 20, 31, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.sbar-accent {
+  background: var(--sbar-accent);
+  color: #fff;
+  border-top: none;
+}
+.sbar-accent .sbar-muted, .sbar-accent .sbar-dot { color: rgba(255, 255, 255, 0.85); }

@@ -1,0 +1,131 @@
+/* ============================================
+   TOUR — Spotlight onboarding walkthrough
+   Inspired by Shepherd.js / Intro.js / driver.js
+   ============================================
+   Usage:
+     Tour.start([
+       { target: '#nav', title: 'Welcome', text: 'This is your nav.', placement: 'bottom' },
+       { target: '#cta', title: 'Try it',  text: 'Click here to start.' },
+       { target: '#footer', title: 'Done!', text: 'Have fun.' }
+     ]);
+
+   The CSS provides:
+     - A full-screen mask with a spotlight hole over the target
+     - A floating popover with title/text/skip/back/next
+     - Step counter and progress dots
+   ============================================ */
+
+.tour-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+  background: rgba(0, 0, 0, 0.65);
+  -webkit-mask-image: var(--tour-mask, none);
+          mask-image: var(--tour-mask, none);
+  pointer-events: auto;
+  transition: -webkit-mask-image 0.25s ease, mask-image 0.25s ease;
+}
+
+.tour-spot {
+  position: fixed;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 4px rgba(129, 140, 248, 0.6),
+    0 0 0 9999px rgba(0, 0, 0, 0.65);
+  pointer-events: none;
+  z-index: 99;
+  transition: top 0.25s ease, left 0.25s ease, width 0.25s ease, height 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tour-pop {
+  position: fixed;
+  z-index: 100;
+  max-width: 320px;
+  background: var(--surface-2, #14141f);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 1rem 1.1rem;
+  animation: tour-in 0.22s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+@keyframes tour-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.tour-title {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.tour-text {
+  margin: 0 0 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.tour-dots {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 0.85rem;
+}
+.tour-dots > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.tour-dots > span.is-active {
+  background: #818cf8;
+  transform: scale(1.4);
+}
+
+.tour-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tour-counter {
+  margin-right: auto;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+.tour-actions button {
+  padding: 0.45rem 0.85rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 7px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.tour-actions button.is-primary {
+  background: #818cf8;
+  border-color: #818cf8;
+  font-weight: 600;
+}
+.tour-actions button.is-skip {
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+}
+.tour-actions button.is-skip:hover { color: #fff; }
+
+/* Arrow pointing to spot */
+.tour-pop::before {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transform: rotate(45deg);
+}
+.tour-pop[data-placement="bottom"]::before { top: -7px; left: 24px; border-bottom: none; border-right: none; }
+.tour-pop[data-placement="top"]::before    { bottom: -7px; left: 24px; border-top: none; border-left: none; }
+.tour-pop[data-placement="right"]::before  { left: -7px; top: 24px; border-top: none; border-right: none; }
+.tour-pop[data-placement="left"]::before   { right: -7px; top: 24px; border-bottom: none; border-left: none; }

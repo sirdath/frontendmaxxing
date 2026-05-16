@@ -1,0 +1,87 @@
+/* ============================================
+   ELASTIC LINE — SVG line that bows toward the cursor with spring return
+   Inspired by Fancy Components, Codrops experiments
+   ============================================
+   Usage:
+     <div class="eln-host" data-eln>
+       <svg class="eln-svg" viewBox="0 0 600 100" preserveAspectRatio="none">
+         <path class="eln-path" d="M0,50 Q300,50 600,50" />
+       </svg>
+     </div>
+
+     ElasticLine.init('[data-eln]', { stiffness: 0.1, damping: 0.85 });
+
+   Variants:
+     eln-thin, eln-thick, eln-gradient, eln-glow
+   Colors (set --eln-color):
+     eln-violet, eln-cyan, eln-rose, eln-amber, eln-mint, eln-mono, eln-rainbow
+   ============================================ */
+
+.eln-host {
+  --eln-color: #8b5cf6;
+  --eln-thickness: 2;
+  position: relative;
+  width: 100%;
+  min-height: 60px;
+  display: block;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.eln-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.eln-path {
+  fill: none;
+  stroke: var(--eln-color);
+  stroke-width: var(--eln-thickness);
+  stroke-linecap: round;
+  transition: stroke 0.3s ease;
+}
+
+/* Variants */
+.eln-thin  { --eln-thickness: 1; }
+.eln-thick { --eln-thickness: 4; }
+.eln-fat   { --eln-thickness: 8; }
+
+.eln-violet { --eln-color: #8b5cf6; }
+.eln-cyan   { --eln-color: #22d3ee; }
+.eln-rose   { --eln-color: #f43f5e; }
+.eln-amber  { --eln-color: #f59e0b; }
+.eln-mint   { --eln-color: #34d399; }
+.eln-mono   { --eln-color: rgba(255, 255, 255, 0.85); }
+
+.eln-gradient .eln-path {
+  stroke: url(#eln-gradient);
+}
+
+.eln-glow .eln-path {
+  filter: drop-shadow(0 0 4px var(--eln-color)) drop-shadow(0 0 12px var(--eln-color));
+}
+
+.eln-rainbow .eln-path {
+  stroke: url(#eln-rainbow);
+}
+
+/* Multi-line stack (use multiple lines for an interactive grid) */
+.eln-grid {
+  display: grid;
+  gap: 1.2rem;
+}
+
+/* Hover state — small brightening */
+.eln-host:hover .eln-path {
+  filter: drop-shadow(0 0 6px var(--eln-color));
+}
+
+/* Disabled */
+.eln-host.is-disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}

@@ -1,0 +1,154 @@
+/* ============================================
+   GRADIENT BADGES — Gradient pills, tags, and status badges
+   Inspired by GitHub status, Linear priorities, Stripe tags
+   ============================================
+   Usage:
+     <span class="gbdg gbdg-aurora">New</span>
+     <span class="gbdg gbdg-cyber gbdg-pulse">LIVE</span>
+     <span class="gbdg gbdg-outline gbdg-sunset">Beta</span>
+
+   Variants (color):
+     gbdg-aurora, gbdg-sunset, gbdg-cosmic, gbdg-cyber, gbdg-ocean,
+     gbdg-fire, gbdg-mint, gbdg-rose, gbdg-gold, gbdg-mono, gbdg-holo
+   Styles:
+     gbdg-outline (gradient border only)
+     gbdg-ghost (gradient text only)
+     gbdg-glow (halo)
+     gbdg-pulse (animated dot)
+   Sizes:
+     gbdg-xs, gbdg-sm, gbdg-md (default), gbdg-lg
+   Shapes:
+     gbdg-pill (default), gbdg-square, gbdg-rounded
+   ============================================ */
+
+.gbdg {
+  --gd-c1: #8b5cf6;
+  --gd-c2: #ec4899;
+  --gd-c3: #06b6d4;
+  --gd-fg: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--gd-fg);
+  background: linear-gradient(135deg, var(--gd-c1), var(--gd-c2) 50%, var(--gd-c3));
+  border-radius: 999px;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Color presets */
+.gbdg-aurora { --gd-c1: #a855f7; --gd-c2: #ec4899; --gd-c3: #06b6d4; }
+.gbdg-sunset { --gd-c1: #f97316; --gd-c2: #ec4899; --gd-c3: #f59e0b; }
+.gbdg-cosmic { --gd-c1: #6d28d9; --gd-c2: #db2777; --gd-c3: #0891b2; }
+.gbdg-cyber  { --gd-c1: #00ffff; --gd-c2: #ff00ff; --gd-c3: #00ff7f; --gd-fg: #0a0014; }
+.gbdg-ocean  { --gd-c1: #0ea5e9; --gd-c2: #06b6d4; --gd-c3: #14b8a6; }
+.gbdg-fire   { --gd-c1: #fbbf24; --gd-c2: #f97316; --gd-c3: #ef4444; }
+.gbdg-mint   { --gd-c1: #34d399; --gd-c2: #22d3ee; --gd-c3: #14b8a6; --gd-fg: #02140e; }
+.gbdg-rose   { --gd-c1: #fb7185; --gd-c2: #f43f5e; --gd-c3: #ec4899; }
+.gbdg-gold   { --gd-c1: #fef3c7; --gd-c2: #fbbf24; --gd-c3: #d97706; --gd-fg: #2a1a02; }
+.gbdg-violet { --gd-c1: #6366f1; --gd-c2: #8b5cf6; --gd-c3: #a855f7; }
+.gbdg-mono   { --gd-c1: #1e293b; --gd-c2: #334155; --gd-c3: #475569; }
+.gbdg-pastel { --gd-c1: #c4b5fd; --gd-c2: #fbcfe8; --gd-c3: #a5f3fc; --gd-fg: #1a0a2a; }
+
+/* Brand */
+.gbdg-instagram { background: linear-gradient(45deg, #515bd4, #8134af 25%, #dd2a7b 50%, #feda77 75%, #f58529); }
+.gbdg-discord   { background: linear-gradient(135deg, #5865f2, #404eed); }
+.gbdg-spotify   { background: linear-gradient(135deg, #1ed760, #1db954); }
+.gbdg-vercel    { background: linear-gradient(90deg, #ec4899, #8b5cf6, #06b6d4); }
+
+/* Holo (animated foil) */
+.gbdg-holo {
+  background:
+    conic-gradient(from 0deg at 50% 50%,
+      #ff00aa, #00ffff, #aaff00, #ffaa00, #ff00ff, #00aaff, #ff00aa);
+  background-size: 200% 200%;
+  animation: gbdg-holo-spin 4s linear infinite;
+  color: #0a0a14;
+}
+@keyframes gbdg-holo-spin {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Styles */
+.gbdg-outline {
+  background:
+    linear-gradient(transparent, transparent) padding-box,
+    linear-gradient(135deg, var(--gd-c1), var(--gd-c2), var(--gd-c3)) border-box;
+  border: 1.5px solid transparent;
+  color: var(--gd-c2);
+}
+.gbdg-ghost {
+  background: transparent;
+  color: transparent;
+  background-image: linear-gradient(135deg, var(--gd-c1), var(--gd-c2), var(--gd-c3));
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+.gbdg-glow {
+  box-shadow:
+    0 0 12px -2px var(--gd-c1),
+    0 0 18px -4px var(--gd-c2);
+}
+.gbdg-soft {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--gd-c1) 18%, transparent),
+    color-mix(in srgb, var(--gd-c2) 18%, transparent) 50%,
+    color-mix(in srgb, var(--gd-c3) 18%, transparent));
+  color: var(--gd-c2);
+  border: 1px solid color-mix(in srgb, var(--gd-c2) 30%, transparent);
+}
+
+/* Pulse — live status dot */
+.gbdg-pulse::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+  animation: gbdg-dot-pulse 1.4s ease-in-out infinite;
+  box-shadow: 0 0 6px currentColor;
+}
+@keyframes gbdg-dot-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.5; transform: scale(1.4); }
+}
+
+/* Sizes */
+.gbdg-xs { padding: 0.15rem 0.45rem; font-size: 0.62rem; }
+.gbdg-sm { padding: 0.2rem 0.55rem; font-size: 0.68rem; }
+.gbdg-md { padding: 0.25rem 0.65rem; font-size: 0.72rem; }
+.gbdg-lg { padding: 0.4rem 0.95rem; font-size: 0.85rem; }
+
+/* Shapes */
+.gbdg-pill    { border-radius: 999px; }
+.gbdg-square  { border-radius: 4px; }
+.gbdg-rounded { border-radius: 8px; }
+
+/* Number-counter badge */
+.gbdg-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 0.65rem;
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+}
+
+/* "NEW" callout badge */
+.gbdg-new::after {
+  content: '✦';
+  margin-left: 0.15rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gbdg-holo, .gbdg-pulse::before { animation: none; }
+}

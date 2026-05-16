@@ -1,0 +1,146 @@
+/* ============================================
+   HERO PARALLAX — Multi-row scroll-parallax product grid
+   Inspired by Aceternity UI
+   ============================================
+   Usage:
+     <section class="hero-parallax">
+       <div class="hero-parallax-headline">
+         <h1>The ultimate dev stack</h1>
+         <p>Modern tooling for ambitious products.</p>
+       </div>
+       <div class="hero-parallax-rows">
+         <div class="hero-parallax-row hero-parallax-row-1">
+           <div class="hp-card"><img src="..." alt=""><span>Tool 1</span></div>
+           …
+         </div>
+         <div class="hero-parallax-row hero-parallax-row-2">…</div>
+         <div class="hero-parallax-row hero-parallax-row-3">…</div>
+       </div>
+     </section>
+     HeroParallax.init('.hero-parallax');
+
+   Variants:
+     .hero-parallax-tight — Less vertical space
+     .hero-parallax-cards-sm — Smaller card width
+   ============================================ */
+
+.hero-parallax {
+  --hp-card-w: 280px;
+  --hp-card-h: 180px;
+  --hp-gap: 1.25rem;
+  --hp-rotate-x: 14deg;
+  --hp-rotate-z: 12deg;
+  --hp-rotate-y: -10deg;
+  position: relative;
+  width: 100%;
+  min-height: 1600px;
+  padding-top: 4rem;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+.hero-parallax-headline {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+  padding: 0 1.5rem;
+}
+
+.hero-parallax-headline h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+  background: linear-gradient(to bottom, #fff, #6e6e90);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-parallax-headline p {
+  margin: 0;
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  font-size: 1.1rem;
+  max-width: 540px;
+}
+
+.hero-parallax-rows {
+  position: relative;
+  z-index: 1;
+  margin-top: 6rem;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--hp-rotate-x)) rotateZ(var(--hp-rotate-z)) rotateY(var(--hp-rotate-y));
+  transform-origin: 0% 0%;
+  will-change: transform;
+}
+
+.hero-parallax-row {
+  display: flex;
+  gap: var(--hp-gap);
+  margin-bottom: var(--hp-gap);
+  width: max-content;
+  will-change: transform;
+}
+
+.hp-card {
+  flex-shrink: 0;
+  width: var(--hp-card-w);
+  height: var(--hp-card-h);
+  background: var(--surface-2, #14141f);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 0.85rem 1rem;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.18s ease;
+}
+
+.hp-card:hover { transform: translateY(-4px); }
+
+.hp-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hp-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent 60%);
+  pointer-events: none;
+}
+
+.hp-card span {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Direction: even rows scroll one direction, odd the other (set in JS).
+   We pre-offset the rows so they appear staggered before scrolling. */
+.hero-parallax-row-1 { transform: translateX(-10%); }
+.hero-parallax-row-2 { transform: translateX(-20%); }
+.hero-parallax-row-3 { transform: translateX(-5%); }
+
+/* ── Variants ── */
+.hero-parallax-tight { min-height: 1200px; }
+.hero-parallax-cards-sm { --hp-card-w: 200px; --hp-card-h: 140px; }
+
+@media (max-width: 700px) {
+  .hero-parallax { --hp-card-w: 180px; --hp-card-h: 120px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-parallax-rows { transform: none; }
+  .hero-parallax-row { transform: none; }
+}

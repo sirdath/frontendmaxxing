@@ -1,0 +1,83 @@
+/* ============================================
+   ERROR SHAKE — Shake-on-invalid keyframe + utility classes
+   Inspired by form validation patterns (auth modal failure shake)
+   ============================================
+   Usage:
+     <input class="...">
+     // On invalid submit:
+     el.classList.add('err-shake');
+     setTimeout(() => el.classList.remove('err-shake'), 500);
+
+   Variants:
+     .err-shake-h  — Horizontal shake (default)
+     .err-shake-v  — Vertical shake
+     .err-shake-tilt — Tilt-shake (rotate)
+     .err-shake-soft — Smaller amplitude
+
+   Combine with .err-ring for a red ring during shake:
+     .err-ring — Adds box-shadow ring (red)
+   ============================================ */
+
+.err-shake,
+.err-shake-h {
+  animation: err-shake-h 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.err-shake-v {
+  animation: err-shake-v 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.err-shake-tilt {
+  animation: err-shake-tilt 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.err-shake-soft {
+  animation: err-shake-soft 0.4s ease both;
+}
+
+@keyframes err-shake-h {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-6px); }
+  40%, 60% { transform: translateX(6px); }
+}
+
+@keyframes err-shake-v {
+  10%, 90% { transform: translateY(-1px); }
+  20%, 80% { transform: translateY(2px); }
+  30%, 50%, 70% { transform: translateY(-6px); }
+  40%, 60% { transform: translateY(6px); }
+}
+
+@keyframes err-shake-tilt {
+  10%, 90% { transform: rotate(-1deg); }
+  20%, 80% { transform: rotate(2deg); }
+  30%, 50%, 70% { transform: rotate(-6deg); }
+  40%, 60% { transform: rotate(6deg); }
+}
+
+@keyframes err-shake-soft {
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+}
+
+/* ── Optional red ring during shake (apply with .err-shake) ── */
+.err-ring {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+  border-color: #ef4444 !important;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.err-ring-amber {
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+  border-color: #f59e0b !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .err-shake, .err-shake-h, .err-shake-v, .err-shake-tilt, .err-shake-soft {
+    animation: none;
+  }
+}

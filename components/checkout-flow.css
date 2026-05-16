@@ -1,0 +1,278 @@
+/* ============================================
+   CHECKOUT FLOW — Multi-step checkout layout (Cart → Shipping → Payment → Review)
+   Inspired by Stripe Checkout / Shopify / Apple Store
+   ============================================
+   Usage:
+     <div class="chk chk-2col">
+       <div class="chk-main">
+         <ol class="chk-stepper">
+           <li class="is-done"><span>1</span> Cart</li>
+           <li class="is-current"><span>2</span> Shipping</li>
+           <li><span>3</span> Payment</li>
+           <li><span>4</span> Review</li>
+         </ol>
+         <form class="chk-section">
+           <h3>Shipping address</h3>
+           <div class="chk-grid">…inputs…</div>
+         </form>
+         <div class="chk-actions">
+           <button class="chk-back">← Back</button>
+           <button class="chk-next">Continue</button>
+         </div>
+       </div>
+       <aside class="chk-summary">
+         <h4>Order summary</h4>
+         <ul class="chk-summary-items">…</ul>
+         <div class="chk-summary-totals">
+           <div><span>Subtotal</span><span>$129</span></div>
+           <div><span>Shipping</span><span>$8</span></div>
+           <div class="chk-grand"><span>Total</span><span>$137</span></div>
+         </div>
+       </aside>
+     </div>
+
+   Variants:
+     chk-1col       — Stack summary below
+     chk-2col       — Form left, summary sticky right (default)
+     chk-3col       — Stepper left, form middle, summary right
+   ============================================ */
+
+.chk {
+  --chk-fg: #ffffff;
+  --chk-muted: rgba(255, 255, 255, 0.6);
+  --chk-border: rgba(255, 255, 255, 0.08);
+  --chk-bg: var(--surface-2, #14141f);
+  --chk-accent: #818cf8;
+  color: var(--chk-fg);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.chk-2col {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.chk-3col {
+  display: grid;
+  grid-template-columns: 200px 1.4fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+@media (max-width: 880px) {
+  .chk-2col, .chk-3col { grid-template-columns: 1fr; }
+}
+
+/* Stepper */
+.chk-stepper {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+}
+.chk-3col .chk-stepper { flex-direction: column; }
+
+.chk-stepper li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--chk-muted);
+}
+.chk-stepper li span {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid var(--chk-border);
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.chk-stepper li.is-current { color: var(--chk-fg); font-weight: 600; }
+.chk-stepper li.is-current span {
+  border-color: var(--chk-accent);
+  background: var(--chk-accent);
+  color: #fff;
+}
+.chk-stepper li.is-done { color: var(--chk-fg); }
+.chk-stepper li.is-done span {
+  border-color: #4ade80;
+  background: rgba(74, 222, 128, 0.18);
+  color: #4ade80;
+}
+.chk-stepper li.is-done span::after {
+  content: '✓';
+  position: absolute;
+}
+.chk-stepper li.is-done span { position: relative; }
+.chk-stepper li.is-done span > * { display: none; }
+
+.chk-2col .chk-stepper li:not(:last-child)::after {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--chk-border);
+  margin-left: 0.5rem;
+}
+
+/* Section */
+.chk-section {
+  padding: 1.5rem;
+  background: var(--chk-bg);
+  border: 1px solid var(--chk-border);
+  border-radius: 14px;
+  margin-bottom: 1rem;
+}
+.chk-section h3 {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.chk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+.chk-grid .chk-full { grid-column: 1 / -1; }
+.chk-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--chk-muted);
+}
+.chk-grid input,
+.chk-grid select {
+  padding: 0.65rem 0.85rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--chk-border);
+  border-radius: 8px;
+  color: var(--chk-fg);
+  font: inherit;
+  outline: none;
+  transition: border-color 0.18s ease;
+}
+.chk-grid input:focus,
+.chk-grid select:focus { border-color: var(--chk-accent); }
+
+@media (max-width: 540px) {
+  .chk-grid { grid-template-columns: 1fr; }
+}
+
+/* Payment methods row */
+.chk-pay-methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.6rem;
+}
+.chk-pay-method {
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid var(--chk-border);
+  border-radius: 10px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+.chk-pay-method.is-active {
+  border-color: var(--chk-accent);
+  background: rgba(129, 140, 248, 0.08);
+}
+
+/* Actions */
+.chk-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+.chk-back, .chk-next {
+  padding: 0.75rem 1.4rem;
+  border: 1px solid var(--chk-border);
+  background: transparent;
+  color: var(--chk-fg);
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+.chk-next {
+  background: var(--chk-accent);
+  border-color: var(--chk-accent);
+  color: #fff;
+  font-weight: 600;
+}
+.chk-next:hover { filter: brightness(1.08); }
+
+/* Summary */
+.chk-summary {
+  padding: 1.5rem;
+  background: var(--chk-bg);
+  border: 1px solid var(--chk-border);
+  border-radius: 14px;
+  position: sticky;
+  top: 1rem;
+}
+.chk-summary h4 { margin: 0 0 1rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--chk-muted); }
+
+.chk-summary-items {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.chk-summary-items li {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+.chk-summary-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  position: relative;
+}
+.chk-summary-thumb-qty {
+  position: absolute;
+  top: -4px; right: -4px;
+  background: var(--chk-fg);
+  color: var(--chk-bg);
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 5px;
+}
+.chk-summary-name { font-size: 0.85rem; font-weight: 500; }
+.chk-summary-meta { font-size: 0.7rem; color: var(--chk-muted); }
+.chk-summary-price { font-size: 0.85rem; font-weight: 500; }
+
+.chk-summary-totals {
+  border-top: 1px solid var(--chk-border);
+  padding-top: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+.chk-summary-totals > div { display: flex; justify-content: space-between; color: var(--chk-muted); }
+.chk-summary-totals > div.chk-grand {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--chk-fg);
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--chk-border);
+}

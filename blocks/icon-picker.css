@@ -1,0 +1,109 @@
+/* ============================================
+   ICON PICKER — Grid of icons (emoji or SVG) with search + categories
+   Inspired by Notion icon picker / Linear status icons
+   ============================================
+   Usage:
+     <div class="ipk" data-icon-picker></div>
+     IconPicker.init('[data-icon-picker]', { onPick: function (icon) {…} });
+
+   By default uses a curated emoji set as icons. Pass `icons: [{name, char}]`
+   to use SVG icon paths instead.
+
+   Variants:
+     ipk-glass
+     ipk-tile     — Larger tiles (40px+)
+   ============================================ */
+
+.ipk {
+  --ipk-bg: var(--surface-2, #14141f);
+  --ipk-border: rgba(255, 255, 255, 0.1);
+  --ipk-fg: #ffffff;
+  --ipk-muted: rgba(255, 255, 255, 0.55);
+  --ipk-hover: rgba(255, 255, 255, 0.06);
+  --ipk-radius: 12px;
+  width: 280px;
+  max-height: 340px;
+  background: var(--ipk-bg);
+  border: 1px solid var(--ipk-border);
+  border-radius: var(--ipk-radius);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ipk-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.65rem;
+  border-bottom: 1px solid var(--ipk-border);
+}
+.ipk-toolbar input {
+  flex: 1;
+  padding: 0.4rem 0.55rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--ipk-border);
+  border-radius: 7px;
+  color: var(--ipk-fg);
+  font: inherit;
+  font-size: 0.825rem;
+  outline: none;
+}
+.ipk-random {
+  background: transparent;
+  border: 1px solid var(--ipk-border);
+  border-radius: 7px;
+  color: var(--ipk-fg);
+  padding: 0.4rem 0.55rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.ipk-random:hover { background: var(--ipk-hover); }
+
+.ipk-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.4rem;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1px;
+}
+
+.ipk-tile .ipk-grid { grid-template-columns: repeat(6, 1fr); }
+
+.ipk-grid button {
+  width: 100%;
+  aspect-ratio: 1;
+  background: transparent;
+  border: none;
+  color: var(--ipk-fg);
+  font-size: 1.05rem;
+  cursor: pointer;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  transition: background 0.12s ease, transform 0.12s ease;
+}
+.ipk-grid button:hover {
+  background: var(--ipk-hover);
+  transform: scale(1.1);
+}
+.ipk-grid button.is-active {
+  background: rgba(129, 140, 248, 0.18);
+  outline: 1.5px solid rgba(129, 140, 248, 0.5);
+}
+
+.ipk-empty {
+  grid-column: 1 / -1;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--ipk-muted);
+  font-size: 0.85rem;
+}
+
+.ipk-glass {
+  background: rgba(20, 20, 31, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}

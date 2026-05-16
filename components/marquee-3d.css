@@ -1,0 +1,97 @@
+/* ============================================
+   MARQUEE 3D — Perspective-tilted marquee row stack
+   Inspired by Magic UI
+   ============================================
+   Companion to: components/marquee.css
+
+   Usage:
+     <div class="marquee-3d">
+       <div class="marquee-3d-stage">
+         <div class="marquee marquee-pause-hover"><div class="marquee-track">...</div></div>
+         <div class="marquee marquee-reverse marquee-pause-hover"><div class="marquee-track">...</div></div>
+         <div class="marquee marquee-pause-hover"><div class="marquee-track">...</div></div>
+       </div>
+     </div>
+
+   Variants:
+     .marquee-3d-flat   — Reduce tilt
+     .marquee-3d-steep  — Stronger tilt
+     .marquee-3d-side   — Side-stack columns instead of rows
+   ============================================ */
+
+.marquee-3d {
+  --m3d-perspective: 900px;
+  --m3d-rotate-x: 14deg;
+  --m3d-rotate-y: -18deg;
+  --m3d-rotate-z: 12deg;
+  --m3d-gap: 1rem;
+  position: relative;
+  width: 100%;
+  perspective: var(--m3d-perspective);
+  perspective-origin: 50% 50%;
+  overflow: hidden;
+}
+
+.marquee-3d-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--m3d-gap);
+  transform-style: preserve-3d;
+  transform:
+    rotateX(var(--m3d-rotate-x))
+    rotateY(var(--m3d-rotate-y))
+    rotateZ(var(--m3d-rotate-z));
+  transform-origin: 50% 50%;
+  padding: 4rem 0;
+}
+
+.marquee-3d-flat  { --m3d-rotate-x: 6deg; --m3d-rotate-y: -8deg; --m3d-rotate-z: 4deg; }
+.marquee-3d-steep { --m3d-rotate-x: 24deg; --m3d-rotate-y: -28deg; --m3d-rotate-z: 18deg; }
+
+.marquee-3d-side .marquee-3d-stage {
+  flex-direction: row;
+  height: 480px;
+}
+
+.marquee-3d-side .marquee-3d-stage .marquee {
+  height: 100%;
+}
+
+.marquee-3d-side .marquee-vertical {
+  height: 100%;
+}
+
+/* Edge fade (sides only) */
+.marquee-3d::before,
+.marquee-3d::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marquee-3d::before {
+  left: 0;
+  background: linear-gradient(to right, var(--surface, #0c0c14), transparent);
+}
+
+.marquee-3d::after {
+  right: 0;
+  background: linear-gradient(to left, var(--surface, #0c0c14), transparent);
+}
+
+/* Card style hint for items inside */
+.marquee-3d-card {
+  padding: 1rem 1.25rem;
+  background: var(--surface-2, #14141f);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 14px;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-3d-stage { transform: none; }
+}

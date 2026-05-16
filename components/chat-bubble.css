@@ -1,0 +1,196 @@
+/* ============================================
+   CHAT BUBBLE — Sent/received chat messages with typing indicator
+   Inspired by iMessage / WhatsApp / Linear inbox
+   ============================================
+   Usage:
+     <div class="cbb cbb-received">
+       <div class="cbb-avatar">A</div>
+       <div class="cbb-bubble">
+         <div class="cbb-name">Aurora</div>
+         <p>Hello there!</p>
+         <span class="cbb-time">2:14 PM</span>
+       </div>
+     </div>
+     <div class="cbb cbb-sent">
+       <div class="cbb-bubble">
+         <p>Hi!</p>
+         <span class="cbb-time">2:15 PM ✓✓</span>
+       </div>
+     </div>
+     <div class="cbb cbb-received cbb-typing">
+       <div class="cbb-avatar">A</div>
+       <div class="cbb-bubble"><span></span><span></span><span></span></div>
+     </div>
+
+   Variants:
+     cbb-received / cbb-sent
+     cbb-typing
+     cbb-system     — Centered system message
+     cbb-imessage   — iMessage-style blue/gray bubbles
+     cbb-bordered   — Outlined instead of filled
+   ============================================ */
+
+.cbb {
+  --cbb-sent-bg: #818cf8;
+  --cbb-sent-fg: #ffffff;
+  --cbb-recv-bg: rgba(255, 255, 255, 0.06);
+  --cbb-recv-fg: #ffffff;
+  --cbb-muted: rgba(255, 255, 255, 0.5);
+  --cbb-radius: 16px;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.cbb-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+  align-self: flex-end;
+}
+
+.cbb-bubble {
+  max-width: 70%;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--cbb-radius);
+  position: relative;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.cbb-bubble p { margin: 0; }
+.cbb-bubble p + p { margin-top: 0.3rem; }
+
+.cbb-name {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.2rem;
+  opacity: 0.8;
+}
+
+.cbb-time {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--cbb-muted);
+  margin-top: 0.25rem;
+}
+
+/* Received */
+.cbb-received .cbb-bubble {
+  background: var(--cbb-recv-bg);
+  color: var(--cbb-recv-fg);
+  border-bottom-left-radius: 6px;
+}
+
+/* Sent */
+.cbb-sent {
+  justify-content: flex-end;
+}
+.cbb-sent .cbb-bubble {
+  background: var(--cbb-sent-bg);
+  color: var(--cbb-sent-fg);
+  border-bottom-right-radius: 6px;
+}
+.cbb-sent .cbb-name { display: none; }
+
+/* System message */
+.cbb-system {
+  justify-content: center;
+}
+.cbb-system .cbb-bubble {
+  background: transparent;
+  color: var(--cbb-muted);
+  font-size: 0.75rem;
+  text-align: center;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+}
+.cbb-system .cbb-avatar { display: none; }
+
+/* Typing indicator */
+.cbb-typing .cbb-bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+}
+.cbb-typing .cbb-bubble span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+  animation: cbb-typing 1.2s ease-in-out infinite;
+}
+.cbb-typing .cbb-bubble span:nth-child(2) { animation-delay: 0.15s; }
+.cbb-typing .cbb-bubble span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes cbb-typing {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+  40%           { transform: scale(1);   opacity: 1; }
+}
+
+/* iMessage-style */
+.cbb-imessage.cbb-sent .cbb-bubble {
+  background: linear-gradient(180deg, #2e8aff, #1f6fee);
+}
+.cbb-imessage.cbb-received .cbb-bubble {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Outlined */
+.cbb-bordered.cbb-sent .cbb-bubble {
+  background: transparent;
+  border: 1.5px solid var(--cbb-sent-bg);
+  color: var(--cbb-sent-bg);
+}
+.cbb-bordered.cbb-received .cbb-bubble {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Tail (subtle bottom-corner arrow) — toggle with .cbb-tail */
+.cbb-tail.cbb-sent .cbb-bubble::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  bottom: 0;
+  border: 6px solid transparent;
+  border-bottom-color: var(--cbb-sent-bg);
+  border-right: 0;
+}
+.cbb-tail.cbb-received .cbb-bubble::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  bottom: 0;
+  border: 6px solid transparent;
+  border-bottom-color: var(--cbb-recv-bg);
+  border-left: 0;
+}
+
+/* Reactions row attached to bubble */
+.cbb-reactions {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+}
+.cbb-reaction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.45rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  user-select: none;
+}
+.cbb-reaction.is-mine { background: rgba(129, 140, 248, 0.2); border-color: rgba(129, 140, 248, 0.4); }

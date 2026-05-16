@@ -1,0 +1,88 @@
+/* ============================================
+   PAGE TRANSITION — Curtain wipe overlay between routes
+   Inspired by Codrops Barba.js / SwupJS demos
+   ============================================
+   Usage:
+     PageTransitionCurtain.init({
+       container: '#app',
+       linkSelector: 'a[data-ptc]',
+       direction: 'rtl'      // 'rtl' | 'ltr' | 'ttb' | 'btt'
+     });
+
+   The curtain is a fixed-position SVG overlay that wipes in, fades out
+   over a transparent state, then wipes out — meanwhile the container
+   content is swapped.
+   ============================================ */
+
+.ptc-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: var(--ptc-bg, #0c0c14);
+  transform: translateX(-100%);
+  transition: transform 0.55s cubic-bezier(0.86, 0, 0.07, 1);
+  will-change: transform;
+}
+
+.ptc-curtain.ptc-in   { transform: translateX(0); }
+.ptc-curtain.ptc-out  { transform: translateX(100%); }
+
+/* Direction variants */
+.ptc-curtain.ptc-ltr            { transform: translateX(-100%); }
+.ptc-curtain.ptc-ltr.ptc-in     { transform: translateX(0); }
+.ptc-curtain.ptc-ltr.ptc-out    { transform: translateX(100%); }
+
+.ptc-curtain.ptc-rtl            { transform: translateX(100%); }
+.ptc-curtain.ptc-rtl.ptc-in     { transform: translateX(0); }
+.ptc-curtain.ptc-rtl.ptc-out    { transform: translateX(-100%); }
+
+.ptc-curtain.ptc-ttb            { transform: translateY(-100%); }
+.ptc-curtain.ptc-ttb.ptc-in     { transform: translateY(0); }
+.ptc-curtain.ptc-ttb.ptc-out    { transform: translateY(100%); }
+
+.ptc-curtain.ptc-btt            { transform: translateY(100%); }
+.ptc-curtain.ptc-btt.ptc-in     { transform: translateY(0); }
+.ptc-curtain.ptc-btt.ptc-out    { transform: translateY(-100%); }
+
+/* Skewed curtain (diagonal) */
+.ptc-curtain.ptc-diagonal { transform: translateX(-100%) skewX(-12deg); transform-origin: top left; }
+.ptc-curtain.ptc-diagonal.ptc-in  { transform: translateX(0) skewX(-12deg); }
+.ptc-curtain.ptc-diagonal.ptc-out { transform: translateX(100%) skewX(-12deg); }
+
+/* Double curtain (two layers) for an extra fancy wipe */
+.ptc-curtain-double::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ptc-bg-2, #818cf8);
+  transform: inherit;
+  transition-duration: 0.7s;
+  z-index: -1;
+}
+
+/* Loading dot center */
+.ptc-curtain .ptc-loader {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px; height: 40px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: ptc-spin 0.8s linear infinite;
+  transition: opacity 0.2s ease 0.15s;
+}
+
+.ptc-curtain.ptc-in .ptc-loader { opacity: 1; }
+
+@keyframes ptc-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ptc-curtain { transition: opacity 0.2s ease; transform: none; opacity: 0; }
+  .ptc-curtain.ptc-in  { opacity: 1; transform: none; }
+  .ptc-curtain.ptc-out { opacity: 0; transform: none; }
+}

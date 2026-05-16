@@ -1,0 +1,173 @@
+/* ============================================
+   DYNAMIC ISLAND — Expanding pill notification (iPhone-style)
+   Inspired by cult-ui / Apple Dynamic Island
+   ============================================
+   Usage:
+     <div class="di">
+       <div class="di-pill">
+         <div class="di-collapsed">
+           <span class="di-icon">●</span>
+           <span class="di-status">Now Playing</span>
+         </div>
+         <div class="di-expanded">
+           <div class="di-row">
+             <div class="di-icon-lg">♫</div>
+             <div class="di-info">
+               <div class="di-title">Track title</div>
+               <div class="di-sub">Artist · 2:14 / 3:42</div>
+             </div>
+             <button class="di-action">⏸</button>
+           </div>
+         </div>
+       </div>
+     </div>
+     DynamicIsland.init('.di');
+
+   Variants:
+     .di-static          — Doesn't auto-collapse
+     .di-bottom          — Sits at the bottom of the viewport
+     .di-floating        — Position fixed at top center of viewport
+   ============================================ */
+
+.di {
+  --di-bg: #0c0c14;
+  --di-radius: 999px;
+  --di-radius-expanded: 28px;
+  --di-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
+  display: inline-block;
+}
+
+.di-floating {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+}
+
+.di-bottom {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+}
+
+.di-pill {
+  background: var(--di-bg);
+  color: #fff;
+  border-radius: var(--di-radius);
+  box-shadow: var(--di-shadow);
+  overflow: hidden;
+  width: 200px;
+  height: 36px;
+  display: grid;
+  grid-template-rows: 36px 0fr;
+  transition:
+    width    0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
+    height   0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
+    border-radius 0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
+    grid-template-rows 0.45s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+
+.di.is-expanded .di-pill {
+  width: 320px;
+  height: 92px;
+  border-radius: var(--di-radius-expanded);
+  grid-template-rows: 0fr 1fr;
+}
+
+.di-collapsed,
+.di-expanded {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.di-collapsed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+}
+
+.di-expanded {
+  opacity: 0;
+  transition: opacity 0.3s ease 0.15s;
+  padding: 0.85rem 1rem;
+}
+
+.di.is-expanded .di-collapsed { opacity: 0; }
+.di.is-expanded .di-expanded  { opacity: 1; }
+
+.di-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+}
+
+.di-status { color: rgba(255, 255, 255, 0.85); }
+
+.di-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  height: 100%;
+}
+
+.di-icon-lg {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.di-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.di-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.di-sub {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.di-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .di-pill { transition: none; }
+  .di-collapsed, .di-expanded { transition: none; }
+}

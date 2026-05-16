@@ -1,0 +1,143 @@
+/* ============================================
+   TEAM GRID — 4 layouts for /about team pages
+   Inspired by Vercel / Stripe / Linear team pages
+   ============================================
+   Usage:
+     <section class="tgrid tgrid-cards">
+       <div class="tgrid-member">
+         <div class="tgrid-avatar"></div>
+         <h3 class="tgrid-name">Ada Lovelace</h3>
+         <p class="tgrid-role">Engineer</p>
+         <p class="tgrid-bio">Short bio…</p>
+         <div class="tgrid-socials"><a>@ada</a></div>
+       </div>
+     </section>
+
+   Variants:
+     tgrid-cards      — Card-style with bios
+     tgrid-minimal    — Just avatar + name + role
+     tgrid-hoverbio   — Bio shows on hover
+     tgrid-mosaic     — Asymmetric photo wall
+   ============================================ */
+
+.tgrid {
+  --tgrid-bg: var(--surface-2, #14141f);
+  --tgrid-border: rgba(255, 255, 255, 0.08);
+  --tgrid-fg: #ffffff;
+  --tgrid-muted: rgba(255, 255, 255, 0.6);
+  --tgrid-accent: #818cf8;
+  --tgrid-radius: 14px;
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+}
+
+.tgrid-member {
+  padding: 1.5rem;
+  background: var(--tgrid-bg);
+  border: 1px solid var(--tgrid-border);
+  border-radius: var(--tgrid-radius);
+  text-align: center;
+  color: var(--tgrid-fg);
+}
+
+.tgrid-avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  margin: 0 auto 0.85rem;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+}
+
+.tgrid-name { margin: 0; font-weight: 600; font-size: 1rem; }
+.tgrid-role { margin: 0.15rem 0 0.5rem; color: var(--tgrid-muted); font-size: 0.85rem; }
+.tgrid-bio  { margin: 0; color: var(--tgrid-muted); font-size: 0.85rem; line-height: 1.55; }
+
+.tgrid-socials {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+.tgrid-socials a {
+  color: var(--tgrid-muted);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+.tgrid-socials a:hover { color: var(--tgrid-fg); }
+
+/* ── Minimal ── */
+.tgrid-minimal { gap: 2rem; }
+.tgrid-minimal .tgrid-member {
+  background: transparent;
+  border: none;
+  padding: 0.75rem;
+}
+.tgrid-minimal .tgrid-bio { display: none; }
+.tgrid-minimal .tgrid-socials { display: none; }
+.tgrid-minimal .tgrid-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 22px;
+}
+
+/* ── Hover bio (only show bio on hover) ── */
+.tgrid-hoverbio .tgrid-bio {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.25s ease;
+  margin-top: 0;
+}
+.tgrid-hoverbio .tgrid-member:hover .tgrid-bio {
+  max-height: 100px;
+  opacity: 1;
+  margin-top: 0.5rem;
+}
+
+/* ── Mosaic (asymmetric photo wall) ── */
+.tgrid-mosaic {
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 200px;
+}
+.tgrid-mosaic .tgrid-member {
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+.tgrid-mosaic .tgrid-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  margin: 0;
+}
+.tgrid-mosaic .tgrid-name {
+  position: absolute;
+  bottom: 0.7rem;
+  left: 1rem;
+  z-index: 1;
+}
+.tgrid-mosaic .tgrid-role {
+  position: absolute;
+  bottom: 0.4rem;
+  left: 1rem;
+  z-index: 1;
+  font-size: 0.75rem;
+}
+.tgrid-mosaic .tgrid-bio,
+.tgrid-mosaic .tgrid-socials { display: none; }
+.tgrid-mosaic .tgrid-member::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.65), transparent 50%);
+  pointer-events: none;
+}
+.tgrid-mosaic .tgrid-member:nth-child(3n+1) { grid-row: span 2; }
+@media (max-width: 760px) {
+  .tgrid-mosaic { grid-template-columns: repeat(2, 1fr); }
+}

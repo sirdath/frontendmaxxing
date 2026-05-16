@@ -1,0 +1,206 @@
+/* ============================================
+   SUGGESTED REPLIES — Pill chip suggestions under AI message
+   Inspired by ChatGPT follow-ups, Claude suggestions, Vercel AI Suggestion
+   ============================================
+   Usage:
+     <div class="sgr" data-sgr>
+       <button class="sgr-chip" type="button">Tell me more</button>
+       <button class="sgr-chip" type="button">Show an example</button>
+       <button class="sgr-chip sgr-primary" type="button">Yes, continue</button>
+     </div>
+
+     // Or via JS:
+     SuggestedReplies.set(el, ['Tell me more', 'Show example']);
+     SuggestedReplies.bind(el, { onPick: function (text) { ... } });
+
+   Variants:
+     sgr-row       (default — horizontal scrollable)
+     sgr-wrap      (wraps to multiple lines)
+     sgr-grid      (1-col vertical stack)
+     sgr-stack     (vertical)
+     sgr-3col      (3 across)
+   Chip variants:
+     sgr-chip            (default — soft pill)
+     sgr-primary         (gradient fill — "main action")
+     sgr-outline         (outlined)
+     sgr-arrow           (→ on the right)
+     sgr-icon            (with leading icon slot)
+     sgr-card            (multi-line card with title + preview)
+   States:
+     sgr-fade-on-type    — fades out when composer has text
+   ============================================ */
+
+.sgr {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: thin;
+  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 24px), transparent 100%);
+          mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 24px), transparent 100%);
+}
+.sgr::-webkit-scrollbar { height: 4px; }
+.sgr::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+
+.sgr-wrap {
+  flex-wrap: wrap;
+  overflow: visible;
+  -webkit-mask-image: none;
+          mask-image: none;
+}
+.sgr-stack {
+  flex-direction: column;
+  overflow: visible;
+  -webkit-mask-image: none;
+          mask-image: none;
+  align-items: flex-start;
+}
+.sgr-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: visible;
+  -webkit-mask-image: none;
+          mask-image: none;
+}
+.sgr-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  overflow: visible;
+  -webkit-mask-image: none;
+          mask-image: none;
+}
+@media (max-width: 600px) {
+  .sgr-3col { grid-template-columns: 1fr; }
+}
+
+.sgr-chip {
+  --sg-bg: rgba(255, 255, 255, 0.06);
+  --sg-bg-hover: rgba(255, 255, 255, 0.12);
+  --sg-border: rgba(255, 255, 255, 0.1);
+  --sg-fg: rgba(255, 255, 255, 0.9);
+  flex-shrink: 0;
+  padding: 0.45rem 0.85rem;
+  background: var(--sg-bg);
+  border: 1px solid var(--sg-border);
+  color: var(--sg-fg);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  border-radius: 999px;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100%;
+}
+.sgr-chip:hover {
+  background: var(--sg-bg-hover);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+.sgr-chip:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+.sgr-chip:active { transform: translateY(0); }
+
+/* Primary — gradient fill */
+.sgr-primary {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899, #06b6d4);
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  border-color: transparent;
+  color: #fff;
+  font-weight: 600;
+  transition: background-position 0.4s ease, transform 0.18s ease;
+}
+.sgr-primary:hover { background-position: 100% 50%; }
+
+/* Outline */
+.sgr-outline {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.sgr-outline:hover { background: rgba(255, 255, 255, 0.04); }
+
+/* Arrow suffix */
+.sgr-arrow::after {
+  content: '→';
+  font-size: 0.85em;
+  margin-left: 0.25rem;
+  opacity: 0.6;
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+.sgr-arrow:hover::after { transform: translateX(2px); opacity: 1; }
+
+/* Icon */
+.sgr-icon {
+  padding-left: 0.55rem;
+}
+.sgr-icon .sgr-chip-icon {
+  width: 16px; height: 16px;
+  display: grid; place-items: center;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.7rem;
+}
+
+/* Card (multi-line) */
+.sgr-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  white-space: normal;
+  text-align: left;
+  max-width: 360px;
+}
+.sgr-card-title {
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+.sgr-card-preview {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Color variants */
+.sgr-chip-cyan   { --sg-bg: rgba(6, 182, 212, 0.12); --sg-bg-hover: rgba(6, 182, 212, 0.2); --sg-border: rgba(6, 182, 212, 0.3); --sg-fg: #67e8f9; }
+.sgr-chip-pink   { --sg-bg: rgba(236, 72, 153, 0.12); --sg-bg-hover: rgba(236, 72, 153, 0.2); --sg-border: rgba(236, 72, 153, 0.3); --sg-fg: #f9a8d4; }
+.sgr-chip-amber  { --sg-bg: rgba(245, 158, 11, 0.14); --sg-bg-hover: rgba(245, 158, 11, 0.22); --sg-border: rgba(245, 158, 11, 0.3); --sg-fg: #fcd34d; }
+.sgr-chip-green  { --sg-bg: rgba(52, 211, 153, 0.12); --sg-bg-hover: rgba(52, 211, 153, 0.2); --sg-border: rgba(52, 211, 153, 0.3); --sg-fg: #6ee7b7; }
+.sgr-chip-violet { --sg-bg: rgba(139, 92, 246, 0.14); --sg-bg-hover: rgba(139, 92, 246, 0.22); --sg-border: rgba(139, 92, 246, 0.3); --sg-fg: #c4b5fd; }
+
+/* Fade-on-type behavior — JS adds .has-text when composer has content */
+.sgr-fade-on-type.has-text {
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 0.32s ease;
+}
+.sgr-fade-on-type:not(.has-text) {
+  transition: opacity 0.32s ease;
+}
+
+/* Header label */
+.sgr-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  align-self: flex-start;
+  width: 100%;
+}

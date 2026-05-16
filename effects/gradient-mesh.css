@@ -1,0 +1,182 @@
+/* ============================================
+   GRADIENT MESH — Stripe-style multi-radial mesh backgrounds
+   Inspired by Stripe / Linear / Vercel / mesh gradient generators
+   ============================================
+   Technique: stack 3–5 radial gradients with different colors at different
+   positions. Each radial fades to transparent. They blend additively to
+   produce smooth multi-color blobs without ever using a third-party tool.
+
+   Usage:
+     <section class="gmesh gmesh-stripe">…</section>
+     <div class="gmesh gmesh-linear">…</div>
+
+   Variants:
+     gmesh-stripe       — Stripe.com classic
+     gmesh-linear       — Linear.app purple→pink
+     gmesh-vercel       — Vercel multi-hue
+     gmesh-aurora       — Aurora soft
+     gmesh-sunrise      — Warm
+     gmesh-ocean        — Cool
+     gmesh-cosmic       — Dark space
+     gmesh-pastel       — Soft
+     gmesh-cyberpunk    — Vivid
+     gmesh-monochrome   — Subtle dark-on-dark for hero text overlays
+     gmesh-animated     — Drift animation (apply alongside any of the above)
+   ============================================ */
+
+.gmesh {
+  position: relative;
+  background-color: #0a0a14;
+  isolation: isolate;
+}
+
+/* ── Animation helper (apply with any preset) ── */
+.gmesh-animated {
+  background-attachment: fixed; /* helps offset perception */
+  animation: gmesh-drift 18s ease-in-out infinite alternate;
+}
+@keyframes gmesh-drift {
+  0%   { background-position: 0% 0%, 100% 0%, 50% 50%, 0% 100%, 100% 100%; }
+  100% { background-position: 20% 30%, 80% 20%, 60% 70%, 30% 80%, 80% 90%; }
+}
+
+/* ── Stripe (signature multi-blob) ── */
+.gmesh-stripe {
+  background-color: #050510;
+  background-image:
+    radial-gradient(at 20% 30%, rgba(99, 91, 255, 0.5) 0%, transparent 50%),
+    radial-gradient(at 80% 20%, rgba(62, 146, 204, 0.45) 0%, transparent 50%),
+    radial-gradient(at 50% 80%, rgba(0, 212, 255, 0.4) 0%, transparent 50%),
+    radial-gradient(at 90% 90%, rgba(236, 72, 153, 0.35) 0%, transparent 50%);
+}
+
+/* ── Linear.app purple→pink ── */
+.gmesh-linear {
+  background-color: #0a0a14;
+  background-image:
+    radial-gradient(at 25% 25%, rgba(94, 106, 210, 0.5) 0%, transparent 55%),
+    radial-gradient(at 75% 35%, rgba(139, 92, 246, 0.45) 0%, transparent 50%),
+    radial-gradient(at 50% 90%, rgba(236, 72, 153, 0.45) 0%, transparent 55%);
+}
+
+/* ── Vercel multi-hue ── */
+.gmesh-vercel {
+  background-color: #050510;
+  background-image:
+    radial-gradient(at 0% 0%,  rgba(255, 0, 128, 0.4) 0%, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(121, 40, 202, 0.4) 0%, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(0, 112, 243, 0.4) 0%, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(0, 223, 216, 0.35) 0%, transparent 50%);
+}
+
+/* ── Aurora soft ── */
+.gmesh-aurora {
+  background-color: #050510;
+  background-image:
+    radial-gradient(at 30% 30%, rgba(132, 94, 194, 0.45) 0%, transparent 55%),
+    radial-gradient(at 70% 30%, rgba(0, 201, 167, 0.4) 0%, transparent 55%),
+    radial-gradient(at 50% 80%, rgba(255, 111, 145, 0.35) 0%, transparent 55%);
+}
+
+/* ── Sunrise (warm) ── */
+.gmesh-sunrise {
+  background-color: #1a0a10;
+  background-image:
+    radial-gradient(at 30% 100%, rgba(255, 95, 109, 0.55) 0%, transparent 55%),
+    radial-gradient(at 70% 80%,  rgba(255, 195, 113, 0.5) 0%, transparent 55%),
+    radial-gradient(at 50% 40%,  rgba(255, 167, 81, 0.35) 0%, transparent 60%);
+}
+
+/* ── Ocean (cool) ── */
+.gmesh-ocean {
+  background-color: #002338;
+  background-image:
+    radial-gradient(at 25% 30%, rgba(46, 49, 146, 0.6) 0%, transparent 55%),
+    radial-gradient(at 75% 70%, rgba(27, 255, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(at 50% 50%, rgba(86, 204, 242, 0.3) 0%, transparent 60%);
+}
+
+/* ── Cosmic (dark space) ── */
+.gmesh-cosmic {
+  background-color: #050010;
+  background-image:
+    radial-gradient(at 20% 30%, rgba(132, 94, 194, 0.5) 0%, transparent 50%),
+    radial-gradient(at 80% 20%, rgba(236, 72, 153, 0.4) 0%, transparent 50%),
+    radial-gradient(at 30% 80%, rgba(56, 189, 248, 0.4) 0%, transparent 50%),
+    radial-gradient(at 70% 90%, rgba(192, 132, 252, 0.35) 0%, transparent 50%);
+}
+
+/* ── Pastel (soft) ── */
+.gmesh-pastel {
+  background-color: #fafafa;
+  background-image:
+    radial-gradient(at 20% 30%, rgba(251, 207, 232, 0.7) 0%, transparent 55%),
+    radial-gradient(at 80% 30%, rgba(191, 219, 254, 0.6) 0%, transparent 55%),
+    radial-gradient(at 50% 80%, rgba(187, 247, 208, 0.6) 0%, transparent 55%);
+}
+
+/* ── Cyberpunk (vivid) ── */
+.gmesh-cyberpunk {
+  background-color: #0a0118;
+  background-image:
+    radial-gradient(at 20% 30%, rgba(255, 0, 212, 0.5) 0%, transparent 50%),
+    radial-gradient(at 80% 30%, rgba(0, 240, 255, 0.5) 0%, transparent 50%),
+    radial-gradient(at 50% 80%, rgba(189, 0, 255, 0.45) 0%, transparent 50%);
+}
+
+/* ── Monochrome (subtle) ── */
+.gmesh-monochrome {
+  background-color: #0c0c14;
+  background-image:
+    radial-gradient(at 30% 30%, rgba(255, 255, 255, 0.06) 0%, transparent 55%),
+    radial-gradient(at 70% 70%, rgba(255, 255, 255, 0.04) 0%, transparent 55%),
+    radial-gradient(at 50% 100%, rgba(129, 140, 248, 0.08) 0%, transparent 55%);
+}
+
+/* ── Sunset (warm gradient mesh) ── */
+.gmesh-sunset {
+  background-color: #1a0a1e;
+  background-image:
+    radial-gradient(at 25% 80%, rgba(255, 110, 127, 0.55) 0%, transparent 55%),
+    radial-gradient(at 75% 60%, rgba(255, 169, 121, 0.45) 0%, transparent 55%),
+    radial-gradient(at 50% 20%, rgba(132, 94, 194, 0.5) 0%, transparent 55%);
+}
+
+/* ── Forest ── */
+.gmesh-forest {
+  background-color: #0a1a10;
+  background-image:
+    radial-gradient(at 25% 30%, rgba(74, 222, 128, 0.4) 0%, transparent 55%),
+    radial-gradient(at 75% 70%, rgba(20, 184, 166, 0.4) 0%, transparent 55%),
+    radial-gradient(at 50% 100%, rgba(255, 195, 113, 0.18) 0%, transparent 60%);
+}
+
+/* ── Iridescent mesh (closer to oil-slick — see gradient-holo.css for full effect) ── */
+.gmesh-iridescent {
+  background-color: #0a0014;
+  background-image:
+    radial-gradient(at 20% 20%, rgba(0, 255, 208, 0.4) 0%, transparent 50%),
+    radial-gradient(at 80% 30%, rgba(245, 163, 255, 0.4) 0%, transparent 50%),
+    radial-gradient(at 50% 80%, rgba(255, 213, 107, 0.35) 0%, transparent 50%),
+    radial-gradient(at 90% 90%, rgba(132, 255, 186, 0.3) 0%, transparent 50%);
+}
+
+/* ── Light mesh variants ── */
+.gmesh-light-aurora {
+  background-color: #ffffff;
+  background-image:
+    radial-gradient(at 20% 30%, rgba(132, 94, 194, 0.25) 0%, transparent 55%),
+    radial-gradient(at 80% 30%, rgba(56, 189, 248, 0.25) 0%, transparent 55%),
+    radial-gradient(at 50% 80%, rgba(244, 114, 182, 0.2) 0%, transparent 55%);
+}
+
+/* ── Mesh inside a card (constrains background to a fixed area) ── */
+.gmesh-card {
+  border-radius: 18px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gmesh-animated { animation: none; }
+}

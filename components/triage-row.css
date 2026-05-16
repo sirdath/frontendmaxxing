@@ -1,0 +1,310 @@
+/* ============================================
+   TRIAGE ROW — Linear-style inline-editable list rows
+   Inspired by Linear Triage / Issues, GitHub Projects v2 inline edit
+   ============================================
+   Compact rows where every visible field is inline-editable on click —
+   the row IS the form. Keyboard-first (j/k navigate, e to edit, ⏎ commit).
+
+   Usage:
+     <ul class="trg" data-trg>
+       <li class="trg-row" data-trg-id="ENG-241">
+         <span class="trg-priority is-urgent" data-trg-field="priority">●</span>
+         <span class="trg-key">ENG-241</span>
+         <span class="trg-title" data-trg-field="title">
+           Add bulk-edit to issues list
+         </span>
+         <span class="trg-status" data-trg-field="status">In Progress</span>
+         <span class="trg-labels" data-trg-field="labels">
+           <span class="trg-label trg-label-bug">bug</span>
+           <span class="trg-label">a11y</span>
+         </span>
+         <span class="trg-assignee" data-trg-field="assignee">
+           <span class="trg-avatar" style="--av-c: #a855f7;">AB</span>
+         </span>
+         <span class="trg-due" data-trg-field="due">Mar 12</span>
+       </li>
+     </ul>
+
+   Variants:
+     trg-compact, trg-mono, trg-comfortable
+   States:
+     is-focused, is-selected, is-editing, is-completed
+   ============================================ */
+
+.trg {
+  --t-bg: rgba(255, 255, 255, 0.02);
+  --t-border: rgba(255, 255, 255, 0.08);
+  --t-fg: #fff;
+  --t-muted: rgba(255, 255, 255, 0.55);
+  --t-accent: #818cf8;
+  --t-row-h: 36px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--t-bg);
+  border: 1px solid var(--t-border);
+  border-radius: 8px;
+  color: var(--t-fg);
+  font-size: 0.85rem;
+  overflow: hidden;
+}
+
+.trg-row {
+  display: grid;
+  grid-template-columns: 16px 60px 1fr 100px minmax(100px, 1fr) 30px 70px;
+  gap: 0.6rem;
+  align-items: center;
+  height: var(--t-row-h);
+  padding: 0 0.7rem;
+  border-bottom: 1px solid var(--t-border);
+  cursor: pointer;
+  position: relative;
+}
+.trg-row:last-child { border-bottom: 0; }
+.trg-row:hover { background: rgba(255, 255, 255, 0.03); }
+.trg-row.is-focused {
+  background: rgba(129, 140, 248, 0.07);
+  outline: 0;
+}
+.trg-row.is-focused::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2.5px;
+  background: var(--t-accent);
+}
+.trg-row.is-selected {
+  background: rgba(129, 140, 248, 0.14);
+}
+.trg-row.is-completed .trg-title { color: var(--t-muted); text-decoration: line-through; }
+.trg-row.is-completed .trg-status { color: #6ee7b7; }
+
+/* === Field cells === */
+.trg-priority {
+  font-size: 0.95rem;
+  text-align: center;
+  color: var(--t-muted);
+}
+.trg-priority.is-urgent  { color: #f87171; }
+.trg-priority.is-high    { color: #fbbf24; }
+.trg-priority.is-medium  { color: #60a5fa; }
+.trg-priority.is-low     { color: var(--t-muted); }
+.trg-priority.is-none::before { content: '○'; }
+
+.trg-key {
+  font-size: 0.7rem;
+  color: var(--t-muted);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.trg-title {
+  font-weight: 500;
+  color: var(--t-fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trg-status {
+  font-size: 0.72rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+  color: var(--t-muted);
+}
+.trg-status::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.trg-labels {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  overflow: hidden;
+}
+.trg-label {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--t-fg);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+}
+.trg-label-bug      { background: rgba(248, 113, 113, 0.18); color: #fca5a5; border-color: rgba(248, 113, 113, 0.3); }
+.trg-label-feature  { background: rgba(168, 85, 247, 0.18); color: #c4b5fd; border-color: rgba(168, 85, 247, 0.3); }
+.trg-label-improvement { background: rgba(34, 211, 238, 0.18); color: #67e8f9; border-color: rgba(34, 211, 238, 0.3); }
+.trg-label-design   { background: rgba(236, 72, 153, 0.18); color: #f9a8d4; border-color: rgba(236, 72, 153, 0.3); }
+.trg-label-perf     { background: rgba(251, 191, 36, 0.18); color: #fcd34d; border-color: rgba(251, 191, 36, 0.3); }
+
+.trg-assignee {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.trg-avatar {
+  --av-c: #818cf8;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--av-c);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+.trg-avatar.is-empty {
+  background: transparent;
+  border: 1.5px dashed var(--t-muted);
+  color: var(--t-muted);
+}
+.trg-avatar.is-empty::before { content: '+'; }
+
+.trg-due {
+  font-size: 0.72rem;
+  color: var(--t-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.trg-due.is-soon     { color: #fcd34d; }
+.trg-due.is-overdue  { color: #f87171; }
+
+/* Status colors */
+.trg-status.is-backlog   { color: var(--t-muted); }
+.trg-status.is-todo      { color: var(--t-fg); }
+.trg-status.is-progress  { color: #818cf8; }
+.trg-status.is-review    { color: #fbbf24; }
+.trg-status.is-done      { color: #34d399; }
+.trg-status.is-cancelled { color: var(--t-muted); }
+
+/* === Inline edit popover (rendered by JS) === */
+.trg-edit {
+  position: absolute;
+  z-index: 1000;
+  background: rgba(20, 20, 30, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  color: #fff;
+  min-width: 200px;
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.trg-edit input,
+.trg-edit textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: #fff;
+  padding: 0.35rem 0.5rem;
+  font: inherit;
+  font-size: 0.82rem;
+  outline: none;
+  box-sizing: border-box;
+}
+.trg-edit input:focus,
+.trg-edit textarea:focus { border-color: var(--t-accent); }
+
+.trg-edit-list {
+  max-height: 240px;
+  overflow-y: auto;
+  margin-top: 0.4rem;
+}
+.trg-edit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+.trg-edit-item:hover,
+.trg-edit-item.is-focused { background: rgba(255, 255, 255, 0.08); }
+.trg-edit-item.is-selected::after { content: '✓'; margin-left: auto; color: var(--t-accent); }
+
+/* === Bulk-edit bar (when selecting multiple) === */
+.trg-bulk {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(129, 140, 248, 0.1);
+  border-bottom: 1px solid rgba(129, 140, 248, 0.2);
+  font-size: 0.78rem;
+  color: var(--t-fg);
+}
+.trg-bulk-count {
+  font-weight: 600;
+  color: var(--t-accent);
+}
+.trg-bulk-actions {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 0.25rem;
+}
+.trg-bulk-actions button {
+  padding: 0.3rem 0.55rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--t-border);
+  color: var(--t-fg);
+  font: inherit;
+  font-size: 0.72rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.trg-bulk-actions button:hover { background: rgba(255, 255, 255, 0.12); }
+
+/* Header row */
+.trg-head {
+  display: grid;
+  grid-template-columns: 16px 60px 1fr 100px minmax(100px, 1fr) 30px 70px;
+  gap: 0.6rem;
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--t-border);
+  background: rgba(0, 0, 0, 0.15);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--t-muted);
+}
+
+/* Variants */
+.trg-compact     { --t-row-h: 28px; font-size: 0.78rem; }
+.trg-comfortable { --t-row-h: 44px; font-size: 0.9rem; }
+.trg-mono        { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+/* Empty state */
+.trg-empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--t-muted);
+  font-size: 0.85rem;
+}
+
+/* Drag handle (left of priority) when sortable */
+.trg-handle {
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--t-muted);
+  font-size: 0.9rem;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.trg-row:hover .trg-handle { opacity: 1; }

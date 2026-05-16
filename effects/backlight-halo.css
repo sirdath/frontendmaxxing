@@ -1,0 +1,139 @@
+/* ============================================
+   BACKLIGHT HALO — Color-sampled bloom matching media content
+   Inspired by Apple TV+, YouTube ambient lighting, Spotify cover halos
+   ============================================
+   Styles for a colored glow behind images/videos. Use with the companion
+   `backlight-halo.js` to auto-sample dominant colors, or set the CSS
+   variables manually for static glows.
+
+   Usage:
+     <div class="bhalo bhalo-md" style="--bh-c1:#ec4899;--bh-c2:#8b5cf6;">
+       <img src="cover.jpg" alt="" class="bhalo-media">
+     </div>
+
+     <!-- Auto-sample colors from the image: -->
+     <div class="bhalo bhalo-sampled" data-bhalo>
+       <img src="cover.jpg" alt="" class="bhalo-media" crossorigin="anonymous">
+     </div>
+     <script>BacklightHalo.init('[data-bhalo]');</script>
+
+   Variants:
+     bhalo-sm, bhalo-md (default), bhalo-lg, bhalo-xl
+   Intensity:
+     bhalo-soft, bhalo-strong, bhalo-extreme
+   Shape:
+     bhalo-rounded (default), bhalo-circle, bhalo-square, bhalo-pill
+   Modifiers:
+     bhalo-anim       — slowly pulses
+     bhalo-floor      — directional under-glow only
+     bhalo-top        — glow only above
+     bhalo-spin       — conic halo rotates
+   ============================================ */
+
+.bhalo {
+  --bh-c1: #ec4899;
+  --bh-c2: #8b5cf6;
+  --bh-c3: #06b6d4;
+  --bh-blur: 60px;
+  --bh-spread: 30px;
+  --bh-opacity: 0.7;
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  border-radius: 12px;
+}
+
+.bhalo::before {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 30% 30%, var(--bh-c1) 0%, transparent 55%),
+    radial-gradient(circle at 70% 30%, var(--bh-c2) 0%, transparent 55%),
+    radial-gradient(circle at 50% 70%, var(--bh-c3) 0%, transparent 55%);
+  filter: blur(var(--bh-blur));
+  opacity: var(--bh-opacity);
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+.bhalo-media {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+/* Sizes */
+.bhalo-sm { width: 140px; height: 140px; --bh-blur: 30px; }
+.bhalo-md { width: 260px; height: 260px; --bh-blur: 60px; }
+.bhalo-lg { width: 380px; height: 380px; --bh-blur: 80px; }
+.bhalo-xl { width: 500px; height: 500px; --bh-blur: 100px; }
+
+/* Intensity */
+.bhalo-soft    { --bh-opacity: 0.4; --bh-blur: 80px; }
+.bhalo-strong  { --bh-opacity: 0.9; --bh-spread: 50px; }
+.bhalo-extreme { --bh-opacity: 1; --bh-blur: 100px; --bh-spread: 80px; }
+.bhalo-extreme::before { inset: -20%; }
+
+/* Shape */
+.bhalo-rounded { border-radius: 16px; }
+.bhalo-circle  { border-radius: 50%; }
+.bhalo-square  { border-radius: 0; }
+.bhalo-pill    { border-radius: 999px; }
+
+/* Direction modifiers */
+.bhalo-floor::before {
+  inset: 50% -15% -25% -15%;
+  background: radial-gradient(ellipse at center, var(--bh-c1) 0%, var(--bh-c2) 35%, transparent 70%);
+}
+.bhalo-top::before {
+  inset: -25% -15% 50% -15%;
+}
+
+/* Conic spin variant */
+.bhalo-spin::before {
+  background: conic-gradient(from 0deg, var(--bh-c1), var(--bh-c2), var(--bh-c3), var(--bh-c1));
+  animation: bhalo-spin 8s linear infinite;
+}
+@keyframes bhalo-spin { to { transform: rotate(360deg); } }
+
+/* Pulse animation */
+.bhalo-anim::before { animation: bhalo-pulse 4s ease-in-out infinite; }
+@keyframes bhalo-pulse {
+  0%, 100% { opacity: var(--bh-opacity); transform: scale(1); }
+  50%      { opacity: calc(var(--bh-opacity) * 1.25); transform: scale(1.05); }
+}
+
+/* Sampled (companion to JS auto-color) — slightly different defaults */
+.bhalo-sampled {
+  --bh-c1: #888;
+  --bh-c2: #444;
+  --bh-c3: #aaa;
+  --bh-blur: 70px;
+  --bh-opacity: 0.6;
+}
+.bhalo-sampled::before { transition: background 0.6s ease; }
+
+/* Hover-only mode (subtle glow that ramps on hover) */
+.bhalo-hover::before {
+  opacity: 0;
+}
+.bhalo-hover:hover::before {
+  opacity: var(--bh-opacity);
+}
+
+/* Card-style wrapper with padding around media */
+.bhalo-card {
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.bhalo-card .bhalo-media {
+  border-radius: 8px;
+}

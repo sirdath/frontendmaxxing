@@ -1,0 +1,66 @@
+/* ============================================
+   SPARKLES — Randomized twinkling dots over content
+   Inspired by Aceternity UI
+   ============================================
+   Usage:
+     <div class="sparkles-container">
+       <div class="sparkles" data-sparkles></div>
+       <div class="sparkles-content">Your hero text</div>
+     </div>
+     Sparkles.init('[data-sparkles]', { count: 80 });
+
+   Variants:
+     .sparkles-dense   — More dots
+     .sparkles-amber   — Warm palette
+     .sparkles-mint    — Cool palette
+   ============================================ */
+
+.sparkles-container {
+  position: relative;
+  width: 100%;
+  isolation: isolate;
+}
+
+.sparkles {
+  --spark-color: #ffffff;
+  --spark-min-size: 1px;
+  --spark-max-size: 3px;
+  --spark-min-duration: 1.5s;
+  --spark-max-duration: 3.5s;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.spark {
+  position: absolute;
+  width: var(--spark-size, 2px);
+  height: var(--spark-size, 2px);
+  border-radius: 50%;
+  background: var(--spark-color);
+  box-shadow: 0 0 6px var(--spark-color);
+  opacity: 0;
+  animation: spark-twinkle var(--spark-duration, 2.5s) ease-in-out infinite;
+  animation-delay: var(--spark-delay, 0s);
+}
+
+@keyframes spark-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.7); }
+  50%      { opacity: 1; transform: scale(1.2); }
+}
+
+.sparkles-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Variants ── */
+.sparkles-amber { --spark-color: #fcd34d; }
+.sparkles-mint  { --spark-color: #6ee7b7; }
+.sparkles-rose  { --spark-color: #fda4af; }
+.sparkles-cyan  { --spark-color: #67e8f9; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spark { animation: none; opacity: 0.4; }
+}

@@ -1,0 +1,117 @@
+/* ============================================
+   DIFF VIEWER — Side-by-side or unified code diff
+   Inspired by GitHub / GitLab / Linear PR diffs
+   ============================================
+   Usage:
+     <div class="dfv dfv-unified" data-diff-viewer></div>
+     DiffViewer.create('[data-diff-viewer]', {
+       before: 'console.log(1)',
+       after:  'console.log(2)',
+       mode: 'unified'      // 'unified' | 'split'
+     });
+
+   Variants:
+     dfv-unified     — Single column with +/− prefix
+     dfv-split       — Two columns
+     dfv-no-numbers
+   ============================================ */
+
+.dfv {
+  --dfv-bg: #0c0c14;
+  --dfv-fg: #e5e7eb;
+  --dfv-border: rgba(255, 255, 255, 0.08);
+  --dfv-muted: rgba(229, 231, 235, 0.45);
+  --dfv-add-bg: rgba(34, 197, 94, 0.1);
+  --dfv-add-fg: #4ade80;
+  --dfv-del-bg: rgba(239, 68, 68, 0.1);
+  --dfv-del-fg: #fca5a5;
+  background: var(--dfv-bg);
+  border: 1px solid var(--dfv-border);
+  border-radius: 12px;
+  overflow: hidden;
+  color: var(--dfv-fg);
+  font-family: ui-monospace, monospace;
+  font-size: 0.825rem;
+  line-height: 1.55;
+}
+
+.dfv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.85rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--dfv-border);
+  font-family: -apple-system, sans-serif;
+  font-size: 0.85rem;
+}
+
+.dfv-stats {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.75rem;
+}
+.dfv-add-count { color: var(--dfv-add-fg); }
+.dfv-del-count { color: var(--dfv-del-fg); }
+
+.dfv-body {
+  overflow-x: auto;
+}
+
+.dfv-line {
+  display: grid;
+  grid-template-columns: 36px 36px 14px 1fr;
+  align-items: baseline;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+.dfv-no-numbers .dfv-line { grid-template-columns: 14px 1fr; }
+.dfv-no-numbers .dfv-num { display: none; }
+
+.dfv-num {
+  padding: 0.05rem 0.5rem;
+  color: var(--dfv-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.dfv-prefix {
+  padding-left: 0.4rem;
+  color: var(--dfv-muted);
+  user-select: none;
+}
+
+.dfv-text {
+  padding: 0.05rem 0.65rem 0.05rem 0.4rem;
+  white-space: pre;
+}
+
+.dfv-line.is-added {
+  background: var(--dfv-add-bg);
+}
+.dfv-line.is-added .dfv-prefix { color: var(--dfv-add-fg); }
+.dfv-line.is-removed {
+  background: var(--dfv-del-bg);
+}
+.dfv-line.is-removed .dfv-prefix { color: var(--dfv-del-fg); }
+
+/* Split mode */
+.dfv-split .dfv-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.dfv-split .dfv-side-before,
+.dfv-split .dfv-side-after { min-width: 0; }
+.dfv-split .dfv-side-before { border-right: 1px solid var(--dfv-border); }
+.dfv-split .dfv-line { grid-template-columns: 36px 14px 1fr; }
+
+/* Hunk separator (a "@@ … @@" marker) */
+.dfv-hunk {
+  padding: 0.35rem 0.75rem;
+  background: rgba(129, 140, 248, 0.08);
+  color: var(--dfv-muted);
+  font-size: 0.75rem;
+}

@@ -1,0 +1,192 @@
+/* ============================================
+   BLOCK DRAG HANDLE — Hover-revealed ⋮⋮ gutter handle for reordering blocks
+   Inspired by Notion, BlockNote, Tiptap, Coda
+   ============================================
+   Usage:
+     <div class="bdh-stack" data-bdh>
+       <div class="bdh-block">
+         <span class="bdh-handle" aria-label="Reorder block">⋮⋮</span>
+         <span class="bdh-add" aria-label="Insert block">+</span>
+         <div class="bdh-content">Block 1</div>
+       </div>
+       <div class="bdh-block">
+         <span class="bdh-handle">⋮⋮</span>
+         <span class="bdh-add">+</span>
+         <div class="bdh-content">Block 2</div>
+       </div>
+     </div>
+
+     BlockDragHandle.init('[data-bdh]', {
+       onReorder: function (oldIdx, newIdx) { ... },
+       onActions: function (block) { ... },
+       onAdd: function (afterBlock) { ... }
+     });
+
+   Variants:
+     bdh-tight       — narrow gutter
+     bdh-wide        — wider gutter
+     bdh-always-on   — handles always visible
+     bdh-light       — light theme
+   ============================================ */
+
+.bdh-stack {
+  --bdh-gutter: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.bdh-block {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding-left: var(--bdh-gutter);
+  margin-left: calc(var(--bdh-gutter) * -1);
+  border-radius: 4px;
+  transition: background 0.12s ease;
+}
+.bdh-block:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.bdh-handle,
+.bdh-add {
+  position: absolute;
+  top: 0.2rem;
+  width: 18px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  cursor: grab;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.85rem;
+  line-height: 1;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 0.12s ease, background 0.12s ease, color 0.12s ease;
+  font: inherit;
+  font-weight: 700;
+}
+
+.bdh-handle {
+  left: 0;
+  letter-spacing: -1px;
+}
+.bdh-add {
+  left: 18px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.bdh-block:hover .bdh-handle,
+.bdh-block:hover .bdh-add,
+.bdh-block:focus-within .bdh-handle,
+.bdh-block:focus-within .bdh-add { opacity: 1; }
+
+.bdh-handle:hover,
+.bdh-add:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+.bdh-handle:active { cursor: grabbing; }
+
+.bdh-always-on .bdh-handle,
+.bdh-always-on .bdh-add { opacity: 0.4; }
+.bdh-always-on .bdh-handle:hover,
+.bdh-always-on .bdh-add:hover { opacity: 1; }
+
+.bdh-content {
+  flex: 1;
+  padding: 0.3rem 0.4rem;
+  min-width: 0;
+  word-wrap: break-word;
+}
+
+/* Dragging */
+.bdh-block.is-dragging {
+  opacity: 0.4;
+  background: rgba(139, 92, 246, 0.05);
+}
+.bdh-block.is-drop-before {
+  box-shadow: 0 -2px 0 0 #8b5cf6;
+}
+.bdh-block.is-drop-after {
+  box-shadow: 0 2px 0 0 #8b5cf6;
+}
+
+/* Floating ghost during drag (built by JS) */
+.bdh-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1500;
+  background: rgba(20, 20, 30, 0.92);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.85rem;
+  max-width: 360px;
+  box-shadow: 0 16px 30px -8px rgba(0, 0, 0, 0.5);
+  opacity: 0.92;
+}
+
+/* Actions popover (right-click or click on handle) */
+.bdh-menu {
+  position: absolute;
+  z-index: 1100;
+  min-width: 180px;
+  background: rgba(20, 20, 30, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 20px 40px -16px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 0.3rem;
+  color: #fff;
+  font-size: 0.82rem;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.bdh-menu.is-open { opacity: 1; transform: translateY(0); }
+
+.bdh-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+.bdh-menu-item:hover { background: rgba(255, 255, 255, 0.08); }
+.bdh-menu-icon {
+  width: 18px; opacity: 0.6; text-align: center;
+}
+.bdh-menu-sep {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.25rem 0.4rem;
+}
+.bdh-menu-shortcut {
+  margin-left: auto;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* Variants */
+.bdh-tight { --bdh-gutter: 22px; }
+.bdh-wide  { --bdh-gutter: 40px; }
+.bdh-wide .bdh-add { left: 22px; }
+.bdh-light {
+  --bdh-block-hover: rgba(0, 0, 0, 0.03);
+}
+.bdh-light .bdh-block:hover { background: var(--bdh-block-hover); }
+.bdh-light .bdh-handle,
+.bdh-light .bdh-add { color: rgba(0, 0, 0, 0.3); }
+.bdh-light .bdh-handle:hover,
+.bdh-light .bdh-add:hover { background: rgba(0, 0, 0, 0.06); color: #000; }

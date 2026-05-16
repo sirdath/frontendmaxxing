@@ -1,0 +1,135 @@
+/* ============================================
+   LAYERS PANEL — Figma/Sketch-style layer list with visibility/lock
+   Inspired by Figma / Sketch / Photoshop layers panel
+   ============================================
+   Usage:
+     <aside class="lyrs" data-layers-panel>
+       <header class="lyrs-header">
+         <h3>Layers</h3>
+         <button class="lyrs-add">＋</button>
+       </header>
+       <ul class="lyrs-list">
+         <li class="lyrs-item is-selected">
+           <button class="lyrs-vis">👁</button>
+           <button class="lyrs-lock">🔓</button>
+           <span class="lyrs-icon">▭</span>
+           <span class="lyrs-name">Hero rectangle</span>
+         </li>
+         <li class="lyrs-item lyrs-group is-open">
+           <button class="lyrs-vis">👁</button>
+           <button class="lyrs-lock">🔓</button>
+           <span class="lyrs-icon">📁</span>
+           <span class="lyrs-name">Buttons</span>
+         </li>
+         <li class="lyrs-item lyrs-child">
+           <button class="lyrs-vis">👁</button>
+           <button class="lyrs-lock">🔓</button>
+           <span class="lyrs-icon">●</span>
+           <span class="lyrs-name">Primary CTA</span>
+         </li>
+       </ul>
+     </aside>
+   ============================================ */
+
+.lyrs {
+  --lyrs-bg: var(--surface-2, #14141f);
+  --lyrs-border: rgba(255, 255, 255, 0.08);
+  --lyrs-fg: #ffffff;
+  --lyrs-muted: rgba(255, 255, 255, 0.5);
+  --lyrs-accent: #818cf8;
+  --lyrs-hover: rgba(255, 255, 255, 0.04);
+  --lyrs-selected: rgba(129, 140, 248, 0.18);
+  width: 240px;
+  background: var(--lyrs-bg);
+  border: 1px solid var(--lyrs-border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  color: var(--lyrs-fg);
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  overflow: hidden;
+}
+
+.lyrs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--lyrs-border);
+}
+.lyrs-header h3 {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--lyrs-muted);
+}
+.lyrs-add {
+  background: transparent;
+  border: 1px solid var(--lyrs-border);
+  border-radius: 6px;
+  color: var(--lyrs-fg);
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+}
+.lyrs-add:hover { background: var(--lyrs-hover); }
+
+.lyrs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.lyrs-item {
+  display: grid;
+  grid-template-columns: 22px 22px 18px 1fr;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.78rem;
+}
+.lyrs-item:hover { background: var(--lyrs-hover); }
+.lyrs-item.is-selected {
+  background: var(--lyrs-selected);
+  border: 1px solid rgba(129, 140, 248, 0.35);
+}
+
+.lyrs-vis, .lyrs-lock {
+  background: transparent;
+  border: none;
+  color: var(--lyrs-muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 0;
+}
+.lyrs-vis:hover, .lyrs-lock:hover { color: var(--lyrs-fg); }
+.lyrs-item.is-hidden .lyrs-vis::after { content: '🚫'; font-size: 0.7rem; }
+.lyrs-item.is-hidden { opacity: 0.45; }
+.lyrs-item.is-locked .lyrs-lock { color: var(--lyrs-accent); }
+
+.lyrs-icon {
+  color: var(--lyrs-muted);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.lyrs-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lyrs-child { padding-left: 1.8rem; }
+.lyrs-group .lyrs-icon::before { content: '▾'; margin-right: 0.2rem; transition: transform 0.15s ease; display: inline-block; }
+.lyrs-group:not(.is-open) .lyrs-icon::before { transform: rotate(-90deg); }

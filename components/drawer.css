@@ -1,0 +1,162 @@
+/* ============================================
+   DRAWER — Side sheet (left/right/top/bottom) + bottom-sheet mode
+   Inspired by Radix Sheet / Vaul / iOS bottom sheets
+   ============================================
+   Usage:
+     <button data-drawer-open="#myDrawer">Open</button>
+     <div class="drw" id="myDrawer">
+       <div class="drw-overlay" data-drawer-close></div>
+       <aside class="drw-panel drw-right">
+         <header class="drw-header">
+           <h3>Drawer title</h3>
+           <button class="drw-close" data-drawer-close>×</button>
+         </header>
+         <div class="drw-body">…content…</div>
+         <footer class="drw-footer">…actions…</footer>
+       </aside>
+     </div>
+     Drawer.init('.drw');
+
+   Variants:
+     .drw-left/-right/-top/-bottom  — Side from which it enters
+     .drw-bottom-sheet              — iOS-style with drag handle
+     .drw-w-sm/-md/-lg/-full        — Width presets (for left/right)
+     .drw-glass                     — Glassmorphic panel
+   ============================================ */
+
+.drw {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+  pointer-events: none;
+}
+.drw.is-open {
+  display: block;
+  pointer-events: auto;
+}
+
+.drw-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  cursor: pointer;
+}
+.drw.is-open .drw-overlay { opacity: 1; }
+
+.drw-panel {
+  --drw-bg: var(--surface-2, #14141f);
+  --drw-border: rgba(255, 255, 255, 0.08);
+  position: absolute;
+  background: var(--drw-bg);
+  border: 1px solid var(--drw-border);
+  box-shadow: 0 10px 40px -8px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.32s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+/* Side variants */
+.drw-right {
+  top: 0; right: 0; bottom: 0;
+  width: 90vw; max-width: 420px;
+  border-left: 1px solid var(--drw-border);
+  transform: translateX(100%);
+}
+.drw-left {
+  top: 0; left: 0; bottom: 0;
+  width: 90vw; max-width: 420px;
+  border-right: 1px solid var(--drw-border);
+  transform: translateX(-100%);
+}
+.drw-top {
+  top: 0; left: 0; right: 0;
+  max-height: 80vh;
+  border-bottom: 1px solid var(--drw-border);
+  transform: translateY(-100%);
+}
+.drw-bottom {
+  bottom: 0; left: 0; right: 0;
+  max-height: 80vh;
+  border-top: 1px solid var(--drw-border);
+  transform: translateY(100%);
+}
+.drw.is-open .drw-right,
+.drw.is-open .drw-left   { transform: translateX(0); }
+.drw.is-open .drw-top,
+.drw.is-open .drw-bottom { transform: translateY(0); }
+
+/* Bottom sheet (iOS-style) */
+.drw-bottom-sheet {
+  bottom: 0; left: 0; right: 0;
+  border-radius: 20px 20px 0 0;
+  max-height: 90vh;
+  padding-top: 0.5rem;
+  transform: translateY(100%);
+}
+.drw-bottom-sheet::before {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  margin: 0 auto 0.5rem;
+}
+.drw.is-open .drw-bottom-sheet { transform: translateY(0); }
+
+/* Width presets */
+.drw-w-sm   { max-width: 320px; }
+.drw-w-md   { max-width: 480px; }
+.drw-w-lg   { max-width: 640px; }
+.drw-w-full { max-width: 100vw; }
+
+/* Glass */
+.drw-glass {
+  background: rgba(20, 20, 31, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Header / body / footer */
+.drw-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--drw-border);
+}
+.drw-header h3 { margin: 0; font-size: 1.05rem; font-weight: 600; }
+.drw-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+.drw-close:hover { opacity: 1; background: rgba(255, 255, 255, 0.06); }
+
+.drw-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem;
+}
+
+.drw-footer {
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid var(--drw-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drw-overlay, .drw-panel { transition: none; }
+}

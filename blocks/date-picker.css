@@ -1,0 +1,174 @@
+/* ============================================
+   DATE PICKER — Single date + range picker with keyboard nav
+   Inspired by Radix Calendar / react-day-picker / Linear
+   ============================================
+   Usage:
+     <div class="dpk" data-date-picker>
+       <button class="dpk-trigger">
+         <span class="dpk-value">Pick a date</span>
+         <span class="dpk-icon">📅</span>
+       </button>
+       <div class="dpk-popover">
+         <div class="dpk-header">
+           <button class="dpk-nav" data-dpk-prev>‹</button>
+           <span class="dpk-title"></span>
+           <button class="dpk-nav" data-dpk-next>›</button>
+         </div>
+         <div class="dpk-week-row"></div>
+         <div class="dpk-grid"></div>
+         <div class="dpk-footer">
+           <button class="dpk-today">Today</button>
+           <button class="dpk-clear">Clear</button>
+         </div>
+       </div>
+     </div>
+     DatePicker.init('[data-date-picker]', { mode: 'single' });
+
+   Variants:
+     .dpk-glass        — Glass popover
+     .dpk-inline       — Always-open inline calendar (no trigger)
+   ============================================ */
+
+.dpk {
+  --dpk-bg: rgba(255, 255, 255, 0.04);
+  --dpk-border: rgba(255, 255, 255, 0.12);
+  --dpk-pop-bg: var(--surface-2, #14141f);
+  --dpk-fg: #ffffff;
+  --dpk-muted: rgba(255, 255, 255, 0.55);
+  --dpk-accent: #818cf8;
+  --dpk-accent-soft: rgba(129, 140, 248, 0.18);
+  --dpk-hover: rgba(255, 255, 255, 0.06);
+  --dpk-radius: 10px;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 280px;
+}
+
+.dpk-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--dpk-bg);
+  border: 1px solid var(--dpk-border);
+  border-radius: var(--dpk-radius);
+  color: var(--dpk-fg);
+  font: inherit;
+  cursor: pointer;
+}
+.dpk.is-open .dpk-trigger,
+.dpk-trigger:focus-visible {
+  border-color: var(--dpk-accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+}
+.dpk.is-empty .dpk-value { color: var(--dpk-muted); }
+
+.dpk-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 50;
+  background: var(--dpk-pop-bg);
+  border: 1px solid var(--dpk-border);
+  border-radius: var(--dpk-radius);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+  padding: 0.85rem;
+  display: none;
+  min-width: 280px;
+}
+.dpk.is-open .dpk-popover { display: block; }
+.dpk-inline .dpk-trigger { display: none; }
+.dpk-inline .dpk-popover { display: block; position: static; }
+
+.dpk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.dpk-nav {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--dpk-fg);
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: grid;
+  place-items: center;
+}
+.dpk-nav:hover { background: var(--dpk-hover); }
+.dpk-title { font-weight: 600; font-size: 0.9rem; }
+
+.dpk-week-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 0.25rem;
+}
+.dpk-week-row > span {
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--dpk-muted);
+  padding: 0.25rem 0;
+}
+
+.dpk-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.dpk-day {
+  display: grid;
+  place-items: center;
+  height: 32px;
+  border-radius: 7px;
+  cursor: pointer;
+  color: var(--dpk-fg);
+  font-size: 0.85rem;
+  user-select: none;
+  background: transparent;
+  border: none;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.dpk-day:hover { background: var(--dpk-hover); }
+.dpk-day.is-other { color: var(--dpk-muted); opacity: 0.4; }
+.dpk-day.is-today { font-weight: 700; color: var(--dpk-accent); }
+.dpk-day.is-selected { background: var(--dpk-accent); color: #fff; }
+.dpk-day.is-in-range { background: var(--dpk-accent-soft); border-radius: 0; }
+.dpk-day.is-range-start { background: var(--dpk-accent); color: #fff; border-radius: 7px 0 0 7px; }
+.dpk-day.is-range-end   { background: var(--dpk-accent); color: #fff; border-radius: 0 7px 7px 0; }
+.dpk-day.is-range-start.is-range-end { border-radius: 7px; }
+.dpk-day[disabled] { color: var(--dpk-muted); cursor: not-allowed; opacity: 0.4; }
+
+.dpk-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--dpk-border);
+}
+.dpk-footer button {
+  background: transparent;
+  border: none;
+  color: var(--dpk-muted);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+}
+.dpk-footer button:hover { color: var(--dpk-fg); background: var(--dpk-hover); }
+
+.dpk-glass .dpk-popover {
+  background: rgba(20, 20, 31, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}

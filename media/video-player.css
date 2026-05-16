@@ -1,0 +1,182 @@
+/* ============================================
+   VIDEO PLAYER — Custom HTML5 video player chrome
+   Inspired by Vimeo / YouTube / Plyr / Mux Player
+   ============================================
+   Usage:
+     <div class="vpl" data-video-player>
+       <video src="…" poster="…"></video>
+       <div class="vpl-overlay">
+         <button class="vpl-big-play">▶</button>
+       </div>
+       <div class="vpl-bar">
+         <button class="vpl-play" data-vpl-play>▶</button>
+         <div class="vpl-progress">
+           <div class="vpl-progress-buffer"></div>
+           <div class="vpl-progress-fill"></div>
+         </div>
+         <span class="vpl-time"><span data-vpl-cur>0:00</span> / <span data-vpl-dur>0:00</span></span>
+         <button class="vpl-mute" data-vpl-mute>🔊</button>
+         <div class="vpl-volume"><div class="vpl-volume-fill"></div></div>
+         <button class="vpl-fs" data-vpl-fs>⛶</button>
+       </div>
+     </div>
+     VideoPlayer.init('[data-video-player]');
+
+   Variants:
+     vpl-minimal     — Bar only on hover
+     vpl-rounded
+     vpl-light
+   ============================================ */
+
+.vpl {
+  --vpl-bg: #050510;
+  --vpl-fg: #ffffff;
+  --vpl-muted: rgba(255, 255, 255, 0.6);
+  --vpl-accent: #818cf8;
+  position: relative;
+  width: 100%;
+  background: var(--vpl-bg);
+  border-radius: 14px;
+  overflow: hidden;
+  color: var(--vpl-fg);
+  aspect-ratio: 16 / 9;
+}
+.vpl-rounded { border-radius: 22px; }
+
+.vpl video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.vpl-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.vpl.is-playing .vpl-overlay { opacity: 0; }
+
+.vpl-big-play {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+  pointer-events: auto;
+  display: grid;
+  place-items: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.vpl-big-play:hover { transform: scale(1.06); background: rgba(255, 255, 255, 0.3); }
+
+.vpl-bar {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.vpl-minimal .vpl-bar {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.vpl-minimal:hover .vpl-bar { opacity: 1; transform: translateY(0); }
+
+.vpl-bar button {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  color: var(--vpl-fg);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+.vpl-bar button:hover { background: rgba(255, 255, 255, 0.1); }
+
+.vpl-progress {
+  flex: 1;
+  position: relative;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 2px;
+  cursor: pointer;
+}
+.vpl-progress-buffer {
+  position: absolute;
+  inset: 0;
+  width: var(--vpl-buf, 0%);
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+.vpl-progress-fill {
+  position: absolute;
+  inset: 0;
+  width: var(--vpl-prog, 0%);
+  background: var(--vpl-accent);
+  border-radius: 2px;
+}
+.vpl-progress::after {
+  content: '';
+  position: absolute;
+  left: var(--vpl-prog, 0%);
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.vpl-progress:hover::after,
+.vpl.is-scrubbing .vpl-progress::after { opacity: 1; }
+
+.vpl-time {
+  font-size: 0.75rem;
+  color: var(--vpl-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.vpl-volume {
+  width: 60px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+}
+.vpl-volume-fill {
+  position: absolute;
+  inset: 0;
+  width: var(--vpl-vol, 100%);
+  background: #fff;
+  border-radius: 2px;
+}
+
+.vpl-light {
+  --vpl-bg: #fafafa;
+  --vpl-fg: #0c0c14;
+  --vpl-muted: rgba(12, 12, 20, 0.6);
+}
+.vpl-light .vpl-bar {
+  background: linear-gradient(to top, rgba(255,255,255,0.7), transparent);
+}

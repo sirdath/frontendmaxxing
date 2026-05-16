@@ -1,0 +1,161 @@
+/* ============================================
+   CRYSTAL FACETS — Angular geometric gradients (diamond, gem, prism, low-poly)
+   Inspired by jewelry photography, low-poly 3D, holographic stickers, art deco
+   ============================================
+   Multiple clip-paths and angled linear-gradients give the faceted look of a
+   cut gem. Combine with .iri-foil or .holo-card for ultra-premium feel.
+
+   Usage:
+     <div class="cryst cryst-diamond"></div>
+     <div class="cryst cryst-emerald cryst-anim"></div>
+
+   Variants:
+     cryst-diamond    (classic — clear/silver facets)
+     cryst-emerald    (deep green)
+     cryst-ruby       (rich red)
+     cryst-sapphire   (royal blue)
+     cryst-amethyst   (purple)
+     cryst-topaz      (amber/gold)
+     cryst-opal       (multi-color iridescent)
+     cryst-onyx       (black)
+     cryst-rose-quartz (soft pink)
+     cryst-aquamarine (cyan/teal)
+     cryst-fluorite   (rainbow)
+     cryst-prism      (rainbow spectrum)
+     cryst-low-poly   (subtle geometric)
+   Modifiers:
+     cryst-anim       — facets pulse / shift highlight
+     cryst-spin       — slowly rotates
+     cryst-shine      — sweeping highlight
+   ============================================ */
+
+.cryst {
+  --cr-c1: #ffffff;
+  --cr-c2: #c0c0c0;
+  --cr-c3: #808080;
+  --cr-c4: #e0e0e0;
+  --cr-c5: #f0f0f0;
+  --cr-speed: 6s;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-block;
+  width: 220px;
+  aspect-ratio: 1;
+  background:
+    linear-gradient(45deg, var(--cr-c1) 0%, var(--cr-c2) 50%, var(--cr-c3) 100%);
+}
+
+/* Layered facet pseudo-elements give the gem cuts */
+.cryst::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, var(--cr-c1) 0%, transparent 50%) 0 0 / 50% 50% no-repeat,
+    linear-gradient(225deg, var(--cr-c2) 0%, transparent 50%) 100% 0 / 50% 50% no-repeat,
+    linear-gradient(315deg, var(--cr-c3) 0%, transparent 50%) 100% 100% / 50% 50% no-repeat,
+    linear-gradient(45deg,  var(--cr-c4) 0%, transparent 50%) 0 100% / 50% 50% no-repeat;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.cryst::after {
+  content: '';
+  position: absolute;
+  inset: 15%;
+  background:
+    linear-gradient(135deg, var(--cr-c5), var(--cr-c1) 50%, var(--cr-c4));
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* Color variants */
+.cryst-diamond  {
+  background: linear-gradient(45deg, #ffffff 0%, #e8e8f0 30%, #c8d0e0 60%, #ffffff 100%);
+}
+.cryst-emerald  { --cr-c1: #6ee7b7; --cr-c2: #10b981; --cr-c3: #064e3b; --cr-c4: #34d399; --cr-c5: #d1fae5; }
+.cryst-ruby     { --cr-c1: #fda4af; --cr-c2: #f43f5e; --cr-c3: #881337; --cr-c4: #fb7185; --cr-c5: #ffe4e6; }
+.cryst-sapphire { --cr-c1: #93c5fd; --cr-c2: #3b82f6; --cr-c3: #1e3a8a; --cr-c4: #60a5fa; --cr-c5: #dbeafe; }
+.cryst-amethyst { --cr-c1: #d8b4fe; --cr-c2: #a855f7; --cr-c3: #4c1d95; --cr-c4: #c084fc; --cr-c5: #f3e8ff; }
+.cryst-topaz    { --cr-c1: #fde68a; --cr-c2: #f59e0b; --cr-c3: #78350f; --cr-c4: #fbbf24; --cr-c5: #fef3c7; }
+.cryst-opal {
+  background:
+    linear-gradient(135deg, #ff6b9d 0%, transparent 40%),
+    linear-gradient(45deg, #00d4aa 0%, transparent 40%),
+    linear-gradient(315deg, #ffd700 0%, transparent 40%),
+    linear-gradient(225deg, #9b5de5 0%, transparent 40%),
+    #fefefe;
+}
+.cryst-onyx     { --cr-c1: #4a4a4a; --cr-c2: #1a1a1a; --cr-c3: #000; --cr-c4: #2a2a2a; --cr-c5: #6a6a6a; }
+.cryst-rose-quartz { --cr-c1: #fecdd3; --cr-c2: #fda4af; --cr-c3: #f87171; --cr-c4: #fbcfe8; --cr-c5: #fff1f2; }
+.cryst-aquamarine  { --cr-c1: #a5f3fc; --cr-c2: #22d3ee; --cr-c3: #0e7490; --cr-c4: #67e8f9; --cr-c5: #cffafe; }
+.cryst-fluorite {
+  background:
+    linear-gradient(45deg, #c084fc 0%, #67e8f9 25%, #6ee7b7 50%, #fde68a 75%, #fda4af 100%);
+}
+.cryst-prism {
+  background:
+    linear-gradient(45deg,
+      #ff006e 0%, #ff8500 14%, #ffe066 28%, #06ffa5 42%,
+      #06b6d4 56%, #3a86ff 70%, #8338ec 84%, #ec4899 100%);
+}
+
+/* Low-poly subtle */
+.cryst-low-poly {
+  background:
+    linear-gradient(135deg, #ffffff 0%, #ffffff 33%, #f0f0f5 33%, #f0f0f5 66%, #e0e0e8 66%, #e0e0e8 100%);
+}
+.cryst-low-poly::before {
+  background:
+    linear-gradient(45deg,
+      transparent 33%, rgba(0,0,0,0.04) 33%, rgba(0,0,0,0.04) 66%, transparent 66%);
+  mix-blend-mode: multiply;
+}
+
+/* Hexagonal-cut variant — clip-path hexagon */
+.cryst-hex {
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+/* Round brilliant variant — clip-path circle */
+.cryst-round {
+  clip-path: circle(50% at 50% 50%);
+}
+
+/* Pear-cut variant */
+.cryst-pear {
+  clip-path: ellipse(40% 50% at 50% 50%);
+  border-radius: 50%;
+}
+
+/* Animations */
+.cryst-anim { animation: cryst-pulse var(--cr-speed) ease-in-out infinite; }
+.cryst-anim::after { animation: cryst-flash var(--cr-speed) ease-in-out infinite; }
+@keyframes cryst-pulse { 50% { filter: brightness(1.15) saturate(1.2); } }
+@keyframes cryst-flash { 30% { opacity: 1; } 70% { opacity: 0.6; } }
+
+.cryst-spin { animation: cryst-spin calc(var(--cr-speed) * 4) linear infinite; }
+@keyframes cryst-spin { to { transform: rotate(360deg); } }
+
+.cryst-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: cryst-shine 3s ease-in-out infinite;
+  pointer-events: none;
+  clip-path: none;
+  opacity: 1;
+}
+@keyframes cryst-shine {
+  0%   { transform: translateX(-100%); }
+  60%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cryst-anim, .cryst-spin, .cryst-shine::after { animation: none; }
+}

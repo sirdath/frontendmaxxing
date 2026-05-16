@@ -1,0 +1,194 @@
+/* ============================================
+   FOCUS MODE — Dim everything except current block + optional Pomodoro
+   Inspired by Arc Browser, iA Writer, Linear focus, Things 3 today mode
+   ============================================
+   When active:
+     - app chrome (nav/sidebar/anything outside .focus-keep) is dimmed
+     - mouse movement temporarily un-dims for review
+     - optional Pomodoro ring counts down
+     - subtle ambient color tint
+
+   Usage:
+     <body>
+       <nav>...</nav>
+       <main>
+         <article class="focus-keep">
+           <!-- the user's current focus content -->
+         </article>
+       </main>
+     </body>
+
+     FocusMode.init({
+       keepSelector: '.focus-keep',
+       dimOpacity: 0.18,
+       peekOnHover: true,
+       pomodoro: { duration: 25 * 60 * 1000, onComplete: () => {} },
+       ambient: 'cosmic',     // 'cosmic' | 'warm' | 'cool' | 'none'
+       triggerKey: 'F11'      // or 'shift+f' etc
+     });
+
+     FocusMode.enter();
+     FocusMode.exit();
+     FocusMode.toggle();
+   ============================================ */
+
+body.fm-active {
+  --fm-ambient: rgba(139, 92, 246, 0.04);
+  position: relative;
+}
+
+body.fm-active::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--fm-ambient);
+  pointer-events: none;
+  z-index: 9990;
+  transition: background 0.6s ease;
+}
+
+/* Ambient tints */
+body.fm-active.fm-cosmic { --fm-ambient: rgba(139, 92, 246, 0.04); }
+body.fm-active.fm-warm   { --fm-ambient: rgba(251, 113, 133, 0.05); }
+body.fm-active.fm-cool   { --fm-ambient: rgba(34, 211, 238, 0.05); }
+body.fm-active.fm-none   { --fm-ambient: transparent; }
+
+/* Dim everything that isn't .focus-keep — JS adds .fm-dim to all top-level siblings */
+body.fm-active .fm-dim {
+  opacity: var(--fm-dim-opacity, 0.18);
+  filter: blur(0.5px);
+  pointer-events: none;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+body.fm-active.fm-peek .fm-dim {
+  opacity: 0.55;
+  filter: none;
+}
+
+/* Spotlight on .focus-keep */
+body.fm-active .focus-keep {
+  position: relative;
+  z-index: 9992;
+}
+body.fm-active .focus-keep::before {
+  content: '';
+  position: absolute;
+  inset: -30px;
+  background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.08), transparent 70%);
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(20px);
+}
+
+/* === Floating control bar === */
+.fm-bar {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  z-index: 9995;
+  background: rgba(20, 20, 30, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 0.35rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  color: #fff;
+  font-size: 0.8rem;
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.5);
+  opacity: 0.4;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.fm-bar:hover,
+body.fm-active.fm-peek .fm-bar {
+  opacity: 1;
+}
+
+.fm-bar button {
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.65);
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.fm-bar button:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+.fm-exit {
+  color: #fca5a5 !important;
+}
+
+/* === Pomodoro ring === */
+.fm-pom {
+  --p-pct: 1;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.15rem 0.55rem 0.15rem 0.3rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+.fm-pom-arc {
+  width: 18px;
+  height: 18px;
+  transform: rotate(-90deg);
+  flex-shrink: 0;
+}
+.fm-pom-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 3;
+}
+.fm-pom-fill {
+  fill: none;
+  stroke: #818cf8;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: calc(var(--p-pct) * 56.55) 56.55;
+  transition: stroke-dasharray 0.5s ease, stroke 0.3s ease;
+}
+.fm-pom-time {
+  color: #fff;
+}
+.fm-pom.is-low .fm-pom-fill { stroke: #fbbf24; }
+.fm-pom.is-finished .fm-pom-fill { stroke: #34d399; }
+.fm-pom.is-finished {
+  animation: fm-pom-celebrate 1.6s ease-in-out;
+}
+@keyframes fm-pom-celebrate {
+  0%, 100% { transform: scale(1); }
+  20%      { transform: scale(1.15); }
+  60%      { transform: scale(0.95); }
+}
+
+/* === Entry/exit overlay (brief fade) === */
+.fm-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.fm-veil.is-active { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  body.fm-active .fm-dim,
+  body.fm-active::before,
+  .fm-pom-fill { transition: none; }
+}

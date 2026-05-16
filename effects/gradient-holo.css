@@ -1,0 +1,189 @@
+/* ============================================
+   GRADIENT HOLO — Holographic / iridescent / metallic surfaces
+   Inspired by Pokémon holo cards / Apple Vision Pro / oil-slick / chrome
+   ============================================
+   These use overlapping conic + linear gradients with hue-shift to
+   simulate light reflecting off a curved iridescent surface.
+
+   Usage:
+     <div class="holo holo-card">
+       <div class="holo-content">Limited Edition</div>
+     </div>
+     <h1 class="holo-text">HOLOGRAM</h1>
+
+   Variants:
+     holo-card        — Cardstock holo (mouse-tracking via JS optional)
+     holo-text        — Text fill holo
+     holo-chrome      — Chrome / liquid metal
+     holo-oil-slick   — Oil-slick (darker, deeper iridescence)
+     holo-mother-pearl — Mother of pearl
+     holo-rainbow-foil — Rainbow foil
+     holo-shiny       — Simple shiny sweep on hover
+
+   Mouse-track tip:
+     Set --hx and --hy via JS on pointermove (0–100). The gradient
+     re-positions to that point, producing card-tilt-like reflection.
+   ============================================ */
+
+.holo {
+  --hx: 50%;
+  --hy: 50%;
+  --holo-radius: 16px;
+  position: relative;
+  border-radius: var(--holo-radius);
+  overflow: hidden;
+  isolation: isolate;
+  background-color: #0c0c14;
+}
+
+/* ── Cardstock holo ── */
+.holo-card {
+  background-image:
+    /* Color bands (the rainbow underlayer) */
+    linear-gradient(125deg,
+      #ff7eb6 0%, #ffd97e 18%, #7cf0bd 36%,
+      #4dabf7 54%, #b197fc 72%, #ff7eb6 100%),
+    /* Soft highlight tracking pointer */
+    radial-gradient(circle at var(--hx) var(--hy),
+      rgba(255, 255, 255, 0.6) 0%, transparent 35%);
+  background-blend-mode: overlay, normal;
+  background-size: 400% 400%, 100% 100%;
+  background-position: 0% 0%, var(--hx) var(--hy);
+}
+
+.holo-card::after {
+  /* Scratch / grain overlay */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.06) 0 1px,
+      transparent 1px 4px);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.holo-content {
+  position: relative;
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  z-index: 1;
+}
+
+/* ── Holographic text ── */
+.holo-text {
+  background:
+    linear-gradient(125deg,
+      #ff7eb6 0%, #ffd97e 18%, #7cf0bd 36%,
+      #4dabf7 54%, #b197fc 72%, #ff7eb6 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  animation: holo-text-shift 6s linear infinite;
+  filter: drop-shadow(0 2px 8px rgba(177, 151, 252, 0.45));
+}
+@keyframes holo-text-shift {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* ── Chrome / liquid metal ── */
+.holo-chrome {
+  background:
+    linear-gradient(180deg,
+      #ffffff 0%,
+      #c0c8d1 12%,
+      #6c757d 24%,
+      #adb5bd 38%,
+      #f8f9fa 50%,
+      #adb5bd 62%,
+      #6c757d 76%,
+      #c0c8d1 88%,
+      #ffffff 100%);
+  background-size: 100% 400%;
+  animation: holo-chrome-shift 10s ease-in-out infinite alternate;
+}
+@keyframes holo-chrome-shift {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 0% 100%; }
+}
+
+/* ── Oil slick (dark iridescent) ── */
+.holo-oil-slick {
+  background:
+    conic-gradient(from 0deg,
+      #1a0d2e, #2d1b4d, #4d1a5f, #2d0a4f,
+      #0a1d4f, #0d4f4d, #1a4d2d, #4d4d1a,
+      #4d1a1a, #2d0a4f, #1a0d2e);
+  background-size: 200% 200%;
+  animation: holo-text-shift 12s linear infinite;
+  filter: saturate(1.3) brightness(0.95);
+}
+
+/* ── Mother of pearl (soft pastel iridescence) ── */
+.holo-mother-pearl {
+  background:
+    linear-gradient(125deg,
+      #fce7f3 0%,
+      #ddd6fe 15%,
+      #bfdbfe 30%,
+      #bbf7d0 45%,
+      #fef3c7 60%,
+      #fbcfe8 75%,
+      #fce7f3 100%);
+  background-size: 200% 200%;
+  animation: holo-text-shift 14s linear infinite;
+}
+
+/* ── Rainbow foil (high-saturation, used for stickers) ── */
+.holo-rainbow-foil {
+  background:
+    repeating-linear-gradient(45deg,
+      #ff0080 0 8px,
+      #ffea00 8px 16px,
+      #00ff88 16px 24px,
+      #00f0ff 24px 32px,
+      #9d00ff 32px 40px);
+  background-size: 200% 200%;
+  animation: holo-text-shift 8s linear infinite;
+  filter: saturate(1.1);
+}
+
+/* ── Simple shiny sweep (cheap, single sweep on hover) ── */
+.holo-shiny {
+  position: relative;
+  overflow: hidden;
+}
+.holo-shiny::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg,
+    transparent 0%, transparent 35%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 65%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.7s ease;
+}
+.holo-shiny:hover::before { transform: translateX(100%); }
+
+/* ── Pointer-tilt parallax (decorative) ──
+   Apply alongside .holo-card and update --tx / --ty via JS for tilt. */
+.holo-tilt {
+  transform: perspective(800px)
+             rotateX(calc(var(--ty, 0) * 8deg))
+             rotateY(calc(var(--tx, 0) * -8deg));
+  transition: transform 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .holo-text, .holo-chrome, .holo-oil-slick,
+  .holo-mother-pearl, .holo-rainbow-foil { animation: none; }
+}

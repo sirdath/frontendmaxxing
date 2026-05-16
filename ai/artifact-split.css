@@ -1,0 +1,319 @@
+/* ============================================
+   ARTIFACT SPLIT — Chat-left / artifact-right split-pane with version pager
+   Inspired by Claude Artifacts, v0.dev, ChatGPT Canvas, Replit AI
+   ============================================
+   Usage:
+     <div class="afct">
+       <div class="afct-chat">…chat messages here…</div>
+       <div class="afct-splitter"></div>
+       <div class="afct-pane">
+         <header class="afct-head">
+           <div class="afct-tabs">
+             <button class="afct-tab is-active" data-afct-tab="preview">Preview</button>
+             <button class="afct-tab" data-afct-tab="code">Code</button>
+           </div>
+           <div class="afct-version">
+             <button class="afct-ver-prev" aria-label="Previous version">‹</button>
+             <span class="afct-ver-num">v3 / 5</span>
+             <button class="afct-ver-next" aria-label="Next version">›</button>
+           </div>
+           <div class="afct-actions">
+             <button class="afct-action" aria-label="Open">↗</button>
+             <button class="afct-action" aria-label="Download">⬇</button>
+             <button class="afct-action" aria-label="Close">✕</button>
+           </div>
+         </header>
+         <div class="afct-views">
+           <div class="afct-view afct-view-preview is-active">
+             <iframe class="afct-iframe" src="about:blank"></iframe>
+           </div>
+           <div class="afct-view afct-view-code">
+             <pre><code>...</code></pre>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     ArtifactSplit.init('.afct', {
+       versions: [{ id, label, html, code }],
+       onTabChange, onVersionChange, onAction
+     });
+
+   Variants:
+     afct-stack (mobile/narrow — stacks vertically)
+     afct-pane-left (artifact on left)
+     afct-no-splitter
+     afct-fullscreen
+   ============================================ */
+
+.afct {
+  --af-bg: #0a0a14;
+  --af-pane-bg: rgba(255, 255, 255, 0.02);
+  --af-border: rgba(255, 255, 255, 0.08);
+  --af-fg: #ffffff;
+  --af-muted: rgba(255, 255, 255, 0.55);
+  --af-accent: #8b5cf6;
+  --af-split: 50%;
+  display: grid;
+  grid-template-columns: 1fr 4px var(--af-split);
+  background: var(--af-bg);
+  border: 1px solid var(--af-border);
+  border-radius: 12px;
+  color: var(--af-fg);
+  height: 600px;
+  overflow: hidden;
+}
+
+.afct-pane-left {
+  grid-template-columns: var(--af-split) 4px 1fr;
+}
+.afct-pane-left .afct-chat { order: 3; }
+.afct-pane-left .afct-pane { order: 1; }
+
+.afct-fullscreen {
+  position: fixed;
+  inset: 1rem;
+  z-index: 1500;
+  height: auto;
+  box-shadow: 0 40px 80px -16px rgba(0, 0, 0, 0.6);
+}
+
+/* === Chat side === */
+.afct-chat {
+  border-right: 1px solid var(--af-border);
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* === Splitter === */
+.afct-splitter {
+  background: transparent;
+  cursor: col-resize;
+  position: relative;
+  user-select: none;
+}
+.afct-splitter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--af-border);
+  transition: background 0.18s ease;
+}
+.afct-splitter:hover::before,
+.afct-splitter.is-dragging::before {
+  background: var(--af-accent);
+}
+
+.afct-no-splitter .afct-splitter { display: none; }
+.afct-no-splitter {
+  grid-template-columns: 1fr 0 var(--af-split);
+}
+
+/* === Artifact pane === */
+.afct-pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--af-pane-bg);
+}
+
+.afct-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--af-border);
+  background: rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.afct-tabs {
+  display: inline-flex;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.15rem;
+  border-radius: 6px;
+  gap: 0.1rem;
+}
+.afct-tab {
+  background: transparent;
+  border: 0;
+  color: var(--af-muted);
+  padding: 0.3rem 0.7rem;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.afct-tab.is-active {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--af-fg);
+}
+.afct-tab:hover:not(.is-active) {
+  color: var(--af-fg);
+}
+
+.afct-version {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--af-border);
+  border-radius: 6px;
+  font-size: 0.72rem;
+}
+.afct-version button {
+  background: transparent;
+  border: 0;
+  color: var(--af-muted);
+  padding: 0.15rem 0.3rem;
+  font: inherit;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.afct-version button:hover { background: rgba(255, 255, 255, 0.06); color: var(--af-fg); }
+.afct-version button:disabled { opacity: 0.3; pointer-events: none; }
+.afct-ver-num {
+  font-variant-numeric: tabular-nums;
+  color: var(--af-fg);
+  min-width: 4rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.afct-actions {
+  display: inline-flex;
+  gap: 0.1rem;
+  margin-left: auto;
+}
+.afct-action {
+  background: transparent;
+  border: 0;
+  color: var(--af-muted);
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.afct-action:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--af-fg);
+}
+
+/* === Views === */
+.afct-views {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.afct-view {
+  position: absolute;
+  inset: 0;
+  display: none;
+  overflow: auto;
+  background: #fff;
+  color: #000;
+}
+.afct-view.is-active { display: block; }
+
+.afct-view-preview {
+  background: #fff;
+}
+.afct-iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.afct-view-code {
+  background: var(--af-bg);
+  color: var(--af-fg);
+}
+.afct-view-code pre {
+  margin: 0;
+  padding: 1rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.6;
+}
+
+/* Build log / errors tab content (optional) */
+.afct-view-logs {
+  background: var(--af-bg);
+  padding: 0.85rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.74rem;
+  color: var(--af-muted);
+}
+
+/* === Title bar inside pane (optional) === */
+.afct-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  border-bottom: 1px solid var(--af-border);
+  font-size: 0.78rem;
+  color: var(--af-muted);
+  background: rgba(0, 0, 0, 0.1);
+}
+.afct-title-name {
+  font-weight: 600;
+  color: var(--af-fg);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.afct-title-status {
+  margin-left: auto;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.4rem;
+  background: rgba(52, 211, 153, 0.18);
+  color: #6ee7b7;
+  border-radius: 999px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.afct-title-status.is-building {
+  background: rgba(251, 191, 36, 0.18);
+  color: #fcd34d;
+}
+.afct-title-status.is-error {
+  background: rgba(248, 113, 113, 0.18);
+  color: #fca5a5;
+}
+
+/* Stacked layout for narrow screens */
+@media (max-width: 768px) {
+  .afct, .afct-pane-left {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 4px 1fr;
+    height: 800px;
+  }
+  .afct-chat { border-right: 0; border-bottom: 1px solid var(--af-border); }
+  .afct-splitter { cursor: row-resize; height: 4px; }
+}
+
+/* Empty state when no artifact */
+.afct-empty {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--af-muted);
+  font-size: 0.85rem;
+  padding: 2rem;
+  text-align: center;
+}

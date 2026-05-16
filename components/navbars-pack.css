@@ -1,0 +1,186 @@
+/* ============================================
+   NAVBARS PACK — 8 navbar style variants
+   Inspired by Apple / Linear / Vercel / Stripe / Github
+   ============================================
+   Companion to components/navbars.css (adds new visual styles).
+   Each variant uses the .navp prefix to avoid collisions.
+
+   Usage (pick one root variant):
+     <nav class="navp navp-floating navp-glass">
+       <a class="navp-brand">Brand</a>
+       <ul class="navp-links">
+         <li><a href="#">Product</a></li>
+         …
+       </ul>
+       <div class="navp-actions"><button class="navp-cta">Sign up</button></div>
+     </nav>
+
+   Variants:
+     navp-solid       — Solid dark bar
+     navp-transparent — Transparent over hero
+     navp-floating    — Detached pill at top
+     navp-glass       — Glassmorphic background
+     navp-bordered    — Hairline border bottom
+     navp-centered    — Brand centered (links split L/R)
+     navp-dock        — Bottom-floating dock navbar
+     navp-minimal     — Just brand + 1 CTA
+     navp-pill        — Pill container w/ rounded edges
+     navp-condensed   — Smaller height
+   ============================================ */
+
+.navp {
+  --navp-bg: rgba(12, 12, 20, 0.85);
+  --navp-fg: #ffffff;
+  --navp-muted: rgba(255, 255, 255, 0.65);
+  --navp-border: rgba(255, 255, 255, 0.08);
+  --navp-accent: #818cf8;
+  --navp-h: 64px;
+  --navp-pad-x: 1.25rem;
+  --navp-radius: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--navp-h);
+  padding: 0 var(--navp-pad-x);
+  background: var(--navp-bg);
+  color: var(--navp-fg);
+  font: inherit;
+  font-size: 0.9rem;
+  border-radius: var(--navp-radius);
+  width: 100%;
+  z-index: 30;
+}
+
+.navp-brand {
+  font-weight: 700;
+  color: var(--navp-fg);
+  text-decoration: none;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.navp-links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.25rem;
+}
+.navp-links > li > a {
+  display: inline-block;
+  padding: 0.5rem 0.85rem;
+  border-radius: 7px;
+  color: var(--navp-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.navp-links > li > a:hover { color: var(--navp-fg); background: rgba(255, 255, 255, 0.05); }
+.navp-links > li > a.is-active { color: var(--navp-fg); }
+
+.navp-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.navp-cta {
+  padding: 0.45rem 0.95rem;
+  background: var(--navp-accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 500;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.navp-cta:hover { filter: brightness(1.08); }
+.navp-ghost {
+  padding: 0.45rem 0.95rem;
+  background: transparent;
+  color: var(--navp-muted);
+  border: none;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.navp-ghost:hover { color: var(--navp-fg); }
+
+/* ── Variants ── */
+.navp-solid       { background: var(--navp-bg); }
+.navp-transparent { background: transparent; }
+
+.navp-floating {
+  position: sticky;
+  top: 12px;
+  width: calc(100% - 24px);
+  margin: 12px;
+  --navp-radius: 999px;
+  --navp-pad-x: 1.5rem;
+  background: rgba(20, 20, 31, 0.7);
+  border: 1px solid var(--navp-border);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
+}
+
+.navp-glass {
+  background: rgba(20, 20, 31, 0.45);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom: 1px solid var(--navp-border);
+}
+
+.navp-bordered {
+  background: rgba(12, 12, 20, 0.92);
+  border-bottom: 1px solid var(--navp-border);
+}
+
+.navp-pill {
+  --navp-radius: 999px;
+  background: var(--navp-bg);
+  border: 1px solid var(--navp-border);
+}
+
+.navp-centered {
+  justify-content: center;
+}
+.navp-centered .navp-brand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.navp-centered .navp-links { flex: 1; justify-content: flex-start; }
+.navp-centered .navp-actions { flex: 1; justify-content: flex-end; }
+
+.navp-dock {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  --navp-radius: 999px;
+  --navp-h: 54px;
+  background: rgba(20, 20, 31, 0.85);
+  border: 1px solid var(--navp-border);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7);
+  z-index: 60;
+}
+
+.navp-minimal .navp-links { display: none; }
+
+.navp-condensed { --navp-h: 48px; font-size: 0.825rem; }
+.navp-tall      { --navp-h: 80px; }
+
+.navp-light {
+  --navp-bg: rgba(255, 255, 255, 0.92);
+  --navp-fg: #0c0c14;
+  --navp-muted: rgba(12, 12, 20, 0.6);
+  --navp-border: rgba(0, 0, 0, 0.08);
+}
+
+/* Mobile collapse */
+@media (max-width: 720px) {
+  .navp:not(.navp-keep) .navp-links { display: none; }
+}

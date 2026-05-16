@@ -1,0 +1,38 @@
+/* ============================================
+   WAVY BACKGROUND — Canvas wrapper for simplex-noise waves
+   Inspired by Aceternity UI
+   ============================================
+   Usage:
+     <div class="wavy-bg">
+       <canvas></canvas>
+       <div class="wavy-bg-content">...</div>
+     </div>
+     WavyBackground.init('.wavy-bg', { colors: ['#38bdf8', '#818cf8', '#c084fc'] });
+
+   Variants:
+     .wavy-bg-blur — Heavier blur on canvas (dreamier)
+   ============================================ */
+
+.wavy-bg {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--surface, #0c0c14);
+}
+
+.wavy-bg canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: blur(40px);
+}
+
+.wavy-bg-blur canvas { filter: blur(70px); }
+
+.wavy-bg-content {
+  position: relative;
+  z-index: 1;
+}

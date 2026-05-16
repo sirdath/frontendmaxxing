@@ -1,0 +1,146 @@
+/* ============================================
+   ERROR STATES — 404, 500, broken page, maintenance, network
+   Inspired by Linear / Vercel / GitHub error pages
+   ============================================
+   Usage:
+     <div class="errp errp-404">
+       <div class="errp-code">404</div>
+       <h1 class="errp-title">Page not found</h1>
+       <p class="errp-text">We couldn't find what you were looking for.</p>
+       <div class="errp-actions">
+         <a class="errp-btn errp-btn-primary" href="/">Go home</a>
+         <a class="errp-btn" href="/contact">Contact support</a>
+       </div>
+     </div>
+
+   Variants:
+     .errp-404         — Not found
+     .errp-500         — Server error
+     .errp-403         — Forbidden
+     .errp-maintenance — Scheduled downtime
+     .errp-offline     — Network failure
+     .errp-broken      — Generic broken page (try refresh)
+     .errp-card        — Inline card variant
+   ============================================ */
+
+.errp {
+  --errp-bg: transparent;
+  --errp-fg: var(--text, #ffffff);
+  --errp-muted: rgba(255, 255, 255, 0.6);
+  --errp-accent: #818cf8;
+  --errp-danger: #f87171;
+  --errp-warn: #fbbf24;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: var(--errp-bg);
+  color: var(--errp-fg);
+}
+
+.errp-code {
+  font-size: clamp(4.5rem, 14vw, 9rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(180deg, #fff, rgba(255,255,255,0.3));
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.errp-title {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+}
+
+.errp-text {
+  max-width: 520px;
+  margin: 0 0 1.75rem;
+  color: var(--errp-muted);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.errp-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.errp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: var(--errp-fg);
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.errp-btn:hover { background: rgba(255, 255, 255, 0.06); }
+.errp-btn-primary {
+  background: var(--errp-accent);
+  border-color: var(--errp-accent);
+  color: #fff;
+}
+.errp-btn-primary:hover { filter: brightness(1.08); }
+
+/* ── Variants ── */
+.errp-404 .errp-code { background: linear-gradient(180deg, #c084fc, rgba(56, 189, 248, 0.4)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.errp-500 .errp-code { background: linear-gradient(180deg, var(--errp-danger), rgba(248, 113, 113, 0.3)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.errp-403 .errp-code { background: linear-gradient(180deg, var(--errp-warn), rgba(251, 191, 36, 0.3)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+.errp-maintenance .errp-code { font-size: 4rem; content: '🔧'; }
+.errp-maintenance .errp-code::before { content: '🔧'; }
+
+.errp-offline .errp-code::before { content: '📡'; font-size: 4rem; }
+.errp-broken .errp-code::before { content: '⚠'; font-size: 4rem; color: var(--errp-warn); -webkit-text-fill-color: var(--errp-warn); }
+
+.errp-icon-mode .errp-code { font-size: 4rem; }
+.errp-icon-mode .errp-code-text {
+  /* override gradient on icon-mode codes */
+  -webkit-text-fill-color: initial;
+  background: none;
+}
+
+/* Card variant: inline / dashboard usage */
+.errp-card {
+  min-height: auto;
+  padding: 2.5rem 1.5rem;
+  background: var(--surface-2, #14141f);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+.errp-card .errp-code { font-size: 3rem; }
+.errp-card .errp-title { font-size: 1.15rem; }
+.errp-card .errp-text { font-size: 0.9rem; }
+
+/* Background decoration: optional grid + radial */
+.errp-bg-grid {
+  background-color: #050510;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.errp-bg-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(129,140,248,0.15), transparent 60%);
+  pointer-events: none;
+}
+.errp.errp-bg-grid { position: relative; }

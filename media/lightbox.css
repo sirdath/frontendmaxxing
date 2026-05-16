@@ -1,0 +1,150 @@
+/* ============================================
+   LIGHTBOX — Full-screen image gallery viewer
+   Inspired by PhotoSwipe / lightGallery / fancyApps
+   ============================================
+   Usage:
+     <a class="lbx-trigger" data-lbx="gal1" href="full1.jpg" data-lbx-thumb="thumb1.jpg">
+       <img src="thumb1.jpg" alt="">
+     </a>
+     <a class="lbx-trigger" data-lbx="gal1" href="full2.jpg">…</a>
+
+     Lightbox.init();
+
+   Variants:
+     lbx-thumbs        — Show thumbnail strip
+     lbx-caption       — Show caption from img alt or data-lbx-cap
+     lbx-glass         — Glassmorphic chrome
+   ============================================ */
+
+.lbx {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.92);
+  display: none;
+  flex-direction: column;
+  color: #fff;
+  user-select: none;
+}
+.lbx.is-open {
+  display: flex;
+  animation: lbx-in 0.2s ease;
+}
+@keyframes lbx-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.lbx-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+.lbx-counter { font-variant-numeric: tabular-nums; }
+
+.lbx-close,
+.lbx-action {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.lbx-close:hover, .lbx-action:hover { background: rgba(255, 255, 255, 0.14); }
+
+.lbx-header-actions { display: flex; gap: 0.4rem; }
+
+.lbx-stage {
+  flex: 1;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.lbx-image {
+  max-width: 92%;
+  max-height: 92%;
+  object-fit: contain;
+  border-radius: 6px;
+  animation: lbx-zoom-in 0.25s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+@keyframes lbx-zoom-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.lbx-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.lbx-nav:hover { background: rgba(255, 255, 255, 0.18); transform: translateY(-50%) scale(1.05); }
+.lbx-prev { left: 1rem; }
+.lbx-next { right: 1rem; }
+
+.lbx-caption {
+  padding: 0.85rem 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.lbx-thumbs {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem 1rem;
+  overflow-x: auto;
+  justify-content: center;
+}
+.lbx-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  overflow: hidden;
+}
+.lbx-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.lbx-thumb:hover { opacity: 0.85; transform: translateY(-2px); }
+.lbx-thumb.is-active { opacity: 1; outline: 2px solid #fff; }
+
+/* Trigger anchor: make hovered images preview-able */
+.lbx-trigger {
+  display: inline-block;
+  cursor: zoom-in;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.lbx-trigger img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.lbx-trigger:hover img { transform: scale(1.04); }
+
+@media (prefers-reduced-motion: reduce) {
+  .lbx, .lbx-image { animation: none; }
+}

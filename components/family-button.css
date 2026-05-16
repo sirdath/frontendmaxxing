@@ -1,0 +1,136 @@
+/* ============================================
+   FAMILY BUTTON — Morphing FAB that expands into a row of actions
+   Inspired by cult-ui Family Button / iOS contextual menus
+   ============================================
+   Usage:
+     <div class="fam">
+       <button class="fam-trigger" aria-expanded="false">+</button>
+       <div class="fam-actions">
+         <button class="fam-action" data-fam-action="share">↗</button>
+         <button class="fam-action" data-fam-action="copy">⎘</button>
+         <button class="fam-action" data-fam-action="like">♥</button>
+         <button class="fam-action" data-fam-action="more">⋯</button>
+       </div>
+     </div>
+     FamilyButton.init('.fam');
+
+   Variants:
+     .fam-up         — Expand upward (default: rightward)
+     .fam-down       — Expand downward
+     .fam-glass      — Glassmorphic container
+   ============================================ */
+
+.fam {
+  --fam-size: 56px;
+  --fam-color: #818cf8;
+  --fam-bg: #0c0c14;
+  --fam-radius: 999px;
+  --fam-action-size: 44px;
+  --fam-gap: 0.5rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.fam-trigger {
+  width: var(--fam-size);
+  height: var(--fam-size);
+  border-radius: var(--fam-radius);
+  border: none;
+  background: var(--fam-color);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -8px var(--fam-color);
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1), background 0.25s ease;
+  z-index: 2;
+  position: relative;
+}
+
+.fam-trigger:hover { transform: translateY(-2px); }
+
+.fam.is-open .fam-trigger {
+  transform: rotate(45deg);
+  background: #ef4444;
+  box-shadow: 0 8px 24px -8px #ef4444;
+}
+
+.fam-actions {
+  display: flex;
+  gap: var(--fam-gap);
+  position: absolute;
+  left: calc(var(--fam-size) + var(--fam-gap));
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.fam-action {
+  width: var(--fam-action-size);
+  height: var(--fam-action-size);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--fam-bg);
+  color: #fff;
+  font-size: 1rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.5) translateX(-30px);
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+  flex-shrink: 0;
+}
+
+.fam.is-open .fam-actions { pointer-events: auto; }
+
+.fam.is-open .fam-action {
+  opacity: 1;
+  transform: scale(1) translateX(0);
+}
+
+.fam.is-open .fam-action:nth-child(1) { transition-delay: 0.04s; }
+.fam.is-open .fam-action:nth-child(2) { transition-delay: 0.08s; }
+.fam.is-open .fam-action:nth-child(3) { transition-delay: 0.12s; }
+.fam.is-open .fam-action:nth-child(4) { transition-delay: 0.16s; }
+.fam.is-open .fam-action:nth-child(5) { transition-delay: 0.20s; }
+.fam.is-open .fam-action:nth-child(6) { transition-delay: 0.24s; }
+
+/* ── Up ── */
+.fam-up {
+  flex-direction: column;
+}
+.fam-up .fam-actions {
+  flex-direction: column;
+  top: auto;
+  bottom: calc(var(--fam-size) + var(--fam-gap));
+  left: 50%;
+  transform: translateX(-50%);
+}
+.fam-up.is-open .fam-action { transform: scale(1) translateY(0); }
+.fam-up .fam-action { transform: scale(0.5) translateY(30px); }
+
+/* ── Down ── */
+.fam-down .fam-actions {
+  flex-direction: column;
+  top: calc(var(--fam-size) + var(--fam-gap));
+  left: 50%;
+  transform: translateX(-50%);
+}
+.fam-down.is-open .fam-action { transform: scale(1) translateY(0); }
+.fam-down .fam-action { transform: scale(0.5) translateY(-30px); }
+
+.fam-glass .fam-action {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+}
+
+.fam-sm { --fam-size: 44px; --fam-action-size: 36px; }
+.fam-lg { --fam-size: 68px; --fam-action-size: 54px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fam-trigger, .fam-action { transition: none; }
+}

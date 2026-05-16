@@ -1,0 +1,75 @@
+/* ============================================
+   JSON EDITOR — Collapsible tree view of a JSON value (read-only viewer)
+   Inspired by Chrome devtools / Firefox json viewer
+   ============================================
+   Usage:
+     <div class="jse" data-json-editor></div>
+     JsonEditor.create('[data-json-editor]', {
+       data: { user: { name: 'Aurora', tags: ['a','b'] }, count: 12 }
+     });
+
+   Variants:
+     jse-bordered
+     jse-compact
+   ============================================ */
+
+.jse {
+  --jse-bg: #0c0c14;
+  --jse-fg: #e5e7eb;
+  --jse-border: rgba(255, 255, 255, 0.08);
+  --jse-muted: rgba(229, 231, 235, 0.45);
+  --jse-key: #93c5fd;
+  --jse-string: #f5d893;
+  --jse-number: #f8a48a;
+  --jse-bool: #c084fc;
+  --jse-null: #94a3b8;
+  background: var(--jse-bg);
+  color: var(--jse-fg);
+  font-family: ui-monospace, monospace;
+  font-size: 0.825rem;
+  line-height: 1.5;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--jse-border);
+  overflow: auto;
+  max-height: 480px;
+}
+
+.jse-bordered { border-width: 1.5px; }
+.jse-compact { padding: 0.55rem 0.75rem; font-size: 0.75rem; }
+
+.jse-node {
+  display: block;
+  margin-left: 0;
+  padding-left: 0.8rem;
+  border-left: 1px solid transparent;
+}
+.jse-node-content {
+  display: block;
+  margin-left: 0.5rem;
+}
+
+.jse-toggle {
+  background: transparent;
+  border: none;
+  color: var(--jse-muted);
+  cursor: pointer;
+  font: inherit;
+  padding: 0 0.2rem 0 0;
+  width: 14px;
+  display: inline-block;
+  text-align: center;
+}
+.jse-toggle::before { content: '▾'; transition: transform 0.15s ease; display: inline-block; }
+.jse-collapsed > .jse-toggle::before { transform: rotate(-90deg); }
+.jse-collapsed > .jse-node-content { display: none; }
+.jse-collapsed > .jse-summary::after { content: ' …'; color: var(--jse-muted); }
+
+.jse-key { color: var(--jse-key); }
+.jse-string { color: var(--jse-string); }
+.jse-number { color: var(--jse-number); }
+.jse-bool   { color: var(--jse-bool); }
+.jse-null   { color: var(--jse-null); }
+.jse-brace  { color: var(--jse-muted); }
+.jse-comma  { color: var(--jse-muted); }
+.jse-count  { color: var(--jse-muted); font-size: 0.7rem; margin-left: 0.4rem; }

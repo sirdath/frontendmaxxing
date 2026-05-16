@@ -1,0 +1,58 @@
+/* ============================================
+   BLOB CURSOR — Gooey blob that trails the cursor
+   Inspired by Awwwards portfolios / Codrops demos
+   ============================================
+   Companion to: effects/blob-cursor.js
+   The CSS holds the wrapper, blob shape, and SVG gooey filter.
+
+   Usage:
+     BlobCursor.init();      // attaches to <body>
+     BlobCursor.init({ color: '#c084fc', size: 36 });
+
+   The JS injects:
+     <div class="blob-cursor-wrap">
+       <div class="blob-cursor"></div>
+       <div class="blob-cursor blob-cursor-dot"></div>
+     </div>
+   ============================================ */
+
+.blob-cursor-wrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9990;
+  filter: url(#blob-cursor-goo);
+}
+
+.blob-cursor {
+  position: absolute;
+  width: var(--bc-size, 36px);
+  height: var(--bc-size, 36px);
+  border-radius: 50%;
+  background: var(--bc-color, #818cf8);
+  top: 0; left: 0;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  will-change: transform, width, height;
+}
+
+.blob-cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--bc-dot-color, #ffffff);
+  mix-blend-mode: normal;
+}
+
+/* Active state (mouse pressed) */
+.blob-cursor.is-press { transform: translate(-50%, -50%) scale(0.85); }
+
+/* Hover-on-interactive enlargement (added by JS when over <a>, <button>) */
+.blob-cursor.is-near { transform: translate(-50%, -50%) scale(1.6); }
+
+@media (hover: none) {
+  .blob-cursor-wrap { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob-cursor-wrap { display: none; }
+}

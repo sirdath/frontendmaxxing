@@ -1,0 +1,122 @@
+/* ============================================
+   CANVAS MINIMAP — Mini-overview with draggable viewport rectangle
+   Inspired by tldraw, Figma, Miro minimaps
+   ============================================
+   Companion to InfiniteCanvas. Place inside .icv-ui (or anywhere positioned).
+
+   Usage:
+     <div class="cmm" data-cmm>
+       <canvas class="cmm-canvas"></canvas>
+       <div class="cmm-viewport"></div>
+     </div>
+
+     // Wire it up:
+     CanvasMinimap.bind('.cmm', { canvas: '.icv' });
+     // The minimap reads .icv-world bounds + transform and renders shapes proportionally.
+
+   Variants:
+     cmm-bottom-right (default position via .icv-ui placement)
+     cmm-top-right, cmm-bottom-left, cmm-top-left
+   Sizes:
+     cmm-sm (120x90), cmm-md (180x135 default), cmm-lg (240x180)
+   ============================================ */
+
+.cmm {
+  --cmm-w: 180px;
+  --cmm-h: 135px;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  width: var(--cmm-w);
+  height: var(--cmm-h);
+  background: rgba(20, 20, 30, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+}
+
+.cmm-top-right    { top: 1rem; right: 1rem; bottom: auto; left: auto; }
+.cmm-top-left     { top: 1rem; left: 1rem; bottom: auto; }
+.cmm-bottom-right { bottom: 1rem; right: 1rem; left: auto; }
+.cmm-bottom-left  { bottom: 1rem; left: 1rem; }
+
+.cmm-sm { --cmm-w: 120px; --cmm-h: 90px; }
+.cmm-md { --cmm-w: 180px; --cmm-h: 135px; }
+.cmm-lg { --cmm-w: 240px; --cmm-h: 180px; }
+
+.cmm-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Viewport rectangle — moved by JS */
+.cmm-viewport {
+  --cmm-vx: 0px;
+  --cmm-vy: 0px;
+  --cmm-vw: 50px;
+  --cmm-vh: 30px;
+  position: absolute;
+  left: var(--cmm-vx);
+  top: var(--cmm-vy);
+  width: var(--cmm-vw);
+  height: var(--cmm-vh);
+  border: 1.5px solid #8b5cf6;
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: 2px;
+  cursor: grab;
+  pointer-events: auto;
+  transition: border-color 0.18s ease;
+}
+.cmm-viewport:hover { border-color: #ec4899; }
+.cmm-viewport.is-dragging { cursor: grabbing; border-color: #ec4899; }
+
+/* Backdrop indicator (subtle world-bounds outline) */
+.cmm-bounds {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* Label */
+.cmm-label {
+  position: absolute;
+  top: 4px; left: 6px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cmm-collapse {
+  position: absolute;
+  top: 2px; right: 2px;
+  width: 18px; height: 18px;
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.4);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 3px;
+  z-index: 3;
+}
+.cmm-collapse:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+.cmm.is-collapsed {
+  width: 80px;
+  height: 28px;
+}
+.cmm.is-collapsed .cmm-canvas,
+.cmm.is-collapsed .cmm-viewport { display: none; }
+.cmm.is-collapsed .cmm-label { font-size: 0.7rem; top: 8px; left: 10px; color: rgba(255, 255, 255, 0.75); }

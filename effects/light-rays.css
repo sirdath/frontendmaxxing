@@ -1,0 +1,171 @@
+/* ============================================
+   LIGHT RAYS — Volumetric overhead light beams (CSS-only)
+   Inspired by Magic UI LightRays, cathedral light through windows, Apple keynote
+   ============================================
+   Pure-CSS approximation of god-rays / volumetric light using overlapping
+   conic gradients with blur + screen blending. CSS-only — see
+   `shaders/godrays.glsl.js` for the GLSL version.
+
+   Usage:
+     <section class="lrays lrays-violet">
+       <h1>Hero content</h1>
+     </section>
+
+     <!-- Overlay-only (drop into any container) -->
+     <div class="lrays-layer"></div>
+
+   Variants (color):
+     lrays-violet (default), lrays-cyan, lrays-amber, lrays-rose, lrays-mint,
+     lrays-cosmic, lrays-sunset, lrays-white, lrays-rainbow
+   Direction:
+     lrays-top (default), lrays-bottom, lrays-left, lrays-right,
+     lrays-top-left, lrays-top-right
+   Modifiers:
+     lrays-soft, lrays-strong, lrays-tight (narrow), lrays-wide
+     lrays-anim    — slow drift / pulse
+     lrays-still   — paused
+     lrays-noise   — adds film grain overlay
+   ============================================ */
+
+.lrays {
+  --lr-c1: rgba(168, 85, 247, 0.55);
+  --lr-c2: rgba(236, 72, 153, 0.35);
+  --lr-bg: #0a0a14;
+  --lr-speed: 12s;
+  --lr-spread: 30deg;
+  --lr-from-x: 50%;
+  --lr-from-y: -10%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--lr-bg);
+}
+
+.lrays::before,
+.lrays::after {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    conic-gradient(from calc(180deg - var(--lr-spread)) at var(--lr-from-x) var(--lr-from-y),
+      transparent calc(180deg - var(--lr-spread)),
+      var(--lr-c1) 180deg,
+      transparent calc(180deg + var(--lr-spread)));
+  mix-blend-mode: screen;
+  filter: blur(40px);
+  opacity: 0.85;
+  will-change: transform, opacity;
+}
+
+.lrays::after {
+  background:
+    conic-gradient(from calc(180deg - var(--lr-spread) * 0.6) at var(--lr-from-x) var(--lr-from-y),
+      transparent calc(180deg - var(--lr-spread) * 0.6),
+      var(--lr-c2) 180deg,
+      transparent calc(180deg + var(--lr-spread) * 0.6));
+  filter: blur(60px);
+  opacity: 0.7;
+}
+
+/* Color variants */
+.lrays-violet  { --lr-c1: rgba(168, 85, 247, 0.55); --lr-c2: rgba(236, 72, 153, 0.35); }
+.lrays-cyan    { --lr-c1: rgba(34, 211, 238, 0.55);  --lr-c2: rgba(99, 102, 241, 0.35); }
+.lrays-amber   { --lr-c1: rgba(251, 191, 36, 0.55); --lr-c2: rgba(249, 115, 22, 0.35); }
+.lrays-rose    { --lr-c1: rgba(251, 113, 133, 0.55); --lr-c2: rgba(236, 72, 153, 0.35); }
+.lrays-mint    { --lr-c1: rgba(52, 211, 153, 0.5);  --lr-c2: rgba(34, 211, 238, 0.32); }
+.lrays-cosmic  { --lr-c1: rgba(168, 85, 247, 0.5);  --lr-c2: rgba(6, 182, 212, 0.35);  --lr-bg: #050010; }
+.lrays-sunset  { --lr-c1: rgba(249, 115, 22, 0.5);  --lr-c2: rgba(236, 72, 153, 0.35); --lr-bg: #0d0610; }
+.lrays-white   { --lr-c1: rgba(255, 255, 255, 0.55); --lr-c2: rgba(255, 255, 255, 0.25); }
+.lrays-rainbow {
+  --lr-c1: transparent;
+  --lr-c2: transparent;
+}
+.lrays-rainbow::before {
+  background:
+    conic-gradient(from calc(180deg - var(--lr-spread)) at var(--lr-from-x) var(--lr-from-y),
+      transparent calc(180deg - var(--lr-spread)),
+      rgba(255, 0, 100, 0.4) calc(180deg - var(--lr-spread) * 0.5),
+      rgba(255, 200, 0, 0.4) 180deg,
+      rgba(0, 200, 255, 0.4) calc(180deg + var(--lr-spread) * 0.5),
+      transparent calc(180deg + var(--lr-spread)));
+}
+
+/* Direction — overrides where light comes from */
+.lrays-top         { --lr-from-x: 50%; --lr-from-y: -10%; }
+.lrays-top-left    { --lr-from-x: 15%; --lr-from-y: -10%; }
+.lrays-top-right   { --lr-from-x: 85%; --lr-from-y: -10%; }
+.lrays-bottom      { --lr-from-x: 50%; --lr-from-y: 110%; }
+.lrays-left        { --lr-from-x: -10%; --lr-from-y: 50%; }
+.lrays-right       { --lr-from-x: 110%; --lr-from-y: 50%; }
+
+/* Spread */
+.lrays-tight  { --lr-spread: 15deg; }
+.lrays-wide   { --lr-spread: 50deg; }
+.lrays-full   { --lr-spread: 90deg; }
+
+/* Intensity */
+.lrays-soft   { opacity: 0.75; }
+.lrays-soft::before { opacity: 0.5; }
+.lrays-strong::before { opacity: 1; filter: blur(30px); }
+.lrays-strong::after  { opacity: 0.9; }
+
+/* Animation */
+.lrays-anim::before { animation: lrays-drift-a var(--lr-speed) ease-in-out infinite alternate; }
+.lrays-anim::after  { animation: lrays-drift-b calc(var(--lr-speed) * 1.4) ease-in-out infinite alternate-reverse; }
+@keyframes lrays-drift-a {
+  0%   { transform: translateX(0) scale(1); opacity: 0.85; }
+  100% { transform: translateX(2%) scale(1.05); opacity: 1; }
+}
+@keyframes lrays-drift-b {
+  0%   { transform: translateX(0) scale(1.05); opacity: 0.7; }
+  100% { transform: translateX(-3%) scale(0.95); opacity: 0.85; }
+}
+.lrays-still::before,
+.lrays-still::after { animation: none; }
+
+/* Standalone overlay layer (drop into any positioned parent) */
+.lrays-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    conic-gradient(from 165deg at 50% -10%,
+      transparent 165deg, rgba(168, 85, 247, 0.5) 180deg, transparent 195deg),
+    conic-gradient(from 168deg at 50% -10%,
+      transparent 168deg, rgba(236, 72, 153, 0.3) 180deg, transparent 192deg);
+  filter: blur(40px);
+  mix-blend-mode: screen;
+}
+
+/* Noise overlay */
+.lrays-noise::after {
+  background-image:
+    conic-gradient(from calc(180deg - var(--lr-spread) * 0.6) at var(--lr-from-x) var(--lr-from-y),
+      transparent calc(180deg - var(--lr-spread) * 0.6),
+      var(--lr-c2) 180deg,
+      transparent calc(180deg + var(--lr-spread) * 0.6)),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-blend-mode: overlay;
+}
+
+/* Floor reflection (light spills on the bottom) */
+.lrays-floor::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 25%;
+  background: linear-gradient(180deg, transparent 0%, var(--lr-c1) 80%, transparent 100%);
+  mix-blend-mode: screen;
+  filter: blur(25px);
+  opacity: 0.55;
+}
+
+/* Ensure content sits above light layers */
+.lrays > * { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lrays-anim::before, .lrays-anim::after { animation: none; }
+}

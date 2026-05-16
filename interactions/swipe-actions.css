@@ -1,0 +1,82 @@
+/* ============================================
+   SWIPE ACTIONS — Swipe-to-reveal actions on list items (iOS-style)
+   Inspired by iOS Mail swipe / native iOS / Linear mobile
+   ============================================
+   Usage:
+     <li class="swpa" data-swipe-actions>
+       <div class="swpa-content">…item content…</div>
+       <div class="swpa-actions swpa-actions-right">
+         <button class="swpa-action swpa-danger" data-action="delete">Delete</button>
+         <button class="swpa-action" data-action="archive">Archive</button>
+       </div>
+       <div class="swpa-actions swpa-actions-left">
+         <button class="swpa-action swpa-success" data-action="mark">Mark</button>
+       </div>
+     </li>
+     SwipeActions.init('[data-swipe-actions]');
+
+   Variants:
+     swpa-pill         — Pill items
+     swpa-no-snap      — Don't snap to revealed; user must drag fully
+   ============================================ */
+
+.swpa {
+  --swpa-bg: var(--surface-2, #14141f);
+  --swpa-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--swpa-radius);
+  list-style: none;
+  margin: 0 0 0.4rem;
+  touch-action: pan-y;
+}
+
+.swpa-content {
+  position: relative;
+  z-index: 1;
+  padding: 0.85rem 1rem;
+  background: var(--swpa-bg);
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.25, 1);
+  will-change: transform;
+}
+.swpa.is-swiping .swpa-content { transition: none; }
+
+.swpa-actions {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: stretch;
+  z-index: 0;
+}
+.swpa-actions-right { right: 0; }
+.swpa-actions-left  { left: 0; }
+
+.swpa-action {
+  padding: 0 1.1rem;
+  border: none;
+  background: #4ade80;
+  color: #052e10;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  min-width: 84px;
+}
+.swpa-action:hover { filter: brightness(1.05); }
+.swpa-action + .swpa-action { border-left: 1px solid rgba(0, 0, 0, 0.1); }
+
+.swpa-danger   { background: #ef4444; color: #fff; }
+.swpa-success  { background: #22c55e; color: #052e10; }
+.swpa-warning  { background: #f59e0b; color: #422006; }
+.swpa-neutral  { background: #475569; color: #fff; }
+
+.swpa-pill { border-radius: 999px; }
+.swpa-pill .swpa-action:first-child { border-top-left-radius: 999px; border-bottom-left-radius: 999px; }
+.swpa-pill .swpa-action:last-child  { border-top-right-radius: 999px; border-bottom-right-radius: 999px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .swpa-content { transition: none; }
+}

@@ -1,0 +1,232 @@
+/* ============================================
+   TERMINAL BLOCK — Warp-style command + output + exit-code as a record
+   Inspired by Warp terminal blocks, Fig, Tabby
+   ============================================
+   Different from `terminal.css/.js` (which animates typed lines). This treats
+   each "command + output + exit code + timing" as a discrete, selectable,
+   collapsible record you can copy, link to, or rerun.
+
+   Usage:
+     <div class="tblk tblk-success">
+       <header class="tblk-head">
+         <span class="tblk-status">✓</span>
+         <code class="tblk-cmd">npm run build</code>
+         <span class="tblk-meta">
+           <span class="tblk-cwd">~/proj</span>
+           <span class="tblk-time">1m 23s</span>
+           <span class="tblk-exit">0</span>
+         </span>
+         <div class="tblk-actions">
+           <button class="tblk-copy" aria-label="Copy">⧉</button>
+           <button class="tblk-link" aria-label="Permalink">🔗</button>
+           <button class="tblk-rerun" aria-label="Rerun">↻</button>
+           <button class="tblk-collapse" aria-label="Collapse">▾</button>
+         </div>
+       </header>
+       <pre class="tblk-output">Build successful in 1.23s
+ Output: dist/index.html ...</pre>
+     </div>
+
+   States (set class on .tblk):
+     tblk-success, tblk-error, tblk-running, tblk-cancelled
+   Variants:
+     tblk-compact, tblk-borderless, tblk-card
+   ============================================ */
+
+.tblk {
+  --t-bg: rgba(255, 255, 255, 0.02);
+  --t-border: rgba(255, 255, 255, 0.08);
+  --t-fg: #e4e7eb;
+  --t-muted: rgba(228, 231, 235, 0.5);
+  --t-accent: #8b5cf6;
+  background: var(--t-bg);
+  border: 1px solid var(--t-border);
+  border-left: 3px solid var(--t-accent);
+  border-radius: 8px;
+  color: var(--t-fg);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.tblk-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.7rem 0.45rem 0.55rem;
+  border-bottom: 1px solid var(--t-border);
+  background: rgba(0, 0, 0, 0.15);
+  user-select: none;
+  cursor: pointer;
+}
+.tblk-head:hover { background: rgba(0, 0, 0, 0.25); }
+
+.tblk-status {
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: var(--t-accent);
+  background: rgba(139, 92, 246, 0.15);
+}
+
+.tblk-cmd {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--t-fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tblk-cmd::before {
+  content: '$ ';
+  color: var(--t-muted);
+  font-weight: 400;
+}
+
+.tblk-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.7rem;
+  color: var(--t-muted);
+}
+.tblk-cwd  { font-family: inherit; }
+.tblk-time { font-variant-numeric: tabular-nums; }
+.tblk-exit {
+  padding: 0 0.35rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.tblk-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  flex-shrink: 0;
+}
+.tblk-actions button {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--t-muted);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.tblk-actions button:hover { background: rgba(255, 255, 255, 0.08); color: var(--t-fg); }
+
+.tblk-collapse { transition: transform 0.18s ease; }
+.tblk.is-collapsed .tblk-collapse { transform: rotate(-90deg); }
+.tblk.is-collapsed .tblk-output    { display: none; }
+
+.tblk-output {
+  margin: 0;
+  padding: 0.65rem 0.85rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  color: var(--t-fg);
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: transparent;
+  max-height: 480px;
+  overflow-y: auto;
+  line-height: 1.45;
+}
+.tblk-output:empty::before {
+  content: '(no output)';
+  color: var(--t-muted);
+  font-style: italic;
+}
+
+/* States */
+.tblk-success {
+  --t-accent: #34d399;
+}
+.tblk-success .tblk-status { color: #34d399; background: rgba(52, 211, 153, 0.15); }
+.tblk-success .tblk-exit { background: rgba(52, 211, 153, 0.18); color: #6ee7b7; }
+
+.tblk-error {
+  --t-accent: #f87171;
+}
+.tblk-error .tblk-status { color: #f87171; background: rgba(248, 113, 113, 0.15); }
+.tblk-error .tblk-exit { background: rgba(248, 113, 113, 0.18); color: #fca5a5; }
+.tblk-error .tblk-output { color: #fca5a5; }
+
+.tblk-cancelled {
+  --t-accent: #fbbf24;
+  opacity: 0.75;
+}
+.tblk-cancelled .tblk-status { color: #fbbf24; background: rgba(251, 191, 36, 0.15); }
+.tblk-cancelled .tblk-status::before { content: '⊘'; }
+
+.tblk-running .tblk-status {
+  background: transparent;
+}
+.tblk-running .tblk-status::before {
+  content: '';
+  width: 11px; height: 11px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: tblk-spin 0.8s linear infinite;
+}
+.tblk-running .tblk-output::after {
+  content: '▌';
+  animation: tblk-blink 1s steps(2) infinite;
+  color: var(--t-accent);
+}
+@keyframes tblk-spin { to { transform: rotate(360deg); } }
+@keyframes tblk-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Variants */
+.tblk-compact { font-size: 0.78rem; }
+.tblk-compact .tblk-head { padding: 0.3rem 0.55rem; }
+.tblk-compact .tblk-output { padding: 0.45rem 0.65rem; }
+
+.tblk-borderless { background: transparent; border-color: transparent; }
+
+.tblk-card { background: rgba(0, 0, 0, 0.25); }
+
+/* Selection / focused block */
+.tblk.is-selected {
+  border-color: var(--t-accent);
+  box-shadow: 0 0 0 1px var(--t-accent);
+}
+
+/* ANSI color helpers — apply to spans inside .tblk-output */
+.tblk-output .ansi-red       { color: #f87171; }
+.tblk-output .ansi-green     { color: #34d399; }
+.tblk-output .ansi-yellow    { color: #fbbf24; }
+.tblk-output .ansi-blue      { color: #60a5fa; }
+.tblk-output .ansi-magenta   { color: #f0abfc; }
+.tblk-output .ansi-cyan      { color: #67e8f9; }
+.tblk-output .ansi-grey      { color: rgba(228, 231, 235, 0.55); }
+.tblk-output .ansi-bold      { font-weight: 700; }
+.tblk-output .ansi-underline { text-decoration: underline; }
+.tblk-output .ansi-dim       { opacity: 0.6; }
+
+/* Linked / permalink highlight */
+.tblk:target {
+  animation: tblk-highlight 1.4s ease-in-out;
+}
+@keyframes tblk-highlight {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  20%      { box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.35); }
+}

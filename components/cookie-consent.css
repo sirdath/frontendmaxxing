@@ -1,0 +1,141 @@
+/* ============================================
+   COOKIE CONSENT — GDPR-style consent banner
+   Inspired by EU GDPR banners / Linear / Vercel cookie bars
+   ============================================
+   Usage:
+     <div class="cck" data-cookie-consent>
+       <div class="cck-body">
+         <p class="cck-text">
+           We use cookies to enhance your experience. By clicking accept, you agree to our use of cookies.
+           <a href="/privacy">Learn more</a>.
+         </p>
+       </div>
+       <div class="cck-actions">
+         <button class="cck-btn-ghost" data-cck-action="reject">Reject all</button>
+         <button class="cck-btn-ghost" data-cck-action="customize">Customize</button>
+         <button class="cck-btn" data-cck-action="accept">Accept all</button>
+       </div>
+     </div>
+     CookieConsent.init('[data-cookie-consent]', { onChoice: function (choice) {…} });
+
+   Variants:
+     cck-bottom      — Pinned to bottom (default)
+     cck-corner      — Bottom-left corner card
+     cck-modal       — Center-screen modal overlay
+   ============================================ */
+
+.cck {
+  --cck-bg: var(--surface-2, #14141f);
+  --cck-border: rgba(255, 255, 255, 0.1);
+  --cck-fg: #ffffff;
+  --cck-muted: rgba(255, 255, 255, 0.65);
+  --cck-accent: #818cf8;
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  width: min(720px, calc(100% - 2rem));
+  background: var(--cck-bg);
+  border: 1px solid var(--cck-border);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  color: var(--cck-fg);
+}
+.cck.is-dismissed { display: none; }
+
+.cck-body { flex: 1; min-width: 0; }
+.cck-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--cck-muted);
+}
+.cck-text a {
+  color: var(--cck-fg);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cck-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.cck-btn,
+.cck-btn-ghost {
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.cck-btn {
+  background: var(--cck-accent);
+  color: #fff;
+  border-color: var(--cck-accent);
+  font-weight: 600;
+}
+.cck-btn:hover { filter: brightness(1.08); }
+.cck-btn-ghost {
+  background: transparent;
+  color: var(--cck-fg);
+  border-color: var(--cck-border);
+}
+.cck-btn-ghost:hover { background: rgba(255, 255, 255, 0.06); }
+
+/* Variants */
+.cck-corner {
+  bottom: 16px;
+  left: 16px;
+  transform: none;
+  width: 380px;
+  flex-direction: column;
+  align-items: stretch;
+}
+.cck-corner .cck-actions { justify-content: flex-end; }
+
+.cck-modal {
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 480px;
+}
+.cck-modal::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+/* Detailed customization panel (toggle prefs) */
+.cck-prefs {
+  display: none;
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--cck-border);
+}
+.cck.is-customizing .cck-prefs { display: block; }
+.cck-prefs > label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
+}
+.cck-prefs > label input { accent-color: var(--cck-accent); }
+.cck-prefs-meta {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--cck-muted);
+  margin-left: 1.5rem;
+}

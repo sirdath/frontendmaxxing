@@ -1,0 +1,87 @@
+/* ============================================
+   GRADIENT NOISE — Grain texture overlay for gradients
+   Inspired by Stripe / Apple polished gradient surfaces, "grainy-gradients"
+   ============================================
+   Usage:
+     <div class="grad grad-aurora gnoise">...</div>
+     <div class="gnoise gnoise-heavy gnoise-warm">...</div>
+
+   Variants:
+     gnoise-light, gnoise (default), gnoise-medium, gnoise-heavy, gnoise-extreme
+     gnoise-fine, gnoise-coarse
+   Color modes:
+     gnoise-mono (default), gnoise-warm, gnoise-cool, gnoise-color (rgb grain)
+   Modifiers:
+     gnoise-animate    — animated film grain shifting frames
+   ============================================ */
+
+.gnoise {
+  position: relative;
+  isolation: isolate;
+  --gn-opacity: 0.12;
+  --gn-freq: 0.9;
+  --gn-octaves: 2;
+}
+.gnoise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: var(--gn-opacity);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.gnoise > * { position: relative; z-index: 2; }
+
+/* Intensities */
+.gnoise-light    { --gn-opacity: 0.06; }
+.gnoise-medium   { --gn-opacity: 0.18; }
+.gnoise-heavy    { --gn-opacity: 0.32; }
+.gnoise-extreme  { --gn-opacity: 0.5; }
+
+/* Frequencies (fineness) */
+.gnoise-fine::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.gnoise-coarse::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Color modes (color noise via different feColorMatrix) */
+.gnoise-warm::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='1 0 0 0 0  0.7 0 0 0 0  0.3 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: soft-light;
+}
+.gnoise-cool::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0.3 0 0 0 0  0.5 0 0 0 0  1 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: soft-light;
+}
+.gnoise-color::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+}
+
+/* Animated grain (16fps offset trick) */
+.gnoise-animate::after { animation: gnoise-shift 0.7s steps(4) infinite; }
+@keyframes gnoise-shift {
+  0%   { background-position:  0 0; }
+  25%  { background-position: -50px -30px; }
+  50%  { background-position: 30px -60px; }
+  75%  { background-position: -20px 40px; }
+  100% { background-position: 60px 20px; }
+}
+
+/* Standalone grain layer (use as overlay div) */
+.gnoise-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gnoise-animate::after { animation: none; }
+}

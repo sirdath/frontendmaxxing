@@ -1,0 +1,94 @@
+/* ============================================
+   GRADIENT BLOBS — Morphing organic shapes with gradient fills
+   Inspired by Codrops blob tutorials, Haikei, Blob Maker
+   ============================================
+   Usage:
+     <div class="gblob gblob-aurora"></div>
+     <div class="gblob gblob-md gblob-sunset gblob-spin"></div>
+
+   Variants (color):
+     gblob-aurora, gblob-sunset, gblob-ocean, gblob-cyber, gblob-pastel,
+     gblob-cosmic, gblob-mint, gblob-rose, gblob-fire, gblob-mono
+   Sizes:
+     gblob-sm (80px), gblob-md (160px), gblob-lg (280px), gblob-xl (440px), gblob-full (100%)
+   Modifiers:
+     gblob-spin       — rotate slowly while morphing
+     gblob-fast       — faster morph
+     gblob-still      — no animation
+     gblob-glow       — add halo
+     gblob-blurred    — soft-edge blur version (for bg orbs)
+   ============================================ */
+
+.gblob {
+  --gb-c1: #8b5cf6;
+  --gb-c2: #ec4899;
+  --gb-c3: #06b6d4;
+  --gb-size: 200px;
+  --gb-speed: 9s;
+  width: var(--gb-size);
+  height: var(--gb-size);
+  background: linear-gradient(135deg, var(--gb-c1), var(--gb-c2) 50%, var(--gb-c3));
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  animation: gblob-morph var(--gb-speed) ease-in-out infinite;
+  will-change: border-radius, transform;
+}
+
+@keyframes gblob-morph {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25%      { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50%      { border-radius: 50% 60% 30% 60% / 60% 30% 60% 40%; }
+  75%      { border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%; }
+}
+
+/* Color variants */
+.gblob-aurora { background: linear-gradient(135deg, #a855f7, #ec4899 50%, #06b6d4); }
+.gblob-sunset { background: linear-gradient(135deg, #f97316, #ec4899 50%, #f59e0b); }
+.gblob-ocean  { background: linear-gradient(135deg, #0ea5e9, #06b6d4 50%, #14b8a6); }
+.gblob-cyber  { background: linear-gradient(135deg, #00ffff, #ff00ff 50%, #00ff7f); }
+.gblob-pastel { background: linear-gradient(135deg, #c4b5fd, #fbcfe8 50%, #a5f3fc); }
+.gblob-cosmic { background: linear-gradient(135deg, #6d28d9, #db2777 50%, #0891b2); }
+.gblob-mint   { background: linear-gradient(135deg, #34d399, #22d3ee 50%, #14b8a6); }
+.gblob-rose   { background: linear-gradient(135deg, #fb7185, #f43f5e 50%, #ec4899); }
+.gblob-fire   { background: linear-gradient(135deg, #fbbf24, #f97316 50%, #ef4444); }
+.gblob-mono   { background: linear-gradient(135deg, #475569, #64748b 50%, #94a3b8); }
+.gblob-gold   { background: linear-gradient(135deg, #fef3c7, #fbbf24 50%, #d97706); }
+
+/* Sizes */
+.gblob-sm   { --gb-size: 80px; }
+.gblob-md   { --gb-size: 160px; }
+.gblob-lg   { --gb-size: 280px; }
+.gblob-xl   { --gb-size: 440px; }
+.gblob-full { width: 100%; height: 100%; }
+
+/* Modifiers */
+.gblob-spin { animation: gblob-morph var(--gb-speed) ease-in-out infinite, gblob-rotate calc(var(--gb-speed) * 3) linear infinite; }
+@keyframes gblob-rotate { to { transform: rotate(360deg); } }
+
+.gblob-fast  { --gb-speed: 4s; }
+.gblob-slow  { --gb-speed: 16s; }
+.gblob-still { animation: none; }
+
+.gblob-glow {
+  box-shadow:
+    0 0 60px -10px var(--gb-c1),
+    0 0 80px -20px var(--gb-c2);
+}
+
+.gblob-blurred { filter: blur(40px); opacity: 0.7; }
+.gblob-soft    { filter: blur(20px); opacity: 0.8; }
+
+/* Grouped (multiple blobs as bg orbs) */
+.gblob-group {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.gblob-group > .gblob {
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gblob, .gblob-spin { animation: none; }
+}

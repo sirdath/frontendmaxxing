@@ -1,0 +1,200 @@
+/* ============================================
+   STORIES — Instagram-style story viewer with auto-advance bars
+   Inspired by Instagram / Snapchat / WhatsApp stories
+   ============================================
+   Usage:
+     <div class="strs" data-stories>
+       <div class="strs-bars"></div>
+       <header class="strs-header">
+         <div class="strs-avatar">A</div>
+         <div class="strs-user">@aurora · 2h</div>
+         <button class="strs-close" data-strs-close>×</button>
+       </header>
+       <div class="strs-stage">
+         <!-- story slides -->
+       </div>
+       <button class="strs-nav strs-prev" data-strs-prev></button>
+       <button class="strs-nav strs-next" data-strs-next></button>
+     </div>
+     Stories.init('[data-stories]', {
+       slides: [
+         { type: 'image',  src: 'a.jpg', duration: 5000 },
+         { type: 'video',  src: 'b.mp4' },
+         { type: 'text',   text: 'Hello!', bg: 'linear-gradient(135deg,#c084fc,#38bdf8)' }
+       ]
+     });
+
+   Variants:
+     strs-tray         — Horizontal tray of story circles (Instagram top row)
+     strs-fullscreen
+   ============================================ */
+
+.strs {
+  --strs-bg: #050510;
+  --strs-fg: #ffffff;
+  --strs-muted: rgba(255, 255, 255, 0.7);
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 9 / 16;
+  background: var(--strs-bg);
+  border-radius: 18px;
+  overflow: hidden;
+  margin: 0 auto;
+  color: var(--strs-fg);
+  user-select: none;
+}
+
+.strs-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  max-width: none;
+  aspect-ratio: auto;
+  border-radius: 0;
+}
+
+.strs-bars {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 2;
+  display: flex;
+  gap: 3px;
+}
+.strs-bar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.strs-bar > span {
+  display: block;
+  height: 100%;
+  width: var(--p, 0%);
+  background: #fff;
+  transition: width 0.1s linear;
+}
+.strs-bar.is-done > span { width: 100%; }
+
+.strs-header {
+  position: absolute;
+  top: 18px;
+  left: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.strs-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+.strs-user {
+  flex: 1;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+.strs-close {
+  background: transparent;
+  border: none;
+  color: var(--strs-fg);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+
+.strs-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.strs-slide {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+.strs-slide.is-active { display: block; }
+
+.strs-slide img,
+.strs-slide video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.strs-slide-text {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.strs-nav {
+  position: absolute;
+  top: 60px;
+  bottom: 60px;
+  width: 40%;
+  background: transparent;
+  border: none;
+  z-index: 3;
+  cursor: pointer;
+}
+.strs-prev { left: 0; }
+.strs-next { right: 0; }
+
+/* Tray (Instagram top row of story circles) */
+.strs-tray {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: transparent;
+  max-width: none;
+  aspect-ratio: auto;
+  border-radius: 0;
+  height: auto;
+}
+.strs-tray::-webkit-scrollbar { display: none; }
+.strs-tray .strs-tray-item {
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--strs-muted);
+}
+.strs-tray .strs-tray-ring {
+  width: 60px;
+  height: 60px;
+  padding: 2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f472b6, #fbbf24);
+  margin: 0 auto 0.35rem;
+  cursor: pointer;
+}
+.strs-tray .strs-tray-ring.is-seen { background: rgba(255, 255, 255, 0.18); }
+.strs-tray .strs-tray-ring > div {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: #14141f;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}

@@ -1,0 +1,106 @@
+/* ============================================
+   CARDS 3D — Tilt cards with parallaxing inner layers
+   Inspired by Aceternity UI (CardContainer / CardItem / CardBody)
+   ============================================
+   Usage:
+     <div class="card3d" data-card3d>
+       <div class="card3d-body">
+         <h3 class="card3d-layer" data-card3d-depth="40">Title</h3>
+         <p  class="card3d-layer" data-card3d-depth="20">Description.</p>
+         <img class="card3d-layer" data-card3d-depth="60" src="...">
+         <button class="card3d-layer" data-card3d-depth="30">Action</button>
+       </div>
+     </div>
+     Cards3D.init('[data-card3d]');
+
+   Variants:
+     .card3d-glass — Glassmorphic surface
+     .card3d-flat  — No tilt, just hover-lift
+   ============================================ */
+
+.card3d {
+  --c3d-radius: 22px;
+  --c3d-pad: 1.5rem;
+  --c3d-perspective: 1000px;
+  perspective: var(--c3d-perspective);
+  display: inline-block;
+  width: 100%;
+  max-width: 360px;
+}
+
+.card3d-body {
+  position: relative;
+  background: var(--surface-2, #14141f);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: var(--c3d-radius);
+  padding: var(--c3d-pad);
+  transform-style: preserve-3d;
+  transition: transform 0.18s ease-out, box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+.card3d:hover .card3d-body {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.card3d-layer {
+  position: relative;
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+}
+
+.card3d h3.card3d-layer {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.card3d p.card3d-layer {
+  margin: 0 0 1rem;
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.card3d img.card3d-layer {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.card3d button.card3d-layer {
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  background: var(--surface-3, rgba(255, 255, 255, 0.04));
+  color: var(--text, #fff);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* ── Variants ── */
+.card3d-glass .card3d-body {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.card3d-flat .card3d-body {
+  transform: none !important;
+}
+
+.card3d-flat .card3d-layer {
+  transform: none !important;
+}
+
+.card3d-flat:hover .card3d-body {
+  transform: translateY(-4px) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card3d-body,
+  .card3d-layer { transform: none !important; transition: none; }
+}

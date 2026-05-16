@@ -1,0 +1,262 @@
+/* ============================================
+   FOOTERS PACK — 6 footer style variants
+   Inspired by Vercel / Linear / Stripe / Apple footers
+   ============================================
+   Each uses .ftrp- prefix to avoid collisions with footers.css.
+
+   Variants:
+     ftrp-minimal      — One line: logo + copyright
+     ftrp-mega         — Multi-column with sections
+     ftrp-newsletter   — Centered newsletter signup focus
+     ftrp-gradient     — Gradient sweep w/ huge brand
+     ftrp-app-promo    — Mobile app download CTA
+     ftrp-dark / -light
+     ftrp-bordered     — Hairline top border
+
+   Usage:
+     <footer class="ftrp ftrp-mega ftrp-dark">
+       <div class="ftrp-grid">
+         <div class="ftrp-brand-col">
+           <div class="ftrp-brand">Logo</div>
+           <p class="ftrp-tagline">Make beautiful things.</p>
+           <div class="ftrp-socials">
+             <a>X</a><a>GH</a><a>YT</a>
+           </div>
+         </div>
+         <div class="ftrp-col">
+           <h4>Product</h4>
+           <ul><li><a>Features</a></li><li><a>Pricing</a></li></ul>
+         </div>
+         ...
+       </div>
+       <div class="ftrp-bottom">
+         <span>© 2026 Brand</span>
+         <div><a>Privacy</a> <a>Terms</a></div>
+       </div>
+     </footer>
+   ============================================ */
+
+.ftrp {
+  --ftrp-bg: #050510;
+  --ftrp-fg: #ffffff;
+  --ftrp-muted: rgba(255, 255, 255, 0.55);
+  --ftrp-border: rgba(255, 255, 255, 0.08);
+  --ftrp-accent: #818cf8;
+  background: var(--ftrp-bg);
+  color: var(--ftrp-fg);
+  padding: 3rem clamp(1.25rem, 5vw, 4rem);
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.ftrp-bordered { border-top: 1px solid var(--ftrp-border); }
+
+.ftrp-grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(4, 1fr);
+  gap: 3rem;
+}
+@media (max-width: 880px) {
+  .ftrp-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 540px) {
+  .ftrp-grid { grid-template-columns: 1fr; }
+}
+
+.ftrp-brand-col { max-width: 320px; }
+.ftrp-brand {
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+}
+.ftrp-tagline {
+  color: var(--ftrp-muted);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+  line-height: 1.55;
+}
+
+.ftrp-socials {
+  display: flex;
+  gap: 0.5rem;
+}
+.ftrp-socials a {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--ftrp-border);
+  display: grid;
+  place-items: center;
+  color: var(--ftrp-muted);
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.ftrp-socials a:hover {
+  color: var(--ftrp-fg);
+  border-color: var(--ftrp-fg);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ftrp-col h4 {
+  margin: 0 0 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ftrp-muted);
+}
+.ftrp-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.ftrp-col ul a {
+  color: var(--ftrp-fg);
+  text-decoration: none;
+  font-size: 0.9rem;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+.ftrp-col ul a:hover { opacity: 1; color: var(--ftrp-accent); }
+
+.ftrp-bottom {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--ftrp-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--ftrp-muted);
+}
+.ftrp-bottom a {
+  color: var(--ftrp-muted);
+  text-decoration: none;
+  margin-right: 0.75rem;
+}
+.ftrp-bottom a:hover { color: var(--ftrp-fg); }
+
+/* ── Variants ── */
+
+/* Minimal */
+.ftrp-minimal {
+  padding: 1.5rem clamp(1.25rem, 5vw, 4rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ftrp-minimal .ftrp-grid, .ftrp-minimal .ftrp-bottom { display: none; }
+
+/* Newsletter focus */
+.ftrp-newsletter {
+  text-align: center;
+}
+.ftrp-newsletter h2 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+}
+.ftrp-newsletter p {
+  margin: 0 0 1.5rem;
+  color: var(--ftrp-muted);
+}
+.ftrp-newsletter form {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 440px;
+  margin: 0 auto 1.5rem;
+}
+.ftrp-newsletter input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ftrp-border);
+  border-radius: 10px;
+  color: #fff;
+  font: inherit;
+  outline: none;
+}
+.ftrp-newsletter input:focus { border-color: var(--ftrp-accent); }
+.ftrp-newsletter button {
+  padding: 0.75rem 1.25rem;
+  background: var(--ftrp-accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Gradient sweep with huge brand */
+.ftrp-gradient {
+  background:
+    radial-gradient(ellipse at top, rgba(129, 140, 248, 0.18), transparent 70%),
+    #050510;
+  position: relative;
+  overflow: hidden;
+}
+.ftrp-gradient::after {
+  content: attr(data-brand);
+  display: block;
+  position: relative;
+  margin-top: 2rem;
+  font-size: clamp(4rem, 16vw, 12rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.05));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* App promo */
+.ftrp-app-promo {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: center;
+}
+.ftrp-app-promo h3 { margin: 0 0 0.5rem; font-size: 1.3rem; }
+.ftrp-app-promo p  { margin: 0; color: var(--ftrp-muted); }
+.ftrp-app-promo-stores {
+  display: flex;
+  gap: 0.6rem;
+}
+.ftrp-app-promo-stores a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--ftrp-border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--ftrp-fg);
+  font-size: 0.85rem;
+}
+.ftrp-app-promo-stores a:hover { background: rgba(255, 255, 255, 0.1); }
+@media (max-width: 720px) {
+  .ftrp-app-promo { grid-template-columns: 1fr; }
+}
+
+/* Light */
+.ftrp-light {
+  --ftrp-bg: #ffffff;
+  --ftrp-fg: #0c0c14;
+  --ftrp-muted: rgba(12, 12, 20, 0.55);
+  --ftrp-border: rgba(0, 0, 0, 0.08);
+}

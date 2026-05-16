@@ -1,0 +1,227 @@
+/* ============================================
+   INLINE CONTROLS — Stop / Regenerate / Copy / Good / Bad bar under AI messages
+   Inspired by ChatGPT, Claude, Perplexity, Vercel AI Actions
+   ============================================
+   Usage:
+     <div class="ictl ictl-floating">
+       <button class="ictl-btn ictl-stop">⏹ Stop</button>
+     </div>
+
+     <div class="ictl">
+       <button class="ictl-btn ictl-regenerate">↻ Regenerate</button>
+       <button class="ictl-btn ictl-copy">⧉ Copy</button>
+       <button class="ictl-btn ictl-good">👍</button>
+       <button class="ictl-btn ictl-bad">👎</button>
+       <button class="ictl-btn ictl-branch">⎇ Branch</button>
+       <button class="ictl-btn ictl-share">↗ Share</button>
+       <button class="ictl-btn ictl-edit">✎ Edit</button>
+       <button class="ictl-btn ictl-tts" aria-label="Read aloud">🔊</button>
+     </div>
+
+     // Wire programmatically:
+     InlineControls.bind('.ictl', {
+       onStop: ()=>{}, onRegenerate: ()=>{},
+       onCopy: (msgText)=>{}, onGood: ()=>{}, onBad: ()=>{},
+       onBranch: ()=>{}, onEdit: ()=>{}, onTts: ()=>{}
+     });
+
+   Variants:
+     ictl              (inline under message — default)
+     ictl-floating     (absolute floating below stream)
+     ictl-toolbar      (centered toolbar, dark surface)
+     ictl-compact      (icon-only)
+     ictl-vertical     (column layout, side rail)
+   States:
+     ictl-streaming    (only Stop visible)
+     ictl-done         (everything except Stop)
+     ictl-error        (Regenerate + Copy)
+   Variant specific:
+     ictl-stop-active  (animates while stopping)
+     ictl-good is-on / ictl-bad is-on
+   ============================================ */
+
+.ictl {
+  --ic-bg: rgba(255, 255, 255, 0.04);
+  --ic-bg-hover: rgba(255, 255, 255, 0.1);
+  --ic-border: rgba(255, 255, 255, 0.08);
+  --ic-fg: rgba(255, 255, 255, 0.7);
+  --ic-fg-hover: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.25rem;
+  background: transparent;
+  border-radius: 8px;
+  margin-top: 0.4rem;
+}
+
+.ictl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.6rem;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--ic-fg);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+.ictl-btn:hover {
+  background: var(--ic-bg-hover);
+  color: var(--ic-fg-hover);
+}
+.ictl-btn:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+.ictl-btn:active { transform: scale(0.97); }
+
+.ictl-btn[disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Action-specific colors on hover */
+.ictl-stop:hover       { background: rgba(248, 113, 113, 0.18); color: #fca5a5; }
+.ictl-regenerate:hover { background: rgba(99, 102, 241, 0.18); color: #a5b4fc; }
+.ictl-good.is-on,
+.ictl-good:hover       { background: rgba(52, 211, 153, 0.18); color: #6ee7b7; }
+.ictl-bad.is-on,
+.ictl-bad:hover        { background: rgba(248, 113, 113, 0.18); color: #fca5a5; }
+.ictl-branch:hover     { background: rgba(168, 85, 247, 0.18); color: #c4b5fd; }
+.ictl-share:hover      { background: rgba(34, 211, 238, 0.18); color: #67e8f9; }
+.ictl-edit:hover       { background: rgba(245, 158, 11, 0.18); color: #fcd34d; }
+.ictl-copy.is-copied   { background: rgba(52, 211, 153, 0.18); color: #6ee7b7; }
+
+/* Stop button — prominent while streaming */
+.ictl-stop {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: #fca5a5;
+}
+.ictl-stop-active::before {
+  content: '';
+  display: inline-block;
+  width: 9px; height: 9px;
+  background: currentColor;
+  border-radius: 2px;
+  animation: ictl-stop-pulse 1s ease-in-out infinite;
+}
+@keyframes ictl-stop-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+/* Variants */
+.ictl-floating {
+  position: absolute;
+  left: 50%;
+  bottom: -2.5rem;
+  transform: translateX(-50%);
+  background: rgba(15, 15, 25, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.4);
+}
+
+.ictl-toolbar {
+  background: rgba(20, 20, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.3rem;
+  border-radius: 999px;
+  justify-content: center;
+}
+
+.ictl-compact .ictl-btn {
+  padding: 0.4rem;
+  min-width: 30px;
+  justify-content: center;
+}
+.ictl-compact .ictl-btn-label {
+  display: none;
+}
+
+.ictl-vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+.ictl-vertical .ictl-btn {
+  justify-content: flex-start;
+}
+
+/* States — only show relevant buttons */
+.ictl-streaming .ictl-btn:not(.ictl-stop) { display: none; }
+.ictl-done      .ictl-btn.ictl-stop      { display: none; }
+.ictl-error     .ictl-btn:not(.ictl-regenerate):not(.ictl-copy) { display: none; }
+
+/* Tiny separator */
+.ictl-sep {
+  width: 1px;
+  background: var(--ic-border);
+  margin: 0.2rem 0.15rem;
+  align-self: stretch;
+}
+
+/* Reaction count (multi-user feedback) */
+.ictl-count {
+  font-size: 0.65rem;
+  font-weight: 600;
+  margin-left: 0.2rem;
+  color: var(--ic-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Branch indicator — siblings pager */
+.ictl-branches {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.3rem 0.55rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-variant-numeric: tabular-nums;
+}
+.ictl-branches button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  padding: 0 0.25rem;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+.ictl-branches button:hover { color: #fff; }
+.ictl-branches-current { font-weight: 600; color: #fff; }
+.ictl-branches-total { color: rgba(255, 255, 255, 0.4); }
+
+/* "Read aloud" playing state — wavy bars */
+.ictl-tts.is-playing::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 0.8em;
+  background: currentColor;
+  margin-left: 0.15em;
+  animation: ictl-tts-bars 0.8s ease-in-out infinite;
+  box-shadow:
+    3px 0 0 currentColor,
+    6px 0 0 currentColor;
+}
+@keyframes ictl-tts-bars {
+  0%, 100% { transform: scaleY(0.4); }
+  50%      { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ictl-stop-active::before,
+  .ictl-tts.is-playing::after { animation: none; }
+}

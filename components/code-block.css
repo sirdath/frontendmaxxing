@@ -1,0 +1,141 @@
+/* ============================================
+   CODE BLOCK — Syntax-friendly, with copy + line numbers + diff
+   Inspired by GitHub / Shiki / docs site code styles
+   ============================================
+   Usage:
+     <div class="cbk" data-code-block data-lang="js">
+       <div class="cbk-header">
+         <span class="cbk-lang">JavaScript</span>
+         <button class="cbk-copy">Copy</button>
+       </div>
+       <pre><code>const x = 1;
+   const y = 2;
+   console.log(x + y);</code></pre>
+     </div>
+     CodeBlock.init('[data-code-block]');
+
+   Variants:
+     .cbk-no-header     — Hide header bar
+     .cbk-lines         — Show line numbers
+     .cbk-diff          — Render +/- prefixes (added/removed lines)
+     .cbk-glass
+     .cbk-window        — macOS window dots header
+   ============================================ */
+
+.cbk {
+  --cbk-bg: #0c0c14;
+  --cbk-fg: #e5e7eb;
+  --cbk-border: rgba(255, 255, 255, 0.08);
+  --cbk-muted: rgba(229, 231, 235, 0.5);
+  --cbk-radius: 10px;
+  background: var(--cbk-bg);
+  border: 1px solid var(--cbk-border);
+  border-radius: var(--cbk-radius);
+  overflow: hidden;
+  color: var(--cbk-fg);
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.cbk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.85rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--cbk-border);
+}
+.cbk-no-header .cbk-header { display: none; }
+
+.cbk-lang {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--cbk-muted);
+  text-transform: uppercase;
+}
+
+.cbk-copy {
+  background: transparent;
+  border: 1px solid var(--cbk-border);
+  border-radius: 6px;
+  padding: 0.25rem 0.55rem;
+  color: var(--cbk-muted);
+  font-size: 0.7rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.cbk-copy:hover { color: var(--cbk-fg); background: rgba(255, 255, 255, 0.06); }
+.cbk-copy.is-copied { color: #4ade80; border-color: rgba(74, 222, 128, 0.4); }
+
+.cbk pre {
+  margin: 0;
+  padding: 1rem 0;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+.cbk code { display: block; min-width: max-content; }
+
+.cbk-line {
+  display: flex;
+  padding: 0 1rem;
+}
+.cbk-line-num {
+  width: 2.5rem;
+  padding-right: 0.85rem;
+  color: var(--cbk-muted);
+  text-align: right;
+  user-select: none;
+  display: none;
+  flex-shrink: 0;
+}
+.cbk-lines .cbk-line-num { display: block; }
+.cbk-line-content { flex: 1; }
+
+/* Diff mode */
+.cbk-diff .cbk-line.is-added   { background: rgba(34, 197, 94, 0.08); }
+.cbk-diff .cbk-line.is-added::before   { content: '+ '; color: #4ade80; font-weight: 700; }
+.cbk-diff .cbk-line.is-removed { background: rgba(239, 68, 68, 0.08); }
+.cbk-diff .cbk-line.is-removed::before { content: '- '; color: #f87171; font-weight: 700; }
+.cbk-diff .cbk-line:not(.is-added):not(.is-removed)::before { content: '  '; }
+
+/* Token classes — apply via your highlighter or by hand */
+.cbk-kw { color: #c084fc; }            /* keyword */
+.cbk-str { color: #f5d893; }           /* string */
+.cbk-num { color: #f8a48a; }           /* number */
+.cbk-cm  { color: #6b7280; font-style: italic; } /* comment */
+.cbk-fn  { color: #93c5fd; }           /* function */
+.cbk-cls { color: #22d3ee; }           /* class/type */
+.cbk-pn  { color: #94a3b8; }           /* punctuation */
+.cbk-op  { color: #fda4af; }           /* operator */
+
+/* Variants */
+.cbk-glass {
+  background: rgba(20, 20, 31, 0.5);
+  backdrop-filter: blur(20px);
+}
+
+.cbk-window .cbk-header { padding-left: 0.7rem; }
+.cbk-window .cbk-header::before {
+  content: '';
+  display: inline-block;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #ef4444;
+  box-shadow:
+    18px 0 0 #f59e0b,
+    36px 0 0 #22c55e;
+  margin-right: 56px;
+}
+
+.cbk-light {
+  --cbk-bg: #fafafa;
+  --cbk-fg: #1f2937;
+  --cbk-border: rgba(0, 0, 0, 0.08);
+  --cbk-muted: rgba(31, 41, 55, 0.55);
+}
+.cbk-light .cbk-kw  { color: #7c3aed; }
+.cbk-light .cbk-str { color: #16a34a; }
+.cbk-light .cbk-num { color: #d97706; }
+.cbk-light .cbk-cm  { color: #6b7280; }
+.cbk-light .cbk-fn  { color: #2563eb; }

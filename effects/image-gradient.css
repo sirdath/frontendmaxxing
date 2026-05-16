@@ -1,0 +1,197 @@
+/* ============================================
+   IMAGE GRADIENT — Wrap PNGs, SVGs, and logos in a gradient fill
+   Inspired by Apple's product silhouette gradients, Vercel logos, Linear icons
+   ============================================
+   Uses CSS mask-image with the logo as the mask layer, then paints a gradient
+   underneath. Works with any PNG/SVG that has transparency (the gradient shows
+   through the opaque pixels). Perfect for logos, icons, app marks.
+
+   Usage (set --src to the image URL):
+     <div class="imggrad imggrad-aurora" style="--src: url('logo.png');"></div>
+
+     <span class="imggrad imggrad-cosmic imggrad-md"
+           style="--src: url('icon.svg');"></span>
+
+     <!-- Or for a wide logo, override aspect-ratio -->
+     <div class="imggrad imggrad-sunset"
+          style="--src: url('wordmark.svg'); aspect-ratio: 5/1; width: 400px;"></div>
+
+   Variants (color):
+     imggrad-aurora, imggrad-sunset, imggrad-cosmic, imggrad-cyber, imggrad-ocean,
+     imggrad-fire, imggrad-mint, imggrad-rose, imggrad-gold, imggrad-rainbow,
+     imggrad-instagram, imggrad-stripe, imggrad-vercel, imggrad-pastel,
+     imggrad-mono, imggrad-apple, imggrad-holo (animated foil)
+   Sizes (square):
+     imggrad-xs (32), imggrad-sm (64), imggrad-md (128), imggrad-lg (200),
+     imggrad-xl (320), imggrad-hero (480), imggrad-full (100%)
+   Fill mode:
+     imggrad-contain (default — full logo visible),
+     imggrad-cover    (fill area, may clip)
+   Modifiers:
+     imggrad-anim       — animates the underlying gradient (slide L→R)
+     imggrad-spin       — rotating conic underneath
+     imggrad-hover      — gradient only on hover (greyscale otherwise)
+     imggrad-shimmer    — sweeping highlight across the logo
+   ============================================ */
+
+.imggrad {
+  --src: none;
+  --size: 200px;
+  --ig-c1: #8b5cf6;
+  --ig-c2: #ec4899;
+  --ig-c3: #06b6d4;
+  --ig-speed: 6s;
+  display: inline-block;
+  width: var(--size);
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, var(--ig-c1), var(--ig-c2) 50%, var(--ig-c3));
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  -webkit-mask: var(--src) center / contain no-repeat;
+          mask: var(--src) center / contain no-repeat;
+  transition: background-position 0.4s ease;
+}
+
+/* Color presets */
+.imggrad-aurora    { --ig-c1: #a855f7; --ig-c2: #ec4899; --ig-c3: #06b6d4; }
+.imggrad-sunset    { --ig-c1: #f97316; --ig-c2: #ec4899; --ig-c3: #f59e0b; }
+.imggrad-cosmic    { --ig-c1: #6d28d9; --ig-c2: #db2777; --ig-c3: #0891b2; }
+.imggrad-cyber     { --ig-c1: #00ffff; --ig-c2: #ff00ff; --ig-c3: #00ff7f; }
+.imggrad-ocean     { --ig-c1: #0ea5e9; --ig-c2: #06b6d4; --ig-c3: #14b8a6; }
+.imggrad-fire      { --ig-c1: #fbbf24; --ig-c2: #f97316; --ig-c3: #ef4444; }
+.imggrad-mint      { --ig-c1: #34d399; --ig-c2: #22d3ee; --ig-c3: #14b8a6; }
+.imggrad-rose      { --ig-c1: #fb7185; --ig-c2: #f43f5e; --ig-c3: #ec4899; }
+.imggrad-gold      { --ig-c1: #fef3c7; --ig-c2: #fbbf24; --ig-c3: #d97706; }
+.imggrad-pastel    { --ig-c1: #c4b5fd; --ig-c2: #fbcfe8; --ig-c3: #a5f3fc; }
+.imggrad-mono      { --ig-c1: #ffffff; --ig-c2: #c4c4c4; --ig-c3: #6b6b6b; }
+.imggrad-apple     { background: linear-gradient(180deg, #ffffff 0%, #ffffff 50%, #8b8b8b 100%); }
+.imggrad-noir      { background: linear-gradient(135deg, #0f172a, #334155, #0f172a); }
+.imggrad-rainbow   { background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3); }
+.imggrad-instagram { background: linear-gradient(45deg, #515bd4, #8134af 25%, #dd2a7b 50%, #feda77 75%, #f58529); }
+.imggrad-stripe    { background: linear-gradient(135deg, #635bff, #9d4edd 50%, #22d3ee); }
+.imggrad-vercel    { background: linear-gradient(90deg, #ec4899, #8b5cf6, #06b6d4); }
+.imggrad-discord   { background: linear-gradient(135deg, #5865f2, #404eed); }
+.imggrad-spotify   { background: linear-gradient(135deg, #1ed760, #1db954); }
+.imggrad-figma     { background: linear-gradient(135deg, #f24e1e, #a259ff 50%, #0acf83); }
+
+/* Holographic foil — animated conic fill */
+.imggrad-holo {
+  background: conic-gradient(from 0deg at 50% 50%,
+    #ff00aa, #00ffff, #aaff00, #ffaa00, #ff00ff, #00aaff, #ff00aa);
+  background-size: 200% 200%;
+  animation: imggrad-holo var(--ig-speed) linear infinite;
+}
+@keyframes imggrad-holo {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Chrome (metallic logo) */
+.imggrad-chrome {
+  background: linear-gradient(135deg,
+    #d4d4d4 0%, #ffffff 12%, #c0c0c0 22%, #808080 34%,
+    #ffffff 50%, #404040 62%, #d4d4d4 74%, #ffffff 86%, #c0c0c0 100%);
+}
+
+/* Sizes — square defaults */
+.imggrad-xs    { --size: 32px; }
+.imggrad-sm    { --size: 64px; }
+.imggrad-md    { --size: 128px; }
+.imggrad-lg    { --size: 200px; }
+.imggrad-xl    { --size: 320px; }
+.imggrad-hero  { --size: 480px; }
+.imggrad-full  { width: 100%; height: 100%; aspect-ratio: auto; }
+
+/* Fill mode */
+.imggrad-contain { -webkit-mask-size: contain; mask-size: contain; }
+.imggrad-cover   { -webkit-mask-size: cover; mask-size: cover; }
+.imggrad-fill {
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+
+/* Wide aspect helpers (for wordmarks / banner logos) */
+.imggrad-wordmark { aspect-ratio: 5/1; width: 400px; }
+.imggrad-tall     { aspect-ratio: 1/2; }
+.imggrad-banner   { aspect-ratio: 3/1; width: 600px; }
+
+/* Behaviors */
+.imggrad-anim { animation: imggrad-slide var(--ig-speed) linear infinite; }
+@keyframes imggrad-slide {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.imggrad-spin {
+  background: conic-gradient(from 0deg at 50% 50%,
+    var(--ig-c1), var(--ig-c2), var(--ig-c3), var(--ig-c1));
+  animation: imggrad-spin var(--ig-speed) linear infinite;
+}
+@keyframes imggrad-spin { to { transform: rotate(360deg); } }
+
+.imggrad-hover {
+  background: linear-gradient(135deg, #444, #888);
+  transition: background 0.5s ease;
+}
+.imggrad-hover:hover {
+  background: linear-gradient(135deg, var(--ig-c1), var(--ig-c2) 50%, var(--ig-c3));
+}
+
+/* Shimmer sweep — bright bar moves across the masked logo */
+.imggrad-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.imggrad-shimmer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%);
+  -webkit-mask: var(--src) center / contain no-repeat;
+          mask: var(--src) center / contain no-repeat;
+  transform: translateX(-100%);
+  animation: imggrad-shimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes imggrad-shimmer {
+  0%   { transform: translateX(-100%); }
+  60%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* "Two-tone" — gradient on TOP, original PNG on bottom (works as a hover treatment) */
+.imggrad-two-tone {
+  background-image:
+    linear-gradient(135deg, var(--ig-c1), var(--ig-c2), var(--ig-c3)),
+    var(--src);
+  background-blend-mode: multiply;
+  -webkit-mask: none; mask: none;
+}
+
+/* Multi-instance: when wrapping an existing <img> use .imggrad-wrap */
+.imggrad-wrap {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+}
+.imggrad-wrap > img {
+  display: block;
+  opacity: 0;        /* original is invisible — the gradient layer paints it */
+  pointer-events: none;
+}
+.imggrad-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--ig-c1), var(--ig-c2) 50%, var(--ig-c3));
+  -webkit-mask: var(--src) center / contain no-repeat;
+          mask: var(--src) center / contain no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imggrad-anim,
+  .imggrad-spin,
+  .imggrad-holo,
+  .imggrad-shimmer::before { animation: none; }
+}

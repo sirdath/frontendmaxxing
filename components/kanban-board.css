@@ -1,0 +1,198 @@
+/* ============================================
+   KANBAN BOARD — Drag-to-reorder column-based task board
+   Inspired by Trello / Linear cycles / Jira / Notion board view
+   ============================================
+   Usage:
+     <div class="kbn" data-kanban>
+       <div class="kbn-col" data-kbn-col="todo">
+         <div class="kbn-col-header">
+           <span class="kbn-col-title">To do</span>
+           <span class="kbn-col-count">3</span>
+           <button class="kbn-col-add">＋</button>
+         </div>
+         <ul class="kbn-cards">
+           <li class="kbn-card" draggable="true">
+             <div class="kbn-card-title">Polish hero</div>
+             <div class="kbn-card-meta">
+               <span class="kbn-card-tag">design</span>
+               <span class="kbn-card-due">due Fri</span>
+             </div>
+           </li>
+         </ul>
+       </div>
+       …
+     </div>
+     KanbanBoard.init('[data-kanban]');
+
+   Variants:
+     kbn-compact     — Tighter spacing
+     kbn-glass       — Glass columns
+   ============================================ */
+
+.kbn {
+  --kbn-bg: var(--surface, #0c0c14);
+  --kbn-col-bg: var(--surface-2, #14141f);
+  --kbn-border: rgba(255, 255, 255, 0.08);
+  --kbn-fg: #ffffff;
+  --kbn-muted: rgba(255, 255, 255, 0.55);
+  --kbn-accent: #818cf8;
+  --kbn-radius: 12px;
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.5rem;
+  overflow-x: auto;
+  background: var(--kbn-bg);
+  color: var(--kbn-fg);
+  scroll-snap-type: x proximity;
+}
+
+.kbn-col {
+  flex: 0 0 280px;
+  background: var(--kbn-col-bg);
+  border: 1px solid var(--kbn-border);
+  border-radius: var(--kbn-radius);
+  padding: 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: 100%;
+  scroll-snap-align: start;
+}
+.kbn-col.is-drop {
+  background: rgba(129, 140, 248, 0.08);
+  border-color: rgba(129, 140, 248, 0.5);
+}
+
+.kbn-col-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.1rem 0.3rem 0.3rem;
+  border-bottom: 1px solid var(--kbn-border);
+}
+.kbn-col-title { font-weight: 600; font-size: 0.875rem; }
+.kbn-col-count {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--kbn-muted);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0 0.4rem;
+  border-radius: 999px;
+}
+.kbn-col-add {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  color: var(--kbn-muted);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.kbn-col-add:hover { background: rgba(255, 255, 255, 0.06); color: var(--kbn-fg); }
+
+.kbn-cards {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.kbn-card {
+  background: var(--kbn-bg);
+  border: 1px solid var(--kbn-border);
+  border-radius: 9px;
+  padding: 0.65rem 0.75rem;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.kbn-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.kbn-card.is-dragging {
+  opacity: 0.5;
+  transform: rotate(2deg);
+}
+
+.kbn-card-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.kbn-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  font-size: 0.7rem;
+  color: var(--kbn-muted);
+}
+
+.kbn-card-tag {
+  padding: 0.05rem 0.45rem;
+  background: rgba(129, 140, 248, 0.15);
+  color: #c7d2fe;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.kbn-card-tag.is-bug      { background: rgba(248, 113, 113, 0.18); color: #fca5a5; }
+.kbn-card-tag.is-feature  { background: rgba(74, 222, 128, 0.18); color: #86efac; }
+.kbn-card-tag.is-design   { background: rgba(244, 114, 182, 0.18); color: #f9a8d4; }
+
+.kbn-card-due {
+  font-variant-numeric: tabular-nums;
+}
+.kbn-card-due.is-overdue { color: #f87171; }
+
+.kbn-card-assignee {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #fff;
+  margin-left: auto;
+}
+
+.kbn-card-priority {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+.kbn-card-priority.is-high   { background: #f87171; }
+.kbn-card-priority.is-medium { background: #fbbf24; }
+.kbn-card-priority.is-low    { background: #4ade80; }
+
+/* Empty column hint */
+.kbn-col-empty {
+  padding: 1.5rem 0.5rem;
+  text-align: center;
+  color: var(--kbn-muted);
+  font-size: 0.8rem;
+  border: 1.5px dashed var(--kbn-border);
+  border-radius: 8px;
+}
+
+.kbn-compact .kbn-col { padding: 0.5rem; }
+.kbn-compact .kbn-card { padding: 0.5rem 0.6rem; }
+
+.kbn-glass .kbn-col {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@media (max-width: 720px) {
+  .kbn-col { flex-basis: 260px; }
+}

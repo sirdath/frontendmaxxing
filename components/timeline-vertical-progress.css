@@ -1,0 +1,121 @@
+/* ============================================
+   TIMELINE VERTICAL PROGRESS — Scroll-progress fill on a vertical timeline
+   Inspired by Aceternity / Magic UI / Apple product pages
+   ============================================
+   (Companion to existing components/timeline.css — this version adds
+   a progress rail that fills as the user scrolls the timeline section.)
+
+   Usage:
+     <ol class="tlvp" data-tlvp>
+       <li class="tlvp-item">
+         <div class="tlvp-marker"></div>
+         <div class="tlvp-content">
+           <h3>2021 — Founding</h3>
+           <p>The story begins.</p>
+         </div>
+       </li>
+       …
+     </ol>
+     TimelineVerticalProgress.init('[data-tlvp]');
+
+   Variants:
+     .tlvp-right    — Markers on the right
+     .tlvp-soft     — Lighter palette
+   ============================================ */
+
+.tlvp {
+  --tlvp-color: #818cf8;
+  --tlvp-track: rgba(255, 255, 255, 0.08);
+  --tlvp-marker-size: 16px;
+  --tlvp-rail-w: 2px;
+  --tlvp-pad-left: 56px;
+  --tlvp-progress: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  padding-left: var(--tlvp-pad-left);
+}
+
+/* Track */
+.tlvp::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--tlvp-pad-left) / 2 - var(--tlvp-rail-w) / 2);
+  width: var(--tlvp-rail-w);
+  background: var(--tlvp-track);
+  border-radius: 999px;
+}
+
+/* Progress fill */
+.tlvp::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: calc(var(--tlvp-progress) * 100%);
+  left: calc(var(--tlvp-pad-left) / 2 - var(--tlvp-rail-w) / 2);
+  width: var(--tlvp-rail-w);
+  background: linear-gradient(to bottom, var(--tlvp-color), transparent);
+  border-radius: 999px;
+  transition: height 0.05s linear;
+}
+
+.tlvp-item {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+.tlvp-marker {
+  position: absolute;
+  top: 4px;
+  left: calc(var(--tlvp-pad-left) * -1 / 2 - var(--tlvp-marker-size) / 2);
+  width: var(--tlvp-marker-size);
+  height: var(--tlvp-marker-size);
+  border-radius: 50%;
+  background: var(--tlvp-track);
+  border: 2px solid var(--tlvp-track);
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.tlvp-item.is-reached .tlvp-marker {
+  background: var(--tlvp-color);
+  border-color: var(--tlvp-color);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.25);
+}
+
+.tlvp-content h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.tlvp-content p {
+  margin: 0;
+  color: var(--text-muted, rgba(255, 255, 255, 0.65));
+}
+
+/* ── Variants ── */
+.tlvp-soft  { --tlvp-color: rgba(129, 140, 248, 0.55); }
+.tlvp-cyan  { --tlvp-color: #22d3ee; }
+.tlvp-pink  { --tlvp-color: #f472b6; }
+
+.tlvp-right {
+  padding-left: 0;
+  padding-right: var(--tlvp-pad-left);
+}
+.tlvp-right::before,
+.tlvp-right::after {
+  left: auto;
+  right: calc(var(--tlvp-pad-left) / 2 - var(--tlvp-rail-w) / 2);
+}
+.tlvp-right .tlvp-marker {
+  left: auto;
+  right: calc(var(--tlvp-pad-left) * -1 / 2 - var(--tlvp-marker-size) / 2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tlvp::after, .tlvp-marker { transition: none; }
+}

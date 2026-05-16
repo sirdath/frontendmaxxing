@@ -1,0 +1,94 @@
+/* ============================================
+   LEVEL METER — XP / level progress bar with current level
+   Inspired by Duolingo / Reddit karma / RPG level bars
+   ============================================
+   Usage:
+     <div class="lvm">
+       <div class="lvm-head">
+         <span class="lvm-label">Level <strong>12</strong></span>
+         <span class="lvm-value">2,340 / 3,000 XP</span>
+       </div>
+       <div class="lvm-track">
+         <div class="lvm-fill" style="--p: 78%;"></div>
+       </div>
+     </div>
+
+   Variants:
+     lvm-pill         — Pill track
+     lvm-segments     — Show segment dividers along track
+     lvm-gradient     — Rainbow gradient fill
+     lvm-glow
+     lvm-mini         — Compact inline
+   ============================================ */
+
+.lvm {
+  --lvm-bg: rgba(255, 255, 255, 0.06);
+  --lvm-fg: #ffffff;
+  --lvm-muted: rgba(255, 255, 255, 0.55);
+  --lvm-color: #818cf8;
+  --lvm-h: 14px;
+  --lvm-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  color: var(--lvm-fg);
+  width: 100%;
+  max-width: 320px;
+}
+
+.lvm-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.8rem;
+}
+.lvm-label strong {
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--lvm-color), #c084fc);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.lvm-value {
+  color: var(--lvm-muted);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+}
+
+.lvm-track {
+  position: relative;
+  height: var(--lvm-h);
+  background: var(--lvm-bg);
+  border-radius: var(--lvm-radius);
+  overflow: hidden;
+}
+.lvm-fill {
+  height: 100%;
+  width: var(--p, 0%);
+  background: var(--lvm-color);
+  border-radius: inherit;
+  transition: width 0.6s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.lvm-pill, .lvm-pill .lvm-track { border-radius: 999px; }
+.lvm-pill .lvm-fill { border-radius: 999px; }
+
+.lvm-gradient .lvm-fill {
+  background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6, #fbbf24);
+  background-size: 200% 100%;
+  animation: lvm-slide 4s linear infinite;
+}
+@keyframes lvm-slide { to { background-position: 200% 0; } }
+
+.lvm-glow .lvm-fill {
+  box-shadow: 0 0 12px var(--lvm-color);
+}
+
+.lvm-segments .lvm-track {
+  background:
+    linear-gradient(to right, rgba(255,255,255,0.2) 1px, transparent 1px) 0 0 / 10% 100%,
+    var(--lvm-bg);
+}
+
+.lvm-mini { flex-direction: row; align-items: center; gap: 0.5rem; }
+.lvm-mini .lvm-head { font-size: 0.7rem; }
+.lvm-mini .lvm-track { flex: 1; --lvm-h: 6px; }

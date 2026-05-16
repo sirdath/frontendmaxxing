@@ -1,0 +1,186 @@
+/* ============================================
+   FILTER BAR — Toolbar of filter chips + sort + search above a table
+   Inspired by Linear / Stripe / Notion / Vercel dashboards
+   ============================================
+   Usage:
+     <div class="fbar">
+       <div class="fbar-search">
+         <span>⌕</span>
+         <input placeholder="Search…">
+       </div>
+       <div class="fbar-chips">
+         <button class="fbar-chip is-active">Status: All</button>
+         <button class="fbar-chip">Priority: High</button>
+         <button class="fbar-chip is-add">＋ Add filter</button>
+       </div>
+       <div class="fbar-actions">
+         <button class="fbar-sort">↕ Sort</button>
+         <button class="fbar-group">▦ Group</button>
+         <button class="fbar-view">⊞ View</button>
+       </div>
+     </div>
+
+   Variants:
+     fbar-stacked     — Search above, chips/actions below
+     fbar-tabbed      — Status tabs instead of chips
+   ============================================ */
+
+.fbar {
+  --fbar-bg: var(--surface-2, #14141f);
+  --fbar-border: rgba(255, 255, 255, 0.08);
+  --fbar-fg: #ffffff;
+  --fbar-muted: rgba(255, 255, 255, 0.55);
+  --fbar-accent: #818cf8;
+  --fbar-hover: rgba(255, 255, 255, 0.05);
+  --fbar-active: rgba(129, 140, 248, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--fbar-bg);
+  border: 1px solid var(--fbar-border);
+  border-radius: 10px;
+  flex-wrap: wrap;
+  color: var(--fbar-fg);
+  font-size: 0.85rem;
+}
+
+.fbar-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--fbar-border);
+  border-radius: 7px;
+  min-width: 200px;
+  flex: 1;
+  max-width: 320px;
+}
+.fbar-search > span { color: var(--fbar-muted); font-size: 0.85rem; }
+.fbar-search input {
+  background: transparent;
+  border: none;
+  color: var(--fbar-fg);
+  font: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  flex: 1;
+  min-width: 0;
+}
+.fbar-search input::placeholder { color: var(--fbar-muted); }
+
+.fbar-chips {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+.fbar-chip {
+  padding: 0.3rem 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--fbar-border);
+  border-radius: 7px;
+  color: var(--fbar-muted);
+  font: inherit;
+  font-size: 0.825rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.fbar-chip:hover { background: var(--fbar-hover); color: var(--fbar-fg); }
+.fbar-chip.is-active {
+  background: var(--fbar-active);
+  border-color: rgba(129, 140, 248, 0.4);
+  color: #c7d2fe;
+}
+.fbar-chip-remove {
+  margin-left: 0.25rem;
+  opacity: 0.7;
+}
+.fbar-chip.is-add {
+  border-style: dashed;
+  color: var(--fbar-muted);
+}
+
+.fbar-actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.fbar-actions button {
+  padding: 0.3rem 0.65rem;
+  background: transparent;
+  border: 1px solid var(--fbar-border);
+  border-radius: 7px;
+  color: var(--fbar-muted);
+  font: inherit;
+  font-size: 0.825rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.fbar-actions button:hover { background: var(--fbar-hover); color: var(--fbar-fg); }
+
+/* ── Variants ── */
+.fbar-stacked {
+  flex-direction: column;
+  align-items: stretch;
+}
+.fbar-stacked .fbar-search { max-width: none; }
+.fbar-stacked .fbar-actions { margin-left: 0; }
+
+.fbar-tabbed .fbar-chips {
+  gap: 0;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 3px;
+  border-radius: 8px;
+}
+.fbar-tabbed .fbar-chip {
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  padding: 0.4rem 0.8rem;
+}
+.fbar-tabbed .fbar-chip.is-active {
+  background: var(--fbar-fg);
+  color: var(--fbar-bg);
+  border: none;
+}
+
+/* Bulk actions strip (sits below the bar when items selected) */
+.fbar-bulk {
+  display: none;
+  margin-top: 0.6rem;
+  padding: 0.55rem 0.85rem;
+  background: rgba(129, 140, 248, 0.12);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #c7d2fe;
+  align-items: center;
+  gap: 0.65rem;
+}
+.fbar.has-selection .fbar-bulk { display: flex; }
+.fbar-bulk-count { font-weight: 700; color: #fff; }
+.fbar-bulk-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 0.4rem;
+}
+.fbar-bulk-actions button {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.fbar-bulk-actions button.is-danger { background: rgba(248, 113, 113, 0.2); color: #fca5a5; }
+.fbar-bulk-actions button.is-danger:hover { background: rgba(248, 113, 113, 0.3); }

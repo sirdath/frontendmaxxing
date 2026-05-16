@@ -1,0 +1,76 @@
+/* ============================================
+   PROGRESS RING — Circular SVG progress indicator
+   Inspired by Apple Activity rings / Material progress
+   ============================================
+   Usage:
+     <div class="pring" data-pring data-pring-value="65">
+       <svg viewBox="0 0 100 100">
+         <circle class="pring-track" cx="50" cy="50" r="42"></circle>
+         <circle class="pring-bar"   cx="50" cy="50" r="42"></circle>
+       </svg>
+       <div class="pring-label">65%</div>
+     </div>
+     ProgressRing.init('[data-pring]');
+
+   Variants:
+     .pring-thick   — Thicker stroke
+     .pring-gradient — Gradient sweep (uses defs in JS)
+     .pring-success / .pring-danger / .pring-amber
+   ============================================ */
+
+.pring {
+  --pring-size: 120px;
+  --pring-stroke: 8;
+  --pring-color: #818cf8;
+  --pring-track: rgba(255, 255, 255, 0.08);
+  --pring-bg: transparent;
+  position: relative;
+  width: var(--pring-size);
+  height: var(--pring-size);
+  display: inline-grid;
+  place-items: center;
+}
+
+.pring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.pring-track {
+  fill: var(--pring-bg);
+  stroke: var(--pring-track);
+  stroke-width: var(--pring-stroke);
+}
+
+.pring-bar {
+  fill: none;
+  stroke: var(--pring-color);
+  stroke-width: var(--pring-stroke);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.2, 0.9, 0.25, 1);
+  /* Circumference for r=42: 2 * PI * 42 ≈ 263.89 */
+  stroke-dasharray: 263.89;
+  stroke-dashoffset: 263.89;
+}
+
+.pring-label {
+  position: absolute;
+  font-weight: 700;
+  font-size: calc(var(--pring-size) * 0.2);
+}
+
+.pring-thick    { --pring-stroke: 12; }
+.pring-thin     { --pring-stroke: 4;  }
+.pring-success  { --pring-color: #22c55e; }
+.pring-danger   { --pring-color: #ef4444; }
+.pring-amber    { --pring-color: #f59e0b; }
+.pring-cyan     { --pring-color: #22d3ee; }
+
+.pring-sm { --pring-size: 64px; }
+.pring-lg { --pring-size: 180px; }
+.pring-xl { --pring-size: 240px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pring-bar { transition: none; }
+}

@@ -1,0 +1,173 @@
+/* ============================================
+   LIQUID METAL — Chrome, mercury, gold-liquid surfaces
+   Inspired by Apple silver palette, T-1000 Terminator chrome, Y2K liquid metal
+   ============================================
+   Usage:
+     <div class="metal metal-chrome">...</div>
+     <div class="metal metal-gold-liquid metal-anim">...</div>
+
+   Variants:
+     metal-chrome, metal-silver, metal-mercury, metal-titanium, metal-platinum,
+     metal-rose-gold, metal-gold-liquid, metal-copper, metal-bronze,
+     metal-gunmetal, metal-obsidian, metal-iridescent-chrome, metal-brushed
+   Modifiers:
+     metal-anim        — slow flowing animation
+     metal-tilt        — uses --tx/--ty CSS vars for mouse-tracked tilt
+     metal-sheen       — adds animated reflective sheen
+   ============================================ */
+
+.metal {
+  --m-speed: 8s;
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* Chrome — sharp silver gradient */
+.metal-chrome {
+  background:
+    linear-gradient(135deg,
+      #d4d4d4 0%, #ffffff 12%, #c0c0c0 22%, #808080 34%,
+      #ffffff 50%, #404040 62%, #d4d4d4 74%, #ffffff 86%, #c0c0c0 100%);
+  color: #1a1a1a;
+}
+
+/* Silver — softer, polished */
+.metal-silver {
+  background: linear-gradient(135deg,
+    #f4f4f4 0%, #d4d4d4 25%, #ffffff 50%, #b0b0b0 75%, #e4e4e4 100%);
+  color: #2a2a2a;
+}
+
+/* Mercury — fluid liquid metal */
+.metal-mercury {
+  background:
+    linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.6) 30%, transparent 50%, rgba(0,0,0,0.3) 70%, transparent 100%),
+    radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.8), transparent 50%),
+    radial-gradient(ellipse at 70% 70%, rgba(0,0,0,0.5), transparent 50%),
+    linear-gradient(135deg, #e0e0e0 0%, #a0a0a0 50%, #707070 100%);
+  color: #fff;
+}
+
+/* Titanium — cool blue-gray */
+.metal-titanium {
+  background: linear-gradient(135deg,
+    #d8e0e6 0%, #a8b8c6 25%, #e8f0f6 50%, #6878a0 75%, #b8c8d6 100%);
+  color: #1a2030;
+}
+
+/* Platinum — luxury white-silver */
+.metal-platinum {
+  background: linear-gradient(135deg,
+    #fefefe 0%, #e5e4e2 30%, #ffffff 60%, #c0c0c0 80%, #f8f8f8 100%);
+  color: #1a1a1a;
+}
+
+/* Rose gold */
+.metal-rose-gold {
+  background: linear-gradient(135deg,
+    #f5d5c5 0%, #e8b4a0 20%, #fff0e6 40%, #d99480 60%, #f5cdb5 80%, #c87055 100%);
+  color: #3a1a0e;
+}
+
+/* Gold liquid */
+.metal-gold-liquid {
+  background:
+    linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.6) 30%, transparent 60%),
+    linear-gradient(135deg,
+      #fff8dc 0%, #ffd700 18%, #b8860b 32%, #fffacd 48%, #daa520 66%, #ffe4b5 82%, #b8860b 100%);
+  color: #2a1a02;
+}
+
+/* Copper */
+.metal-copper {
+  background: linear-gradient(135deg,
+    #f4c2a0 0%, #b87333 25%, #f4dab0 50%, #8b4513 75%, #d4904f 100%);
+  color: #2a0a02;
+}
+
+/* Bronze */
+.metal-bronze {
+  background: linear-gradient(135deg,
+    #cd7f32 0%, #8b5a2b 30%, #d4a570 60%, #6b3410 90%, #b87333 100%);
+  color: #1a0a02;
+}
+
+/* Gunmetal — dark steel */
+.metal-gunmetal {
+  background: linear-gradient(135deg,
+    #2a3439 0%, #4a5459 30%, #1a2429 60%, #5a6469 80%, #2a3439 100%);
+  color: #d0d8e0;
+}
+
+/* Obsidian — black mirror */
+.metal-obsidian {
+  background:
+    linear-gradient(135deg, transparent 0%, rgba(100, 100, 120, 0.6) 30%, transparent 50%, rgba(50, 50, 70, 0.4) 70%, transparent 100%),
+    linear-gradient(135deg, #000 0%, #1a1a2a 50%, #000 100%);
+  color: #fff;
+}
+
+/* Iridescent chrome — rainbow tint over chrome */
+.metal-iridescent-chrome {
+  background:
+    linear-gradient(135deg,
+      rgba(255, 0, 200, 0.3) 0%, rgba(0, 200, 255, 0.3) 25%,
+      rgba(200, 255, 0, 0.3) 50%, rgba(255, 100, 0, 0.3) 75%,
+      rgba(150, 0, 255, 0.3) 100%),
+    linear-gradient(135deg,
+      #d4d4d4 0%, #ffffff 25%, #808080 50%, #ffffff 75%, #c0c0c0 100%);
+  color: #1a1a1a;
+}
+
+/* Brushed metal — directional fine lines */
+.metal-brushed {
+  background:
+    repeating-linear-gradient(180deg,
+      rgba(255,255,255,0.06) 0 1px, transparent 1px 3px),
+    linear-gradient(135deg, #b0b0b0 0%, #d4d4d4 50%, #909090 100%);
+  color: #1a1a1a;
+}
+
+/* Animation */
+.metal-anim {
+  animation: metal-flow var(--m-speed) ease-in-out infinite alternate;
+}
+@keyframes metal-flow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Tilt — uses --tx/--ty (-0.5..0.5) set by JS */
+.metal-tilt {
+  background-position: calc(50% + var(--tx, 0) * 50%) calc(50% + var(--ty, 0) * 50%);
+  transition: background-position 0.18s ease;
+}
+
+/* Sheen — sweeping highlight */
+.metal-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.metal-sheen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: metal-sheen-anim 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes metal-sheen-anim {
+  0%   { transform: translateX(-100%); }
+  60%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metal-anim, .metal-sheen::before { animation: none; }
+}

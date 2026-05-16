@@ -1,0 +1,101 @@
+/* ============================================
+   BORDER BEAM — Rotating gradient beam around a border
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <div class="border-beam">
+       <div class="border-beam-content">...</div>
+     </div>
+
+   Variants:
+     .border-beam-thin    — 1px beam (default 2px)
+     .border-beam-thick   — 4px beam
+     .border-beam-slow    — 12s rotation
+     .border-beam-fast    — 3s rotation
+     .border-beam-rainbow — Multi-hue beam
+   ============================================ */
+
+.border-beam {
+  --beam-size: 2px;
+  --beam-duration: 6s;
+  --beam-color-from: #ffffff;
+  --beam-color-to: #818cf8;
+  --beam-radius: 16px;
+  position: relative;
+  border-radius: var(--beam-radius);
+  background: var(--surface, #0c0c14);
+  isolation: isolate;
+}
+
+.border-beam::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--beam-size);
+  background: conic-gradient(
+    from var(--beam-angle, 0deg),
+    transparent 0deg,
+    transparent 270deg,
+    var(--beam-color-from) 300deg,
+    var(--beam-color-to) 340deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border-beam-rotate var(--beam-duration) linear infinite;
+  pointer-events: none;
+}
+
+@property --beam-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes border-beam-rotate {
+  to { --beam-angle: 360deg; }
+}
+
+/* Fallback for browsers without @property: rotate the pseudo-element */
+@supports not (background: conic-gradient(from var(--beam-angle), red, blue)) {
+  .border-beam::before {
+    animation: border-beam-spin var(--beam-duration) linear infinite;
+  }
+  @keyframes border-beam-spin {
+    to { transform: rotate(360deg); }
+  }
+}
+
+.border-beam-content {
+  position: relative;
+  border-radius: calc(var(--beam-radius) - var(--beam-size));
+  background: inherit;
+  padding: 1.5rem;
+  z-index: 1;
+}
+
+/* ── Variants ── */
+.border-beam-thin   { --beam-size: 1px; }
+.border-beam-thick  { --beam-size: 4px; }
+.border-beam-slow   { --beam-duration: 12s; }
+.border-beam-fast   { --beam-duration: 3s; }
+
+.border-beam-rainbow::before {
+  background: conic-gradient(
+    from var(--beam-angle, 0deg),
+    transparent 0deg,
+    transparent 250deg,
+    #ff7eb6 280deg,
+    #ffd166 310deg,
+    #7cf0bd 340deg,
+    transparent 360deg
+  );
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .border-beam::before { animation: none; }
+}

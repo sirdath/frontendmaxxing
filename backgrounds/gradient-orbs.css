@@ -1,0 +1,119 @@
+/* ============================================
+   GRADIENT ORBS — Floating, blurred gradient orbs as bg
+   Inspired by Vercel hero, Linear, Framer landing pages
+   ============================================
+   Usage (CSS-only, fixed orbs):
+     <div class="orbsbg orbsbg-vercel">
+       <span class="orb orb-1"></span>
+       <span class="orb orb-2"></span>
+       <span class="orb orb-3"></span>
+     </div>
+
+   Or dynamic via GradientOrbs.init() in gradient-orbs.js.
+
+   Variants:
+     orbsbg-vercel, orbsbg-linear, orbsbg-aurora, orbsbg-sunset,
+     orbsbg-ocean, orbsbg-cyber, orbsbg-pastel, orbsbg-cosmic
+   Modifiers:
+     orbsbg-fixed     — full viewport
+     orbsbg-tight     — smaller orbs
+     orbsbg-huge      — massive orbs
+     orbsbg-still     — disable animation
+   ============================================ */
+
+.orbsbg {
+  --orbs-bg: #050510;
+  --orbs-blur: 80px;
+  --orbs-opacity: 0.7;
+  --orbs-speed: 18s;
+  --orb-c1: #8b5cf6;
+  --orb-c2: #ec4899;
+  --orb-c3: #06b6d4;
+  --orb-c4: #f59e0b;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--orbs-bg);
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(var(--orbs-blur));
+  opacity: var(--orbs-opacity);
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform;
+}
+
+/* default positions / sizes / colors (override per orb) */
+.orb-1 {
+  width: 50%; aspect-ratio: 1;
+  top: -15%; left: -10%;
+  background: radial-gradient(circle, var(--orb-c1), transparent 70%);
+  animation: orb-float-a var(--orbs-speed) ease-in-out infinite alternate;
+}
+.orb-2 {
+  width: 45%; aspect-ratio: 1;
+  top: 30%; right: -15%;
+  background: radial-gradient(circle, var(--orb-c2), transparent 70%);
+  animation: orb-float-b calc(var(--orbs-speed) * 1.2) ease-in-out infinite alternate;
+}
+.orb-3 {
+  width: 40%; aspect-ratio: 1;
+  bottom: -10%; left: 25%;
+  background: radial-gradient(circle, var(--orb-c3), transparent 70%);
+  animation: orb-float-c calc(var(--orbs-speed) * 0.9) ease-in-out infinite alternate;
+}
+.orb-4 {
+  width: 35%; aspect-ratio: 1;
+  top: 60%; right: 30%;
+  background: radial-gradient(circle, var(--orb-c4), transparent 70%);
+  animation: orb-float-a calc(var(--orbs-speed) * 1.5) ease-in-out infinite alternate-reverse;
+}
+.orb-5 {
+  width: 30%; aspect-ratio: 1;
+  top: 10%; left: 40%;
+  background: radial-gradient(circle, var(--orb-c1), transparent 70%);
+  animation: orb-float-b calc(var(--orbs-speed) * 1.1) ease-in-out infinite alternate-reverse;
+}
+
+@keyframes orb-float-a {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(8%, 12%, 0) scale(1.18); }
+}
+@keyframes orb-float-b {
+  0%   { transform: translate3d(0, 0, 0) scale(1.1); }
+  100% { transform: translate3d(-10%, -8%, 0) scale(0.92); }
+}
+@keyframes orb-float-c {
+  0%   { transform: translate3d(0, 0, 0) scale(0.95); }
+  100% { transform: translate3d(12%, -6%, 0) scale(1.12); }
+}
+
+/* Variants */
+.orbsbg-vercel  { --orb-c1: #ec4899; --orb-c2: #8b5cf6; --orb-c3: #06b6d4; --orb-c4: #6366f1; --orbs-bg: #000; }
+.orbsbg-linear  { --orb-c1: #5e6ad2; --orb-c2: #8b5cf6; --orb-c3: #06b6d4; --orb-c4: #5e6ad2; --orbs-bg: #0a0a14; }
+.orbsbg-aurora  { --orb-c1: #a855f7; --orb-c2: #ec4899; --orb-c3: #06b6d4; --orb-c4: #f59e0b; --orbs-bg: #050510; }
+.orbsbg-sunset  { --orb-c1: #f97316; --orb-c2: #ec4899; --orb-c3: #f59e0b; --orb-c4: #ef4444; --orbs-bg: #1a0a0f; }
+.orbsbg-ocean   { --orb-c1: #0ea5e9; --orb-c2: #06b6d4; --orb-c3: #3b82f6; --orb-c4: #14b8a6; --orbs-bg: #02060f; }
+.orbsbg-cyber   { --orb-c1: #00ffff; --orb-c2: #ff00ff; --orb-c3: #00ff7f; --orb-c4: #ffff00; --orbs-bg: #000019; --orbs-opacity: 0.55; }
+.orbsbg-pastel  {
+  --orb-c1: #c4b5fd; --orb-c2: #fbcfe8; --orb-c3: #a5f3fc; --orb-c4: #fde68a;
+  --orbs-bg: #fafaff; --orbs-opacity: 0.6;
+}
+.orbsbg-cosmic  { --orb-c1: #6d28d9; --orb-c2: #db2777; --orb-c3: #0891b2; --orb-c4: #d97706; --orbs-bg: #08030f; }
+.orbsbg-mono    { --orb-c1: #475569; --orb-c2: #64748b; --orb-c3: #334155; --orb-c4: #94a3b8; --orbs-bg: #0a0a0f; }
+.orbsbg-rose    { --orb-c1: #fb7185; --orb-c2: #f43f5e; --orb-c3: #ec4899; --orb-c4: #c084fc; --orbs-bg: #1a050f; }
+
+/* Modifiers */
+.orbsbg-fixed { position: fixed; inset: 0; z-index: -1; }
+.orbsbg-tight .orb { transform: scale(0.6); }
+.orbsbg-huge .orb { width: 75%; --orbs-blur: 120px; }
+.orbsbg-still .orb { animation: none; }
+.orbsbg-bright { --orbs-opacity: 0.95; }
+.orbsbg-faint { --orbs-opacity: 0.35; }
+
+@media (prefers-reduced-motion: reduce) {
+  .orb { animation: none; }
+}

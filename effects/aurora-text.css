@@ -1,0 +1,69 @@
+/* ============================================
+   AURORA TEXT — Sliding multi-stop gradient text fill
+   Inspired by Aceternity UI / Magic UI
+   ============================================
+   Usage:
+     <span class="aurora-text">Beautiful</span>
+     <h1 class="aurora-text aurora-text-vivid">Headline</h1>
+
+   Variants:
+     .aurora-text-vivid   — Saturated palette
+     .aurora-text-pastel  — Soft palette
+     .aurora-text-slow    — 12s cycle
+     .aurora-text-fast    — 3s cycle
+   ============================================ */
+
+.aurora-text {
+  --au-c1: #c084fc;
+  --au-c2: #38bdf8;
+  --au-c3: #4ade80;
+  --au-c4: #f472b6;
+  --au-duration: 6s;
+  background: linear-gradient(90deg, var(--au-c1), var(--au-c2), var(--au-c3), var(--au-c4), var(--au-c1));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  font-weight: inherit;
+  animation: aurora-text-slide var(--au-duration) linear infinite;
+}
+
+@keyframes aurora-text-slide {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* ── Variants ── */
+.aurora-text-vivid {
+  --au-c1: #ff00d4;
+  --au-c2: #00f0ff;
+  --au-c3: #00ff88;
+  --au-c4: #ffea00;
+}
+
+.aurora-text-pastel {
+  --au-c1: #fbcfe8;
+  --au-c2: #bfdbfe;
+  --au-c3: #bbf7d0;
+  --au-c4: #fef3c7;
+}
+
+.aurora-text-blue-purple {
+  --au-c1: #38bdf8;
+  --au-c2: #818cf8;
+  --au-c3: #c084fc;
+  --au-c4: #f472b6;
+}
+
+.aurora-text-slow { --au-duration: 12s; }
+.aurora-text-fast { --au-duration: 3s; }
+
+/* Optional: drop-shadow glow */
+.aurora-text-glow {
+  filter: drop-shadow(0 0 12px rgba(192, 132, 252, 0.5));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-text { animation: none; background-position: 25% 50%; }
+}

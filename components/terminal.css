@@ -1,0 +1,130 @@
+/* ============================================
+   TERMINAL — Fake terminal/console window with typed lines
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <div class="terminal">
+       <div class="terminal-bar">
+         <span class="terminal-dot terminal-dot-red"></span>
+         <span class="terminal-dot terminal-dot-amber"></span>
+         <span class="terminal-dot terminal-dot-green"></span>
+         <span class="terminal-title">~ /project</span>
+       </div>
+       <div class="terminal-body" data-terminal></div>
+     </div>
+     Terminal.init('[data-terminal]', {
+       lines: [
+         { type: 'cmd', text: 'npm install' },
+         { type: 'out', text: 'added 124 packages in 3.2s' },
+         { type: 'cmd', text: 'npm run dev' },
+         { type: 'ok',  text: '✓ ready on http://localhost:3000' }
+       ]
+     });
+
+   Variants:
+     .terminal-light      — Light theme
+     .terminal-mono       — Mono (no bar)
+     .terminal-rounded-lg — Larger radius
+   ============================================ */
+
+.terminal {
+  --term-bg: #0c0c14;
+  --term-bar: #161623;
+  --term-border: rgba(255, 255, 255, 0.1);
+  --term-text: #e5e7eb;
+  --term-muted: rgba(229, 231, 235, 0.6);
+  --term-prompt: #38bdf8;
+  --term-ok: #4ade80;
+  --term-err: #f87171;
+  --term-radius: 12px;
+  background: var(--term-bg);
+  color: var(--term-text);
+  border: 1px solid var(--term-border);
+  border-radius: var(--term-radius);
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  overflow: hidden;
+  width: 100%;
+  max-width: 720px;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.85rem;
+  background: var(--term-bar);
+  border-bottom: 1px solid var(--term-border);
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  flex-shrink: 0;
+}
+
+.terminal-dot-red   { background: #ef4444; }
+.terminal-dot-amber { background: #f59e0b; }
+.terminal-dot-green { background: #22c55e; }
+
+.terminal-title {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--term-muted);
+}
+
+.terminal-body {
+  padding: 1rem 1.1rem;
+  min-height: 140px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terminal-line {
+  display: block;
+  white-space: pre-wrap;
+}
+
+.terminal-line.cmd::before {
+  content: '$ ';
+  color: var(--term-prompt);
+  font-weight: 600;
+}
+
+.terminal-line.out  { color: var(--term-muted); }
+.terminal-line.ok   { color: var(--term-ok); }
+.terminal-line.err  { color: var(--term-err); }
+.terminal-line.warn { color: #fbbf24; }
+
+.terminal-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  vertical-align: -2px;
+  background: currentColor;
+  animation: terminal-blink 1s steps(2, start) infinite;
+}
+
+@keyframes terminal-blink {
+  to { opacity: 0; }
+}
+
+/* ── Variants ── */
+.terminal-light {
+  --term-bg: #ffffff;
+  --term-bar: #f3f4f6;
+  --term-border: rgba(0, 0, 0, 0.08);
+  --term-text: #0c0c14;
+  --term-muted: rgba(12, 12, 20, 0.55);
+}
+
+.terminal-mono .terminal-bar { display: none; }
+
+.terminal-rounded-lg { --term-radius: 20px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal-cursor { animation: none; }
+}

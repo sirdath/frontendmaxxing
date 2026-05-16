@@ -1,0 +1,189 @@
+/* ============================================
+   CTA SECTIONS — 6 call-to-action section styles
+   Inspired by Linear / Stripe / Vercel landing CTAs
+   ============================================
+   Each uses .ctas- prefix.
+
+   Variants:
+     ctas-centered      — Big centered headline + dual buttons
+     ctas-gradient      — Gradient background, light text
+     ctas-split         — Text left, action right
+     ctas-form          — Inline newsletter/contact form
+     ctas-image         — Background image with overlay
+     ctas-banner        — Compact thin banner
+     ctas-dark / -light
+   ============================================ */
+
+.ctas {
+  --ctas-bg: #0c0c14;
+  --ctas-fg: #ffffff;
+  --ctas-muted: rgba(255, 255, 255, 0.7);
+  --ctas-accent: #818cf8;
+  --ctas-radius: 24px;
+  --ctas-border: rgba(255, 255, 255, 0.1);
+  position: relative;
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 3rem);
+  background: var(--ctas-bg);
+  border-radius: var(--ctas-radius);
+  border: 1px solid var(--ctas-border);
+  color: var(--ctas-fg);
+  overflow: hidden;
+}
+
+.ctas-eyebrow {
+  display: inline-flex;
+  margin: 0 auto 0.85rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ctas-muted);
+}
+
+.ctas-title {
+  margin: 0 0 0.85rem;
+  font-size: clamp(1.6rem, 4vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.ctas-text {
+  margin: 0 0 1.5rem;
+  color: var(--ctas-muted);
+  font-size: 1rem;
+  line-height: 1.55;
+  max-width: 620px;
+}
+
+.ctas-actions {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.ctas-cta {
+  padding: 0.8rem 1.5rem;
+  background: var(--ctas-accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.ctas-cta:hover { filter: brightness(1.08); }
+
+.ctas-ghost {
+  padding: 0.8rem 1.3rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--ctas-border);
+  color: var(--ctas-fg);
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+.ctas-ghost:hover { background: rgba(255, 255, 255, 0.1); }
+
+/* ── Variants ── */
+.ctas-centered { text-align: center; }
+.ctas-centered .ctas-text { margin-left: auto; margin-right: auto; }
+.ctas-centered .ctas-actions { justify-content: center; }
+
+.ctas-split {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: center;
+}
+.ctas-split .ctas-actions { flex-shrink: 0; }
+@media (max-width: 720px) {
+  .ctas-split { grid-template-columns: 1fr; text-align: center; }
+  .ctas-split .ctas-actions { justify-content: center; }
+}
+
+.ctas-form {
+  text-align: center;
+}
+.ctas-form-row {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.ctas-form-row input {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--ctas-border);
+  border-radius: 10px;
+  color: #fff;
+  font: inherit;
+  outline: none;
+}
+.ctas-form-row input:focus { border-color: var(--ctas-accent); }
+.ctas-form-row button {
+  padding: 0.8rem 1.3rem;
+  background: var(--ctas-accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.ctas-gradient {
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  border: none;
+}
+.ctas-gradient .ctas-cta { background: #fff; color: #0c0c14; }
+.ctas-gradient .ctas-cta:hover { background: #f5f5f5; }
+.ctas-gradient .ctas-ghost { border-color: rgba(255,255,255,0.4); }
+.ctas-gradient .ctas-text { color: rgba(255,255,255,0.85); }
+
+.ctas-image {
+  background: #050510;
+}
+.ctas-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(135deg, rgba(0,0,0,0.65), rgba(0,0,0,0.85)),
+    radial-gradient(ellipse at top, rgba(129,140,248,0.4), transparent 70%);
+  z-index: 0;
+}
+.ctas-image > * { position: relative; z-index: 1; }
+
+.ctas-banner {
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  --ctas-radius: 12px;
+  flex-wrap: wrap;
+}
+.ctas-banner .ctas-title { font-size: 1rem; font-weight: 600; margin: 0; }
+.ctas-banner .ctas-text { display: none; }
+.ctas-banner .ctas-actions { gap: 0.4rem; }
+.ctas-banner .ctas-cta { padding: 0.5rem 0.9rem; font-size: 0.85rem; }
+
+.ctas-light {
+  --ctas-bg: #fafafa;
+  --ctas-fg: #0c0c14;
+  --ctas-muted: rgba(12, 12, 20, 0.6);
+  --ctas-border: rgba(0, 0, 0, 0.08);
+}
+.ctas-light .ctas-ghost { background: rgba(0, 0, 0, 0.04); }

@@ -1,0 +1,145 @@
+/* ============================================
+   SHIMMER BUTTON — Looping shimmer overlay on a button
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <button class="shimmer-btn">
+       <span class="shimmer-btn-spark"></span>
+       <span class="shimmer-btn-label">Click me</span>
+     </button>
+
+   Variants:
+     .shimmer-btn-ghost   — Transparent base
+     .shimmer-btn-light   — Light theme
+     .shimmer-btn-fast    — Faster shimmer
+     .shimmer-btn-rainbow — Multi-color shimmer
+   ============================================ */
+
+.shimmer-btn {
+  --shimmer-bg: #0c0c14;
+  --shimmer-border: rgba(255, 255, 255, 0.12);
+  --shimmer-color: #ffffff;
+  --shimmer-glow: rgba(255, 255, 255, 0.85);
+  --shimmer-duration: 3s;
+  --shimmer-radius: 999px;
+  --shimmer-pad-y: 0.75rem;
+  --shimmer-pad-x: 1.5rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: var(--shimmer-pad-y) var(--shimmer-pad-x);
+  border: 1px solid var(--shimmer-border);
+  border-radius: var(--shimmer-radius);
+  background: var(--shimmer-bg);
+  color: var(--shimmer-color);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.shimmer-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px -8px var(--shimmer-glow);
+}
+
+.shimmer-btn:active { transform: translateY(0); }
+
+/* The shimmer trail */
+.shimmer-btn-spark {
+  position: absolute;
+  inset: -100%;
+  z-index: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--shimmer-angle, 0deg) at 50% 50%,
+    transparent 0deg,
+    transparent 280deg,
+    var(--shimmer-glow) 320deg,
+    transparent 360deg
+  );
+  animation: shimmer-btn-spin var(--shimmer-duration) linear infinite;
+  pointer-events: none;
+}
+
+/* Inner mask: a "donut" so only border-area shows the spark */
+.shimmer-btn::before {
+  content: '';
+  position: absolute;
+  inset: 1.5px;
+  border-radius: inherit;
+  background: var(--shimmer-bg);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.shimmer-btn-label {
+  position: relative;
+  z-index: 2;
+}
+
+@property --shimmer-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes shimmer-btn-spin {
+  to { --shimmer-angle: 360deg; }
+}
+
+@supports not (background: conic-gradient(from var(--shimmer-angle), red, blue)) {
+  .shimmer-btn-spark { animation: shimmer-btn-spin-fallback var(--shimmer-duration) linear infinite; }
+  @keyframes shimmer-btn-spin-fallback {
+    to { transform: rotate(360deg); }
+  }
+}
+
+/* ── Variants ── */
+.shimmer-btn-light {
+  --shimmer-bg: #ffffff;
+  --shimmer-border: rgba(0, 0, 0, 0.1);
+  --shimmer-color: #0c0c14;
+  --shimmer-glow: rgba(129, 140, 248, 0.85);
+}
+
+.shimmer-btn-ghost {
+  --shimmer-bg: transparent;
+  --shimmer-border: rgba(255, 255, 255, 0.18);
+}
+
+.shimmer-btn-fast { --shimmer-duration: 1.5s; }
+.shimmer-btn-slow { --shimmer-duration: 6s; }
+
+.shimmer-btn-rainbow .shimmer-btn-spark {
+  background: conic-gradient(
+    from var(--shimmer-angle, 0deg) at 50% 50%,
+    transparent 0deg,
+    transparent 220deg,
+    #ff7eb6 260deg,
+    #ffd166 290deg,
+    #7cf0bd 320deg,
+    #38bdf8 350deg,
+    transparent 360deg
+  );
+}
+
+.shimmer-btn-lg {
+  --shimmer-pad-y: 1rem;
+  --shimmer-pad-x: 2rem;
+  font-size: 1.05rem;
+}
+
+.shimmer-btn-sm {
+  --shimmer-pad-y: 0.5rem;
+  --shimmer-pad-x: 1rem;
+  font-size: 0.875rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-btn-spark { animation: none; }
+}

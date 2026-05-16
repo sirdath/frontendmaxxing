@@ -1,0 +1,122 @@
+/* ============================================
+   TOOLBAR — Grouped action bar (above content)
+   Inspired by VSCode / Figma / Linear / Notion toolbars
+   ============================================
+   Usage:
+     <div class="tbar">
+       <div class="tbar-group">
+         <button class="tbar-btn">Save</button>
+         <button class="tbar-btn">Publish</button>
+       </div>
+       <div class="tbar-sep"></div>
+       <div class="tbar-group">
+         <button class="tbar-btn tbar-btn-icon">↶</button>
+         <button class="tbar-btn tbar-btn-icon">↷</button>
+       </div>
+       <div class="tbar-spacer"></div>
+       <div class="tbar-group">
+         <button class="tbar-btn tbar-btn-icon">⌕</button>
+         <button class="tbar-btn">Share</button>
+       </div>
+     </div>
+
+   Variants:
+     tbar-floating    — Detached pill toolbar
+     tbar-vertical    — Vertical orientation
+     tbar-glass
+     tbar-compact     — Smaller height
+   ============================================ */
+
+.tbar {
+  --tbar-bg: var(--surface-2, #14141f);
+  --tbar-border: rgba(255, 255, 255, 0.08);
+  --tbar-fg: #ffffff;
+  --tbar-muted: rgba(255, 255, 255, 0.55);
+  --tbar-hover: rgba(255, 255, 255, 0.06);
+  --tbar-active: rgba(129, 140, 248, 0.18);
+  --tbar-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem;
+  background: var(--tbar-bg);
+  border: 1px solid var(--tbar-border);
+  border-radius: var(--tbar-radius);
+}
+
+.tbar-vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.tbar-group {
+  display: inline-flex;
+  gap: 1px;
+}
+.tbar-vertical .tbar-group { flex-direction: column; }
+
+.tbar-btn {
+  background: transparent;
+  border: none;
+  color: var(--tbar-fg);
+  padding: 0.4rem 0.7rem;
+  font: inherit;
+  font-size: 0.825rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.tbar-btn:hover { background: var(--tbar-hover); }
+.tbar-btn.is-active { background: var(--tbar-active); color: #c7d2fe; }
+.tbar-btn[disabled] { opacity: 0.35; cursor: not-allowed; }
+
+.tbar-btn-icon {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  justify-content: center;
+}
+
+.tbar-sep {
+  width: 1px;
+  height: 22px;
+  background: var(--tbar-border);
+  margin: 0 0.2rem;
+}
+.tbar-vertical .tbar-sep {
+  width: 100%;
+  height: 1px;
+  margin: 0.2rem 0;
+}
+
+.tbar-spacer { flex: 1; }
+
+.tbar-floating {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.5);
+  border-radius: 999px;
+  padding: 0.35rem 0.5rem;
+}
+
+.tbar-glass {
+  background: rgba(20, 20, 31, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.tbar-compact .tbar-btn {
+  padding: 0.3rem 0.55rem;
+  font-size: 0.78rem;
+}
+.tbar-compact .tbar-btn-icon { width: 26px; height: 26px; }
+
+/* Tooltip via title — minimal */
+.tbar-btn[title] { position: relative; }

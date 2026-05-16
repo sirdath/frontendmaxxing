@@ -1,0 +1,181 @@
+/* ============================================
+   FILE UPLOAD — Drag-and-drop file picker with previews + progress
+   Inspired by Vercel / Linear file upload patterns
+   ============================================
+   Usage:
+     <div class="fup" data-file-upload>
+       <input type="file" hidden multiple>
+       <div class="fup-drop">
+         <div class="fup-icon">⬆</div>
+         <div class="fup-text">
+           <strong>Click to upload</strong> or drag and drop
+         </div>
+         <div class="fup-hint">PNG, JPG, GIF up to 5MB</div>
+       </div>
+       <div class="fup-list"></div>
+     </div>
+     FileUpload.init('[data-file-upload]', {
+       accept: 'image/*',
+       maxSize: 5 * 1024 * 1024,
+       multiple: true,
+       onAdd: function (file) { … }
+     });
+
+   Variants:
+     .fup-compact    — Smaller drop area
+     .fup-list-only  — Hide the drop area when files exist
+     .fup-thumbs     — Grid of thumbnails instead of list
+   ============================================ */
+
+.fup {
+  --fup-bg: rgba(255, 255, 255, 0.02);
+  --fup-border: rgba(255, 255, 255, 0.15);
+  --fup-border-hover: var(--primary, #818cf8);
+  --fup-fg: #ffffff;
+  --fup-muted: rgba(255, 255, 255, 0.6);
+  --fup-radius: 14px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.fup-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem 1.5rem;
+  background: var(--fup-bg);
+  border: 1.5px dashed var(--fup-border);
+  border-radius: var(--fup-radius);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+.fup-drop:hover {
+  border-color: var(--fup-border-hover);
+  background: rgba(129, 140, 248, 0.04);
+}
+.fup.is-dragging .fup-drop {
+  border-color: var(--fup-border-hover);
+  border-style: solid;
+  background: rgba(129, 140, 248, 0.1);
+}
+
+.fup-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(129, 140, 248, 0.18);
+  color: var(--fup-border-hover);
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.fup-text { color: var(--fup-fg); font-size: 0.9rem; }
+.fup-text strong { color: var(--fup-border-hover); }
+.fup-hint { color: var(--fup-muted); font-size: 0.75rem; }
+
+.fup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+.fup-list:empty { display: none; }
+
+.fup-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--surface-2, #14141f);
+  border: 1px solid var(--fup-border);
+  border-radius: 10px;
+}
+.fup-item-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  font-size: 0.7rem;
+  color: var(--fup-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.fup-item-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.fup-item-body { flex: 1; min-width: 0; }
+.fup-item-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fup-item-meta { font-size: 0.75rem; color: var(--fup-muted); }
+.fup-item-remove {
+  background: transparent;
+  border: none;
+  color: var(--fup-muted);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 0.25rem;
+}
+.fup-item-remove:hover { color: var(--fup-fg); }
+
+.fup-item-progress {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  margin-top: 0.4rem;
+  overflow: hidden;
+}
+.fup-item-progress > span {
+  display: block;
+  height: 100%;
+  width: var(--fup-progress, 0%);
+  background: var(--fup-border-hover);
+  transition: width 0.18s ease;
+}
+
+.fup-item-error { color: #f87171; font-size: 0.75rem; margin-top: 0.25rem; }
+
+/* ── Variants ── */
+.fup-compact .fup-drop { padding: 1rem 1.25rem; flex-direction: row; text-align: left; }
+.fup-compact .fup-icon { width: 32px; height: 32px; }
+
+.fup-list-only.has-files .fup-drop { display: none; }
+
+.fup-thumbs .fup-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+}
+.fup-thumbs .fup-item {
+  flex-direction: column;
+  padding: 0.4rem;
+  text-align: center;
+  position: relative;
+}
+.fup-thumbs .fup-item-thumb { width: 100%; height: 80px; }
+.fup-thumbs .fup-item-name { font-size: 0.7rem; }
+.fup-thumbs .fup-item-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  line-height: 1;
+}

@@ -1,0 +1,84 @@
+/* ============================================
+   RESIZABLE PANELS — Split-pane layout with draggable dividers
+   Inspired by VSCode / Linear sidebar / Notion
+   ============================================
+   Usage:
+     <div class="rpan" data-resizable-panels data-direction="horizontal">
+       <div class="rpan-panel" data-min="200" data-max="500">Left</div>
+       <div class="rpan-handle"></div>
+       <div class="rpan-panel">Right</div>
+     </div>
+     ResizablePanels.init('[data-resizable-panels]');
+
+   Variants:
+     rpan-vertical    — Vertical split (top/bottom)
+     rpan-no-handle   — Invisible handle (gutter zone only)
+   ============================================ */
+
+.rpan {
+  --rpan-handle-bg: transparent;
+  --rpan-handle-hover: rgba(129, 140, 248, 0.3);
+  --rpan-handle-size: 6px;
+  --rpan-bg: var(--surface, #0c0c14);
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: var(--rpan-bg);
+  overflow: hidden;
+}
+
+.rpan-vertical { flex-direction: column; }
+
+.rpan-panel {
+  overflow: auto;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.rpan-handle {
+  flex: 0 0 var(--rpan-handle-size);
+  background: var(--rpan-handle-bg);
+  position: relative;
+  cursor: col-resize;
+  transition: background 0.15s ease;
+  z-index: 1;
+}
+.rpan-handle::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+.rpan-handle:hover::after,
+.rpan-handle.is-active::after {
+  background: var(--rpan-handle-hover);
+}
+
+.rpan-vertical .rpan-handle {
+  cursor: row-resize;
+}
+
+/* Visible drag affordance (3 dots) */
+.rpan-handle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.rpan-vertical .rpan-handle::before {
+  width: 24px;
+  height: 2px;
+}
+.rpan-handle:hover::before,
+.rpan-handle.is-active::before { opacity: 1; }
+
+.rpan-no-handle .rpan-handle::before { display: none; }

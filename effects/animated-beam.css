@@ -1,0 +1,72 @@
+/* ============================================
+   ANIMATED BEAM — SVG beam connecting two DOM nodes
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <div class="animated-beam-container">
+       <div id="from" class="animated-beam-node">A</div>
+       <div id="to"   class="animated-beam-node">B</div>
+     </div>
+     AnimatedBeam.init('.animated-beam-container', { from: '#from', to: '#to' });
+
+   Variants:
+     .animated-beam-thick  — 3px stroke
+     .animated-beam-bold   — 4px stroke
+     .animated-beam-dashed — Dashed line
+     .animated-beam-glow   — Soft glow halo
+   ============================================ */
+
+.animated-beam-container {
+  --beam-stroke: 2px;
+  --beam-color-from: #c084fc;
+  --beam-color-to: #38bdf8;
+  --beam-duration: 3s;
+  --beam-bg: rgba(255, 255, 255, 0.12);
+  position: relative;
+  width: 100%;
+  isolation: isolate;
+}
+
+.animated-beam-container > svg.animated-beam-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+}
+
+.animated-beam-svg path.beam-bg {
+  fill: none;
+  stroke: var(--beam-bg);
+  stroke-width: var(--beam-stroke);
+}
+
+.animated-beam-svg path.beam-flow {
+  fill: none;
+  stroke: url(#animated-beam-gradient);
+  stroke-width: var(--beam-stroke);
+  stroke-linecap: round;
+}
+
+.animated-beam-node {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Variants ── */
+.animated-beam-thick  { --beam-stroke: 3px; }
+.animated-beam-bold   { --beam-stroke: 4px; }
+
+.animated-beam-dashed .beam-bg {
+  stroke-dasharray: 6 6;
+}
+
+.animated-beam-glow .beam-flow {
+  filter: drop-shadow(0 0 6px var(--beam-color-from));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-beam-svg path.beam-flow { animation: none; }
+}

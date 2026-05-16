@@ -1,0 +1,88 @@
+/* ============================================
+   METEORS — Diagonal falling streaks across a container
+   Inspired by Magic UI / Aceternity UI
+   ============================================
+   Usage:
+     <div class="meteors">
+       <!-- spans injected by Meteors.init() OR write them manually: -->
+       <span class="meteor"></span>
+       <span class="meteor"></span>
+       ...
+     </div>
+
+   Variants:
+     .meteors-dense   — Twice the streaks
+     .meteors-slow    — Longer fall duration
+     .meteors-amber   — Warm palette
+   ============================================ */
+
+.meteors {
+  --meteor-count: 20;
+  --meteor-color: #ffffff;
+  --meteor-trail: rgba(255, 255, 255, 0.35);
+  --meteor-duration: 5s;
+  --meteor-angle: 215deg;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.meteor {
+  position: absolute;
+  top: -50%;
+  left: var(--meteor-x, 50%);
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--meteor-color);
+  box-shadow: 0 0 0 1px var(--meteor-trail);
+  transform: rotate(var(--meteor-angle));
+  animation: meteor-fall var(--meteor-d, var(--meteor-duration)) linear infinite;
+  animation-delay: var(--meteor-delay, 0s);
+}
+
+/* Trail tail */
+.meteor::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 60px;
+  height: 1px;
+  transform: translateY(-50%);
+  background: linear-gradient(to left, var(--meteor-trail), transparent);
+  border-radius: 999px;
+}
+
+@keyframes meteor-fall {
+  0%   { transform: rotate(var(--meteor-angle)) translateX(0);    opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: rotate(var(--meteor-angle)) translateX(800px); opacity: 0; }
+}
+
+/* ── Variants ── */
+.meteors-dense  { --meteor-count: 40; }
+.meteors-sparse { --meteor-count: 10; }
+.meteors-slow   { --meteor-duration: 9s; }
+.meteors-fast   { --meteor-duration: 2.5s; }
+
+.meteors-amber  {
+  --meteor-color: #ffd166;
+  --meteor-trail: rgba(255, 209, 102, 0.45);
+}
+
+.meteors-mint {
+  --meteor-color: #7cf0bd;
+  --meteor-trail: rgba(124, 240, 189, 0.45);
+}
+
+.meteors-rose {
+  --meteor-color: #ff7eb6;
+  --meteor-trail: rgba(255, 126, 182, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meteor { animation: none; opacity: 0.3; }
+}

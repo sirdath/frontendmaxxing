@@ -1,0 +1,146 @@
+/* ============================================
+   CHAT INPUT — Composer with auto-grow textarea + attachments + send
+   Inspired by iMessage / Slack / Discord composer
+   ============================================
+   Usage:
+     <form class="cinp" data-chat-input>
+       <button type="button" class="cinp-attach" aria-label="Attach">📎</button>
+       <textarea class="cinp-text" placeholder="Type a message…" rows="1"></textarea>
+       <button type="button" class="cinp-emoji" aria-label="Emoji">🙂</button>
+       <button type="submit" class="cinp-send" disabled>↑</button>
+     </form>
+     ChatInput.init('[data-chat-input]', { onSend: function (text) {…} });
+
+   Variants:
+     cinp-pill         — Fully rounded
+     cinp-card         — Bordered card style
+     cinp-slack        — Slack-style toolbar bar
+   ============================================ */
+
+.cinp {
+  --cinp-bg: var(--surface-2, #14141f);
+  --cinp-border: rgba(255, 255, 255, 0.12);
+  --cinp-fg: #ffffff;
+  --cinp-muted: rgba(255, 255, 255, 0.55);
+  --cinp-accent: #818cf8;
+  --cinp-radius: 16px;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding: 0.5rem 0.65rem;
+  background: var(--cinp-bg);
+  border: 1px solid var(--cinp-border);
+  border-radius: var(--cinp-radius);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.cinp:focus-within {
+  border-color: var(--cinp-accent);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.12);
+}
+
+.cinp-attach, .cinp-emoji {
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: none;
+  color: var(--cinp-muted);
+  font-size: 1.05rem;
+  cursor: pointer;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.cinp-attach:hover, .cinp-emoji:hover {
+  color: var(--cinp-fg);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.cinp-text {
+  flex: 1;
+  min-height: 36px;
+  max-height: 160px;
+  padding: 0.5rem 0.5rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--cinp-fg);
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  resize: none;
+  overflow-y: auto;
+}
+.cinp-text::placeholder { color: var(--cinp-muted); }
+
+.cinp-send {
+  width: 36px;
+  height: 36px;
+  background: var(--cinp-accent);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.cinp-send:hover:not([disabled]) { filter: brightness(1.1); transform: scale(1.05); }
+.cinp-send[disabled] {
+  background: rgba(255, 255, 255, 0.1);
+  cursor: not-allowed;
+  color: var(--cinp-muted);
+}
+
+/* Variants */
+.cinp-pill { border-radius: 999px; padding-inline: 0.5rem; }
+.cinp-card { border-radius: 14px; padding: 0.85rem; }
+.cinp-slack {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0.65rem 0.85rem;
+}
+.cinp-slack .cinp-toolbar {
+  display: flex;
+  gap: 0.25rem;
+  padding-top: 0.4rem;
+  margin-top: 0.4rem;
+  border-top: 1px solid var(--cinp-border);
+}
+.cinp-slack .cinp-toolbar button {
+  background: transparent;
+  border: none;
+  color: var(--cinp-muted);
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.cinp-slack .cinp-toolbar button:hover { background: rgba(255,255,255,0.06); color: var(--cinp-fg); }
+
+/* Inline attachments preview */
+.cinp-attachments {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+.cinp-attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  background: rgba(129, 140, 248, 0.18);
+  color: #c7d2fe;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+.cinp-attachment button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+  font-size: 0.95rem;
+  line-height: 1;
+}

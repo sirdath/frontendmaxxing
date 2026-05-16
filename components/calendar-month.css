@@ -1,0 +1,178 @@
+/* ============================================
+   CALENDAR MONTH — Full month-grid calendar with events
+   Inspired by Google Calendar / Apple Calendar / Cron
+   ============================================
+   Usage:
+     <div class="calm">
+       <header class="calm-header">
+         <button class="calm-nav" data-calm-prev>‹</button>
+         <h2 class="calm-title">February 2026</h2>
+         <button class="calm-nav" data-calm-next>›</button>
+         <button class="calm-today">Today</button>
+       </header>
+       <div class="calm-week"><span>Sun</span><span>Mon</span>…<span>Sat</span></div>
+       <div class="calm-grid">
+         <!-- 42 day cells injected by JS -->
+       </div>
+     </div>
+     CalendarMonth.init('.calm', {
+       events: [{ date: '2026-02-14', label: 'Heart day', color: '#f472b6' }]
+     });
+
+   Variants:
+     calm-compact     — Smaller cells
+     calm-no-other    — Hide leading/trailing other-month days
+   ============================================ */
+
+.calm {
+  --calm-bg: var(--surface-2, #14141f);
+  --calm-border: rgba(255, 255, 255, 0.06);
+  --calm-fg: #ffffff;
+  --calm-muted: rgba(255, 255, 255, 0.4);
+  --calm-accent: #818cf8;
+  --calm-cell-h: 96px;
+  background: var(--calm-bg);
+  border: 1px solid var(--calm-border);
+  border-radius: 14px;
+  overflow: hidden;
+  color: var(--calm-fg);
+}
+
+.calm-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--calm-border);
+}
+.calm-title { margin: 0; font-size: 1rem; font-weight: 600; flex: 1; text-align: center; }
+.calm-nav, .calm-today {
+  width: 30px; height: 30px;
+  background: transparent;
+  border: 1px solid var(--calm-border);
+  border-radius: 7px;
+  color: var(--calm-fg);
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: grid; place-items: center;
+}
+.calm-today { width: auto; padding: 0 0.65rem; font-size: 0.75rem; }
+.calm-nav:hover, .calm-today:hover { background: rgba(255, 255, 255, 0.06); }
+
+.calm-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--calm-border);
+}
+.calm-week > span {
+  text-align: center;
+  padding: 0.5rem 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--calm-muted);
+}
+
+.calm-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: var(--calm-cell-h);
+}
+
+.calm-cell {
+  border-right: 1px solid var(--calm-border);
+  border-bottom: 1px solid var(--calm-border);
+  padding: 0.4rem 0.5rem;
+  position: relative;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;
+}
+.calm-cell:hover { background: rgba(255, 255, 255, 0.03); }
+.calm-cell:nth-child(7n) { border-right: none; }
+.calm-cell.is-other { color: var(--calm-muted); }
+.calm-no-other .calm-cell.is-other { visibility: hidden; }
+
+.calm-cell.is-today .calm-day-num {
+  background: var(--calm-accent);
+  color: #fff;
+}
+.calm-cell.is-selected {
+  background: rgba(129, 140, 248, 0.1);
+}
+
+.calm-day-num {
+  align-self: flex-start;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.calm-events {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.calm-event {
+  --c: #818cf8;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.05rem 0.4rem;
+  background: color-mix(in srgb, var(--c) 20%, transparent);
+  border-left: 2px solid var(--c);
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calm-more {
+  font-size: 0.7rem;
+  color: var(--calm-muted);
+  margin-top: auto;
+}
+
+.calm-compact { --calm-cell-h: 60px; }
+.calm-compact .calm-day-num { font-size: 0.7rem; min-width: 18px; height: 18px; }
+.calm-compact .calm-event { font-size: 0.65rem; padding: 0 0.3rem; }
+
+/* Variant: mini calendar (used as a sidebar/widget) */
+.calm-mini { --calm-cell-h: 32px; max-width: 280px; }
+.calm-mini .calm-header { padding: 0.5rem 0.75rem; }
+.calm-mini .calm-title { font-size: 0.85rem; }
+.calm-mini .calm-events,
+.calm-mini .calm-more { display: none; }
+.calm-mini .calm-cell {
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+}
+.calm-mini .calm-day-num {
+  width: 26px; height: 26px;
+  min-width: 26px;
+  padding: 0;
+  margin: auto;
+}
+.calm-mini .calm-cell.is-event::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--calm-accent);
+}

@@ -1,0 +1,132 @@
+/* ============================================
+   PAGINATION — Numeric, prev/next, load-more, infinite-scroll
+   Inspired by GitHub / Linear / Stripe Dashboard
+   ============================================
+   Usage (numeric):
+     <nav class="pag" data-pagination data-pag-total="120" data-pag-page="1" data-pag-size="10"></nav>
+     Pagination.init('[data-pagination]', { onPage: function (page) {…} });
+
+   Usage (load-more):
+     <button class="pag-load" data-pag-load>Load more</button>
+
+   Variants:
+     pag-rounded
+     pag-pill
+     pag-minimal     — Only prev/next + "Page N of M"
+     pag-compact     — Smaller
+   ============================================ */
+
+.pag {
+  --pag-bg: rgba(255, 255, 255, 0.04);
+  --pag-border: rgba(255, 255, 255, 0.08);
+  --pag-fg: #ffffff;
+  --pag-muted: rgba(255, 255, 255, 0.55);
+  --pag-accent: #818cf8;
+  --pag-hover: rgba(255, 255, 255, 0.08);
+  --pag-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+}
+
+.pag-rounded { --pag-radius: 999px; }
+.pag-pill .pag-page { border-radius: 999px; }
+
+.pag-page,
+.pag-prev,
+.pag-next,
+.pag-jump {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 0.6rem;
+  background: var(--pag-bg);
+  border: 1px solid var(--pag-border);
+  border-radius: var(--pag-radius);
+  color: var(--pag-fg);
+  font: inherit;
+  font-size: 0.825rem;
+  cursor: pointer;
+  display: inline-grid;
+  place-items: center;
+  font-variant-numeric: tabular-nums;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.pag-page:hover,
+.pag-prev:hover,
+.pag-next:hover { background: var(--pag-hover); }
+
+.pag-page.is-active {
+  background: var(--pag-accent);
+  border-color: var(--pag-accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.pag-prev[disabled],
+.pag-next[disabled] {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.pag-ellipsis {
+  padding: 0 0.35rem;
+  color: var(--pag-muted);
+  font-weight: 700;
+}
+
+.pag-info {
+  margin: 0 0.5rem;
+  color: var(--pag-muted);
+}
+
+.pag-jump {
+  background: transparent;
+  width: 56px;
+  padding: 0 0.35rem;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+/* Load-more & infinite-scroll */
+.pag-load {
+  padding: 0.75rem 1.5rem;
+  background: var(--pag-bg);
+  border: 1px solid var(--pag-border);
+  border-radius: 10px;
+  color: var(--pag-fg);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.15s ease;
+}
+.pag-load:hover { background: var(--pag-hover); }
+.pag-load.is-loading {
+  pointer-events: none;
+  color: var(--pag-muted);
+}
+.pag-load.is-loading::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: pag-spin 0.7s linear infinite;
+}
+@keyframes pag-spin { to { transform: rotate(360deg); } }
+
+.pag-sentinel { height: 1px; opacity: 0; }
+
+/* Minimal style */
+.pag-minimal { gap: 0.5rem; }
+.pag-minimal .pag-page,
+.pag-minimal .pag-ellipsis { display: none; }
+
+.pag-compact .pag-page,
+.pag-compact .pag-prev,
+.pag-compact .pag-next { min-width: 28px; height: 28px; padding: 0 0.4rem; font-size: 0.75rem; }

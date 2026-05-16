@@ -1,0 +1,231 @@
+/* ============================================
+   SHORTCUT CHEATSHEET — "?" overlay listing app keybindings
+   Inspired by GitHub, Gmail, Linear, Vercel, Trello cheatsheets
+   ============================================
+   Usage:
+     <button data-shc-trigger>Shortcuts</button>
+
+     ShortcutCheatsheet.init({
+       trigger: 'shift+?',     // also bind via [data-shc-trigger]
+       groups: [
+         { title: 'General', items: [
+           { keys: ['?'], label: 'Show shortcuts' },
+           { keys: ['mod', 'k'], label: 'Open command palette' },
+           { keys: ['mod', '/'], label: 'Toggle sidebar' },
+         ]},
+         { title: 'Navigation', items: [
+           { keys: ['j'], label: 'Next item' },
+           { keys: ['k'], label: 'Previous item' },
+           { keys: ['g', 'h'], label: 'Go home', combo: 'sequence' },
+         ]}
+       ]
+     });
+
+   Modal anatomy:
+     .shc-backdrop
+     .shc-modal
+       .shc-head (title + close)
+       .shc-cols (groups in columns)
+         .shc-group → .shc-row → .shc-keys + .shc-label
+       .shc-foot (search / kbd help)
+
+   Variants:
+     shc-modal-wide   — 3+ columns
+     shc-modal-tall   — taller, scrolls
+     shc-cmd-style    — flat list with kbd suffix (Raycast-like)
+   ============================================ */
+
+.shc-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 2000;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+.shc-backdrop.is-open { opacity: 1; }
+
+.shc-modal {
+  position: fixed;
+  z-index: 2010;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  width: min(820px, calc(100vw - 2rem));
+  max-height: min(640px, calc(100vh - 2rem));
+  background: rgba(20, 20, 30, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.shc-modal.is-open {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.shc-head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.15rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.shc-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.shc-subtitle {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+.shc-search {
+  margin-left: auto;
+  flex: 0 1 240px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-size: 0.78rem;
+}
+.shc-search input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font: inherit;
+  outline: none;
+}
+.shc-search input::placeholder { color: rgba(255, 255, 255, 0.4); }
+.shc-search-icon { color: rgba(255, 255, 255, 0.4); }
+
+.shc-close {
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+}
+.shc-close:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+.shc-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem 1.15rem 1rem;
+}
+
+.shc-cols {
+  column-count: 2;
+  column-gap: 2rem;
+}
+.shc-modal-wide .shc-cols { column-count: 3; }
+@media (max-width: 760px) { .shc-cols { column-count: 1; } }
+
+.shc-group {
+  break-inside: avoid;
+  margin-bottom: 1.2rem;
+}
+.shc-group-title {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0.45rem;
+}
+
+.shc-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.2rem;
+  border-radius: 4px;
+}
+.shc-row:hover { background: rgba(255, 255, 255, 0.04); }
+
+.shc-label {
+  flex: 1;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.shc-keys {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex-shrink: 0;
+}
+.shc-kbd {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  min-width: 1.4rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.1;
+}
+.shc-kbd-plus {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.65rem;
+}
+.shc-kbd-then {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.65rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  margin: 0 0.15rem;
+}
+
+.shc-foot {
+  padding: 0.55rem 1.15rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* Raycast-style flat list */
+.shc-cmd-style .shc-cols { column-count: 1; }
+.shc-cmd-style .shc-group-title {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 0.5rem;
+}
+.shc-cmd-style .shc-group:first-child .shc-group-title { border-top: 0; margin-top: 0; }
+.shc-cmd-style .shc-row { padding: 0.4rem 0.5rem; }
+
+/* Filter-no-match */
+.shc-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.82rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shc-modal, .shc-backdrop { transition: none; }
+}

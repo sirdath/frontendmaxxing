@@ -1,0 +1,55 @@
+/* ============================================
+   IMAGE DISTORTION HOVER — SVG-filter warp on cursor hover
+   Inspired by Codrops hover-distortion demos
+   ============================================
+   Usage:
+     <div class="idh" data-idh>
+       <img src="..." alt="">
+     </div>
+     ImageDistortionHover.init('[data-idh]');
+
+   Variants:
+     .idh-soft   — Gentler displacement
+     .idh-strong — Stronger displacement
+     .idh-rgb    — Channel-split RGB chromatic aberration on hover
+   ============================================ */
+
+.idh {
+  --idh-amount: 30;
+  --idh-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--idh-radius);
+  display: block;
+}
+
+.idh img,
+.idh video {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: filter 0.4s ease, transform 0.5s cubic-bezier(0.2, 0.9, 0.25, 1);
+  will-change: filter, transform;
+}
+
+.idh.is-hover img,
+.idh.is-hover video {
+  filter: url(#idh-displacement);
+  transform: scale(1.04);
+}
+
+.idh-soft   { --idh-amount: 12; }
+.idh-strong { --idh-amount: 60; }
+
+.idh-rgb.is-hover img,
+.idh-rgb.is-hover video {
+  filter:
+    url(#idh-displacement)
+    drop-shadow(2px 0 0 rgba(255, 0, 80, 0.55))
+    drop-shadow(-2px 0 0 rgba(0, 200, 255, 0.55));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .idh img, .idh video { transition: none; }
+  .idh.is-hover img, .idh.is-hover video { filter: none; transform: none; }
+}

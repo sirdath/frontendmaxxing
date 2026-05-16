@@ -1,0 +1,104 @@
+/* ============================================
+   EMPTY STATE — 6 patterns (zero-data, no-results, no-permission, offline, first-use, error-light)
+   Inspired by Linear / Stripe / Notion empty states
+   ============================================
+   Usage:
+     <div class="estate">
+       <div class="estate-icon">📭</div>
+       <h3 class="estate-title">No messages yet</h3>
+       <p class="estate-text">When someone messages you, they'll show up here.</p>
+       <button class="estate-action">Start a chat</button>
+     </div>
+
+   Variants (apply to .estate):
+     .estate-search    — Use 🔍 styling intent
+     .estate-lock      — No permission
+     .estate-offline   — Offline / connection lost
+     .estate-firstuse  — Onboarding empty
+     .estate-error     — Light error variant
+     .estate-compact   — Tighter padding
+     .estate-card      — Sits inside a bordered card
+   ============================================ */
+
+.estate {
+  --estate-bg: transparent;
+  --estate-fg: var(--text, #ffffff);
+  --estate-muted: rgba(255, 255, 255, 0.55);
+  --estate-accent: #818cf8;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.estate-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(129, 140, 248, 0.14);
+  color: var(--estate-accent);
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.estate-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--estate-fg);
+}
+
+.estate-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--estate-muted);
+  line-height: 1.55;
+}
+
+.estate-action {
+  margin-top: 1rem;
+  padding: 0.55rem 1.1rem;
+  background: var(--estate-accent);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.estate-action:hover { filter: brightness(1.1); }
+
+/* ── Variants ── */
+.estate-compact { padding: 1.5rem 1rem; }
+.estate-card {
+  background: var(--surface-2, #14141f);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+}
+
+.estate-search .estate-icon  { background: rgba(34, 211, 238, 0.14); color: #22d3ee; }
+.estate-lock .estate-icon    { background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.7); }
+.estate-offline .estate-icon { background: rgba(251, 113, 133, 0.14); color: #fb7185; }
+.estate-firstuse .estate-icon{ background: linear-gradient(135deg, rgba(129,140,248,0.2), rgba(244,114,182,0.2)); color: #c084fc; }
+.estate-error .estate-icon   { background: rgba(239, 68, 68, 0.14); color: #f87171; }
+
+/* Inline / list-empty variant: smaller, centered inside a container */
+.estate-inline {
+  padding: 1.25rem;
+  max-width: 320px;
+}
+.estate-inline .estate-icon {
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  border-radius: 12px;
+}
+.estate-inline .estate-title { font-size: 0.95rem; }
+.estate-inline .estate-text { font-size: 0.825rem; }

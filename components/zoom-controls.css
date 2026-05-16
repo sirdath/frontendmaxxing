@@ -1,0 +1,70 @@
+/* ============================================
+   ZOOM CONTROLS — Canvas zoom toolbar (− 100% + ⤢)
+   Inspired by Figma / Linear / Miro / draw.io
+   ============================================
+   Usage:
+     <div class="zoom" data-zoom-controls>
+       <button data-zoom-out>−</button>
+       <button class="zoom-level" data-zoom-level>100%</button>
+       <button data-zoom-in>+</button>
+       <button data-zoom-fit title="Fit">⤢</button>
+       <button data-zoom-reset title="Reset">100</button>
+     </div>
+     ZoomControls.init('[data-zoom-controls]', {
+       onChange: function (pct) { applyZoom(pct); },
+       min: 25, max: 400, step: 25
+     });
+
+   Variants:
+     zoom-pill       — Rounded pill
+     zoom-vertical
+   ============================================ */
+
+.zoom {
+  --zoom-bg: var(--surface-2, #14141f);
+  --zoom-border: rgba(255, 255, 255, 0.1);
+  --zoom-fg: #ffffff;
+  --zoom-hover: rgba(255, 255, 255, 0.06);
+  display: inline-flex;
+  align-items: center;
+  background: var(--zoom-bg);
+  border: 1px solid var(--zoom-border);
+  border-radius: 10px;
+  padding: 3px;
+  color: var(--zoom-fg);
+  font-family: ui-monospace, monospace;
+}
+
+.zoom button {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  color: var(--zoom-fg);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  transition: background 0.12s ease;
+}
+.zoom button:hover { background: var(--zoom-hover); }
+
+.zoom .zoom-level {
+  width: auto;
+  padding: 0 0.7rem;
+  font-variant-numeric: tabular-nums;
+  min-width: 60px;
+}
+
+.zoom-pill { border-radius: 999px; }
+
+.zoom-vertical {
+  flex-direction: column;
+}
+.zoom-vertical .zoom-level {
+  width: 28px;
+  padding: 0;
+  font-size: 0.7rem;
+}

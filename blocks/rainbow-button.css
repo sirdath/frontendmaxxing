@@ -1,0 +1,117 @@
+/* ============================================
+   RAINBOW BUTTON — Animated rainbow gradient button with glow
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <button class="rainbow-btn">Get started</button>
+
+   Variants:
+     .rainbow-btn-outline — Outlined, fill on hover
+     .rainbow-btn-flat    — No glow halo
+     .rainbow-btn-pastel  — Softer palette
+     .rainbow-btn-sm/-lg  — Size variants
+   ============================================ */
+
+.rainbow-btn {
+  --rb-c1: #ff7eb6;
+  --rb-c2: #ffd166;
+  --rb-c3: #7cf0bd;
+  --rb-c4: #38bdf8;
+  --rb-c5: #c084fc;
+  --rb-duration: 3s;
+  --rb-radius: 999px;
+  --rb-pad-y: 0.75rem;
+  --rb-pad-x: 1.75rem;
+  --rb-text: #0c0c14;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: var(--rb-pad-y) var(--rb-pad-x);
+  border: none;
+  border-radius: var(--rb-radius);
+  background:
+    linear-gradient(90deg, var(--rb-c1), var(--rb-c2), var(--rb-c3), var(--rb-c4), var(--rb-c5), var(--rb-c1));
+  background-size: 200% 100%;
+  color: var(--rb-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  isolation: isolate;
+  animation: rainbow-btn-slide var(--rb-duration) linear infinite;
+  transition: transform 0.18s ease;
+}
+
+.rainbow-btn::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  z-index: -1;
+  border-radius: inherit;
+  background: inherit;
+  background-size: inherit;
+  animation: inherit;
+  filter: blur(14px);
+  opacity: 0.7;
+}
+
+.rainbow-btn:hover { transform: translateY(-1px) scale(1.02); }
+.rainbow-btn:active { transform: translateY(0) scale(1); }
+
+@keyframes rainbow-btn-slide {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* ── Variants ── */
+.rainbow-btn-flat::before { display: none; }
+
+.rainbow-btn-outline {
+  background:
+    linear-gradient(var(--surface, #0c0c14), var(--surface, #0c0c14)) padding-box,
+    linear-gradient(90deg, var(--rb-c1), var(--rb-c2), var(--rb-c3), var(--rb-c4), var(--rb-c5), var(--rb-c1)) border-box;
+  background-size: auto, 200% 100%;
+  border: 2px solid transparent;
+  color: #fff;
+  animation: rainbow-btn-slide-bg var(--rb-duration) linear infinite;
+}
+
+@keyframes rainbow-btn-slide-bg {
+  0%   { background-position: 0 0, 0% 50%; }
+  100% { background-position: 0 0, 200% 50%; }
+}
+
+.rainbow-btn-pastel {
+  --rb-c1: #fbcfe8;
+  --rb-c2: #fef3c7;
+  --rb-c3: #bbf7d0;
+  --rb-c4: #bfdbfe;
+  --rb-c5: #ddd6fe;
+}
+
+.rainbow-btn-vivid {
+  --rb-c1: #ff00d4;
+  --rb-c2: #ffea00;
+  --rb-c3: #00ff88;
+  --rb-c4: #00f0ff;
+  --rb-c5: #9d00ff;
+}
+
+.rainbow-btn-sm {
+  --rb-pad-y: 0.5rem;
+  --rb-pad-x: 1.25rem;
+  font-size: 0.875rem;
+}
+
+.rainbow-btn-lg {
+  --rb-pad-y: 1rem;
+  --rb-pad-x: 2.5rem;
+  font-size: 1.1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rainbow-btn,
+  .rainbow-btn-outline { animation: none; }
+  .rainbow-btn::before { animation: none; }
+}

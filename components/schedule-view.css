@@ -1,0 +1,186 @@
+/* ============================================
+   SCHEDULE VIEW — Week-grid calendar with events
+   Inspired by Google Calendar / Linear cycle / Cron
+   ============================================
+   Usage:
+     <div class="schd">
+       <div class="schd-header">
+         <div class="schd-corner"></div>
+         <div class="schd-days">
+           <div class="schd-day"><span class="schd-day-name">Mon</span><span class="schd-day-num">12</span></div>
+           …
+         </div>
+       </div>
+       <div class="schd-grid">
+         <div class="schd-times">
+           <div>9</div><div>10</div><div>11</div><div>12</div><div>1</div><div>2</div>
+         </div>
+         <div class="schd-tracks">
+           <div class="schd-track">
+             <div class="schd-event" style="--row:1; --span:2; --color:#818cf8;">
+               <strong>Standup</strong>
+               <span>9:00 – 9:30</span>
+             </div>
+           </div>
+           …
+         </div>
+       </div>
+     </div>
+
+   Variants:
+     schd-compact     — Smaller cells
+     schd-day         — Single-column day view
+   ============================================ */
+
+.schd {
+  --schd-bg: var(--surface-2, #14141f);
+  --schd-border: rgba(255, 255, 255, 0.06);
+  --schd-fg: #ffffff;
+  --schd-muted: rgba(255, 255, 255, 0.55);
+  --schd-row-h: 48px;
+  background: var(--schd-bg);
+  border: 1px solid var(--schd-border);
+  border-radius: 14px;
+  overflow: hidden;
+  color: var(--schd-fg);
+}
+
+.schd-header {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  border-bottom: 1px solid var(--schd-border);
+}
+
+.schd-corner {
+  border-right: 1px solid var(--schd-border);
+}
+
+.schd-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+.schd-day {
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+  border-right: 1px solid var(--schd-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.schd-day:last-child { border-right: none; }
+.schd-day.is-today { background: rgba(129, 140, 248, 0.08); }
+
+.schd-day-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--schd-muted);
+}
+.schd-day-num {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.schd-day.is-today .schd-day-num {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  margin: 0 auto;
+  background: #818cf8;
+  border-radius: 50%;
+  line-height: 28px;
+  color: #fff;
+}
+
+.schd-grid {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+}
+
+.schd-times {
+  display: grid;
+  grid-auto-rows: var(--schd-row-h);
+  border-right: 1px solid var(--schd-border);
+}
+.schd-times > div {
+  padding: 0.35rem 0.5rem 0;
+  font-size: 0.7rem;
+  color: var(--schd-muted);
+  text-align: right;
+  border-bottom: 1px dashed var(--schd-border);
+}
+
+.schd-tracks {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+.schd-track {
+  position: relative;
+  border-right: 1px solid var(--schd-border);
+  display: grid;
+  grid-auto-rows: var(--schd-row-h);
+}
+.schd-track:last-child { border-right: none; }
+.schd-track > .schd-cell {
+  border-bottom: 1px dashed var(--schd-border);
+}
+
+.schd-event {
+  --row: 1;
+  --span: 1;
+  --color: #818cf8;
+  position: absolute;
+  left: 4px; right: 4px;
+  top: calc((var(--row) - 1) * var(--schd-row-h) + 2px);
+  height: calc(var(--span) * var(--schd-row-h) - 4px);
+  padding: 0.3rem 0.5rem;
+  background: color-mix(in srgb, var(--color) 25%, transparent);
+  border-left: 3px solid var(--color);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: var(--schd-fg);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.schd-event strong {
+  font-weight: 600;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.schd-event span {
+  font-size: 0.65rem;
+  color: var(--schd-muted);
+}
+
+/* Now indicator */
+.schd-now {
+  position: absolute;
+  left: 0; right: 0;
+  top: var(--schd-now-y, 0);
+  height: 2px;
+  background: #ef4444;
+  z-index: 2;
+  pointer-events: none;
+}
+.schd-now::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  background: #ef4444;
+  border-radius: 50%;
+}
+
+.schd-compact { --schd-row-h: 36px; }
+
+.schd-day-mode .schd-days,
+.schd-day-mode .schd-tracks {
+  grid-template-columns: 1fr;
+}

@@ -1,0 +1,187 @@
+/* ============================================
+   COLOR PICKER — Hue + saturation + alpha + swatches + hex
+   Inspired by react-colorful / Figma color panel
+   ============================================
+   Usage:
+     <div class="cp" data-color-picker>
+       <button class="cp-trigger" style="--cp-value:#818cf8;"></button>
+       <div class="cp-panel">
+         <div class="cp-area">
+           <div class="cp-area-thumb"></div>
+         </div>
+         <div class="cp-controls">
+           <div class="cp-hue"><div class="cp-hue-thumb"></div></div>
+           <div class="cp-alpha"><div class="cp-alpha-thumb"></div></div>
+         </div>
+         <div class="cp-bottom">
+           <input class="cp-hex" maxlength="9">
+           <div class="cp-preview"></div>
+         </div>
+         <div class="cp-swatches"></div>
+       </div>
+     </div>
+     ColorPicker.init('[data-color-picker]', { value: '#818cf8' });
+
+   Variants:
+     .cp-inline     — Panel always open (no trigger)
+     .cp-no-alpha   — Hide alpha slider
+     .cp-no-swatches — Hide swatches row
+   ============================================ */
+
+.cp {
+  --cp-bg: var(--surface-2, #14141f);
+  --cp-border: rgba(255, 255, 255, 0.12);
+  --cp-fg: #ffffff;
+  --cp-muted: rgba(255, 255, 255, 0.6);
+  --cp-radius: 10px;
+  --cp-value: #818cf8;
+  position: relative;
+  display: inline-block;
+}
+
+.cp-trigger {
+  width: 40px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1.5px solid var(--cp-border);
+  background:
+    linear-gradient(var(--cp-value), var(--cp-value)),
+    repeating-conic-gradient(rgba(255,255,255,0.15) 0% 25%, rgba(255,255,255,0.08) 0% 50%) 0 0 / 8px 8px;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+.cp-trigger:hover { transform: scale(1.04); }
+.cp.is-open .cp-trigger { border-color: var(--cp-value); }
+
+.cp-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 50;
+  width: 260px;
+  background: var(--cp-bg);
+  border: 1px solid var(--cp-border);
+  border-radius: var(--cp-radius);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+  padding: 0.85rem;
+  display: none;
+}
+.cp.is-open .cp-panel { display: block; }
+.cp-inline .cp-trigger { display: none; }
+.cp-inline .cp-panel { display: block; position: static; }
+
+/* Saturation/value area */
+.cp-area {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  border-radius: 8px;
+  background:
+    linear-gradient(to top, #000, transparent),
+    linear-gradient(to right, #fff, hsl(var(--cp-hue, 240) 100% 50%));
+  cursor: crosshair;
+  overflow: hidden;
+}
+.cp-area-thumb {
+  position: absolute;
+  left: var(--cp-sat-x, 50%);
+  top:  var(--cp-sat-y, 50%);
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+/* Hue + alpha sliders */
+.cp-controls {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.cp-hue, .cp-alpha {
+  position: relative;
+  height: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.cp-hue {
+  background: linear-gradient(to right,
+    hsl(0,100%,50%), hsl(60,100%,50%), hsl(120,100%,50%),
+    hsl(180,100%,50%), hsl(240,100%,50%), hsl(300,100%,50%),
+    hsl(360,100%,50%));
+}
+.cp-alpha {
+  background:
+    linear-gradient(to right, transparent, hsl(var(--cp-hue, 240) 100% 50%)),
+    repeating-conic-gradient(rgba(255,255,255,0.2) 0% 25%, rgba(255,255,255,0.08) 0% 50%) 0 0 / 8px 8px;
+}
+.cp-hue-thumb, .cp-alpha-thumb {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: hsl(var(--cp-hue, 240) 100% 50%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.cp-hue-thumb { left: calc(var(--cp-hue, 240) / 360 * 100%); }
+.cp-alpha-thumb { left: calc(var(--cp-alpha, 1) * 100%); }
+.cp-no-alpha .cp-alpha { display: none; }
+
+/* Bottom: hex input + preview */
+.cp-bottom {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+.cp-hex {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--cp-border);
+  border-radius: 7px;
+  color: var(--cp-fg);
+  font: inherit;
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  outline: none;
+}
+.cp-hex:focus { border-color: var(--cp-value); }
+.cp-preview {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--cp-border);
+  background:
+    linear-gradient(var(--cp-value), var(--cp-value)),
+    repeating-conic-gradient(rgba(255,255,255,0.15) 0% 25%, rgba(255,255,255,0.08) 0% 50%) 0 0 / 8px 8px;
+}
+
+/* Swatches */
+.cp-swatches {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.3rem;
+  margin-top: 0.75rem;
+}
+.cp-swatches:empty { display: none; }
+.cp-swatch {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 1.5px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  padding: 0;
+}
+.cp-swatch:hover { transform: scale(1.1); }
+.cp-no-swatches .cp-swatches { display: none; }

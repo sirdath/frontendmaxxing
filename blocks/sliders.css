@@ -1,0 +1,147 @@
+/* ============================================
+   SLIDERS — Range slider variants (CSS-only baseline + JS enhancements)
+   Inspired by uiverse.io / animata / Vercel UI
+   ============================================
+   Usage (native range):
+     <input type="range" class="sld">
+     <input type="range" class="sld sld-thick">
+
+   Usage (custom, with progress fill — needs Sliders.init):
+     <div class="sld-wrap" data-sld>
+       <input type="range" class="sld" value="40">
+       <div class="sld-value">40</div>
+     </div>
+     Sliders.init('[data-sld]');
+
+   Variants:
+     sld-thick       — Larger thumb + track
+     sld-glow        — Glowing thumb
+     sld-vertical    — Vertical orientation
+     sld-segments    — Tick marks at intervals (use --sld-segments)
+     sld-color-pink/cyan/amber/mint — palette presets
+   ============================================ */
+
+.sld {
+  --sld-track: rgba(255, 255, 255, 0.1);
+  --sld-fill: #818cf8;
+  --sld-thumb: #ffffff;
+  --sld-h: 6px;
+  --sld-thumb-size: 18px;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--sld-h);
+  background: transparent;
+  cursor: pointer;
+  --sld-progress: 50%;
+}
+
+.sld:focus { outline: none; }
+
+/* Track (WebKit) */
+.sld::-webkit-slider-runnable-track {
+  height: var(--sld-h);
+  border-radius: 999px;
+  background: linear-gradient(to right,
+    var(--sld-fill) 0%,
+    var(--sld-fill) var(--sld-progress, 50%),
+    var(--sld-track) var(--sld-progress, 50%),
+    var(--sld-track) 100%);
+}
+
+/* Track (Firefox) */
+.sld::-moz-range-track {
+  height: var(--sld-h);
+  border-radius: 999px;
+  background: var(--sld-track);
+}
+.sld::-moz-range-progress {
+  height: var(--sld-h);
+  border-radius: 999px;
+  background: var(--sld-fill);
+}
+
+/* Thumb */
+.sld::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--sld-thumb-size);
+  height: var(--sld-thumb-size);
+  border-radius: 50%;
+  background: var(--sld-thumb);
+  border: 2px solid var(--sld-fill);
+  margin-top: calc((var(--sld-h) - var(--sld-thumb-size)) / 2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.sld::-moz-range-thumb {
+  width: var(--sld-thumb-size);
+  height: var(--sld-thumb-size);
+  border-radius: 50%;
+  background: var(--sld-thumb);
+  border: 2px solid var(--sld-fill);
+  cursor: pointer;
+}
+
+.sld:hover::-webkit-slider-thumb { transform: scale(1.1); }
+.sld:active::-webkit-slider-thumb { transform: scale(0.95); }
+
+/* ── Variants ── */
+.sld-thick { --sld-h: 10px; --sld-thumb-size: 26px; }
+.sld-thin  { --sld-h: 3px;  --sld-thumb-size: 14px; }
+
+.sld-glow::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.25), 0 0 14px rgba(129, 140, 248, 0.6);
+}
+
+.sld-vertical {
+  writing-mode: vertical-lr;   /* modern */
+  -webkit-appearance: slider-vertical;
+  appearance: slider-vertical;
+  width: var(--sld-h, 6px);
+  height: 200px;
+}
+
+/* Color presets */
+.sld-color-pink  { --sld-fill: #f472b6; }
+.sld-color-cyan  { --sld-fill: #22d3ee; }
+.sld-color-amber { --sld-fill: #f59e0b; }
+.sld-color-mint  { --sld-fill: #4ade80; }
+.sld-color-rose  { --sld-fill: #fb7185; }
+
+/* Wrap with value bubble */
+.sld-wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sld-value {
+  display: inline-block;
+  align-self: flex-end;
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--text-muted, rgba(255, 255, 255, 0.7));
+}
+
+/* Segments / tick marks */
+.sld-segments {
+  position: relative;
+}
+.sld-segments::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: calc(50% - var(--sld-h) / 2 - 4px);
+  height: 4px;
+  background-image:
+    repeating-linear-gradient(to right,
+      transparent 0,
+      transparent calc(100% / var(--sld-segments, 4) - 1px),
+      rgba(255,255,255,0.25) calc(100% / var(--sld-segments, 4) - 1px),
+      rgba(255,255,255,0.25) calc(100% / var(--sld-segments, 4)));
+  pointer-events: none;
+}

@@ -1,0 +1,172 @@
+/* ============================================
+   MESSAGE LIST — Chat/inbox conversation list (sidebar)
+   Inspired by Linear inbox / Slack DM list / iMessage sidebar
+   ============================================
+   Usage:
+     <ul class="mlist">
+       <li class="mlist-item is-active">
+         <div class="mlist-avatar">A</div>
+         <div class="mlist-body">
+           <div class="mlist-top"><span class="mlist-name">Aurora</span><span class="mlist-time">2m</span></div>
+           <div class="mlist-snippet">Hey, do you have a second?</div>
+         </div>
+         <span class="mlist-badge">3</span>
+       </li>
+       …
+     </ul>
+
+   Variants:
+     mlist-bordered     — Card container
+     mlist-compact      — Smaller rows
+     mlist-statusdot    — Online/offline status dot on avatar
+   ============================================ */
+
+.mlist {
+  --mlist-bg: var(--surface-2, #14141f);
+  --mlist-border: rgba(255, 255, 255, 0.08);
+  --mlist-fg: #ffffff;
+  --mlist-muted: rgba(255, 255, 255, 0.55);
+  --mlist-accent: #818cf8;
+  --mlist-hover: rgba(255, 255, 255, 0.04);
+  --mlist-active: rgba(129, 140, 248, 0.1);
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem;
+  background: var(--mlist-bg);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--mlist-fg);
+}
+
+.mlist-bordered { border: 1px solid var(--mlist-border); }
+
+.mlist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.mlist-item:hover { background: var(--mlist-hover); }
+.mlist-item.is-active { background: var(--mlist-active); }
+.mlist-item.is-unread .mlist-snippet { color: var(--mlist-fg); font-weight: 500; }
+.mlist-item.is-unread .mlist-top .mlist-name { font-weight: 700; }
+
+.mlist-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.mlist-statusdot .mlist-avatar::after {
+  content: '';
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #4ade80;
+  border: 2px solid var(--mlist-bg);
+}
+.mlist-statusdot .mlist-item.is-away .mlist-avatar::after { background: #fbbf24; }
+.mlist-statusdot .mlist-item.is-offline .mlist-avatar::after { background: rgba(255, 255, 255, 0.25); }
+
+.mlist-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.mlist-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.mlist-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+.mlist-time {
+  font-size: 0.7rem;
+  color: var(--mlist-muted);
+  flex-shrink: 0;
+}
+
+.mlist-snippet {
+  font-size: 0.825rem;
+  color: var(--mlist-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mlist-badge {
+  flex-shrink: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--mlist-accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.mlist-compact .mlist-item { padding: 0.4rem 0.55rem; }
+.mlist-compact .mlist-avatar { width: 30px; height: 30px; font-size: 0.75rem; }
+
+/* Header / search inside the list */
+.mlist-header {
+  padding: 0.5rem 0.6rem 0.65rem;
+  border-bottom: 1px solid var(--mlist-border);
+  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.mlist-header h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.mlist-header input {
+  flex: 1;
+  padding: 0.45rem 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--mlist-border);
+  border-radius: 7px;
+  color: var(--mlist-fg);
+  font: inherit;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+/* Empty state inside list */
+.mlist-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--mlist-muted);
+  font-size: 0.85rem;
+}

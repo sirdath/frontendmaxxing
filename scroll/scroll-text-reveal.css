@@ -1,0 +1,80 @@
+/* ============================================
+   SCROLL TEXT REVEAL — Word/line reveal styling (works with scroll-text-reveal.js)
+   Inspired by Codrops scroll demos
+   ============================================
+   Usage:
+     <p data-scroll-text-reveal>The quick brown fox …</p>
+     ScrollTextReveal.init('[data-scroll-text-reveal]');
+
+   Variants:
+     .str-mode-word — Split on words (default)
+     .str-mode-line — Split on lines
+     .str-fade      — Words fade from low opacity (default)
+     .str-color     — Words morph from muted to brand color
+     .str-rise      — Words rise from below
+   ============================================ */
+
+[data-scroll-text-reveal] {
+  --str-active-color: var(--text, #ffffff);
+  --str-inactive-color: rgba(255, 255, 255, 0.18);
+}
+
+[data-scroll-text-reveal] .str-word,
+[data-scroll-text-reveal] .str-line {
+  display: inline-block;
+  will-change: opacity, color, transform;
+}
+
+/* Default: fade and color shift */
+[data-scroll-text-reveal] .str-word {
+  color: var(--str-inactive-color);
+  opacity: var(--str-w-op, 1);
+  transition: color 0.18s ease, opacity 0.18s ease, transform 0.18s ease;
+}
+
+[data-scroll-text-reveal] .str-word.is-active {
+  color: var(--str-active-color);
+  opacity: 1;
+}
+
+.str-rise [data-scroll-text-reveal] .str-word,
+[data-scroll-text-reveal].str-rise .str-word {
+  transform: translateY(0.35em);
+}
+
+[data-scroll-text-reveal].str-rise .str-word.is-active {
+  transform: translateY(0);
+}
+
+[data-scroll-text-reveal].str-color {
+  --str-inactive-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-scroll-text-reveal].str-color .str-word.is-active {
+  background: linear-gradient(90deg, #c084fc, #38bdf8);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-scroll-text-reveal] .str-line {
+  display: block;
+  overflow: hidden;
+}
+
+[data-scroll-text-reveal] .str-line > span {
+  display: inline-block;
+  transform: translateY(100%);
+  transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.25, 1), opacity 0.4s ease;
+  opacity: 0;
+}
+
+[data-scroll-text-reveal] .str-line.is-active > span {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-scroll-text-reveal] .str-word,
+  [data-scroll-text-reveal] .str-line > span { transition: none; transform: none; opacity: 1; color: var(--str-active-color) !important; }
+}

@@ -1,0 +1,59 @@
+/* ============================================
+   PHONE INPUT — Country picker + national number entry
+   Inspired by Stripe / WhatsApp signup / Twilio
+   ============================================
+   Usage:
+     <div class="phin" data-phone-input>
+       <!-- the country-picker is mounted by JS -->
+       <div class="phin-country" data-country-picker></div>
+       <input class="phin-number" type="tel" placeholder="123 456 7890">
+     </div>
+     PhoneInput.init('[data-phone-input]', {
+       value: '+1 555 1234',
+       onChange: function (e164, parts) { … }
+     });
+   ============================================ */
+
+.phin {
+  --phin-bg: rgba(255, 255, 255, 0.04);
+  --phin-border: rgba(255, 255, 255, 0.12);
+  --phin-fg: #ffffff;
+  --phin-muted: rgba(255, 255, 255, 0.55);
+  --phin-accent: #818cf8;
+  --phin-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  max-width: 360px;
+  background: var(--phin-bg);
+  border: 1px solid var(--phin-border);
+  border-radius: var(--phin-radius);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.phin:focus-within {
+  border-color: var(--phin-accent);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+}
+
+.phin-country {
+  border-right: 1px solid var(--phin-border);
+}
+.phin-country .cpk-trigger {
+  border: none;
+  background: transparent;
+  border-radius: var(--phin-radius) 0 0 var(--phin-radius);
+  padding: 0.55rem 0.7rem;
+}
+
+.phin-number {
+  flex: 1;
+  min-width: 0;
+  padding: 0.65rem 0.85rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--phin-fg);
+  font: inherit;
+  font-size: 0.95rem;
+}
+.phin-number::placeholder { color: var(--phin-muted); }

@@ -1,0 +1,145 @@
+/* ============================================
+   SMOKE — Drifting smoke / mist / fog / steam clouds
+   Inspired by atmospheric horror games, theatrical fog, cinematic mood scenes
+   ============================================
+   Layered radial puffs with slow rise + scale + opacity animation. Combine
+   with .fire-* for chimney scenes, or with dark hero backgrounds for mood.
+
+   Usage:
+     <div class="smoke smoke-mist">
+       <span class="smoke-puff"></span>
+       <span class="smoke-puff"></span>
+       <span class="smoke-puff"></span>
+       <span class="smoke-puff"></span>
+       <span class="smoke-puff"></span>
+     </div>
+
+   Variants:
+     smoke-mist      (default — grey/white drifting puffs)
+     smoke-fog       (heavier ground fog)
+     smoke-steam     (white, rising fast)
+     smoke-toxic     (sickly green)
+     smoke-magical   (purple/pink swirl)
+     smoke-cyber     (cyan neon haze)
+     smoke-chimney   (warm grey from fire)
+     smoke-incense   (soft, slow, ribboned)
+     smoke-dust      (tan/brown desert dust)
+     smoke-blood     (deep red mist)
+   Modifiers:
+     smoke-slow / smoke-fast — speed
+     smoke-still             — pause
+     smoke-dense             — more opacity
+     smoke-sparse            — less opacity
+     smoke-bottom            — anchored to bottom (ground fog)
+   ============================================ */
+
+.smoke {
+  --sm-c1: rgba(200, 200, 200, 0.55);
+  --sm-c2: rgba(255, 255, 255, 0.4);
+  --sm-bg: transparent;
+  --sm-speed: 8s;
+  --sm-size: 280px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--sm-bg);
+  min-height: 220px;
+}
+
+.smoke-puff {
+  position: absolute;
+  width: var(--sm-size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%,
+    var(--sm-c1) 0%, var(--sm-c2) 40%, transparent 70%);
+  filter: blur(20px);
+  bottom: -30%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.smoke-puff:nth-child(1) { left: 15%; --sm-size: 240px; animation: smoke-drift-a var(--sm-speed) linear infinite; }
+.smoke-puff:nth-child(2) { left: 35%; --sm-size: 320px; animation: smoke-drift-b calc(var(--sm-speed) * 1.3) linear infinite 2s; }
+.smoke-puff:nth-child(3) { left: 55%; --sm-size: 280px; animation: smoke-drift-c calc(var(--sm-speed) * 0.85) linear infinite 4s; }
+.smoke-puff:nth-child(4) { left: 75%; --sm-size: 260px; animation: smoke-drift-a calc(var(--sm-speed) * 1.1) linear infinite 1s; }
+.smoke-puff:nth-child(5) { left: 25%; --sm-size: 300px; animation: smoke-drift-b calc(var(--sm-speed) * 0.95) linear infinite 5s; }
+.smoke-puff:nth-child(6) { left: 65%; --sm-size: 260px; animation: smoke-drift-c calc(var(--sm-speed) * 1.2) linear infinite 3s; }
+.smoke-puff:nth-child(7) { left: 45%; --sm-size: 340px; animation: smoke-drift-a calc(var(--sm-speed) * 1.4) linear infinite 6s; }
+
+@keyframes smoke-drift-a {
+  0%   { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+  20%  { opacity: 0.8; }
+  100% { transform: translateY(-180%) translateX(40px) scale(1.6); opacity: 0; }
+}
+@keyframes smoke-drift-b {
+  0%   { transform: translateY(0) translateX(0) scale(0.6); opacity: 0; }
+  25%  { opacity: 0.7; }
+  100% { transform: translateY(-200%) translateX(-30px) scale(1.7); opacity: 0; }
+}
+@keyframes smoke-drift-c {
+  0%   { transform: translateY(0) translateX(0) scale(0.55); opacity: 0; }
+  15%  { opacity: 0.85; }
+  100% { transform: translateY(-220%) translateX(50px) scale(1.5); opacity: 0; }
+}
+
+/* Variants */
+.smoke-mist     { --sm-c1: rgba(200, 200, 200, 0.55); --sm-c2: rgba(255, 255, 255, 0.4); }
+.smoke-fog      { --sm-c1: rgba(180, 180, 200, 0.7); --sm-c2: rgba(220, 220, 235, 0.5); }
+.smoke-steam    { --sm-c1: rgba(255, 255, 255, 0.75); --sm-c2: rgba(240, 250, 255, 0.5); --sm-speed: 5s; }
+.smoke-toxic    { --sm-c1: rgba(150, 220, 100, 0.55); --sm-c2: rgba(190, 240, 120, 0.4); --sm-bg: #0a1f02; }
+.smoke-magical  { --sm-c1: rgba(200, 100, 240, 0.55); --sm-c2: rgba(150, 200, 255, 0.4); --sm-bg: #0a0014; }
+.smoke-cyber    { --sm-c1: rgba(100, 240, 255, 0.55); --sm-c2: rgba(255, 100, 240, 0.4); --sm-bg: #000019; }
+.smoke-chimney  { --sm-c1: rgba(140, 130, 120, 0.65); --sm-c2: rgba(200, 180, 160, 0.45); --sm-bg: #1a1208; }
+.smoke-incense  { --sm-c1: rgba(220, 200, 240, 0.5); --sm-c2: rgba(255, 230, 250, 0.35); --sm-speed: 14s; }
+.smoke-dust     { --sm-c1: rgba(200, 165, 130, 0.6); --sm-c2: rgba(230, 200, 170, 0.4); --sm-bg: #1f1408; }
+.smoke-blood    { --sm-c1: rgba(180, 30, 30, 0.5); --sm-c2: rgba(255, 80, 80, 0.35); --sm-bg: #1a0000; }
+
+/* Modifiers */
+.smoke-slow   { --sm-speed: 16s; }
+.smoke-fast   { --sm-speed: 4s; }
+.smoke-still .smoke-puff { animation: none; opacity: 0.45; transform: translateY(-60%); }
+
+.smoke-dense .smoke-puff { filter: blur(15px); }
+.smoke-dense.smoke .smoke-puff:nth-child(2),
+.smoke-dense.smoke .smoke-puff:nth-child(4),
+.smoke-dense.smoke .smoke-puff:nth-child(6) { opacity: 1; }
+
+.smoke-sparse .smoke-puff { filter: blur(28px); }
+
+/* Bottom-anchored ground fog (no rise — drift sideways) */
+.smoke-bottom {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40%;
+  pointer-events: none;
+}
+.smoke-bottom .smoke-puff {
+  bottom: -20%;
+  animation: smoke-ground-drift calc(var(--sm-speed) * 2) ease-in-out infinite alternate;
+}
+@keyframes smoke-ground-drift {
+  0%   { transform: translateX(-20%) scale(1.2); opacity: 0.5; }
+  100% { transform: translateX(20%) scale(1.4); opacity: 0.7; }
+}
+
+/* Standalone overlay (drops on top of any background) */
+.smoke-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.7;
+}
+
+/* Pair with .fire — chimney smoke from a fire */
+.fire + .smoke,
+.fire-stack .smoke {
+  position: absolute;
+  inset: -70% 0 0 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smoke-puff { animation: none; opacity: 0.4; }
+}

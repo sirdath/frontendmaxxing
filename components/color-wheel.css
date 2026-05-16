@@ -1,0 +1,149 @@
+/* ============================================
+   COLOR WHEEL — Conic-gradient HSL color picker
+   Inspired by macOS color picker, Procreate, Figma color wheel
+   ============================================
+   Usage:
+     <div class="cwheel">
+       <div class="cwheel-ring"></div>
+       <div class="cwheel-lum"></div>
+       <div class="cwheel-thumb"></div>
+       <div class="cwheel-preview"></div>
+     </div>
+
+     ColorWheel.init('.cwheel', { onChange: c => ... });
+
+   Variants:
+     cwheel-lg, cwheel-sm
+     cwheel-flat (no center)
+     cwheel-square (rectangular SV picker)
+   ============================================ */
+
+.cwheel {
+  --cw-size: 240px;
+  --cw-thumb: 14px;
+  position: relative;
+  width: var(--cw-size);
+  height: var(--cw-size);
+  user-select: none;
+  touch-action: none;
+}
+
+.cwheel-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #ff0000 0deg, #ff8000 45deg, #ffff00 90deg, #80ff00 135deg,
+    #00ff00 180deg, #00ff80 200deg, #00ffff 220deg, #0080ff 245deg,
+    #0000ff 270deg, #8000ff 295deg, #ff00ff 320deg, #ff0080 345deg, #ff0000 360deg);
+  -webkit-mask: radial-gradient(circle at center, transparent 55%, #000 56%, #000 100%);
+          mask: radial-gradient(circle at center, transparent 55%, #000 56%, #000 100%);
+  cursor: crosshair;
+}
+
+.cwheel-lum {
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #fff, transparent 70%),
+    radial-gradient(circle at center, transparent 60%, rgba(0,0,0,0.5)),
+    var(--cw-hue, #ff0000);
+  cursor: crosshair;
+}
+
+.cwheel-thumb {
+  position: absolute;
+  width: var(--cw-thumb);
+  height: var(--cw-thumb);
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.3);
+  pointer-events: none;
+  left: 50%; top: 8%;
+  transform: translate(-50%, -50%);
+  background: var(--cw-pick, transparent);
+}
+
+.cwheel-preview {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 28%; height: 28%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--cw-pick, #fff);
+  border: 2px solid rgba(255,255,255,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+
+.cwheel-readout {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  font-family: monospace;
+  color: rgba(255,255,255,0.7);
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+/* Sizes */
+.cwheel-sm { --cw-size: 160px; --cw-thumb: 10px; }
+.cwheel-lg { --cw-size: 320px; --cw-thumb: 18px; }
+.cwheel-xl { --cw-size: 440px; --cw-thumb: 22px; }
+
+/* No center variant */
+.cwheel-flat .cwheel-lum,
+.cwheel-flat .cwheel-preview { display: none; }
+
+/* Square HSV picker */
+.cwheel-square {
+  border-radius: 12px;
+}
+.cwheel-square .cwheel-ring {
+  border-radius: 12px;
+  background:
+    linear-gradient(to top, #000 0%, transparent 100%),
+    linear-gradient(to right, #fff 0%, transparent 100%),
+    var(--cw-hue, #ff0000);
+  -webkit-mask: none; mask: none;
+}
+.cwheel-square .cwheel-lum,
+.cwheel-square .cwheel-preview { display: none; }
+
+/* Hue strip */
+.cwheel-hue-strip {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+  position: relative;
+  cursor: crosshair;
+}
+.cwheel-hue-thumb {
+  position: absolute;
+  top: 50%; left: 0;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--cw-pick, #fff);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Alpha strip */
+.cwheel-alpha-strip {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, transparent, var(--cw-hue, #ff0000)),
+    repeating-conic-gradient(#444 0% 25%, #888 25% 50%) 0 0 / 8px 8px;
+  position: relative;
+  cursor: crosshair;
+}

@@ -1,0 +1,223 @@
+/* ============================================
+   CITATION POPOVER — Inline numbered citations [1] with hover/click sources
+   Inspired by Perplexity, Vercel AI Elements InlineCitation, Wikipedia footnotes
+   ============================================
+   Usage:
+     <p class="cit-body">
+       Paris is the capital of France
+       <a class="cit" href="#src-1" data-cit="1">1</a>
+       and home to the Eiffel Tower
+       <a class="cit" href="#src-2" data-cit="2">2</a>.
+     </p>
+
+     <!-- Hidden source data (read by JS popover handler) -->
+     <ol class="cit-sources" hidden>
+       <li id="src-1" data-cit-title="History of Paris" data-cit-domain="wikipedia.org" data-cit-url="https://...">
+         Paris has been a major city since the 1st century BCE...
+       </li>
+     </ol>
+
+   Variants:
+     cit-circle      — small circle chip (default)
+     cit-square      — rounded square chip
+     cit-bracket     — `[1]` text style
+     cit-superscript — true <sup>1</sup>
+     cit-pill        — domain + number pill
+     cit-favicon     — favicon + number
+   Color:
+     cit-violet (default), cit-cyan, cit-pink, cit-amber, cit-mono
+   Popover:
+     .cit-popover, .cit-pop-favicon, .cit-pop-title, .cit-pop-snippet, .cit-pop-domain
+   ============================================ */
+
+.cit {
+  --cit-bg: rgba(99, 102, 241, 0.18);
+  --cit-fg: #818cf8;
+  --cit-hover: rgba(99, 102, 241, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin: 0 2px;
+  background: var(--cit-bg);
+  color: var(--cit-fg);
+  font-size: 0.7em;
+  font-weight: 600;
+  border-radius: 4px;
+  text-decoration: none;
+  vertical-align: text-top;
+  line-height: 1;
+  transition: background 0.15s ease, transform 0.15s ease;
+  position: relative;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.cit:hover {
+  background: var(--cit-hover);
+  transform: translateY(-1px);
+}
+.cit:focus-visible {
+  outline: 2px solid var(--cit-fg);
+  outline-offset: 2px;
+}
+
+/* Color variants */
+.cit-violet { --cit-bg: rgba(99, 102, 241, 0.18); --cit-fg: #a5b4fc; --cit-hover: rgba(99, 102, 241, 0.3); }
+.cit-cyan   { --cit-bg: rgba(6, 182, 212, 0.18); --cit-fg: #67e8f9; --cit-hover: rgba(6, 182, 212, 0.3); }
+.cit-pink   { --cit-bg: rgba(236, 72, 153, 0.18); --cit-fg: #f9a8d4; --cit-hover: rgba(236, 72, 153, 0.3); }
+.cit-amber  { --cit-bg: rgba(245, 158, 11, 0.2); --cit-fg: #fcd34d; --cit-hover: rgba(245, 158, 11, 0.32); }
+.cit-mono   { --cit-bg: rgba(255, 255, 255, 0.1); --cit-fg: rgba(255, 255, 255, 0.85); --cit-hover: rgba(255, 255, 255, 0.18); }
+.cit-success { --cit-bg: rgba(52, 211, 153, 0.2); --cit-fg: #6ee7b7; --cit-hover: rgba(52, 211, 153, 0.32); }
+
+/* Shape variants */
+.cit-circle    { border-radius: 50%; min-width: 16px; height: 16px; padding: 0; }
+.cit-square    { border-radius: 4px; }
+.cit-bracket {
+  background: transparent;
+  color: var(--cit-fg);
+  padding: 0;
+  font-size: 0.85em;
+}
+.cit-bracket::before { content: '['; }
+.cit-bracket::after  { content: ']'; }
+.cit-bracket:hover { background: rgba(255, 255, 255, 0.05); padding: 0 2px; margin: 0; }
+
+.cit-superscript {
+  vertical-align: super;
+  font-size: 0.65em;
+  background: transparent;
+  color: var(--cit-fg);
+  padding: 0;
+  min-width: 0;
+  height: auto;
+}
+
+.cit-pill {
+  border-radius: 999px;
+  padding: 0 0.45rem 0 0.2rem;
+  min-width: 0;
+  height: 18px;
+  font-size: 0.68em;
+}
+.cit-pill .cit-num {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 0 4px;
+  margin-right: 4px;
+}
+.cit-pill .cit-domain {
+  font-weight: 500;
+  font-size: 0.9em;
+}
+
+.cit-favicon {
+  padding: 0 5px 0 2px;
+  border-radius: 999px;
+}
+.cit-favicon img,
+.cit-favicon .cit-fav {
+  width: 11px; height: 11px;
+  border-radius: 2px;
+  margin-right: 3px;
+  vertical-align: middle;
+}
+
+/* === Popover (rendered by citation-popover.js) === */
+.cit-popover {
+  --cp-bg: rgba(20, 20, 30, 0.96);
+  --cp-border: rgba(255, 255, 255, 0.12);
+  position: absolute;
+  z-index: 1000;
+  width: 320px;
+  max-width: calc(100vw - 2rem);
+  background: var(--cp-bg);
+  border: 1px solid var(--cp-border);
+  border-radius: 10px;
+  box-shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  padding: 0.85rem 0.95rem;
+  font-size: 0.82rem;
+  color: #fff;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.cit-popover.is-open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cit-pop-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+.cit-pop-favicon {
+  width: 16px; height: 16px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  display: inline-block;
+}
+.cit-pop-domain {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 500;
+}
+.cit-pop-num {
+  margin-left: auto;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+
+.cit-pop-title {
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+  line-height: 1.35;
+}
+.cit-pop-snippet {
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.45;
+  font-size: 0.78rem;
+  max-height: 6rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+.cit-pop-url {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.7rem;
+  color: #93c5fd;
+  text-decoration: none;
+  word-break: break-all;
+}
+.cit-pop-url:hover { text-decoration: underline; }
+
+.cit-pop-arrow {
+  position: absolute;
+  width: 10px; height: 10px;
+  background: var(--cp-bg);
+  border-top: 1px solid var(--cp-border);
+  border-left: 1px solid var(--cp-border);
+  transform: rotate(45deg);
+  top: -6px;
+  left: 16px;
+}
+.cit-popover[data-cit-placement="top"] .cit-pop-arrow {
+  top: auto;
+  bottom: -6px;
+  border-top: 0;
+  border-left: 0;
+  border-bottom: 1px solid var(--cp-border);
+  border-right: 1px solid var(--cp-border);
+}

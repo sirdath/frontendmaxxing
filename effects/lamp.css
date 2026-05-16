@@ -1,0 +1,147 @@
+/* ============================================
+   LAMP — Overhead conic-gradient lamp glow with hero text
+   Inspired by Aceternity UI
+   ============================================
+   Usage:
+     <div class="lamp">
+       <div class="lamp-cone-left"></div>
+       <div class="lamp-cone-right"></div>
+       <div class="lamp-bar"></div>
+       <div class="lamp-glow"></div>
+       <div class="lamp-content">
+         <h1>Build the future</h1>
+       </div>
+     </div>
+
+   Variants:
+     .lamp-violet  — Violet/indigo palette (default)
+     .lamp-cyan    — Cyan palette
+     .lamp-pink    — Rose palette
+     .lamp-tall    — Taller cones
+   ============================================ */
+
+.lamp {
+  --lamp-from: #818cf8;
+  --lamp-to: #c084fc;
+  --lamp-glow: rgba(129, 140, 248, 0.55);
+  --lamp-bg: #050510;
+  --lamp-cone-h: 320px;
+  --lamp-bar-w: 28rem;
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--lamp-bg);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Left cone — gradient sweeping down-left */
+.lamp-cone-left,
+.lamp-cone-right {
+  position: absolute;
+  top: 30%;
+  width: var(--lamp-bar-w);
+  height: var(--lamp-cone-h);
+  filter: blur(20px);
+  opacity: 0.65;
+}
+
+.lamp-cone-left {
+  right: 50%;
+  background: conic-gradient(
+    from 70deg at center top,
+    var(--lamp-from),
+    transparent 60%
+  );
+  transform: skewX(-12deg) translateX(-6%);
+  transform-origin: top right;
+}
+
+.lamp-cone-right {
+  left: 50%;
+  background: conic-gradient(
+    from 290deg at center top,
+    transparent 40%,
+    var(--lamp-to)
+  );
+  transform: skewX(12deg) translateX(6%);
+  transform-origin: top left;
+}
+
+/* Horizon bar — thin line at the "ceiling" */
+.lamp-bar {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--lamp-bar-w);
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--lamp-from), var(--lamp-to), transparent);
+  z-index: 1;
+}
+
+/* Center glow halo */
+.lamp-glow {
+  position: absolute;
+  top: 24%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14rem;
+  height: 14rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--lamp-glow), transparent 60%);
+  filter: blur(40px);
+  z-index: 0;
+}
+
+.lamp-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 6rem 1.5rem 0;
+  max-width: 800px;
+}
+
+.lamp-content h1 {
+  background: linear-gradient(to bottom, #fff, #6e6e90);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.lamp-content p {
+  margin-top: 1.5rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.05rem;
+}
+
+/* ── Variants ── */
+.lamp-cyan   { --lamp-from: #22d3ee; --lamp-to: #38bdf8; --lamp-glow: rgba(34, 211, 238, 0.55); }
+.lamp-pink   { --lamp-from: #f472b6; --lamp-to: #fb7185; --lamp-glow: rgba(244, 114, 182, 0.55); }
+.lamp-amber  { --lamp-from: #fbbf24; --lamp-to: #fb923c; --lamp-glow: rgba(251, 191, 36, 0.55); }
+.lamp-mint   { --lamp-from: #4ade80; --lamp-to: #34d399; --lamp-glow: rgba(74, 222, 128, 0.55); }
+.lamp-tall   { --lamp-cone-h: 480px; min-height: 600px; }
+
+/* Optional entrance: cones widen on load */
+.lamp-animate .lamp-cone-left,
+.lamp-animate .lamp-cone-right {
+  animation: lamp-grow 1.4s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+.lamp-animate .lamp-cone-right { animation-delay: 0.05s; }
+
+@keyframes lamp-grow {
+  from { opacity: 0; transform: scaleY(0.6) skewX(-12deg) translateX(-6%); }
+  to   { opacity: 0.65; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lamp-animate .lamp-cone-left,
+  .lamp-animate .lamp-cone-right { animation: none; }
+}

@@ -1,0 +1,107 @@
+/* ============================================
+   IMAGE COMPARE — Before/after slider
+   Inspired by Codrops image compare demos / Cloudinary widgets
+   ============================================
+   Usage:
+     <div class="ic" data-ic>
+       <img class="ic-before" src="before.jpg" alt="">
+       <img class="ic-after"  src="after.jpg"  alt="">
+       <span class="ic-handle"></span>
+     </div>
+     ImageCompare.init('[data-ic]');
+
+   Variants:
+     .ic-vertical   — Vertical split (handle drags up/down)
+     .ic-thin       — Thin handle line
+     .ic-no-handle  — Hide draggable knob
+   ============================================ */
+
+.ic {
+  --ic-pos: 50%;
+  --ic-handle: #ffffff;
+  --ic-line: rgba(255, 255, 255, 0.85);
+  --ic-line-w: 2px;
+  --ic-radius: 14px;
+  position: relative;
+  display: block;
+  width: 100%;
+  border-radius: var(--ic-radius);
+  overflow: hidden;
+  user-select: none;
+  cursor: ew-resize;
+}
+
+.ic img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.ic-after {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 calc(100% - var(--ic-pos)) 0 0);
+}
+
+.ic-vertical {
+  cursor: ns-resize;
+}
+
+.ic-vertical .ic-after {
+  clip-path: inset(0 0 calc(100% - var(--ic-pos)) 0);
+}
+
+.ic-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--ic-pos);
+  width: var(--ic-line-w);
+  transform: translateX(-50%);
+  background: var(--ic-line);
+  pointer-events: none;
+}
+
+.ic-vertical .ic-handle {
+  left: 0; right: 0;
+  top: var(--ic-pos);
+  bottom: auto;
+  width: auto;
+  height: var(--ic-line-w);
+  transform: translateY(-50%);
+}
+
+.ic-handle::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ic-handle);
+  border: 2px solid var(--ic-line);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.ic-handle::before {
+  content: '⇆';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: #0c0c14;
+  font-size: 1rem;
+  font-weight: 700;
+  z-index: 1;
+}
+
+.ic-vertical .ic-handle::before { content: '⇅'; }
+
+.ic-thin { --ic-line-w: 1px; }
+.ic-thin .ic-handle::after { width: 22px; height: 22px; }
+
+.ic-no-handle .ic-handle::after,
+.ic-no-handle .ic-handle::before { display: none; }

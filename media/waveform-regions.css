@@ -1,0 +1,288 @@
+/* ============================================
+   WAVEFORM REGIONS — DAW-style audio waveform with named regions + loop markers
+   Inspired by Reaper, Logic Pro, Final Cut, DaVinci Resolve timelines
+   ============================================
+   Companion `waveform-regions.js` draws the waveform onto canvas and manages
+   region positions/labels. Differs from existing `media/audio-waveform` (which
+   only renders a static wave) — this one supports interactive regions, loop
+   in/out points, and per-region color+label as first-class entities.
+
+   Usage:
+     <div class="wfr" data-wfr data-wfr-src="podcast.mp3">
+       <div class="wfr-ruler"></div>
+       <div class="wfr-wave">
+         <canvas class="wfr-canvas"></canvas>
+         <div class="wfr-regions">
+           <div class="wfr-region" data-wfr-region="r1"
+                style="left: 12%; width: 18%; --r-c: #8b5cf6;">
+             <span class="wfr-region-label">Intro</span>
+             <span class="wfr-region-handle wfr-region-handle-l"></span>
+             <span class="wfr-region-handle wfr-region-handle-r"></span>
+           </div>
+         </div>
+         <div class="wfr-playhead"></div>
+         <div class="wfr-loop">
+           <div class="wfr-loop-bracket wfr-loop-in"></div>
+           <div class="wfr-loop-bracket wfr-loop-out"></div>
+         </div>
+       </div>
+       <footer class="wfr-toolbar">
+         <button class="wfr-play">▶</button>
+         <span class="wfr-time">0:00 / 3:42</span>
+         <button class="wfr-loop-toggle">⟲</button>
+       </footer>
+     </div>
+
+   Variants:
+     wfr-compact, wfr-card, wfr-light
+   ============================================ */
+
+.wfr {
+  --w-bg: #0a0a14;
+  --w-border: rgba(255, 255, 255, 0.08);
+  --w-fg: #fff;
+  --w-muted: rgba(255, 255, 255, 0.5);
+  --w-wave: #8b5cf6;
+  --w-wave-played: #ec4899;
+  --w-grid: rgba(255, 255, 255, 0.05);
+  --w-h: 160px;
+  background: var(--w-bg);
+  border: 1px solid var(--w-border);
+  border-radius: 10px;
+  color: var(--w-fg);
+  overflow: hidden;
+  font-size: 0.82rem;
+  user-select: none;
+}
+
+/* === Time ruler === */
+.wfr-ruler {
+  position: relative;
+  height: 22px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--w-border);
+  font-size: 0.62rem;
+  color: var(--w-muted);
+  font-variant-numeric: tabular-nums;
+}
+.wfr-ruler-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--w-grid);
+}
+.wfr-ruler-tick.is-major { background: rgba(255, 255, 255, 0.1); }
+.wfr-ruler-label {
+  position: absolute;
+  top: 4px;
+  transform: translateX(2px);
+  pointer-events: none;
+}
+
+/* === Wave area === */
+.wfr-wave {
+  position: relative;
+  height: var(--w-h);
+  cursor: pointer;
+  background:
+    repeating-linear-gradient(90deg, var(--w-grid) 0 1px, transparent 1px 50px);
+  overflow: hidden;
+}
+.wfr-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* === Regions === */
+.wfr-regions {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.wfr-region {
+  --r-c: #8b5cf6;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: color-mix(in srgb, var(--r-c) 18%, transparent);
+  border-left: 2px solid var(--r-c);
+  border-right: 2px solid var(--r-c);
+  cursor: move;
+  pointer-events: auto;
+  box-sizing: border-box;
+  transition: background 0.18s ease;
+}
+.wfr-region:hover {
+  background: color-mix(in srgb, var(--r-c) 26%, transparent);
+}
+.wfr-region.is-selected {
+  background: color-mix(in srgb, var(--r-c) 35%, transparent);
+  outline: 1px solid var(--r-c);
+}
+
+.wfr-region-label {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--r-c);
+  background: rgba(0, 0, 0, 0.55);
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.wfr-region-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 7px;
+  background: var(--r-c);
+  cursor: ew-resize;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+.wfr-region:hover .wfr-region-handle,
+.wfr-region.is-selected .wfr-region-handle { opacity: 0.8; }
+.wfr-region-handle-l { left: -3.5px; }
+.wfr-region-handle-r { right: -3.5px; }
+
+/* === Playhead === */
+.wfr-playhead {
+  --p: 0;
+  position: absolute;
+  left: calc(var(--p, 0) * 100%);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #f87171;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: 0 0 6px rgba(248, 113, 113, 0.8);
+}
+.wfr-playhead::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -7px;
+  width: 16px;
+  height: 16px;
+  background: #f87171;
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+/* === Loop brackets === */
+.wfr-loop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.wfr-loop-bracket {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background: transparent;
+  cursor: ew-resize;
+  pointer-events: auto;
+  z-index: 4;
+}
+.wfr-loop-in {
+  --in: 0;
+  left: calc(var(--in, 0) * 100%);
+  border-left: 2.5px solid #fbbf24;
+}
+.wfr-loop-out {
+  --out: 1;
+  left: calc(var(--out, 1) * 100% - 12px);
+  border-right: 2.5px solid #fbbf24;
+}
+.wfr-loop-bracket::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  width: 12px;
+  height: 12px;
+  background: #fbbf24;
+  border-radius: 2px;
+}
+.wfr-loop-in::after  { left: -2px;  border-radius: 2px 0 0 2px; }
+.wfr-loop-out::after { right: -2px; border-radius: 0 2px 2px 0; }
+
+.wfr-loop-range {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(251, 191, 36, 0.08);
+  border-top: 2px solid #fbbf24;
+  border-bottom: 2px solid #fbbf24;
+  pointer-events: none;
+  left: calc(var(--in, 0) * 100%);
+  width: calc((var(--out, 1) - var(--in, 0)) * 100%);
+  z-index: 3;
+}
+
+/* === Toolbar === */
+.wfr-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.7rem;
+  border-top: 1px solid var(--w-border);
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 0.78rem;
+}
+.wfr-toolbar button {
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--w-border);
+  color: var(--w-fg);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.wfr-toolbar button:hover { background: rgba(255, 255, 255, 0.12); }
+.wfr-toolbar button.is-active {
+  background: rgba(129, 140, 248, 0.2);
+  border-color: rgba(129, 140, 248, 0.4);
+  color: #a5b4fc;
+}
+.wfr-time {
+  font-variant-numeric: tabular-nums;
+  color: var(--w-muted);
+  font-size: 0.74rem;
+}
+.wfr-zoom {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.wfr-zoom input[type="range"] {
+  width: 80px;
+}
+
+/* === Variants === */
+.wfr-compact { --w-h: 80px; }
+.wfr-card { box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4); }
+.wfr-light {
+  --w-bg: #fafafa;
+  --w-fg: #1f2937;
+  --w-border: rgba(0, 0, 0, 0.1);
+  --w-muted: rgba(31, 41, 55, 0.55);
+  --w-grid: rgba(0, 0, 0, 0.04);
+}
+
+/* Region color presets */
+.wfr-region-violet { --r-c: #8b5cf6; }
+.wfr-region-cyan   { --r-c: #22d3ee; }
+.wfr-region-pink   { --r-c: #ec4899; }
+.wfr-region-amber  { --r-c: #fbbf24; }
+.wfr-region-mint   { --r-c: #34d399; }
+.wfr-region-rose   { --r-c: #fb7185; }

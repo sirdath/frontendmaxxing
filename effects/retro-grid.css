@@ -1,0 +1,117 @@
+/* ============================================
+   RETRO GRID — 80s-style perspective grid floor receding to horizon
+   Inspired by Magic UI / Tron / synthwave aesthetics
+   ============================================
+   Usage:
+     <div class="retro-grid">
+       <div class="retro-grid-floor"></div>
+       <div class="retro-grid-fade"></div>
+     </div>
+
+   Variants:
+     .retro-grid-slow     — Slow scroll
+     .retro-grid-purple   — Purple/magenta palette
+     .retro-grid-amber    — Sunset palette
+   ============================================ */
+
+.retro-grid {
+  --retro-perspective: 600px;
+  --retro-angle: 65deg;
+  --retro-cell: 48px;
+  --retro-line: rgba(129, 140, 248, 0.55);
+  --retro-bg: #050510;
+  --retro-duration: 12s;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  background: var(--retro-bg);
+  overflow: hidden;
+  perspective: var(--retro-perspective);
+  perspective-origin: 50% 50%;
+}
+
+.retro-grid-floor {
+  position: absolute;
+  left: -50%;
+  bottom: 0;
+  width: 200%;
+  height: 200%;
+  background-image:
+    linear-gradient(to right, var(--retro-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--retro-line) 1px, transparent 1px);
+  background-size: var(--retro-cell) var(--retro-cell);
+  transform: rotateX(var(--retro-angle));
+  transform-origin: 50% 100%;
+  animation: retro-grid-scroll var(--retro-duration) linear infinite;
+}
+
+@keyframes retro-grid-scroll {
+  0%   { background-position: 0 0, 0 0; }
+  100% { background-position: 0 var(--retro-cell), 0 var(--retro-cell); }
+}
+
+/* Fade out toward horizon */
+.retro-grid-fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    var(--retro-bg) 0%,
+    transparent 30%,
+    transparent 80%,
+    var(--retro-bg) 100%
+  );
+}
+
+/* Optional horizon glow */
+.retro-grid::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 45%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--retro-line), transparent);
+  filter: blur(2px);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Optional sun behind grid */
+.retro-grid-sun {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, #ffea7a 0%, #ff7eb6 60%, transparent 75%);
+  filter: blur(8px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Variants ── */
+.retro-grid-slow   { --retro-duration: 24s; }
+.retro-grid-fast   { --retro-duration: 6s; }
+
+.retro-grid-purple {
+  --retro-line: rgba(192, 132, 252, 0.6);
+  --retro-bg: #0a0518;
+}
+
+.retro-grid-amber {
+  --retro-line: rgba(251, 146, 60, 0.55);
+  --retro-bg: #170a05;
+}
+
+.retro-grid-cyan {
+  --retro-line: rgba(34, 211, 238, 0.55);
+  --retro-bg: #02060a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retro-grid-floor { animation: none; }
+}

@@ -1,0 +1,235 @@
+/* ============================================
+   CHANGELOG POPOVER — "What's new" bell drawer with dated entries
+   Inspired by Linear, Vercel, Stripe, Productboard product changelogs
+   ============================================
+   Usage:
+     <button class="chl-trigger" data-chl-trigger>
+       🔔
+       <span class="chl-badge">3</span>
+     </button>
+
+     <!-- The popover is rendered by changelog-popover.js -->
+
+     ChangelogPopover.init({
+       trigger: '[data-chl-trigger]',
+       entries: [
+         { id: '...', date: '2026-05-12', title: 'New: Bulk edit', tag: 'feature',
+           image: '/img/bulk.png', body: 'You can now bulk-edit...',
+           read: false, link: '/changelog#bulk-edit' }
+       ],
+       onMarkRead: function (id) {},
+       onMarkAllRead: function () {}
+     });
+
+   Variants:
+     chl (default — right-rail drawer)
+     chl-popover (smaller, anchored to trigger)
+     chl-fullscreen (modal)
+   ============================================ */
+
+.chl-trigger {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.chl-trigger:hover { background: rgba(255, 255, 255, 0.1); }
+
+.chl-badge {
+  position: absolute;
+  top: -3px; right: -3px;
+  background: #f87171;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.05rem 0.3rem;
+  border-radius: 999px;
+  border: 2px solid #0a0a14;
+  min-width: 14px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.chl-badge:empty { display: none; }
+
+/* === Popover panel === */
+.chl {
+  position: absolute;
+  z-index: 1200;
+  width: 380px;
+  max-width: calc(100vw - 2rem);
+  max-height: 560px;
+  background: rgba(20, 20, 30, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 30px 60px -16px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: #fff;
+  font-size: 0.85rem;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.chl.is-open { opacity: 1; transform: translateY(0); }
+
+.chl-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.chl-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.chl-subtitle {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+.chl-actions {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 0.2rem;
+}
+.chl-mark-all {
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.55);
+  font: inherit;
+  font-size: 0.72rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.chl-mark-all:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+
+.chl-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.25rem 0;
+}
+
+.chl-entry {
+  display: block;
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.chl-entry:hover { background: rgba(255, 255, 255, 0.03); }
+.chl-entry:last-child { border-bottom: 0; }
+
+.chl-entry.is-unread::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1.05rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #8b5cf6;
+  box-shadow: 0 0 6px #8b5cf6;
+}
+.chl-entry.is-unread .chl-entry-title { color: #fff; }
+.chl-entry:not(.is-unread) .chl-entry-title { color: rgba(255, 255, 255, 0.75); }
+
+.chl-entry-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.25rem;
+}
+.chl-entry-date {
+  font-variant-numeric: tabular-nums;
+}
+.chl-entry-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.05rem 0.35rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.65);
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.chl-entry-tag.is-feature      { background: rgba(168, 85, 247, 0.18); color: #c4b5fd; }
+.chl-entry-tag.is-improvement  { background: rgba(34, 211, 238, 0.18); color: #67e8f9; }
+.chl-entry-tag.is-fix          { background: rgba(251, 191, 36, 0.18); color: #fcd34d; }
+.chl-entry-tag.is-breaking     { background: rgba(248, 113, 113, 0.2); color: #fca5a5; }
+
+.chl-entry-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 0.15rem 0;
+}
+
+.chl-entry-body {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.62);
+  line-height: 1.45;
+  margin-top: 0.2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.chl-entry-image,
+.chl-entry-video {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.3);
+  object-fit: cover;
+  max-height: 180px;
+}
+
+/* Foot */
+.chl-foot {
+  padding: 0.55rem 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  display: flex;
+  justify-content: space-between;
+}
+.chl-foot a { color: #93c5fd; text-decoration: none; }
+.chl-foot a:hover { text-decoration: underline; }
+
+/* Empty */
+.chl-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.82rem;
+}
+
+/* Variants */
+.chl-fullscreen {
+  position: fixed;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: min(620px, calc(100vw - 2rem));
+  max-height: 80vh;
+}
+.chl-fullscreen.is-open { transform: translate(-50%, -50%); }
+
+.chl-popover { width: 320px; }

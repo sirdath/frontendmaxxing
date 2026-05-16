@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Browse the live demo
+    url: https://sirdath.github.io/frontendmaxxing/demo/
+    about: See every snippet in action before reporting.
+  - name: Read AGENTS.md
+    url: https://github.com/sirdath/frontendmaxxing/blob/main/AGENTS.md
+    about: Conventions, folder layout, JS/CSS templates.

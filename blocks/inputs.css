@@ -1,0 +1,216 @@
+/* ============================================
+   INPUTS — Fancy input field variants (CSS-only)
+   Inspired by uiverse.io / origin-ui / lukacho-ui
+   ============================================
+   Usage:
+     <div class="inp inp-float">
+       <input type="text" placeholder=" " id="email">
+       <label for="email">Email</label>
+     </div>
+
+   Variants:
+     inp-float          — Floating placeholder label
+     inp-underline      — Border-bottom only with animated underline
+     inp-gradient       — Gradient border on focus
+     inp-glass          — Glassmorphic
+     inp-solid          — Solid surface with subtle border
+     inp-icon           — Leading icon slot (.inp-ico)
+     inp-with-button    — Inline button suffix (.inp-btn)
+     inp-search         — Search variant w/ search icon + clear
+     inp-password       — Eye toggle slot (.inp-eye)
+     inp-textarea       — Multi-line variant (wrap a <textarea>)
+     inp-error          — Error state (red ring)
+     inp-success        — Success state (green ring)
+     inp-disabled       — Greyed out
+   ============================================ */
+
+.inp {
+  --inp-bg: rgba(255, 255, 255, 0.04);
+  --inp-border: rgba(255, 255, 255, 0.12);
+  --inp-border-focus: #818cf8;
+  --inp-fg: var(--text, #ffffff);
+  --inp-muted: rgba(255, 255, 255, 0.5);
+  --inp-radius: 10px;
+  --inp-pad-y: 0.75rem;
+  --inp-pad-x: 0.9rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  max-width: 320px;
+  background: var(--inp-bg);
+  border: 1px solid var(--inp-border);
+  border-radius: var(--inp-radius);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  isolation: isolate;
+}
+
+.inp:focus-within {
+  border-color: var(--inp-border-focus);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+}
+
+.inp > input,
+.inp > textarea {
+  flex: 1;
+  min-width: 0;
+  padding: var(--inp-pad-y) var(--inp-pad-x);
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--inp-fg);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.inp > input::placeholder,
+.inp > textarea::placeholder {
+  color: var(--inp-muted);
+}
+
+.inp > textarea { resize: vertical; min-height: 80px; }
+
+/* ── inp-float — floating placeholder label ── */
+.inp-float { padding-top: 0; }
+.inp-float > input { padding-top: 1.4rem; padding-bottom: 0.4rem; }
+.inp-float > label {
+  position: absolute;
+  left: var(--inp-pad-x);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--inp-muted);
+  pointer-events: none;
+  font-size: 0.95rem;
+  transition: top 0.18s ease, font-size 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.inp-float > input:focus + label,
+.inp-float > input:not(:placeholder-shown) + label {
+  top: 0.5rem;
+  transform: translateY(0);
+  font-size: 0.75rem;
+  color: var(--inp-border-focus);
+}
+
+/* ── inp-underline — bottom border with animated underline ── */
+.inp-underline {
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--inp-border);
+  border-radius: 0;
+  padding-bottom: 2px;
+}
+.inp-underline::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -1.5px;
+  height: 1.5px;
+  background: var(--inp-border-focus);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+.inp-underline:focus-within { box-shadow: none; }
+.inp-underline:focus-within::after { transform: scaleX(1); }
+
+/* ── inp-gradient — gradient border on focus ── */
+.inp-gradient {
+  position: relative;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--surface, #0c0c14), var(--surface, #0c0c14)) padding-box,
+    linear-gradient(135deg, var(--inp-border), var(--inp-border)) border-box;
+}
+.inp-gradient:focus-within {
+  background:
+    linear-gradient(var(--surface, #0c0c14), var(--surface, #0c0c14)) padding-box,
+    linear-gradient(135deg, #c084fc, #38bdf8) border-box;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+}
+
+/* ── inp-glass — glassmorphic ── */
+.inp-glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* ── inp-solid — opaque surface ── */
+.inp-solid {
+  --inp-bg: var(--surface-2, #14141f);
+}
+
+/* ── Slot helpers ── */
+.inp-ico {
+  width: 1.1em; height: 1.1em;
+  flex-shrink: 0;
+  margin-left: var(--inp-pad-x);
+  color: var(--inp-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.inp-ico + input { padding-left: 0.5rem; }
+
+.inp-suffix {
+  display: inline-flex;
+  align-items: center;
+  padding-right: var(--inp-pad-x);
+  color: var(--inp-muted);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+.inp-btn {
+  display: inline-flex;
+  align-items: center;
+  margin: 4px;
+  padding: 0.45rem 0.85rem;
+  background: var(--inp-border-focus);
+  color: #fff;
+  border: none;
+  border-radius: calc(var(--inp-radius) - 4px);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.inp-eye {
+  display: inline-grid;
+  place-items: center;
+  width: 28px; height: 28px;
+  margin-right: 4px;
+  color: var(--inp-muted);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.inp-eye:hover { color: var(--inp-fg); background: rgba(255, 255, 255, 0.06); }
+
+/* ── State variants ── */
+.inp-error   { --inp-border: #ef4444; --inp-border-focus: #ef4444; }
+.inp-error:focus-within   { box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18); }
+
+.inp-success { --inp-border: #22c55e; --inp-border-focus: #22c55e; }
+.inp-success:focus-within { box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18); }
+
+.inp-disabled { opacity: 0.5; pointer-events: none; }
+
+/* ── Sizes ── */
+.inp-sm { --inp-pad-y: 0.45rem; --inp-pad-x: 0.7rem; --inp-radius: 8px; }
+.inp-lg { --inp-pad-y: 1rem;    --inp-pad-x: 1.1rem; --inp-radius: 12px; font-size: 1.05rem; }
+.inp-xl { --inp-pad-y: 1.25rem; --inp-pad-x: 1.25rem; --inp-radius: 14px; font-size: 1.1rem; }
+
+/* ── Helper hint text below input (use outside .inp wrapper) ── */
+.inp-hint  { display: block; margin-top: 0.4rem; font-size: 0.8rem; color: var(--inp-muted); }
+.inp-hint-error   { color: #ef4444; }
+.inp-hint-success { color: #22c55e; }
+
+@media (prefers-reduced-motion: reduce) {
+  .inp, .inp::after, .inp > label { transition: none !important; }
+}

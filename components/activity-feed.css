@@ -1,0 +1,155 @@
+/* ============================================
+   ACTIVITY FEED — Audit log / who-did-what timeline
+   Inspired by GitHub activity / Linear activity / Stripe events
+   ============================================
+   Usage:
+     <ul class="afeed">
+       <li class="afeed-item">
+         <div class="afeed-icon afeed-icon-create">+</div>
+         <div class="afeed-body">
+           <p class="afeed-line">
+             <strong>Aurora</strong> created a new issue
+             <a class="afeed-link">FE-1234</a>
+           </p>
+           <span class="afeed-time">2h ago · #engineering</span>
+         </div>
+       </li>
+       <li class="afeed-item">
+         <div class="afeed-icon afeed-icon-comment">💬</div>
+         <div class="afeed-body">
+           <p class="afeed-line"><strong>Beo</strong> commented on <a>FE-1234</a></p>
+           <blockquote class="afeed-quote">Looks good! Will merge once CI passes.</blockquote>
+           <span class="afeed-time">1h ago</span>
+         </div>
+       </li>
+     </ul>
+
+   Variants:
+     afeed-compact     — Smaller rows
+     afeed-card        — Each item a card
+     afeed-grouped     — Group by date heading
+     afeed-rail        — Show a vertical timeline rail
+   ============================================ */
+
+.afeed {
+  --afeed-bg: var(--surface-2, #14141f);
+  --afeed-border: rgba(255, 255, 255, 0.08);
+  --afeed-fg: #ffffff;
+  --afeed-muted: rgba(255, 255, 255, 0.55);
+  --afeed-accent: #818cf8;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  color: var(--afeed-fg);
+}
+
+.afeed-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.afeed-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.afeed-icon-create   { background: rgba(74, 222, 128, 0.18); color: #4ade80; }
+.afeed-icon-update   { background: rgba(34, 211, 238, 0.18); color: #67e8f9; }
+.afeed-icon-delete   { background: rgba(248, 113, 113, 0.18); color: #fca5a5; }
+.afeed-icon-comment  { background: rgba(129, 140, 248, 0.18); color: #c7d2fe; }
+.afeed-icon-merge    { background: rgba(192, 132, 252, 0.18); color: #d8b4fe; }
+.afeed-icon-login    { background: rgba(251, 191, 36, 0.18); color: #fcd34d; }
+
+.afeed-body { min-width: 0; }
+
+.afeed-line {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.afeed-line strong { font-weight: 600; }
+.afeed-line a, .afeed-link {
+  color: var(--afeed-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+.afeed-line a:hover, .afeed-link:hover { text-decoration: underline; }
+
+.afeed-time {
+  display: inline-block;
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  color: var(--afeed-muted);
+}
+
+.afeed-quote {
+  margin: 0.4rem 0 0;
+  padding: 0.4rem 0.7rem;
+  border-left: 2px solid var(--afeed-border);
+  color: var(--afeed-muted);
+  font-size: 0.825rem;
+  line-height: 1.55;
+}
+
+.afeed-meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--afeed-muted);
+}
+.afeed-meta-list > span {
+  padding: 0.05rem 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+}
+
+/* Date group heading */
+.afeed-day {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--afeed-muted);
+  margin: 0.5rem 0 0.25rem;
+  padding-left: 0.25rem;
+}
+
+/* Variants */
+.afeed-compact { gap: 0.4rem; }
+.afeed-compact .afeed-item { grid-template-columns: 24px 1fr; gap: 0.5rem; }
+.afeed-compact .afeed-icon { width: 22px; height: 22px; font-size: 0.7rem; }
+.afeed-compact .afeed-line { font-size: 0.8rem; }
+
+.afeed-card .afeed-item {
+  padding: 0.75rem 0.9rem;
+  background: var(--afeed-bg);
+  border: 1px solid var(--afeed-border);
+  border-radius: 10px;
+}
+
+.afeed-rail {
+  position: relative;
+}
+.afeed-rail::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  bottom: 30px;
+  left: 15px;
+  width: 2px;
+  background: var(--afeed-border);
+  border-radius: 999px;
+}
+.afeed-rail .afeed-item { position: relative; z-index: 1; }

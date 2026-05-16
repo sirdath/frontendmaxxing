@@ -1,0 +1,196 @@
+/* ============================================
+   NEUMORPH BUTTONS — Soft-UI inset/outset shadow buttons with optional noise
+   Inspired by Neumorphism trend (2020), cult-ui texture/neumorph buttons, Dribbble soft-UI
+   ============================================
+   Pure CSS — uses dual box-shadows (light + dark) to create the "extruded from
+   the background" feel. Best on a mid-grey background (--neu-bg) so both
+   shadows are visible.
+
+   Usage:
+     <body style="background: #2a2d34;"> <!-- neumorph needs a non-white/non-black bg -->
+       <button class="neu">Click me</button>
+       <button class="neu neu-primary">Primary</button>
+       <button class="neu neu-pressed">Pressed state</button>
+     </body>
+
+   Variants:
+     neu              (default — raised)
+     neu-pressed      (inset / pressed look)
+     neu-flat         (flat inside frame)
+     neu-soft         (gentler shadow)
+     neu-deep         (more pronounced)
+     neu-primary      (gradient accent stroke)
+     neu-icon         (square 1:1)
+     neu-pill         (rounded pill)
+     neu-square       (low border-radius)
+   Sizes:
+     neu-xs, neu-sm, neu-md (default), neu-lg, neu-xl
+   Modifiers:
+     neu-noise        — adds SVG grain overlay
+     neu-toggle       — toggles between raised / pressed states (use with [aria-pressed])
+     neu-disabled
+   Theme:
+     Set on a parent: --neu-bg, --neu-fg, --neu-light, --neu-dark, --neu-accent
+   ============================================ */
+
+.neu {
+  --neu-bg: #2a2d34;
+  --neu-fg: #e8e9ed;
+  --neu-light: rgba(255, 255, 255, 0.08);
+  --neu-dark: rgba(0, 0, 0, 0.45);
+  --neu-accent: #8b5cf6;
+  --neu-radius: 12px;
+  --neu-pad: 0.7rem 1.4rem;
+  --neu-d: 5px;
+  --neu-blur: 12px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: var(--neu-pad);
+  background: var(--neu-bg);
+  color: var(--neu-fg);
+  border: 0;
+  border-radius: var(--neu-radius);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  box-shadow:
+    calc(var(--neu-d) * -1) calc(var(--neu-d) * -1) var(--neu-blur) var(--neu-light),
+    var(--neu-d) var(--neu-d) var(--neu-blur) var(--neu-dark);
+  transition: box-shadow 0.18s ease, transform 0.1s ease;
+}
+
+.neu:hover {
+  --neu-d: 6px;
+}
+.neu:active,
+.neu.neu-pressed {
+  box-shadow:
+    inset calc(var(--neu-d) * -1) calc(var(--neu-d) * -1) var(--neu-blur) var(--neu-light),
+    inset var(--neu-d) var(--neu-d) var(--neu-blur) var(--neu-dark);
+  transform: translateY(0.5px);
+}
+
+.neu:focus-visible {
+  outline: 2px solid var(--neu-accent);
+  outline-offset: 4px;
+}
+
+/* Variants */
+.neu-flat {
+  box-shadow:
+    inset calc(var(--neu-d) * 0.4) calc(var(--neu-d) * 0.4) var(--neu-blur) var(--neu-dark),
+    inset calc(var(--neu-d) * -0.4) calc(var(--neu-d) * -0.4) var(--neu-blur) var(--neu-light);
+}
+.neu-soft { --neu-d: 3px; --neu-blur: 18px; }
+.neu-deep { --neu-d: 8px; --neu-blur: 16px; }
+
+/* Primary — gradient accent stroke */
+.neu-primary {
+  background:
+    linear-gradient(var(--neu-bg), var(--neu-bg)) padding-box,
+    linear-gradient(135deg, var(--neu-accent), #ec4899, #06b6d4) border-box;
+  border: 2px solid transparent;
+  color: var(--neu-fg);
+  font-weight: 700;
+}
+.neu-primary:hover { filter: brightness(1.1); }
+
+/* Filled accent — solid accent color inside */
+.neu-fill {
+  --neu-bg: #6d4ff0;
+  --neu-fg: #ffffff;
+  --neu-light: rgba(255, 255, 255, 0.18);
+  --neu-dark: rgba(0, 0, 0, 0.4);
+  background: var(--neu-bg);
+}
+
+/* Sizes */
+.neu-xs { --neu-pad: 0.3rem 0.7rem; font-size: 0.72rem; --neu-radius: 8px; }
+.neu-sm { --neu-pad: 0.45rem 0.95rem; font-size: 0.82rem; --neu-radius: 10px; }
+.neu-md { --neu-pad: 0.7rem 1.4rem;   font-size: 0.9rem; --neu-radius: 12px; }
+.neu-lg { --neu-pad: 0.95rem 1.85rem; font-size: 1rem;   --neu-radius: 14px; }
+.neu-xl { --neu-pad: 1.2rem 2.4rem;   font-size: 1.15rem; --neu-radius: 16px; }
+
+/* Shape */
+.neu-pill   { border-radius: 999px; }
+.neu-square { border-radius: 6px; }
+.neu-icon {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 12px;
+}
+.neu-circle { border-radius: 50%; aspect-ratio: 1; padding: 0; }
+
+/* Disabled */
+.neu-disabled,
+.neu:disabled,
+.neu[aria-disabled="true"] {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Noise overlay */
+.neu-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Toggle behavior — flips between raised and pressed on aria-pressed */
+.neu-toggle[aria-pressed="true"] {
+  box-shadow:
+    inset calc(var(--neu-d) * -1) calc(var(--neu-d) * -1) var(--neu-blur) var(--neu-light),
+    inset var(--neu-d) var(--neu-d) var(--neu-blur) var(--neu-dark);
+  color: var(--neu-accent);
+}
+
+/* Light theme override (use on body or parent) */
+.neu-light {
+  --neu-bg: #e0e5ec;
+  --neu-fg: #1f2937;
+  --neu-light: rgba(255, 255, 255, 0.95);
+  --neu-dark: rgba(163, 177, 198, 0.55);
+  --neu-accent: #6366f1;
+}
+
+/* Inline group container */
+.neu-group {
+  display: inline-flex;
+  gap: 0.6rem;
+  padding: 0.55rem;
+  border-radius: 14px;
+  background: var(--neu-bg, #2a2d34);
+  box-shadow:
+    inset 4px 4px 10px rgba(0, 0, 0, 0.4),
+    inset -4px -4px 10px rgba(255, 255, 255, 0.07);
+}
+.neu-group .neu { --neu-d: 3px; --neu-blur: 8px; }
+
+/* Texture variant (matte, no shine) */
+.neu-texture {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.02), transparent),
+    var(--neu-bg);
+}
+.neu-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(at 30% 20%, rgba(255, 255, 255, 0.05), transparent 60%),
+    radial-gradient(at 70% 80%, rgba(0, 0, 0, 0.15), transparent 60%);
+}

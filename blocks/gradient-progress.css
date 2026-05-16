@@ -1,0 +1,191 @@
+/* ============================================
+   GRADIENT PROGRESS — Progress bars & meters with gradient fills
+   Inspired by SoundCloud, Apple Health rings, Linear, Spotify equalizer
+   ============================================
+   Usage:
+     <div class="gprog" style="--v: 65"><div class="gprog-fill"></div></div>
+     <div class="gprog gprog-aurora gprog-thick" style="--v: 30"><div class="gprog-fill"></div></div>
+
+   Or use the gradient-progress.js controller for animations.
+
+   Variants:
+     gprog-aurora, gprog-sunset, gprog-cyber, gprog-ocean, gprog-cosmic,
+     gprog-fire, gprog-mint, gprog-rose, gprog-gold, gprog-mono
+   Sizes:
+     gprog-thin, gprog (default), gprog-thick, gprog-bar, gprog-band
+   Styles:
+     gprog-rounded, gprog-square, gprog-striped, gprog-pulse,
+     gprog-stack (multi-segment), gprog-indeterminate, gprog-segmented
+   ============================================ */
+
+.gprog {
+  --gpv-c1: #8b5cf6;
+  --gpv-c2: #ec4899;
+  --gpv-c3: #06b6d4;
+  --gpv-h: 8px;
+  --v: 0;        /* 0..100, set per element */
+  width: 100%;
+  height: var(--gpv-h);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.gprog-fill {
+  height: 100%;
+  width: calc(var(--v, 0) * 1%);
+  background: linear-gradient(90deg, var(--gpv-c1), var(--gpv-c2) 50%, var(--gpv-c3));
+  background-size: 200% 100%;
+  border-radius: inherit;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Color presets */
+.gprog-aurora { --gpv-c1: #a855f7; --gpv-c2: #ec4899; --gpv-c3: #06b6d4; }
+.gprog-sunset { --gpv-c1: #f97316; --gpv-c2: #ec4899; --gpv-c3: #f59e0b; }
+.gprog-cyber  { --gpv-c1: #00ffff; --gpv-c2: #ff00ff; --gpv-c3: #00ff7f; }
+.gprog-ocean  { --gpv-c1: #0ea5e9; --gpv-c2: #06b6d4; --gpv-c3: #14b8a6; }
+.gprog-cosmic { --gpv-c1: #6d28d9; --gpv-c2: #db2777; --gpv-c3: #0891b2; }
+.gprog-fire   { --gpv-c1: #fbbf24; --gpv-c2: #f97316; --gpv-c3: #ef4444; }
+.gprog-mint   { --gpv-c1: #34d399; --gpv-c2: #22d3ee; --gpv-c3: #14b8a6; }
+.gprog-rose   { --gpv-c1: #fb7185; --gpv-c2: #f43f5e; --gpv-c3: #ec4899; }
+.gprog-gold   { --gpv-c1: #fef3c7; --gpv-c2: #fbbf24; --gpv-c3: #d97706; }
+.gprog-mono   { --gpv-c1: #475569; --gpv-c2: #64748b; --gpv-c3: #94a3b8; }
+.gprog-instagram .gprog-fill { background: linear-gradient(90deg, #515bd4, #8134af 25%, #dd2a7b 50%, #feda77 75%, #f58529); }
+.gprog-rainbow .gprog-fill   { background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3); }
+
+/* Sizes */
+.gprog-thin   { --gpv-h: 3px; }
+.gprog-thick  { --gpv-h: 14px; }
+.gprog-bar    { --gpv-h: 20px; }
+.gprog-band   { --gpv-h: 32px; }
+
+/* Shapes */
+.gprog-rounded { border-radius: 8px; }
+.gprog-square  { border-radius: 0; }
+
+/* Striped */
+.gprog-striped .gprog-fill {
+  background-image:
+    linear-gradient(135deg,
+      rgba(255,255,255,0.18) 25%, transparent 25%,
+      transparent 50%, rgba(255,255,255,0.18) 50%,
+      rgba(255,255,255,0.18) 75%, transparent 75%,
+      transparent),
+    linear-gradient(90deg, var(--gpv-c1), var(--gpv-c2) 50%, var(--gpv-c3));
+  background-size: 1.25rem 1.25rem, 200% 100%;
+}
+.gprog-striped.gprog-anim .gprog-fill { animation: gprog-stripe 1.2s linear infinite; }
+@keyframes gprog-stripe { to { background-position: 1.25rem 0, 0 0; } }
+
+/* Pulse (gradient slides L→R inside the fill) */
+.gprog-pulse .gprog-fill {
+  animation: gprog-pulse 2s linear infinite;
+}
+@keyframes gprog-pulse {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: -200% 0%; }
+}
+
+/* Glow ring around fill */
+.gprog-glow .gprog-fill {
+  box-shadow:
+    0 0 8px var(--gpv-c1),
+    0 0 12px var(--gpv-c2);
+}
+
+/* Indeterminate (no --v, animated sweep) */
+.gprog-indeterminate .gprog-fill {
+  width: 40%;
+  animation: gprog-indet 1.6s cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
+}
+@keyframes gprog-indet {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+/* Segmented (e.g., 5 separate bars) */
+.gprog-segmented {
+  display: flex;
+  gap: 4px;
+  background: transparent;
+  overflow: visible;
+}
+.gprog-segmented .gprog-seg {
+  flex: 1;
+  height: var(--gpv-h);
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+}
+.gprog-segmented .gprog-seg.is-active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--gpv-c1), var(--gpv-c2), var(--gpv-c3));
+}
+
+/* Stack (multi-color contributions in one bar — Spotify-style) */
+.gprog-stack {
+  display: flex;
+  height: var(--gpv-h);
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.08);
+}
+.gprog-stack > .gprog-piece {
+  height: 100%;
+}
+
+/* Label / value */
+.gprog-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.85);
+}
+.gprog-row .gprog { flex: 1; }
+.gprog-value { font-variant-numeric: tabular-nums; min-width: 3ch; text-align: right; }
+
+/* Circular gradient progress (companion to data-viz/progress-ring) */
+.gpring {
+  --gpv-c1: #8b5cf6;
+  --gpv-c2: #ec4899;
+  --gpv-c3: #06b6d4;
+  --r-size: 96px;
+  --r-stroke: 8px;
+  width: var(--r-size); height: var(--r-size);
+  border-radius: 50%;
+  background:
+    conic-gradient(from -90deg,
+      var(--gpv-c1) 0%,
+      var(--gpv-c2) calc(var(--v, 0) * 0.5%),
+      var(--gpv-c3) calc(var(--v, 0) * 1%),
+      rgba(255,255,255,0.08) calc(var(--v, 0) * 1%),
+      rgba(255,255,255,0.08) 100%);
+  display: grid; place-items: center;
+  position: relative;
+}
+.gpring::before {
+  content: '';
+  position: absolute;
+  inset: var(--r-stroke);
+  background: var(--gpring-bg, #0a0a14);
+  border-radius: 50%;
+}
+.gpring > .gpring-label {
+  position: relative;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gprog-fill,
+  .gprog-striped.gprog-anim .gprog-fill,
+  .gprog-pulse .gprog-fill,
+  .gprog-indeterminate .gprog-fill { animation: none; transition: none; }
+}

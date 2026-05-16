@@ -1,0 +1,98 @@
+/* ============================================
+   IMAGE CROP — Image cropper with draggable selection
+   Inspired by Cropper.js / Figma image-fill cropping
+   ============================================
+   Usage:
+     <div class="icrop" data-image-crop>
+       <img src="…" alt="">
+       <div class="icrop-mask"></div>
+       <div class="icrop-sel">
+         <div class="icrop-handle nw"></div>
+         <div class="icrop-handle ne"></div>
+         <div class="icrop-handle sw"></div>
+         <div class="icrop-handle se"></div>
+       </div>
+     </div>
+     ImageCrop.init('[data-image-crop]', { aspect: 1, onCrop: function (rect) {…} });
+
+   Variants:
+     icrop-circle    — Circle selection (avatars)
+     icrop-grid      — Show rule-of-thirds grid inside selection
+   ============================================ */
+
+.icrop {
+  --icrop-stroke: #ffffff;
+  position: relative;
+  display: inline-block;
+  user-select: none;
+  background: #050510;
+  overflow: hidden;
+  border-radius: 10px;
+  max-width: 100%;
+}
+
+.icrop img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.icrop-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  -webkit-mask: var(--mask, none);
+          mask: var(--mask, none);
+}
+
+.icrop-sel {
+  position: absolute;
+  top: var(--y, 10%);
+  left: var(--x, 10%);
+  width: var(--w, 80%);
+  height: var(--h, 80%);
+  border: 1.5px dashed var(--icrop-stroke);
+  cursor: move;
+  box-sizing: border-box;
+}
+
+.icrop-grid .icrop-sel::before,
+.icrop-grid .icrop-sel::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+.icrop-grid .icrop-sel::before {
+  top: 0; bottom: 0;
+  left: 33.33%;
+  width: 1px;
+  box-shadow: calc(100% / 3 * 1) 0 0 rgba(255,255,255,0.35);
+}
+.icrop-grid .icrop-sel::after {
+  left: 0; right: 0;
+  top: 33.33%;
+  height: 1px;
+  box-shadow: 0 calc(100% / 3 * 1) 0 rgba(255,255,255,0.35);
+}
+
+.icrop-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--icrop-stroke);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
+}
+.icrop-handle.nw { top: -6px; left: -6px; cursor: nwse-resize; }
+.icrop-handle.ne { top: -6px; right: -6px; cursor: nesw-resize; }
+.icrop-handle.sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
+.icrop-handle.se { bottom: -6px; right: -6px; cursor: nwse-resize; }
+
+.icrop-circle .icrop-sel {
+  border-radius: 50%;
+  border-style: dashed;
+}
+.icrop-circle .icrop-handle { display: none; }

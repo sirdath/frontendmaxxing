@@ -1,0 +1,120 @@
+/* ============================================
+   STREAK FLAME — Duolingo-style streak indicator
+   Inspired by Duolingo / GitHub streak / Snapchat streak
+   ============================================
+   Usage:
+     <div class="strk">
+       <div class="strk-flame">🔥</div>
+       <div class="strk-body">
+         <div class="strk-num">42</div>
+         <div class="strk-label">Day streak</div>
+       </div>
+     </div>
+
+     <!-- Mini chip variant -->
+     <span class="strk-chip">🔥 42</span>
+
+   Variants:
+     strk-large
+     strk-frozen     — Greyed-out flame (broken streak)
+     strk-on-fire    — Animated flicker
+     strk-record     — Show "Best ever" label
+   ============================================ */
+
+.strk {
+  --strk-bg: var(--surface-2, #14141f);
+  --strk-border: rgba(255, 255, 255, 0.08);
+  --strk-fg: #ffffff;
+  --strk-muted: rgba(255, 255, 255, 0.55);
+  --strk-flame: #f87171;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--strk-bg);
+  border: 1px solid var(--strk-border);
+  border-radius: 14px;
+  color: var(--strk-fg);
+}
+
+.strk-flame {
+  font-size: 2rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 6px rgba(248, 113, 113, 0.6));
+  animation: strk-pulse 1.8s ease-in-out infinite;
+}
+@keyframes strk-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+.strk-num {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, #f87171, #fbbf24);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-variant-numeric: tabular-nums;
+}
+.strk-label {
+  font-size: 0.75rem;
+  color: var(--strk-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Chip variant */
+.strk-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.55rem;
+  background: rgba(248, 113, 113, 0.15);
+  color: #fca5a5;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Variants */
+.strk-large .strk-flame { font-size: 2.6rem; }
+.strk-large .strk-num { font-size: 2.2rem; }
+
+.strk-frozen .strk-flame {
+  filter: grayscale(1) drop-shadow(0 0 6px rgba(148, 163, 184, 0.4));
+  animation: none;
+}
+.strk-frozen .strk-num {
+  background: linear-gradient(135deg, #94a3b8, #cbd5e1);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.strk-on-fire .strk-flame {
+  animation: strk-flicker 0.35s ease-in-out infinite;
+  text-shadow: 0 0 12px rgba(248, 113, 113, 0.7);
+}
+@keyframes strk-flicker {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50%      { transform: scale(1.12) rotate(2deg); }
+}
+
+.strk-record::after {
+  content: '★ Personal best';
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.45rem;
+  background: rgba(251, 191, 36, 0.18);
+  color: #fde68a;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strk-flame, .strk-on-fire .strk-flame { animation: none; }
+}

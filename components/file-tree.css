@@ -1,0 +1,142 @@
+/* ============================================
+   FILE TREE — Collapsible nested folder/file list
+   Inspired by Magic UI / VSCode sidebar
+   ============================================
+   Usage:
+     <ul class="file-tree">
+       <li class="ft-folder ft-open">
+         <span class="ft-row"><span class="ft-arrow"></span><span class="ft-icon ft-icon-folder"></span><span class="ft-name">src</span></span>
+         <ul>
+           <li class="ft-folder">
+             <span class="ft-row"><span class="ft-arrow"></span><span class="ft-icon ft-icon-folder"></span><span class="ft-name">utils</span></span>
+             <ul>
+               <li class="ft-file"><span class="ft-row"><span class="ft-arrow ft-arrow-blank"></span><span class="ft-icon ft-icon-js"></span><span class="ft-name">dom.js</span></span></li>
+             </ul>
+           </li>
+           <li class="ft-file"><span class="ft-row"><span class="ft-arrow ft-arrow-blank"></span><span class="ft-icon ft-icon-css"></span><span class="ft-name">index.css</span></span></li>
+         </ul>
+       </li>
+     </ul>
+
+   Variants:
+     .file-tree-compact — Smaller rows
+     .file-tree-light   — Light theme
+   ============================================ */
+
+.file-tree {
+  --ft-indent: 1rem;
+  --ft-row-h: 30px;
+  --ft-color: #e5e7eb;
+  --ft-muted: rgba(229, 231, 235, 0.55);
+  --ft-hover: rgba(255, 255, 255, 0.06);
+  --ft-active: rgba(129, 140, 248, 0.15);
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  border-radius: 12px;
+  background: var(--surface-2, #14141f);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  color: var(--ft-color);
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.file-tree ul {
+  list-style: none;
+  margin: 0;
+  padding-left: var(--ft-indent);
+  overflow: hidden;
+  max-height: 999px;
+  transition: max-height 0.25s ease;
+}
+
+.file-tree .ft-folder:not(.ft-open) > ul {
+  max-height: 0;
+}
+
+.ft-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: var(--ft-row-h);
+  padding: 0 0.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.ft-row:hover {
+  background: var(--ft-hover);
+}
+
+.ft-row.ft-active {
+  background: var(--ft-active);
+}
+
+.ft-arrow {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.ft-arrow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 4px 0 4px 5px;
+  border-color: transparent transparent transparent currentColor;
+  opacity: 0.7;
+}
+
+.ft-folder.ft-open > .ft-row > .ft-arrow {
+  transform: rotate(90deg);
+}
+
+.ft-arrow-blank::before { content: none; }
+
+.ft-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 3px;
+}
+
+.ft-icon-folder { background: linear-gradient(135deg, #fcd34d, #f59e0b); }
+.ft-icon-js     { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+.ft-icon-ts     { background: linear-gradient(135deg, #38bdf8, #2563eb); }
+.ft-icon-css    { background: linear-gradient(135deg, #60a5fa, #2563eb); }
+.ft-icon-html   { background: linear-gradient(135deg, #fb923c, #ef4444); }
+.ft-icon-json   { background: linear-gradient(135deg, #a3e635, #65a30d); }
+.ft-icon-md     { background: linear-gradient(135deg, #94a3b8, #475569); }
+.ft-icon-img    { background: linear-gradient(135deg, #c084fc, #7c3aed); }
+
+.ft-name {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ft-meta {
+  color: var(--ft-muted);
+  font-size: 0.75rem;
+}
+
+/* ── Variants ── */
+.file-tree-compact { --ft-row-h: 24px; font-size: 0.825rem; }
+.file-tree-light {
+  --ft-color: #0c0c14;
+  --ft-muted: rgba(12, 12, 20, 0.55);
+  --ft-hover: rgba(0, 0, 0, 0.04);
+  --ft-active: rgba(129, 140, 248, 0.18);
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+}

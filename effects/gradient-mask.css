@@ -1,0 +1,113 @@
+/* ============================================
+   GRADIENT MASK — Image & content fade-out masks via mask-image
+   Inspired by Apple marketing pages, scroll-into-content fades
+   ============================================
+   Usage:
+     <img class="gmask gmask-bottom" src="hero.jpg">
+     <section class="gmask gmask-vignette">...</section>
+
+   Variants:
+     gmask-top, gmask-bottom, gmask-left, gmask-right,
+     gmask-both-v, gmask-both-h, gmask-vignette, gmask-edges,
+     gmask-radial, gmask-spotlight, gmask-iris, gmask-diamond,
+     gmask-soft-edges, gmask-strip-top, gmask-text-fade-bottom,
+     gmask-scroll-fade
+   Strengths:
+     gmask-soft, gmask-medium, gmask-hard
+   ============================================ */
+
+.gmask {
+  --gm-len: 30%;
+}
+
+/* Single-edge fades */
+.gmask-top {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 var(--gm-len));
+          mask-image: linear-gradient(to bottom, transparent 0%, #000 var(--gm-len));
+}
+.gmask-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--gm-len)), transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 calc(100% - var(--gm-len)), transparent 100%);
+}
+.gmask-left {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 var(--gm-len));
+          mask-image: linear-gradient(to right, transparent 0%, #000 var(--gm-len));
+}
+.gmask-right {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--gm-len)), transparent 100%);
+          mask-image: linear-gradient(to right, #000 calc(100% - var(--gm-len)), transparent 100%);
+}
+
+/* Two-edge fades */
+.gmask-both-v {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 var(--gm-len), #000 calc(100% - var(--gm-len)), transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, #000 var(--gm-len), #000 calc(100% - var(--gm-len)), transparent 100%);
+}
+.gmask-both-h {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 var(--gm-len), #000 calc(100% - var(--gm-len)), transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0%, #000 var(--gm-len), #000 calc(100% - var(--gm-len)), transparent 100%);
+}
+
+/* Vignette / radial */
+.gmask-vignette {
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 95%);
+          mask-image: radial-gradient(ellipse at center, #000 40%, transparent 95%);
+}
+.gmask-edges {
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 60%, transparent 100%);
+          mask-image: radial-gradient(ellipse at center, #000 60%, transparent 100%);
+}
+.gmask-radial {
+  -webkit-mask-image: radial-gradient(circle, #000 50%, transparent 100%);
+          mask-image: radial-gradient(circle, #000 50%, transparent 100%);
+}
+.gmask-spotlight {
+  -webkit-mask-image: radial-gradient(circle at center, #000 0%, #000 25%, transparent 80%);
+          mask-image: radial-gradient(circle at center, #000 0%, #000 25%, transparent 80%);
+}
+
+/* Shapes */
+.gmask-iris {
+  -webkit-mask-image: radial-gradient(circle at center, #000 50%, transparent 51%);
+          mask-image: radial-gradient(circle at center, #000 50%, transparent 51%);
+  transition: -webkit-mask-image 0.6s ease, mask-image 0.6s ease;
+}
+.gmask-diamond {
+  -webkit-mask-image: conic-gradient(from 45deg, #000 0% 25%, transparent 25% 50%, #000 50% 75%, transparent 75% 100%);
+          mask-image: conic-gradient(from 45deg, #000 0% 25%, transparent 25% 50%, #000 50% 75%, transparent 75% 100%);
+}
+
+/* Soft-edges (4-corner round) */
+.gmask-soft-edges {
+  -webkit-mask:
+    linear-gradient(to right, transparent, #000 20%, #000 80%, transparent),
+    linear-gradient(to bottom, transparent, #000 20%, #000 80%, transparent);
+  -webkit-mask-composite: source-in;
+          mask:
+    linear-gradient(to right, transparent, #000 20%, #000 80%, transparent),
+    linear-gradient(to bottom, transparent, #000 20%, #000 80%, transparent);
+          mask-composite: intersect;
+}
+
+/* Decorative: strip with rounded top fade */
+.gmask-strip-top {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 80px);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 80px);
+}
+
+/* Text fade-into-bg for scroll containers */
+.gmask-text-fade-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+}
+
+/* Strength modifiers */
+.gmask-soft   { --gm-len: 50%; }
+.gmask-medium { --gm-len: 30%; }
+.gmask-hard   { --gm-len: 12%; }
+
+/* Scroll-content fade (large containers) */
+.gmask-scroll-fade {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
+}

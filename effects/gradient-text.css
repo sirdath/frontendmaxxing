@@ -1,0 +1,161 @@
+/* ============================================
+   GRADIENT TEXT — Text-fill gradient utilities (animated + static)
+   Inspired by Apple landing pages / Linear / Stripe / Magic UI
+   ============================================
+   Companion to: effects/aurora-text.css (Aurora variant) +
+                 effects/gradients-pack.css (paint sources).
+
+   Usage:
+     <h1 class="gtxt gtxt-sunset">Beautiful headline</h1>
+     <span class="gtxt gtxt-anim gtxt-cosmic">Animated</span>
+     <span class="gtxt gtxt-stroke gtxt-instagram">Outline only</span>
+
+   Modifiers:
+     gtxt          — base (background-clip: text + transparent fill)
+     gtxt-anim     — slide background-position
+     gtxt-anim-fast / -slow
+     gtxt-stroke   — outline-only (uses -webkit-text-stroke)
+     gtxt-shimmer  — moving highlight band across text
+     gtxt-glow     — soft drop-shadow glow
+     gtxt-fade-down / -fade-up — fade to transparent on one edge
+   ============================================ */
+
+.gtxt {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+}
+
+/* ── Animation ── */
+.gtxt-anim {
+  animation: gtxt-slide 6s linear infinite;
+}
+.gtxt-anim-slow { animation-duration: 14s; }
+.gtxt-anim-fast { animation-duration: 2.5s; }
+
+@keyframes gtxt-slide {
+  0%   { background-position: 0%   50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* ── Stroke / outline ── */
+.gtxt-stroke {
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.5px;
+  /* Use a flat color via -webkit-text-stroke-color OR keep gradient */
+  background: none !important;
+  color: transparent;
+}
+.gtxt-stroke.gtxt-instagram { -webkit-text-stroke-color: #dd2a7b; }
+.gtxt-stroke.gtxt-sunset    { -webkit-text-stroke-color: #ff6e7f; }
+.gtxt-stroke.gtxt-cosmic    { -webkit-text-stroke-color: #c084fc; }
+.gtxt-stroke.gtxt-cyber     { -webkit-text-stroke-color: #00f0ff; }
+.gtxt-stroke.gtxt-mono      { -webkit-text-stroke-color: currentColor; color: transparent; }
+
+/* ── Soft glow halo ── */
+.gtxt-glow {
+  filter: drop-shadow(0 0 12px rgba(192, 132, 252, 0.55));
+}
+.gtxt-glow-cyan { filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.6)); }
+.gtxt-glow-pink { filter: drop-shadow(0 0 12px rgba(244, 114, 182, 0.6)); }
+.gtxt-glow-amber{ filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.6)); }
+
+/* ── Fade edges (mask-image) ── */
+.gtxt-fade-down {
+  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 40%, transparent 100%);
+}
+.gtxt-fade-up {
+  -webkit-mask-image: linear-gradient(to top, #000 40%, transparent 100%);
+          mask-image: linear-gradient(to top, #000 40%, transparent 100%);
+}
+.gtxt-fade-right {
+  -webkit-mask-image: linear-gradient(to right, #000 40%, transparent 100%);
+          mask-image: linear-gradient(to right, #000 40%, transparent 100%);
+}
+
+/* ── Shimmer / scan band over text ── */
+.gtxt-shimmer {
+  background:
+    linear-gradient(90deg,
+      currentColor 0%,
+      rgba(255, 255, 255, 0.85) 50%,
+      currentColor 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 100%;
+  animation: gtxt-shimmer 2.5s linear infinite;
+}
+@keyframes gtxt-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Preset gradient fills (mirror gradients-pack favorites) ── */
+
+.gtxt-instagram {
+  background-image: linear-gradient(45deg, #515bd4, #8134af, #dd2a7b, #feda77, #f58529);
+}
+.gtxt-sunset {
+  background-image: linear-gradient(135deg, #ff6e7f, #bfe9ff);
+}
+.gtxt-aurora {
+  background-image: linear-gradient(135deg, #00c9a7, #845ec2, #ff6f91, #ff9671, #ffc75f);
+}
+.gtxt-cosmic {
+  background-image: linear-gradient(135deg, #c084fc, #38bdf8, #f472b6);
+}
+.gtxt-cyber {
+  background-image: linear-gradient(135deg, #00f0ff, #ff00d4);
+}
+.gtxt-electric {
+  background-image: linear-gradient(135deg, #00f5ff, #ff00ff);
+}
+.gtxt-firewatch {
+  background-image: linear-gradient(180deg, #cb2d3e, #ef473a, #ffa17f);
+}
+.gtxt-spotify {
+  background-image: linear-gradient(135deg, #1db954, #1ed760);
+}
+.gtxt-rainbow {
+  background-image: linear-gradient(90deg, #ff0080, #ff8c00, #ffd700, #00ff00, #00bfff, #4b0082, #ee82ee);
+  background-size: 400% 100%;
+}
+.gtxt-gold {
+  background-image: linear-gradient(135deg, #ffd700, #b8860b, #ffd700, #fff2a8);
+  background-size: 200% 100%;
+}
+.gtxt-silver {
+  background-image: linear-gradient(135deg, #bdc3c7, #e2e8f0, #94a3b8, #f1f5f9);
+}
+.gtxt-rose-gold {
+  background-image: linear-gradient(135deg, #b76e79, #f4c2c2, #b76e79);
+}
+.gtxt-mono-white {
+  background-image: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.45) 100%);
+}
+.gtxt-mono-black {
+  background-image: linear-gradient(180deg, #0c0c14 0%, rgba(12, 12, 20, 0.45) 100%);
+}
+
+/* ── Apple-style title (white → muted gray) ── */
+.gtxt-apple {
+  background-image: linear-gradient(180deg, #ffffff, rgba(255, 255, 255, 0.45));
+  letter-spacing: -0.025em;
+}
+.gtxt-apple-dark {
+  background-image: linear-gradient(180deg, #0c0c14, rgba(12, 12, 20, 0.55));
+  letter-spacing: -0.025em;
+}
+
+/* ── Headline scaling helpers ── */
+.gtxt-h1 { font-size: clamp(2rem, 6vw, 5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; }
+.gtxt-h2 { font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 700; letter-spacing: -0.02em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gtxt-anim, .gtxt-shimmer { animation: none; background-position: 25% 50%; }
+}

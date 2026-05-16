@@ -1,0 +1,69 @@
+/* ============================================
+   CURSOR GLOW — Glow that follows the cursor in dark sections
+   Inspired by Linear / Vercel hero glow on hover
+   ============================================
+   Companion to: effects/cursor-glow.js
+   The JS sets `--cg-x` / `--cg-y` (in px relative to the container).
+
+   Usage:
+     <section class="cg" data-cursor-glow>
+       <h1>Built for dark sections</h1>
+     </section>
+     CursorGlow.init('[data-cursor-glow]');
+
+   Variants:
+     .cg-soft        — Larger softer halo
+     .cg-tight       — Smaller crisp halo
+     .cg-cyan/pink/amber/mint — Color presets
+     .cg-rect        — Rectangular spotlight (instead of circular)
+   ============================================ */
+
+.cg {
+  --cg-size: 320px;
+  --cg-color: rgba(129, 140, 248, 0.32);
+  --cg-x: 50%;
+  --cg-y: 50%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.cg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle var(--cg-size) at var(--cg-x) var(--cg-y),
+    var(--cg-color),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.cg.is-hover::before { opacity: 1; }
+
+.cg > * { position: relative; z-index: 1; }
+
+/* ── Variants ── */
+.cg-soft  { --cg-size: 480px; --cg-color: rgba(129, 140, 248, 0.22); }
+.cg-tight { --cg-size: 200px; }
+
+.cg-cyan  { --cg-color: rgba(34, 211, 238, 0.32); }
+.cg-pink  { --cg-color: rgba(244, 114, 182, 0.32); }
+.cg-amber { --cg-color: rgba(245, 158, 11, 0.32); }
+.cg-mint  { --cg-color: rgba(74, 222, 128, 0.32); }
+
+.cg-rect::before {
+  background: radial-gradient(
+    ellipse 60% 50% at var(--cg-x) var(--cg-y),
+    var(--cg-color),
+    transparent 70%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cg::before { transition: none; }
+}

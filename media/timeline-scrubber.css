@@ -1,0 +1,171 @@
+/* ============================================
+   TIMELINE SCRUBBER — Multi-track video/audio editor timeline
+   Inspired by After Effects / DaVinci Resolve / Premiere
+   ============================================
+   Usage:
+     <div class="tls" data-timeline-scrubber>
+       <div class="tls-ruler">
+         <span class="tls-tick">0:00</span>
+         <span class="tls-tick">0:05</span>
+         <span class="tls-tick">0:10</span>
+         <span class="tls-tick">0:15</span>
+       </div>
+       <div class="tls-tracks">
+         <div class="tls-track" data-track="video">
+           <div class="tls-clip" style="--start:5%; --end:35%; --color:#22d3ee;">
+             <span>intro.mp4</span>
+           </div>
+           <div class="tls-clip" style="--start:40%; --end:80%; --color:#818cf8;">
+             <span>scene2.mp4</span>
+           </div>
+         </div>
+         <div class="tls-track" data-track="audio">
+           <div class="tls-clip tls-clip-audio" style="--start:0%; --end:100%; --color:#4ade80;">
+             <span>music.mp3</span>
+           </div>
+         </div>
+       </div>
+       <div class="tls-playhead" style="--p:30%;"></div>
+     </div>
+
+   Variants:
+     tls-compact     — Shorter tracks
+   ============================================ */
+
+.tls {
+  --tls-bg: var(--surface-2, #14141f);
+  --tls-track-bg: rgba(255, 255, 255, 0.03);
+  --tls-border: rgba(255, 255, 255, 0.08);
+  --tls-fg: #ffffff;
+  --tls-muted: rgba(255, 255, 255, 0.55);
+  --tls-track-h: 48px;
+  position: relative;
+  background: var(--tls-bg);
+  border: 1px solid var(--tls-border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--tls-fg);
+}
+
+.tls-ruler {
+  position: relative;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid var(--tls-border);
+  overflow: hidden;
+}
+.tls-tick {
+  position: absolute;
+  top: 4px;
+  color: var(--tls-muted);
+  padding-left: 4px;
+  border-left: 1px solid var(--tls-border);
+  height: 100%;
+}
+/* Place ticks via inline style: style="left: 20%;" */
+
+.tls-tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--tls-border);
+}
+
+.tls-track {
+  position: relative;
+  height: var(--tls-track-h);
+  background: var(--tls-track-bg);
+}
+.tls-compact .tls-track { height: 32px; }
+
+.tls-track[data-track]::before {
+  content: attr(data-track);
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font-size: 0.65rem;
+  color: var(--tls-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tls-clip {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: var(--start, 0%);
+  right: calc(100% - var(--end, 100%));
+  background: color-mix(in srgb, var(--color, #818cf8) 35%, transparent);
+  border-left: 3px solid var(--color, #818cf8);
+  border-radius: 6px;
+  padding: 0.2rem 0.4rem;
+  cursor: grab;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  white-space: nowrap;
+  transition: filter 0.15s ease;
+}
+.tls-clip:hover { filter: brightness(1.15); }
+.tls-clip.is-selected {
+  outline: 1.5px solid var(--color, #818cf8);
+  outline-offset: 1px;
+}
+.tls-clip span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tls-clip-audio {
+  background:
+    repeating-linear-gradient(to right,
+      color-mix(in srgb, var(--color, #4ade80) 35%, transparent) 0 4px,
+      color-mix(in srgb, var(--color, #4ade80) 20%, transparent) 4px 6px);
+}
+
+/* Trim handles */
+.tls-clip::before,
+.tls-clip::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 6px;
+  background: rgba(255, 255, 255, 0.18);
+  cursor: ew-resize;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.tls-clip::before { left: 0; border-right: 1px solid var(--color, #818cf8); }
+.tls-clip::after  { right: 0; border-left:  1px solid var(--color, #818cf8); }
+.tls-clip:hover::before, .tls-clip:hover::after,
+.tls-clip.is-selected::before, .tls-clip.is-selected::after { opacity: 1; }
+
+/* Playhead */
+.tls-playhead {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: var(--p, 0%);
+  width: 2px;
+  background: #f87171;
+  pointer-events: none;
+  z-index: 3;
+  box-shadow: 0 0 8px rgba(248, 113, 113, 0.6);
+}
+.tls-playhead::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -6px;
+  width: 14px;
+  height: 14px;
+  background: #f87171;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}

@@ -1,0 +1,83 @@
+/* ============================================
+   SUCCESS CHECKMARK — Animated draw-on green checkmark
+   Inspired by Stripe / Apple checkout success states
+   ============================================
+   Usage:
+     <span class="sck"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"></circle><path d="M14 27 l8 8 l16 -16"></path></svg></span>
+
+   Variants:
+     .sck-lg       — Larger size
+     .sck-amber    — Amber palette
+     .sck-fill     — Fill the circle instead of stroking
+     .sck-spin     — Quick rotation as it draws
+   ============================================ */
+
+.sck {
+  --sck-size: 64px;
+  --sck-color: #22c55e;
+  --sck-track: rgba(34, 197, 94, 0.15);
+  --sck-thickness: 3;
+  display: inline-block;
+  width: var(--sck-size);
+  height: var(--sck-size);
+}
+
+.sck svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sck svg circle {
+  fill: none;
+  stroke: var(--sck-color);
+  stroke-width: var(--sck-thickness);
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  stroke-linecap: round;
+  transform-origin: center;
+  animation: sck-circle 0.6s cubic-bezier(0.86, 0, 0.07, 1) forwards;
+}
+
+.sck svg path {
+  fill: none;
+  stroke: var(--sck-color);
+  stroke-width: var(--sck-thickness);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: sck-check 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.55s forwards;
+}
+
+@keyframes sck-circle { to { stroke-dashoffset: 0; } }
+@keyframes sck-check  { to { stroke-dashoffset: 0; } }
+
+.sck-fill svg circle {
+  fill: var(--sck-track);
+  animation-duration: 0.4s;
+}
+.sck-fill svg path {
+  stroke: #fff;
+}
+
+.sck-spin svg circle {
+  animation: sck-spin-circle 0.7s cubic-bezier(0.86, 0, 0.07, 1) forwards;
+}
+@keyframes sck-spin-circle {
+  0%   { stroke-dashoffset: 160; transform: rotate(-90deg); }
+  100% { stroke-dashoffset: 0;   transform: rotate(0); }
+}
+
+.sck-lg  { --sck-size: 96px; }
+.sck-sm  { --sck-size: 40px; --sck-thickness: 4; }
+
+.sck-amber  { --sck-color: #f59e0b; --sck-track: rgba(245, 158, 11, 0.15); }
+.sck-cyan   { --sck-color: #22d3ee; --sck-track: rgba(34, 211, 238, 0.15); }
+.sck-purple { --sck-color: #c084fc; --sck-track: rgba(192, 132, 252, 0.15); }
+.sck-rose   { --sck-color: #f472b6; --sck-track: rgba(244, 114, 182, 0.15); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sck svg circle,
+  .sck svg path { animation: none; stroke-dashoffset: 0; }
+}

@@ -1,0 +1,168 @@
+/* ============================================
+   REASONING BLOCK — Collapsible "Thinking…" disclosure for reasoning models
+   Inspired by Claude extended thinking, o1 reasoning, Vercel AI Elements Reasoning
+   ============================================
+   Usage:
+     <details class="rsn" data-rsn>
+       <summary class="rsn-head">
+         <span class="rsn-icon">💭</span>
+         <span class="rsn-label">Thinking</span>
+         <span class="rsn-elapsed">3.4s</span>
+         <span class="rsn-chevron">▾</span>
+       </summary>
+       <div class="rsn-body">
+         The user is asking about X. I should first consider Y...
+       </div>
+     </details>
+
+     // Or use ReasoningBlock.create() in reasoning-block.js
+     // - Auto-collapses when streaming ends (via .rsn-done class)
+     // - Live elapsed-time counter while streaming
+
+   States:
+     rsn-streaming  — pulsing icon, live timer, expanded by default
+     rsn-done       — paused timer, auto-collapses (configurable)
+     rsn-empty      — placeholder before first token
+   Variants:
+     rsn-compact    — tighter padding, smaller text
+     rsn-flat       — no border
+     rsn-rail       — left-rail accent
+   ============================================ */
+
+.rsn {
+  --rsn-bg: rgba(255, 255, 255, 0.03);
+  --rsn-border: rgba(255, 255, 255, 0.08);
+  --rsn-fg: rgba(255, 255, 255, 0.7);
+  --rsn-muted: rgba(255, 255, 255, 0.45);
+  --rsn-accent: #818cf8;
+  background: var(--rsn-bg);
+  border: 1px solid var(--rsn-border);
+  border-radius: 10px;
+  margin: 0.5rem 0;
+  color: var(--rsn-fg);
+  font-size: 0.85rem;
+  overflow: hidden;
+}
+
+.rsn[open] { background: rgba(255, 255, 255, 0.05); }
+
+.rsn-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  color: var(--rsn-muted);
+}
+.rsn-head::-webkit-details-marker { display: none; }
+.rsn-head:hover { color: var(--rsn-fg); }
+
+.rsn-icon {
+  width: 20px; height: 20px;
+  display: grid; place-items: center;
+  border-radius: 5px;
+  background: rgba(129, 140, 248, 0.12);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.rsn-label {
+  font-weight: 500;
+  font-size: 0.82rem;
+}
+
+.rsn-elapsed {
+  margin-left: auto;
+  padding: 0.1rem 0.45rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--rsn-muted);
+}
+
+.rsn-chevron {
+  font-size: 0.7rem;
+  transition: transform 0.18s ease;
+}
+.rsn[open] .rsn-chevron { transform: rotate(-180deg); }
+
+.rsn-body {
+  padding: 0.25rem 0.85rem 0.85rem 0.85rem;
+  font-style: italic;
+  color: var(--rsn-fg);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  border-top: 1px solid var(--rsn-border);
+  margin-top: 0.25rem;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+/* States */
+.rsn-streaming .rsn-icon {
+  animation: rsn-pulse 1.5s ease-in-out infinite;
+  background: rgba(129, 140, 248, 0.22);
+}
+.rsn-streaming .rsn-label::after {
+  content: '…';
+  display: inline-block;
+  margin-left: 0.1em;
+  animation: rsn-dots 1.4s steps(4) infinite;
+  width: 0.7em;
+  text-align: left;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+@keyframes rsn-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.1); opacity: 0.7; }
+}
+@keyframes rsn-dots {
+  0%   { content: ''; }
+  33%  { content: '.'; }
+  66%  { content: '..'; }
+  100% { content: '...'; }
+}
+
+.rsn-done { opacity: 0.85; }
+.rsn-done .rsn-icon { background: rgba(52, 211, 153, 0.18); }
+.rsn-done .rsn-icon::before { content: '✓'; color: #34d399; }
+.rsn-done .rsn-icon > * { display: none; }
+
+.rsn-empty .rsn-body {
+  color: var(--rsn-muted);
+  font-style: normal;
+}
+.rsn-empty .rsn-body::before {
+  content: 'Waiting for reasoning…';
+}
+
+/* Variants */
+.rsn-compact { font-size: 0.78rem; }
+.rsn-compact .rsn-head { padding: 0.4rem 0.7rem; }
+.rsn-compact .rsn-body { padding: 0.25rem 0.7rem 0.7rem; }
+
+.rsn-flat {
+  background: transparent;
+  border-color: transparent;
+}
+
+.rsn-rail {
+  border-left: 2.5px solid var(--rsn-accent);
+}
+
+/* "Open by default during stream, auto-collapse on done" — toggled via JS */
+.rsn-auto-collapse.rsn-done[open]:not(.is-pinned) {
+  animation: rsn-collapse 0.4s ease forwards;
+}
+@keyframes rsn-collapse {
+  to { /* closed */ }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rsn-streaming .rsn-icon,
+  .rsn-streaming .rsn-label::after { animation: none; }
+}

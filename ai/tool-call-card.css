@@ -1,0 +1,225 @@
+/* ============================================
+   TOOL CALL CARD — Collapsible function-call card for AI agents
+   Inspired by Vercel AI Elements Tool, assistant-ui ToolGroup, Claude tool-use
+   ============================================
+   Renders an AI tool invocation: tool name, status icon, expandable args + result.
+   Group consecutive calls under .tcc-group with shared rail.
+
+   Usage:
+     <div class="tcc tcc-success" data-tcc-tool="search_web">
+       <button class="tcc-head" type="button">
+         <span class="tcc-icon">🔧</span>
+         <span class="tcc-name">search_web</span>
+         <span class="tcc-status">Done <span class="tcc-elapsed">1.2s</span></span>
+         <span class="tcc-chevron">▾</span>
+       </button>
+       <div class="tcc-body">
+         <div class="tcc-args"><pre>{ "query": "..." }</pre></div>
+         <div class="tcc-result"><pre>3 results</pre></div>
+       </div>
+     </div>
+
+     // Or use ToolCallCard.render() in tool-call-card.js
+
+   States (set via class on .tcc):
+     tcc-pending, tcc-running (spinner), tcc-success, tcc-error, tcc-cancelled
+   Variants:
+     tcc-compact, tcc-flat, tcc-mono
+   Grouping:
+     .tcc-group wraps multiple .tcc — adds left rail + reduced spacing
+   ============================================ */
+
+.tcc {
+  --tcc-bg: rgba(255, 255, 255, 0.04);
+  --tcc-border: rgba(255, 255, 255, 0.1);
+  --tcc-fg: #ffffff;
+  --tcc-muted: rgba(255, 255, 255, 0.6);
+  --tcc-accent: #8b5cf6;
+  background: var(--tcc-bg);
+  border: 1px solid var(--tcc-border);
+  border-radius: 10px;
+  color: var(--tcc-fg);
+  overflow: hidden;
+  font-size: 0.85rem;
+  margin: 0.4rem 0;
+}
+
+.tcc-head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.tcc-head:hover { background: rgba(255, 255, 255, 0.03); }
+
+.tcc-icon {
+  width: 22px; height: 22px;
+  flex-shrink: 0;
+  display: grid; place-items: center;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.85rem;
+}
+
+.tcc-name {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.tcc-status {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--tcc-muted);
+  font-size: 0.75rem;
+}
+.tcc-elapsed {
+  font-variant-numeric: tabular-nums;
+  padding: 0.1rem 0.4rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  font-size: 0.7rem;
+}
+
+.tcc-chevron {
+  color: var(--tcc-muted);
+  font-size: 0.7rem;
+  transition: transform 0.18s ease;
+}
+.tcc.is-open .tcc-chevron { transform: rotate(-180deg); }
+
+.tcc-body {
+  display: none;
+  border-top: 1px solid var(--tcc-border);
+  padding: 0.6rem 0.85rem 0.85rem;
+}
+.tcc.is-open .tcc-body { display: block; }
+
+.tcc-args,
+.tcc-result {
+  margin: 0.5rem 0;
+}
+.tcc-args-label,
+.tcc-result-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tcc-muted);
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+.tcc-args pre,
+.tcc-result pre {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--tcc-border);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  margin: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.75rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+/* States */
+.tcc-pending     { --tcc-accent: #94a3b8; opacity: 0.85; }
+.tcc-pending .tcc-icon::before { content: '⏳'; }
+
+.tcc-running     { --tcc-accent: #818cf8; }
+.tcc-running .tcc-icon {
+  background: transparent;
+}
+.tcc-running .tcc-icon::before {
+  content: '';
+  width: 14px; height: 14px;
+  border: 2px solid var(--tcc-accent);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: tcc-spin 0.9s linear infinite;
+  display: block;
+}
+@keyframes tcc-spin { to { transform: rotate(360deg); } }
+
+.tcc-success {
+  --tcc-accent: #34d399;
+  border-left: 2.5px solid var(--tcc-accent);
+}
+.tcc-success .tcc-icon { background: rgba(52, 211, 153, 0.15); }
+.tcc-success .tcc-icon::before { content: '✓'; color: var(--tcc-accent); font-weight: 700; }
+
+.tcc-error {
+  --tcc-accent: #f87171;
+  border-left: 2.5px solid var(--tcc-accent);
+}
+.tcc-error .tcc-icon { background: rgba(248, 113, 113, 0.15); }
+.tcc-error .tcc-icon::before { content: '✕'; color: var(--tcc-accent); font-weight: 700; }
+
+.tcc-cancelled {
+  --tcc-accent: #fbbf24;
+  opacity: 0.7;
+}
+.tcc-cancelled .tcc-icon::before { content: '⊘'; color: var(--tcc-accent); }
+
+/* Variants */
+.tcc-compact { font-size: 0.78rem; }
+.tcc-compact .tcc-head { padding: 0.4rem 0.7rem; }
+.tcc-compact .tcc-icon { width: 18px; height: 18px; }
+
+.tcc-flat { background: transparent; border-color: transparent; }
+.tcc-flat .tcc-head:hover { background: rgba(255, 255, 255, 0.04); }
+
+.tcc-mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+/* Tool-call group (consecutive calls in one agent step) */
+.tcc-group {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.tcc-group::before {
+  content: '';
+  position: absolute;
+  left: 12px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--tcc-border), transparent);
+  border-radius: 1px;
+}
+.tcc-group > .tcc {
+  margin: 0.25rem 0;
+  position: relative;
+}
+.tcc-group > .tcc::before {
+  content: '';
+  position: absolute;
+  left: -1.5rem; top: 1.1rem;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--tcc-bg);
+  border: 2px solid var(--tcc-accent);
+}
+.tcc-group-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tcc-muted);
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+/* Per-tool color hints (auto-styled if data-tcc-tool is set; otherwise neutral) */
+.tcc[data-tcc-tool="search_web"]   .tcc-icon { background: rgba(96, 165, 250, 0.18); }
+.tcc[data-tcc-tool="read_file"]    .tcc-icon { background: rgba(167, 139, 250, 0.18); }
+.tcc[data-tcc-tool="run_shell"]    .tcc-icon { background: rgba(251, 113, 133, 0.18); }
+.tcc[data-tcc-tool="execute_code"] .tcc-icon { background: rgba(34, 211, 238, 0.18); }
+.tcc[data-tcc-tool="edit_file"]    .tcc-icon { background: rgba(251, 191, 36, 0.18); }

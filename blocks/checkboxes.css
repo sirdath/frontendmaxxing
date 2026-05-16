@@ -1,0 +1,181 @@
+/* ============================================
+   CHECKBOXES — Animated CSS-only checkbox styles
+   Inspired by uiverse.io / custom UI kits
+   ============================================
+   Usage:
+     <label class="cbx cbx-draw">
+       <input type="checkbox">
+       <span class="cbx-box">
+         <svg viewBox="0 0 12 10"><polyline points="1.5 6 4.5 9 10.5 1"/></svg>
+       </span>
+       <span class="cbx-label">Accept terms</span>
+     </label>
+
+   Variants:
+     cbx-draw     — Checkmark draws on
+     cbx-fill     — Box fills with color on check
+     cbx-pop      — Box bounces in
+     cbx-flip     — Box flips between unchecked/checked face
+     cbx-cross    — X mark instead of check
+     cbx-rounded  — Pill-shaped box
+     cbx-square   — Square corners (default rounded)
+     cbx-disabled — Greyed out (apply on <label>)
+   ============================================ */
+
+.cbx {
+  --cbx-size: 20px;
+  --cbx-bg: transparent;
+  --cbx-border: rgba(255, 255, 255, 0.25);
+  --cbx-fg: #818cf8;
+  --cbx-check: #ffffff;
+  --cbx-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+  font: inherit;
+}
+
+.cbx > input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cbx-box {
+  width: var(--cbx-size);
+  height: var(--cbx-size);
+  border-radius: var(--cbx-radius);
+  border: 1.5px solid var(--cbx-border);
+  background: var(--cbx-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.cbx-box svg {
+  width: 70%;
+  height: auto;
+  fill: none;
+  stroke: var(--cbx-check);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cbx-label { font-size: 0.95rem; }
+
+/* Focus ring */
+.cbx > input:focus-visible + .cbx-box {
+  outline: 2px solid var(--cbx-fg);
+  outline-offset: 2px;
+}
+
+/* ── 1. cbx-draw — checkmark draws on ── */
+.cbx-draw .cbx-box svg polyline {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  transition: stroke-dashoffset 0.3s ease 0.05s;
+}
+.cbx-draw > input:checked + .cbx-box {
+  background: var(--cbx-fg);
+  border-color: var(--cbx-fg);
+}
+.cbx-draw > input:checked + .cbx-box svg polyline {
+  stroke-dashoffset: 0;
+}
+
+/* ── 2. cbx-fill — box fills with color ── */
+.cbx-fill .cbx-box {
+  background: var(--cbx-bg);
+  overflow: hidden;
+}
+.cbx-fill .cbx-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--cbx-fg);
+  transform: scale(0);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: inherit;
+}
+.cbx-fill > input:checked + .cbx-box::before { transform: scale(1); }
+.cbx-fill > input:checked + .cbx-box { border-color: var(--cbx-fg); }
+.cbx-fill .cbx-box svg { position: relative; z-index: 1; opacity: 0; transition: opacity 0.15s ease 0.15s; }
+.cbx-fill > input:checked + .cbx-box svg { opacity: 1; }
+
+/* ── 3. cbx-pop — bouncy entrance ── */
+.cbx-pop > input:checked + .cbx-box {
+  background: var(--cbx-fg);
+  border-color: var(--cbx-fg);
+  animation: cbx-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes cbx-pop {
+  0% { transform: scale(0.85); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* ── 4. cbx-flip — flips 180° on check ── */
+.cbx-flip .cbx-box {
+  transition: transform 0.4s ease, background 0.4s ease, border-color 0.4s ease;
+  transform-style: preserve-3d;
+}
+.cbx-flip > input:checked + .cbx-box {
+  background: var(--cbx-fg);
+  border-color: var(--cbx-fg);
+  transform: rotateY(180deg);
+}
+.cbx-flip .cbx-box svg { transform: rotateY(180deg); opacity: 0; transition: opacity 0.2s ease 0.2s; }
+.cbx-flip > input:checked + .cbx-box svg { opacity: 1; }
+
+/* ── 5. cbx-cross — uses an X mark ── */
+.cbx-cross .cbx-box svg { display: none; }
+.cbx-cross .cbx-box::before,
+.cbx-cross .cbx-box::after {
+  content: '';
+  position: absolute;
+  width: 60%; height: 2px;
+  background: var(--cbx-check);
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.cbx-cross .cbx-box::before { transform: rotate(45deg); }
+.cbx-cross .cbx-box::after  { transform: rotate(-45deg); }
+.cbx-cross > input:checked + .cbx-box {
+  background: #ef4444;
+  border-color: #ef4444;
+}
+.cbx-cross > input:checked + .cbx-box::before,
+.cbx-cross > input:checked + .cbx-box::after { opacity: 1; }
+
+/* ── 6. cbx-rounded — pill ── */
+.cbx-rounded { --cbx-radius: 999px; }
+.cbx-square  { --cbx-radius: 0; }
+
+/* ── Disabled state ── */
+.cbx-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Color presets ── */
+.cbx-accent  { --cbx-fg: #818cf8; }
+.cbx-success { --cbx-fg: #22c55e; }
+.cbx-danger  { --cbx-fg: #ef4444; }
+.cbx-amber   { --cbx-fg: #f59e0b; }
+
+/* ── Sizes ── */
+.cbx-sm { --cbx-size: 16px; }
+.cbx-lg { --cbx-size: 26px; --cbx-radius: 7px; }
+.cbx-xl { --cbx-size: 32px; --cbx-radius: 9px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cbx-box,
+  .cbx-box * { transition: none !important; animation: none !important; }
+}

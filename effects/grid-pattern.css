@@ -1,0 +1,92 @@
+/* ============================================
+   GRID PATTERN — Repeating square grid background
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <div class="grid-pattern">...</div>
+     <div class="grid-pattern grid-pattern-fade">...</div>
+
+   Variants:
+     .grid-pattern-sm    — 16px cells
+     .grid-pattern-lg    — 64px cells
+     .grid-pattern-dashed — Dashed grid lines
+     .grid-pattern-fade  — Radial fade overlay
+     .grid-pattern-cross — Cross/plus markers at intersections
+   ============================================ */
+
+.grid-pattern {
+  --grid-size: 32px;
+  --grid-thickness: 1px;
+  --grid-color: rgba(255, 255, 255, 0.08);
+  --grid-bg: transparent;
+  position: relative;
+  background-color: var(--grid-bg);
+  background-image:
+    linear-gradient(to right, var(--grid-color) var(--grid-thickness), transparent var(--grid-thickness)),
+    linear-gradient(to bottom, var(--grid-color) var(--grid-thickness), transparent var(--grid-thickness));
+  background-size: var(--grid-size) var(--grid-size);
+}
+
+/* ── Size variants ── */
+.grid-pattern-sm  { --grid-size: 16px; }
+.grid-pattern-md  { --grid-size: 32px; }
+.grid-pattern-lg  { --grid-size: 64px; }
+.grid-pattern-xl  { --grid-size: 96px; }
+
+/* ── Theme variants ── */
+.grid-pattern-light  { --grid-color: rgba(0, 0, 0, 0.08); }
+.grid-pattern-dark   { --grid-color: rgba(255, 255, 255, 0.08); }
+.grid-pattern-accent { --grid-color: rgba(129, 140, 248, 0.35); }
+.grid-pattern-bold   { --grid-color: rgba(255, 255, 255, 0.16); --grid-thickness: 1.5px; }
+
+/* ── Dashed variant ── */
+.grid-pattern-dashed {
+  background-image:
+    repeating-linear-gradient(to right,
+      var(--grid-color) 0 var(--grid-thickness),
+      transparent var(--grid-thickness) 6px,
+      var(--grid-color) 6px calc(6px + var(--grid-thickness)),
+      transparent calc(6px + var(--grid-thickness)) 12px),
+    repeating-linear-gradient(to bottom,
+      var(--grid-color) 0 var(--grid-thickness),
+      transparent var(--grid-thickness) 6px,
+      var(--grid-color) 6px calc(6px + var(--grid-thickness)),
+      transparent calc(6px + var(--grid-thickness)) 12px);
+  background-size: var(--grid-size) var(--grid-size);
+}
+
+/* ── Fade overlays ── */
+.grid-pattern-fade {
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 80%);
+          mask-image: radial-gradient(ellipse at center, #000 35%, transparent 80%);
+}
+
+.grid-pattern-fade-top {
+  -webkit-mask-image: linear-gradient(to bottom, #000 20%, transparent 85%);
+          mask-image: linear-gradient(to bottom, #000 20%, transparent 85%);
+}
+
+.grid-pattern-fade-side {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 20%, #000 80%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 20%, #000 80%, transparent);
+}
+
+/* ── Cross markers at intersections ── */
+.grid-pattern-cross {
+  background-image:
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px),
+    radial-gradient(circle at center, var(--grid-color) 1.5px, transparent 1.5px);
+  background-size:
+    var(--grid-size) var(--grid-size),
+    var(--grid-size) var(--grid-size),
+    var(--grid-size) var(--grid-size);
+}
+
+/* ── Isometric grid (skewed) ── */
+.grid-pattern-iso {
+  background-image:
+    linear-gradient(30deg, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(-30deg, var(--grid-color) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+}

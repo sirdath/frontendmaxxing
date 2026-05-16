@@ -1,0 +1,179 @@
+/* ============================================
+   IRIDESCENT PACK — Soap bubble, CD, oil slick, pearl, foil variants
+   Inspired by Pokémon card holos, vinyl labels, CD reflections, Y2K iridescence
+   ============================================
+   Usage:
+     <div class="iri iri-soap">Hover me</div>
+     <div class="iri iri-cd"></div>
+
+   Variants:
+     iri-soap, iri-cd, iri-dvd, iri-oil-thick, iri-pearl, iri-pearl-soft,
+     iri-rainbow-stripe, iri-foil, iri-holo-card, iri-prism, iri-opal,
+     iri-mother-of-pearl, iri-aurora-foil, iri-mercury-rainbow, iri-mirror-ball,
+     iri-soap-bubble-thin
+   Modifiers:
+     iri-still     — pause anim
+     iri-fast/slow
+     iri-shift     — track mouse via --ix/--iy (use Js: el.style.setProperty('--ix', e.x))
+   ============================================ */
+
+.iri {
+  --iri-speed: 6s;
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  min-width: 100px;
+  min-height: 100px;
+  border-radius: 16px;
+  background-size: 200% 200%;
+  animation: iri-shift var(--iri-speed) linear infinite;
+}
+
+@keyframes iri-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Soap bubble — pastel iridescent rainbow */
+.iri-soap {
+  background: linear-gradient(135deg,
+    #ffafbd 0%, #ffc3a0 10%, #ffd194 20%, #d4fc79 30%,
+    #96e6a1 40%, #84fab0 50%, #8fd3f4 60%, #a18cd1 70%,
+    #fbc2eb 80%, #fda085 90%, #ffafbd 100%);
+}
+.iri-soap-bubble-thin {
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.9) 0%, #ffafbd 12%, #c2e9fb 28%,
+    #84fab0 50%, #fda085 72%, #fbc2eb 88%, rgba(255,255,255,0.9) 100%);
+}
+
+/* CD — high-saturation rainbow with sharp transitions */
+.iri-cd {
+  background: linear-gradient(45deg,
+    #ff0000 0%, #ff8c00 14%, #ffff00 28%, #00ff00 42%,
+    #00ffff 56%, #0000ff 70%, #8a2be2 84%, #ff00ff 100%);
+}
+.iri-dvd {
+  background: conic-gradient(from 0deg,
+    #ff0000, #ff8c00, #ffff00, #00ff00, #00ffff, #0000ff, #8a2be2, #ff00ff, #ff0000);
+  animation: iri-spin var(--iri-speed) linear infinite;
+}
+@keyframes iri-spin { to { transform: rotate(360deg); } }
+
+/* Oil slick — dark base, bright iridescent layer */
+.iri-oil-thick {
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(255, 0, 200, 0.4), transparent 50%),
+    radial-gradient(ellipse at 70% 60%, rgba(0, 200, 255, 0.4), transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(200, 255, 0, 0.3), transparent 50%),
+    linear-gradient(135deg, #1a0a1f, #2a0a2a 50%, #0a1a2a);
+}
+
+/* Pearl — soft pastel cream */
+.iri-pearl {
+  background: linear-gradient(135deg,
+    #f0e7d8 0%, #e0d8f0 20%, #d8f0e7 40%, #f0d8e0 60%,
+    #d8e7f0 80%, #f0e7d8 100%);
+}
+.iri-pearl-soft {
+  background: linear-gradient(135deg,
+    #fef9f0 0%, #fdf0f0 20%, #f0f9fe 40%, #f9f0fe 60%, #fef9f0 100%);
+}
+
+/* Rainbow stripe — racing/foil sticker */
+.iri-rainbow-stripe {
+  background: repeating-linear-gradient(45deg,
+    #ff0000 0 12%, #ff7f00 12% 24%, #ffff00 24% 36%, #00ff00 36% 48%,
+    #0000ff 48% 60%, #4b0082 60% 72%, #9400d3 72% 84%, #ff0000 84% 100%);
+  background-size: 200% 200%;
+}
+
+/* Foil — chrome rainbow Y2K */
+.iri-foil {
+  background:
+    linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%),
+    linear-gradient(45deg, #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff, #ff006e);
+  background-size: 200% 200%, 400% 400%;
+}
+
+/* Holo card — Pokémon foil pattern */
+.iri-holo-card {
+  background:
+    conic-gradient(from 90deg at 50% 50%,
+      transparent 0deg, rgba(255, 0, 200, 0.3) 60deg,
+      rgba(0, 200, 255, 0.3) 120deg, rgba(200, 255, 0, 0.3) 180deg,
+      transparent 240deg, rgba(255, 100, 0, 0.3) 300deg, transparent 360deg),
+    linear-gradient(135deg, #ff006e, #8338ec 33%, #3a86ff 66%, #06ffa5);
+}
+
+/* Prism — angular spectrum */
+.iri-prism {
+  background:
+    linear-gradient(45deg, #ff0000 0%, transparent 20%),
+    linear-gradient(90deg, transparent 20%, #ff7f00 40%, transparent 60%),
+    linear-gradient(135deg, transparent 40%, #ffff00 60%, transparent 80%),
+    linear-gradient(180deg, transparent 60%, #00ff00 80%, transparent 100%),
+    linear-gradient(225deg, transparent 80%, #0000ff 100%);
+  background-color: #fff;
+}
+
+/* Opal — milky with hot color flecks */
+.iri-opal {
+  background:
+    radial-gradient(circle at 20% 30%, #ff6b9d 0%, transparent 25%),
+    radial-gradient(circle at 80% 40%, #00d4aa 0%, transparent 25%),
+    radial-gradient(circle at 60% 70%, #ffd700 0%, transparent 25%),
+    radial-gradient(circle at 30% 80%, #9b5de5 0%, transparent 25%),
+    linear-gradient(135deg, #f8f8ff 0%, #e6e6fa 100%);
+}
+
+/* Mother of pearl — full white iridescence */
+.iri-mother-of-pearl {
+  background: linear-gradient(135deg,
+    #fffdfb 0%, #ffe4e1 15%, #e0ffff 30%, #f0fff0 45%,
+    #fff8dc 60%, #ffe4e1 75%, #f5fffa 90%, #fffdfb 100%);
+}
+
+/* Aurora foil — green-purple metallic */
+.iri-aurora-foil {
+  background: linear-gradient(135deg,
+    #00ff87 0%, #60efff 16%, #845ec2 33%, #ff6f91 50%,
+    #ffc75f 66%, #f9f871 83%, #00ff87 100%);
+}
+
+/* Mercury rainbow — liquid metal rainbow */
+.iri-mercury-rainbow {
+  background:
+    linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.6) 30%, transparent 60%),
+    linear-gradient(0deg, transparent 0%, rgba(0,0,0,0.4) 50%, transparent 100%),
+    linear-gradient(45deg, #ff006e 0%, #fb5607 16%, #ffbe0b 33%, #06ffa5 50%, #3a86ff 66%, #8338ec 83%, #ff006e 100%);
+  background-size: 100% 100%, 100% 100%, 300% 300%;
+}
+
+/* Mirror ball — segmented disco */
+.iri-mirror-ball {
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%,
+      #c0c0c0 0deg 30deg, #ffffff 30deg 60deg, #808080 60deg 90deg, #c0c0c0 90deg 120deg),
+    radial-gradient(circle, #fff, #888);
+  background-size: 40px 40px, 100% 100%;
+}
+
+/* Modifiers */
+.iri-still { animation: none; }
+.iri-fast  { --iri-speed: 2.5s; }
+.iri-slow  { --iri-speed: 14s; }
+.iri-bright { filter: saturate(1.4) brightness(1.1); }
+.iri-mute   { filter: saturate(0.7); }
+
+/* Mouse-tracked shift via JS */
+.iri-shift {
+  animation: none;
+  background-position: calc(var(--ix, 0.5) * 100%) calc(var(--iy, 0.5) * 100%);
+  transition: background-position 0.18s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iri, .iri-dvd { animation: none; }
+}

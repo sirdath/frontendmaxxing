@@ -1,0 +1,44 @@
+/* ============================================
+   CONTEXT MENU — Right-click menu (positioned at cursor)
+   Inspired by Linear / Notion / macOS context menu
+   ============================================
+   Companion to: components/dropdown-menu.css (reuses .ddm styling).
+
+   Usage:
+     <div data-context-menu="#myMenu">…content with right-click…</div>
+     <div class="ctx ddm-menu" id="myMenu">
+       <div class="ddm-section">
+         <button class="ddm-item">Edit <span class="ddm-shortcut">⌘E</span></button>
+         <button class="ddm-item">Duplicate</button>
+       </div>
+       <div class="ddm-separator"></div>
+       <div class="ddm-section">
+         <button class="ddm-item ddm-item-danger">Delete</button>
+       </div>
+     </div>
+     ContextMenu.init('[data-context-menu]');
+
+   Variants:
+     ctx-glass         — Glass menu
+   ============================================ */
+
+.ctx {
+  position: fixed;
+  z-index: 99;
+  display: none;
+  min-width: 200px;
+}
+.ctx.is-open { display: block; }
+
+.ctx.ddm-menu {
+  /* inherit dropdown-menu.css visuals; just override positioning */
+  position: fixed;
+  top: var(--ctx-y, 0);
+  left: var(--ctx-x, 0);
+}
+
+.ctx-glass {
+  background: rgba(20, 20, 31, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}

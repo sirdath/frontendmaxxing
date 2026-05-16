@@ -1,0 +1,278 @@
+/* ============================================
+   LOG STREAM — Virtualized live log viewer
+   Inspired by Vercel deployment logs, Railway, Render, Datadog Live Tail
+   ============================================
+   Long-running log streams with timestamps, severity colors, line-link permalinks,
+   regex filter, follow-tail toggle, and auto-pause when user scrolls up.
+
+   Usage (CSS structure; companion JS in log-stream.js):
+     <div class="lstr">
+       <header class="lstr-toolbar">
+         <div class="lstr-filter">
+           <input type="text" placeholder="Filter (regex supported)">
+         </div>
+         <div class="lstr-levels">
+           <button class="is-on" data-lstr-level="info">info</button>
+           <button class="is-on" data-lstr-level="warn">warn</button>
+           <button class="is-on" data-lstr-level="error">error</button>
+           <button data-lstr-level="debug">debug</button>
+         </div>
+         <button class="lstr-follow is-following">⏷ Follow</button>
+         <span class="lstr-count">12,402 lines</span>
+       </header>
+       <div class="lstr-viewport">
+         <div class="lstr-lines">
+           <div class="lstr-line" data-level="info">
+             <span class="lstr-time">12:42:01.123</span>
+             <span class="lstr-level">info</span>
+             <span class="lstr-num">42</span>
+             <span class="lstr-msg">Server listening on 3000</span>
+           </div>
+         </div>
+       </div>
+     </div>
+
+   Levels: info, warn, error, debug, trace, success, fatal
+   Variants: lstr-compact, lstr-wide-numbers, lstr-mono-strong
+   ============================================ */
+
+.lstr {
+  --l-bg: #0a0a14;
+  --l-fg: #d4d4dc;
+  --l-border: rgba(255, 255, 255, 0.08);
+  --l-muted: rgba(212, 212, 220, 0.5);
+  --l-accent: #818cf8;
+  background: var(--l-bg);
+  border: 1px solid var(--l-border);
+  border-radius: 8px;
+  color: var(--l-fg);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  display: flex;
+  flex-direction: column;
+  height: 480px;
+  overflow: hidden;
+}
+
+/* === Toolbar === */
+.lstr-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--l-border);
+  background: rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.lstr-filter {
+  flex: 1 1 240px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.55rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+}
+.lstr-filter::before {
+  content: '⌕';
+  color: var(--l-muted);
+}
+.lstr-filter input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: var(--l-fg);
+  font: inherit;
+  font-size: 0.75rem;
+}
+.lstr-filter input::placeholder { color: var(--l-muted); }
+.lstr-filter.is-regex-error { border-color: rgba(248, 113, 113, 0.5); }
+
+.lstr-levels {
+  display: inline-flex;
+  gap: 0.15rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  padding: 0.15rem;
+}
+.lstr-levels button {
+  background: transparent;
+  border: 0;
+  color: var(--l-muted);
+  padding: 0.2rem 0.5rem;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.lstr-levels button.is-on { background: rgba(255, 255, 255, 0.08); color: var(--l-fg); }
+
+.lstr-follow {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid var(--l-border);
+  color: var(--l-muted);
+  padding: 0.25rem 0.55rem;
+  font: inherit;
+  font-size: 0.72rem;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.lstr-follow.is-following {
+  color: var(--l-fg);
+  border-color: rgba(129, 140, 248, 0.4);
+  background: rgba(129, 140, 248, 0.08);
+}
+.lstr-follow.is-following::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 6px #34d399;
+  animation: lstr-pulse 1.4s ease-in-out infinite;
+}
+@keyframes lstr-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+.lstr-count {
+  font-size: 0.7rem;
+  color: var(--l-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* === Viewport (scrollable line container) === */
+.lstr-viewport {
+  flex: 1;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  position: relative;
+}
+.lstr-viewport::-webkit-scrollbar { width: 8px; }
+.lstr-viewport::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+
+.lstr-lines {
+  display: grid;
+  grid-template-columns: minmax(110px, auto) minmax(54px, auto) minmax(40px, auto) 1fr;
+  gap: 0;
+  font-size: 0.74rem;
+  line-height: 1.6;
+}
+
+.lstr-line {
+  display: contents;
+}
+
+.lstr-time,
+.lstr-level,
+.lstr-num,
+.lstr-msg {
+  padding: 0.05rem 0.55rem 0.05rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+.lstr-time {
+  color: var(--l-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  padding-left: 0.7rem;
+  user-select: all;
+}
+.lstr-level {
+  font-weight: 700;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.lstr-num {
+  color: rgba(212, 212, 220, 0.3);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  user-select: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.lstr-num:hover { color: var(--l-accent); }
+.lstr-msg {
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding-right: 0.7rem;
+}
+
+/* Level colors */
+.lstr-line[data-level="info"]    .lstr-level { color: #60a5fa; }
+.lstr-line[data-level="warn"]    .lstr-level { color: #fbbf24; }
+.lstr-line[data-level="error"]   .lstr-level { color: #f87171; }
+.lstr-line[data-level="error"]   .lstr-msg   { color: #fecaca; }
+.lstr-line[data-level="error"]   { background: rgba(248, 113, 113, 0.04); }
+.lstr-line[data-level="debug"]   .lstr-level { color: rgba(167, 139, 250, 0.85); }
+.lstr-line[data-level="debug"]   .lstr-msg   { color: var(--l-muted); }
+.lstr-line[data-level="trace"]   .lstr-level { color: rgba(167, 139, 250, 0.7); }
+.lstr-line[data-level="trace"]   .lstr-msg   { color: rgba(212, 212, 220, 0.55); }
+.lstr-line[data-level="success"] .lstr-level { color: #34d399; }
+.lstr-line[data-level="fatal"]   { background: rgba(248, 113, 113, 0.12); }
+.lstr-line[data-level="fatal"]   .lstr-level { color: #ef4444; }
+
+/* Highlighted line (anchor target) */
+.lstr-line.is-anchored {
+  background: rgba(129, 140, 248, 0.12);
+}
+.lstr-line.is-anchored .lstr-num { color: var(--l-accent); }
+
+/* Match highlight */
+.lstr-msg mark {
+  background: rgba(251, 191, 36, 0.35);
+  color: inherit;
+  padding: 0 1px;
+  border-radius: 2px;
+}
+
+/* Variants */
+.lstr-compact { font-size: 0.72rem; }
+.lstr-compact .lstr-lines { font-size: 0.7rem; line-height: 1.4; }
+
+.lstr-wide-numbers .lstr-lines {
+  grid-template-columns: minmax(110px, auto) minmax(54px, auto) minmax(64px, auto) 1fr;
+}
+
+.lstr-mono-strong .lstr-msg { color: #fff; font-weight: 500; }
+
+/* Empty / paused */
+.lstr-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--l-muted);
+  font-size: 0.85rem;
+}
+
+.lstr-paused-banner {
+  position: sticky;
+  bottom: 0;
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.72rem;
+  text-align: center;
+  border-top: 1px solid rgba(251, 191, 36, 0.3);
+  cursor: pointer;
+}
+.lstr-paused-banner:hover { background: rgba(251, 191, 36, 0.2); }
+
+/* Light theme */
+.lstr-light {
+  --l-bg: #fafafa;
+  --l-fg: #1f2937;
+  --l-border: rgba(0, 0, 0, 0.1);
+  --l-muted: rgba(31, 41, 55, 0.55);
+}

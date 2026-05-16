@@ -1,0 +1,119 @@
+/* ============================================
+   ORBITING CIRCLES — Items revolving around a center
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <div class="orbit">
+       <div class="orbit-center">★</div>
+       <div class="orbit-ring orbit-ring-1">
+         <div class="orbit-item">A</div>
+         <div class="orbit-item">B</div>
+         <div class="orbit-item">C</div>
+       </div>
+       <div class="orbit-ring orbit-ring-2 orbit-ring-reverse">
+         <div class="orbit-item">1</div>
+         <div class="orbit-item">2</div>
+         <div class="orbit-item">3</div>
+         <div class="orbit-item">4</div>
+       </div>
+       <div class="orbit-ring orbit-ring-3">
+         <div class="orbit-item">x</div>
+         <div class="orbit-item">y</div>
+       </div>
+     </div>
+
+   Variants:
+     .orbit-ring-reverse — Counter rotation
+     .orbit-ring-slow    — Slower spin
+     .orbit-ring-fast    — Faster spin
+     .orbit-dashed       — Dashed ring outline
+   ============================================ */
+
+.orbit {
+  --orbit-size: 360px;
+  --orbit-center-size: 64px;
+  position: relative;
+  width: var(--orbit-size);
+  height: var(--orbit-size);
+  display: grid;
+  place-items: center;
+}
+
+.orbit-center {
+  position: relative;
+  z-index: 2;
+  width: var(--orbit-center-size);
+  height: var(--orbit-center-size);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary, #818cf8);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 0 40px rgba(129, 140, 248, 0.45);
+}
+
+.orbit-ring {
+  --ring-size: 50%;
+  --ring-duration: 18s;
+  position: absolute;
+  inset: 50%;
+  width: var(--ring-size);
+  height: var(--ring-size);
+  margin: calc(var(--ring-size) / -2);
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  animation: orbit-spin var(--ring-duration) linear infinite;
+}
+
+.orbit-ring-reverse { animation-direction: reverse; }
+.orbit-ring-slow    { --ring-duration: 32s; }
+.orbit-ring-fast    { --ring-duration: 10s; }
+
+.orbit-ring-1 { --ring-size: 40%; --ring-duration: 12s; }
+.orbit-ring-2 { --ring-size: 65%; --ring-duration: 20s; }
+.orbit-ring-3 { --ring-size: 90%; --ring-duration: 28s; }
+.orbit-ring-4 { --ring-size: 115%; --ring-duration: 36s; }
+
+.orbit-solid  { border-style: solid; }
+
+@keyframes orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+.orbit-item {
+  --item-size: 36px;
+  position: absolute;
+  width: var(--item-size);
+  height: var(--item-size);
+  border-radius: 50%;
+  background: var(--surface-2, #14141f);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  color: var(--text, #fff);
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  /* Counter-rotate so items stay upright */
+  animation: orbit-spin var(--ring-duration) linear infinite reverse;
+}
+
+.orbit-ring-reverse .orbit-item {
+  animation-direction: normal;
+}
+
+/* Place items evenly around the ring */
+.orbit-ring > .orbit-item:nth-child(1) { top: -18px; left: 50%; transform: translateX(-50%); }
+.orbit-ring > .orbit-item:nth-child(2) { top: 50%; right: -18px; transform: translateY(-50%); }
+.orbit-ring > .orbit-item:nth-child(3) { bottom: -18px; left: 50%; transform: translateX(-50%); }
+.orbit-ring > .orbit-item:nth-child(4) { top: 50%; left: -18px; transform: translateY(-50%); }
+
+/* Position helper for 6/8 around a ring */
+.orbit-ring > .orbit-item:nth-child(5) { top: 12%; left: 12%; }
+.orbit-ring > .orbit-item:nth-child(6) { top: 12%; right: 12%; }
+.orbit-ring > .orbit-item:nth-child(7) { bottom: 12%; left: 12%; }
+.orbit-ring > .orbit-item:nth-child(8) { bottom: 12%; right: 12%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring, .orbit-item { animation: none; }
+}

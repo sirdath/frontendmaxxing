@@ -1,0 +1,257 @@
+/* ============================================
+   HEROES PACK — 10 hero section style variants
+   Inspired by Linear / Stripe / Vercel / Apple landing pages
+   ============================================
+   Each uses .heropk- prefix to avoid collisions with existing heroes.css.
+
+   Pick one layout class + one bg class:
+     Layouts:  heropk-center / heropk-split / heropk-stack / heropk-asymmetric / heropk-form / heropk-app-shot
+     BGs:      heropk-bg-gradient / heropk-bg-grid / heropk-bg-aurora / heropk-bg-noise / heropk-bg-dark / heropk-bg-light
+
+   Usage:
+     <section class="heropk heropk-center heropk-bg-aurora">
+       <div class="heropk-eyebrow">PRESS · Vol 12</div>
+       <h1 class="heropk-title">Build the future, faster.</h1>
+       <p class="heropk-subtitle">Lorem ipsum dolor sit amet.</p>
+       <div class="heropk-actions">
+         <button class="heropk-cta">Get started</button>
+         <button class="heropk-ghost">Read docs →</button>
+       </div>
+     </section>
+   ============================================ */
+
+.heropk {
+  --heropk-fg: #ffffff;
+  --heropk-muted: rgba(255, 255, 255, 0.65);
+  --heropk-accent: #818cf8;
+  --heropk-radius: 24px;
+  position: relative;
+  min-height: 70vh;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.25rem, 5vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--heropk-fg);
+}
+
+.heropk-eyebrow {
+  display: inline-flex;
+  width: max-content;
+  margin: 0 auto 1.25rem;
+  padding: 0.3rem 0.9rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--heropk-muted);
+}
+
+.heropk-title {
+  margin: 0 0 1rem;
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  background: linear-gradient(180deg, #fff, rgba(255,255,255,0.55));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heropk-subtitle {
+  margin: 0 0 2rem;
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  color: var(--heropk-muted);
+  max-width: 640px;
+  line-height: 1.6;
+}
+
+.heropk-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.heropk-cta {
+  padding: 0.85rem 1.6rem;
+  background: var(--heropk-accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.heropk-cta:hover { filter: brightness(1.08); }
+
+.heropk-ghost {
+  padding: 0.85rem 1.4rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--heropk-fg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.heropk-ghost:hover { background: rgba(255, 255, 255, 0.1); }
+
+/* ── Layouts ── */
+.heropk-center { align-items: center; justify-content: center; text-align: center; }
+.heropk-center .heropk-subtitle { margin-left: auto; margin-right: auto; }
+.heropk-center .heropk-actions { justify-content: center; }
+
+.heropk-stack { align-items: flex-start; justify-content: center; max-width: 880px; margin: 0 auto; }
+
+.heropk-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.heropk-split .heropk-title { background: none; -webkit-text-fill-color: inherit; color: #fff; }
+.heropk-split-side {
+  background: linear-gradient(135deg, #1a1a2e, #0c0c14);
+  border-radius: var(--heropk-radius);
+  padding: 2rem;
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+  color: var(--heropk-muted);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+@media (max-width: 820px) {
+  .heropk-split { grid-template-columns: 1fr; }
+}
+
+.heropk-asymmetric {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+.heropk-asymmetric .heropk-eyebrow { margin-left: 0; }
+.heropk-asymmetric .heropk-title { text-align: left; }
+
+.heropk-form {
+  align-items: center;
+  text-align: center;
+}
+.heropk-form-row {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+}
+.heropk-form-row input {
+  flex: 1;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #fff;
+  font: inherit;
+  outline: none;
+}
+.heropk-form-row input:focus { border-color: var(--heropk-accent); }
+
+.heropk-app-shot {
+  align-items: center;
+  text-align: center;
+  padding-bottom: 0;
+}
+.heropk-app-shot-image {
+  margin-top: 3rem;
+  max-width: 1100px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  border-radius: var(--heropk-radius);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 80px -20px rgba(129, 140, 248, 0.4);
+}
+
+/* ── Backgrounds ── */
+.heropk-bg-gradient {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(129, 140, 248, 0.35), transparent 70%),
+    linear-gradient(180deg, #0a0a18, #050510);
+}
+
+.heropk-bg-grid {
+  background-color: #050510;
+}
+.heropk-bg-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+          mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  z-index: -1;
+}
+
+.heropk-bg-aurora {
+  background: #050510;
+  overflow: hidden;
+}
+.heropk-bg-aurora::before,
+.heropk-bg-aurora::after {
+  content: '';
+  position: absolute;
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  z-index: -1;
+}
+.heropk-bg-aurora::before {
+  background: radial-gradient(circle, #c084fc, transparent 60%);
+  top: -300px; left: -200px;
+  animation: heropk-drift 18s ease-in-out infinite alternate;
+}
+.heropk-bg-aurora::after {
+  background: radial-gradient(circle, #38bdf8, transparent 60%);
+  bottom: -300px; right: -200px;
+  animation: heropk-drift 22s ease-in-out infinite alternate-reverse;
+}
+@keyframes heropk-drift {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(120px, 80px); }
+}
+
+.heropk-bg-noise {
+  background: #0c0c14;
+}
+.heropk-bg-noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.15;
+  z-index: -1;
+}
+
+.heropk-bg-dark  { background: #050510; }
+.heropk-bg-light {
+  background: linear-gradient(180deg, #fafafa, #f1f5f9);
+  --heropk-fg: #0c0c14;
+  --heropk-muted: rgba(12, 12, 20, 0.6);
+}
+.heropk-bg-light .heropk-title {
+  background: linear-gradient(180deg, #0c0c14, rgba(12,12,20,0.55));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heropk-bg-aurora::before, .heropk-bg-aurora::after { animation: none; }
+}

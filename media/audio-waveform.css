@@ -1,0 +1,98 @@
+/* ============================================
+   AUDIO WAVEFORM — Audio player with bar waveform visualization
+   Inspired by SoundCloud / wavesurfer.js / iMessage voice notes
+   ============================================
+   Usage:
+     <div class="awav" data-audio-waveform>
+       <audio src="…" preload="metadata"></audio>
+       <button class="awav-play" data-awav-play>▶</button>
+       <div class="awav-bars">
+         <!-- bars injected by JS -->
+       </div>
+       <span class="awav-time"><span data-awav-cur>0:00</span> / <span data-awav-dur>0:00</span></span>
+     </div>
+     AudioWaveform.init('[data-audio-waveform]');
+
+   Variants:
+     awav-pill      — Pill container
+     awav-mini      — Compact (voice-note style)
+     awav-bordered  — Card border
+   ============================================ */
+
+.awav {
+  --awav-bg: var(--surface-2, #14141f);
+  --awav-border: rgba(255, 255, 255, 0.08);
+  --awav-fg: #ffffff;
+  --awav-muted: rgba(255, 255, 255, 0.45);
+  --awav-bar-bg: rgba(255, 255, 255, 0.2);
+  --awav-bar-fg: #818cf8;
+  --awav-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.85rem;
+  background: var(--awav-bg);
+  border: 1px solid var(--awav-border);
+  border-radius: var(--awav-radius);
+  color: var(--awav-fg);
+  min-width: 280px;
+  max-width: 480px;
+  width: 100%;
+}
+
+.awav audio { display: none; }
+
+.awav-play {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--awav-bar-fg);
+  color: #fff;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  transition: filter 0.15s ease;
+}
+.awav-play:hover { filter: brightness(1.1); }
+
+.awav-bars {
+  flex: 1;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  position: relative;
+  --awav-progress: 0;
+}
+
+.awav-bar {
+  flex: 1;
+  background: var(--awav-bar-bg);
+  border-radius: 999px;
+  transform-origin: center;
+  min-width: 2px;
+  transition: background 0.15s ease;
+}
+.awav-bar.is-played { background: var(--awav-bar-fg); }
+.awav-bar.is-hover { opacity: 0.85; }
+
+.awav-time {
+  font-size: 0.75rem;
+  color: var(--awav-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Variants */
+.awav-pill { border-radius: 999px; padding-inline: 0.5rem; }
+.awav-mini {
+  min-width: 200px;
+  padding: 0.4rem 0.6rem;
+  gap: 0.5rem;
+}
+.awav-mini .awav-play { width: 28px; height: 28px; font-size: 0.75rem; }
+.awav-mini .awav-bars { height: 26px; }

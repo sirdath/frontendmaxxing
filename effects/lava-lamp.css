@@ -1,0 +1,139 @@
+/* ============================================
+   LAVA LAMP — Gooey morphing blob bg via blur+contrast metaballs trick
+   Inspired by 1970s lava lamps, iOS Photos memory bgs, gooey-button experiments
+   ============================================
+   The container applies `filter: blur(20px) contrast(20)` which makes overlapping
+   semi-transparent shapes merge into smooth metaballs. Blob children rise and
+   fall, creating the lava-lamp effect.
+
+   Usage:
+     <div class="lava lava-classic">
+       <span class="lava-blob"></span>
+       <span class="lava-blob"></span>
+       <span class="lava-blob"></span>
+       <span class="lava-blob"></span>
+     </div>
+
+   Variants:
+     lava-classic   (orange/red — default lava)
+     lava-aurora    (purple/pink/cyan)
+     lava-acid      (toxic green)
+     lava-ocean     (deep blue)
+     lava-cosmic    (purple/magenta)
+     lava-mint      (teal/cyan)
+     lava-fire      (red/orange/yellow)
+     lava-ice       (white/cyan)
+     lava-mono      (white blobs on black)
+     lava-rainbow   (every blob a different color)
+   Modifiers:
+     lava-slow / lava-fast       — speed
+     lava-still                  — pause
+     lava-dense                  — adds 4 extra blobs
+     lava-bordered               — keeps a soft outline (less merge)
+   ============================================ */
+
+.lava {
+  --lv-bg: #1a0a05;
+  --lv-blob: #ff4500;
+  --lv-blob-2: #ff6b35;
+  --lv-speed: 12s;
+  --lv-size: 100px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--lv-bg);
+  filter: blur(20px) contrast(20);
+}
+.lava > * { will-change: transform; }
+
+.lava-blob {
+  position: absolute;
+  width: var(--lv-size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--lv-blob), var(--lv-blob-2));
+}
+
+/* Pre-set positions and animations for first 8 blobs */
+.lava-blob:nth-child(1) { left: 15%; bottom: -20%; --lv-size: 140px; animation: lava-rise-a var(--lv-speed) ease-in-out infinite; }
+.lava-blob:nth-child(2) { left: 40%; bottom: -25%; --lv-size: 100px; animation: lava-rise-b calc(var(--lv-speed) * 1.3) ease-in-out infinite 1s; }
+.lava-blob:nth-child(3) { left: 65%; bottom: -20%; --lv-size: 120px; animation: lava-rise-c calc(var(--lv-speed) * 0.9) ease-in-out infinite 2s; }
+.lava-blob:nth-child(4) { left: 80%; bottom: -25%; --lv-size: 90px;  animation: lava-rise-a calc(var(--lv-speed) * 1.1) ease-in-out infinite 3s; }
+.lava-blob:nth-child(5) { left: 10%; bottom: -30%; --lv-size: 110px; animation: lava-rise-b calc(var(--lv-speed) * 1.4) ease-in-out infinite 0.5s; }
+.lava-blob:nth-child(6) { left: 50%; bottom: -30%; --lv-size: 130px; animation: lava-rise-c calc(var(--lv-speed) * 1.2) ease-in-out infinite 1.8s; }
+.lava-blob:nth-child(7) { left: 30%; bottom: -28%; --lv-size: 95px;  animation: lava-rise-a calc(var(--lv-speed) * 0.8) ease-in-out infinite 4s; }
+.lava-blob:nth-child(8) { left: 70%; bottom: -22%; --lv-size: 115px; animation: lava-rise-b calc(var(--lv-speed) * 1.15) ease-in-out infinite 2.5s; }
+
+@keyframes lava-rise-a {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-180%) scale(1.1); }
+}
+@keyframes lava-rise-b {
+  0%, 100% { transform: translateY(0) scale(0.9); }
+  40%      { transform: translateY(-130%) scale(1.05); }
+  70%      { transform: translateY(-160%) scale(0.95); }
+}
+@keyframes lava-rise-c {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30%      { transform: translateY(-100%) scale(1.15); }
+  60%      { transform: translateY(-180%) scale(0.9); }
+}
+
+/* Color variants */
+.lava-classic { --lv-bg: #1a0a05; --lv-blob: #ff4500; --lv-blob-2: #ff8c00; }
+.lava-aurora  { --lv-bg: #0a0a14; --lv-blob: #a855f7; --lv-blob-2: #ec4899; }
+.lava-acid    { --lv-bg: #001a05; --lv-blob: #84cc16; --lv-blob-2: #65a30d; }
+.lava-ocean   { --lv-bg: #020617; --lv-blob: #0ea5e9; --lv-blob-2: #3b82f6; }
+.lava-cosmic  { --lv-bg: #0a0014; --lv-blob: #db2777; --lv-blob-2: #a855f7; }
+.lava-mint    { --lv-bg: #021a14; --lv-blob: #14b8a6; --lv-blob-2: #22d3ee; }
+.lava-fire    { --lv-bg: #0a0005; --lv-blob: #ef4444; --lv-blob-2: #fbbf24; }
+.lava-ice     { --lv-bg: #f0f9ff; --lv-blob: #67e8f9; --lv-blob-2: #ffffff; }
+.lava-mono    { --lv-bg: #000; --lv-blob: #ffffff; --lv-blob-2: #d4d4d4; }
+
+/* Rainbow — each blob different color */
+.lava-rainbow .lava-blob:nth-child(1)  { background: radial-gradient(circle, #ff006e, #ff5a5a); }
+.lava-rainbow .lava-blob:nth-child(2)  { background: radial-gradient(circle, #ff8500, #ffbe0b); }
+.lava-rainbow .lava-blob:nth-child(3)  { background: radial-gradient(circle, #06ffa5, #34d399); }
+.lava-rainbow .lava-blob:nth-child(4)  { background: radial-gradient(circle, #06b6d4, #3a86ff); }
+.lava-rainbow .lava-blob:nth-child(5)  { background: radial-gradient(circle, #8338ec, #a855f7); }
+.lava-rainbow .lava-blob:nth-child(6)  { background: radial-gradient(circle, #ec4899, #fb7185); }
+.lava-rainbow .lava-blob:nth-child(7)  { background: radial-gradient(circle, #f59e0b, #f97316); }
+.lava-rainbow .lava-blob:nth-child(8)  { background: radial-gradient(circle, #14b8a6, #22d3ee); }
+
+/* Modifiers */
+.lava-slow  { --lv-speed: 24s; }
+.lava-fast  { --lv-speed: 6s; }
+.lava-still .lava-blob { animation: none; transform: translateY(-50%); }
+.lava-dense .lava-blob { --lv-size: 80px; }
+.lava-bordered {
+  filter: blur(15px) contrast(15);
+}
+
+/* Content layer that sits above the lava (must not inherit the parent filter) */
+.lava-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  filter: none;
+  /* When lava is the parent with filter, content needs to be in a sibling layer.
+     Recommended pattern: wrap in .lava-stack with the filter applied to a child. */
+}
+
+/* Recommended pattern for content overlay: */
+.lava-stack {
+  position: relative;
+  isolation: isolate;
+}
+.lava-stack > .lava {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.lava-stack > .lava-content {
+  position: relative;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lava-blob { animation: none; }
+}

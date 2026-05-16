@@ -1,0 +1,142 @@
+/* ============================================
+   DROPDOWN MENU — Right-click style menu / overflow menu / context menu
+   Inspired by Radix DropdownMenu / shadcn / macOS menus
+   ============================================
+   Usage:
+     <div class="ddm" data-dropdown>
+       <button class="ddm-trigger">Menu ▾</button>
+       <div class="ddm-menu" role="menu">
+         <div class="ddm-section">
+           <button class="ddm-item">Profile <span class="ddm-shortcut">⌘P</span></button>
+           <button class="ddm-item">Settings <span class="ddm-shortcut">⌘,</span></button>
+         </div>
+         <div class="ddm-separator"></div>
+         <div class="ddm-section" data-label="Danger">
+           <button class="ddm-item ddm-item-danger">Sign out</button>
+         </div>
+       </div>
+     </div>
+     DropdownMenu.init('[data-dropdown]');
+
+   Variants:
+     .ddm-align-end   — Align menu to right edge of trigger
+     .ddm-glass       — Glassmorphic menu
+     .ddm-wide        — Min-width 240px
+   ============================================ */
+
+.ddm {
+  --ddm-bg: var(--surface-2, #14141f);
+  --ddm-border: rgba(255, 255, 255, 0.1);
+  --ddm-fg: #ffffff;
+  --ddm-muted: rgba(255, 255, 255, 0.6);
+  --ddm-hover: rgba(255, 255, 255, 0.06);
+  --ddm-danger: #f87171;
+  --ddm-radius: 10px;
+  position: relative;
+  display: inline-block;
+}
+
+.ddm-trigger {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ddm-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 50;
+  min-width: 180px;
+  background: var(--ddm-bg);
+  border: 1px solid var(--ddm-border);
+  border-radius: var(--ddm-radius);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+  padding: 0.3rem;
+  display: none;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  transform-origin: top left;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+.ddm.is-open .ddm-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.ddm-align-end .ddm-menu { left: auto; right: 0; transform-origin: top right; }
+.ddm-wide .ddm-menu { min-width: 240px; }
+
+.ddm-glass .ddm-menu {
+  background: rgba(20, 20, 31, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.ddm-section[data-label]::before {
+  content: attr(data-label);
+  display: block;
+  padding: 0.4rem 0.6rem 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ddm-muted);
+}
+
+.ddm-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  background: transparent;
+  border: none;
+  color: var(--ddm-fg);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 7px;
+  text-align: left;
+  transition: background 0.12s ease;
+}
+.ddm-item:hover,
+.ddm-item.is-focused { background: var(--ddm-hover); }
+.ddm-item[disabled]  { opacity: 0.4; cursor: not-allowed; }
+
+.ddm-item-danger { color: var(--ddm-danger); }
+.ddm-item-danger:hover { background: rgba(248, 113, 113, 0.1); }
+
+.ddm-item-icon {
+  width: 16px; height: 16px;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.ddm-shortcut {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--ddm-muted);
+  font-family: ui-monospace, monospace;
+}
+
+.ddm-separator {
+  height: 1px;
+  background: var(--ddm-border);
+  margin: 0.3rem 0;
+}
+
+/* Sub-menu support: nest a .ddm-item with .ddm-sub */
+.ddm-item.ddm-sub::after {
+  content: '›';
+  margin-left: auto;
+  color: var(--ddm-muted);
+}
+.ddm-item.ddm-sub > .ddm-menu {
+  top: -0.3rem;
+  left: 100%;
+  margin-left: 4px;
+}

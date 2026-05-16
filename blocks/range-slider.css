@@ -1,0 +1,98 @@
+/* ============================================
+   RANGE SLIDER — 2-handle range with track fill
+   Inspired by Linear filters / Stripe price filter
+   ============================================
+   (Companion to existing blocks/sliders.css which is single-handle.)
+
+   Usage:
+     <div class="rsl" data-range-slider data-rsl-min="0" data-rsl-max="100" data-rsl-low="20" data-rsl-high="80">
+       <div class="rsl-track"></div>
+       <div class="rsl-fill"></div>
+       <div class="rsl-thumb rsl-thumb-low"></div>
+       <div class="rsl-thumb rsl-thumb-high"></div>
+       <div class="rsl-labels">
+         <span class="rsl-low-label">20</span>
+         <span class="rsl-high-label">80</span>
+       </div>
+     </div>
+     RangeSlider.init('[data-range-slider]');
+
+   Variants:
+     .rsl-thick     — Larger thumbs and track
+     .rsl-glow      — Glowing thumbs
+     .rsl-color-pink/cyan/amber/mint
+   ============================================ */
+
+.rsl {
+  --rsl-track: rgba(255, 255, 255, 0.1);
+  --rsl-fill: #818cf8;
+  --rsl-thumb: #ffffff;
+  --rsl-thumb-size: 18px;
+  --rsl-h: 6px;
+  --rsl-low: 0%;
+  --rsl-high: 100%;
+  position: relative;
+  width: 100%;
+  height: max(var(--rsl-thumb-size), 36px);
+  user-select: none;
+}
+
+.rsl-track {
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: var(--rsl-h);
+  transform: translateY(-50%);
+  background: var(--rsl-track);
+  border-radius: 999px;
+}
+
+.rsl-fill {
+  position: absolute;
+  top: 50%;
+  left: var(--rsl-low);
+  right: calc(100% - var(--rsl-high));
+  height: var(--rsl-h);
+  transform: translateY(-50%);
+  background: var(--rsl-fill);
+  border-radius: 999px;
+}
+
+.rsl-thumb {
+  position: absolute;
+  top: 50%;
+  width: var(--rsl-thumb-size);
+  height: var(--rsl-thumb-size);
+  transform: translate(-50%, -50%);
+  background: var(--rsl-thumb);
+  border: 2px solid var(--rsl-fill);
+  border-radius: 50%;
+  cursor: grab;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.rsl-thumb:active { cursor: grabbing; transform: translate(-50%, -50%) scale(1.1); }
+.rsl-thumb-low  { left: var(--rsl-low); }
+.rsl-thumb-high { left: var(--rsl-high); }
+
+.rsl-labels {
+  position: absolute;
+  top: calc(50% + var(--rsl-thumb-size));
+  left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted, rgba(255, 255, 255, 0.65));
+  font-family: ui-monospace, monospace;
+}
+
+/* ── Variants ── */
+.rsl-thick { --rsl-thumb-size: 26px; --rsl-h: 10px; }
+.rsl-thin  { --rsl-thumb-size: 14px; --rsl-h: 3px; }
+.rsl-glow .rsl-thumb {
+  box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.25), 0 0 14px rgba(129, 140, 248, 0.6);
+}
+.rsl-color-pink   { --rsl-fill: #f472b6; }
+.rsl-color-cyan   { --rsl-fill: #22d3ee; }
+.rsl-color-amber  { --rsl-fill: #f59e0b; }
+.rsl-color-mint   { --rsl-fill: #4ade80; }

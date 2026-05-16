@@ -1,0 +1,77 @@
+/* ============================================
+   GRADIENT SHADOWS — Multi-color colored drop shadows
+   Inspired by ShadCN / Vercel button shadows, Dribbble UI shots
+   ============================================
+   Usage:
+     <button class="gsh gsh-aurora">Subscribe</button>
+     <div class="gsh gsh-sunset gsh-strong">...</div>
+
+   Variants:
+     gsh-aurora, gsh-sunset, gsh-cosmic, gsh-ocean, gsh-cyber, gsh-rose,
+     gsh-mint, gsh-fire, gsh-gold, gsh-violet, gsh-mono
+   Intensities:
+     gsh-soft, gsh-strong, gsh-glow, gsh-floor
+   Direction:
+     gsh-up, gsh-down (default), gsh-around
+   ============================================ */
+
+.gsh {
+  --gsh-c1: rgba(139, 92, 246, 0.4);
+  --gsh-c2: rgba(236, 72, 153, 0.35);
+  --gsh-c3: rgba(6, 182, 212, 0.25);
+  --gsh-y: 12px;
+  --gsh-blur: 28px;
+  box-shadow:
+    0 var(--gsh-y) var(--gsh-blur) -8px var(--gsh-c1),
+    0 calc(var(--gsh-y) * 1.6) calc(var(--gsh-blur) * 1.4) -10px var(--gsh-c2),
+    0 calc(var(--gsh-y) * 0.5) calc(var(--gsh-blur) * 0.6) -6px var(--gsh-c3);
+}
+
+/* Color presets */
+.gsh-aurora { --gsh-c1: rgba(168, 85, 247, 0.45); --gsh-c2: rgba(236, 72, 153, 0.4); --gsh-c3: rgba(6, 182, 212, 0.3); }
+.gsh-sunset { --gsh-c1: rgba(249, 115, 22, 0.45); --gsh-c2: rgba(236, 72, 153, 0.4); --gsh-c3: rgba(245, 158, 11, 0.3); }
+.gsh-cosmic { --gsh-c1: rgba(109, 40, 217, 0.5); --gsh-c2: rgba(219, 39, 119, 0.4); --gsh-c3: rgba(8, 145, 178, 0.3); }
+.gsh-ocean  { --gsh-c1: rgba(14, 165, 233, 0.45); --gsh-c2: rgba(6, 182, 212, 0.4); --gsh-c3: rgba(20, 184, 166, 0.3); }
+.gsh-cyber  { --gsh-c1: rgba(0, 255, 255, 0.4); --gsh-c2: rgba(255, 0, 255, 0.4); --gsh-c3: rgba(0, 255, 127, 0.3); }
+.gsh-rose   { --gsh-c1: rgba(251, 113, 133, 0.45); --gsh-c2: rgba(244, 63, 94, 0.4); --gsh-c3: rgba(236, 72, 153, 0.3); }
+.gsh-mint   { --gsh-c1: rgba(52, 211, 153, 0.4); --gsh-c2: rgba(34, 211, 238, 0.35); --gsh-c3: rgba(20, 184, 166, 0.3); }
+.gsh-fire   { --gsh-c1: rgba(251, 191, 36, 0.45); --gsh-c2: rgba(249, 115, 22, 0.4); --gsh-c3: rgba(239, 68, 68, 0.3); }
+.gsh-gold   { --gsh-c1: rgba(251, 191, 36, 0.5); --gsh-c2: rgba(245, 158, 11, 0.4); --gsh-c3: rgba(217, 119, 6, 0.3); }
+.gsh-violet { --gsh-c1: rgba(99, 102, 241, 0.45); --gsh-c2: rgba(139, 92, 246, 0.4); --gsh-c3: rgba(168, 85, 247, 0.3); }
+.gsh-mono   { --gsh-c1: rgba(15, 23, 42, 0.4); --gsh-c2: rgba(30, 41, 59, 0.3); --gsh-c3: rgba(51, 65, 85, 0.25); }
+.gsh-pastel { --gsh-c1: rgba(196, 181, 253, 0.5); --gsh-c2: rgba(251, 207, 232, 0.5); --gsh-c3: rgba(165, 243, 252, 0.4); }
+
+/* Intensities */
+.gsh-soft   { --gsh-y: 6px; --gsh-blur: 18px; opacity: 0.95; }
+.gsh-strong { --gsh-y: 18px; --gsh-blur: 40px; }
+.gsh-glow   { --gsh-y: 0px; --gsh-blur: 50px; }
+.gsh-floor  { --gsh-y: 30px; --gsh-blur: 50px; }
+
+/* Direction */
+.gsh-up   { --gsh-y: -12px; }
+.gsh-around {
+  box-shadow:
+    0 0 var(--gsh-blur) -6px var(--gsh-c1),
+    var(--gsh-blur) 0 var(--gsh-blur) -8px var(--gsh-c2),
+    calc(var(--gsh-blur) * -1) 0 var(--gsh-blur) -8px var(--gsh-c3);
+}
+
+/* Hover variant */
+.gsh-hover {
+  box-shadow: 0 4px 14px -8px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.32s ease;
+}
+.gsh-hover:hover {
+  box-shadow:
+    0 var(--gsh-y) var(--gsh-blur) -8px var(--gsh-c1),
+    0 calc(var(--gsh-y) * 1.6) calc(var(--gsh-blur) * 1.4) -10px var(--gsh-c2),
+    0 calc(var(--gsh-y) * 0.5) calc(var(--gsh-blur) * 0.6) -6px var(--gsh-c3);
+}
+
+/* Drop-shadow filter variant (good for irregular shapes & svgs) */
+.gsh-filter {
+  filter:
+    drop-shadow(0 4px 12px var(--gsh-c1))
+    drop-shadow(0 8px 24px var(--gsh-c2))
+    drop-shadow(0 -4px 12px var(--gsh-c3));
+}

@@ -1,0 +1,164 @@
+/* ============================================
+   GOOEY INPUT — Metaball-merging expanding search/input
+   Inspired by Aceternity GooeyInput, Codrops gooey experiments, Lucas Bebber
+   ============================================
+   Uses SVG feGaussianBlur + feColorMatrix "goo" filter so adjacent blobs
+   merge smoothly. The input expands from a circular icon to a pill, with
+   a clear button and a submit blob that all merge during the transition.
+
+   Setup — paste this SVG once on the page (the .goo class references it):
+     <svg width="0" height="0">
+       <defs>
+         <filter id="goo">
+           <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+           <feColorMatrix in="blur" mode="matrix"
+             values="1 0 0 0 0
+                     0 1 0 0 0
+                     0 0 1 0 0
+                     0 0 0 20 -10" result="goo"/>
+           <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+         </filter>
+       </defs>
+     </svg>
+
+   Usage:
+     <div class="goo">
+       <button class="goo-trigger" aria-label="Search">⌕</button>
+       <input class="goo-input" type="text" placeholder="Search…">
+       <button class="goo-submit" aria-label="Submit">→</button>
+     </div>
+
+   Variants:
+     goo-violet (default), goo-cyan, goo-pink, goo-amber, goo-mint, goo-mono
+   States (toggle .is-open via JS or :focus-within):
+     is-open    — input expanded
+   ============================================ */
+
+.goo {
+  --gi-bg: #8b5cf6;
+  --gi-fg: #ffffff;
+  --gi-input-bg: rgba(255, 255, 255, 0.95);
+  --gi-input-fg: #1a1a2a;
+  --gi-h: 48px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  filter: url(#goo);
+  font: inherit;
+  font-size: 0.92rem;
+  position: relative;
+}
+
+/* Make sure the goo filter has room to "merge" between elements */
+.goo > * { transition: all 0.35s cubic-bezier(0.55, 0.06, 0.4, 1); }
+
+.goo-trigger,
+.goo-submit {
+  width: var(--gi-h);
+  height: var(--gi-h);
+  display: grid;
+  place-items: center;
+  background: var(--gi-bg);
+  color: var(--gi-fg);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.goo-input {
+  width: 0;
+  height: var(--gi-h);
+  padding: 0;
+  background: var(--gi-bg);
+  color: var(--gi-fg);
+  border: 0;
+  border-radius: 50%;
+  font: inherit;
+  outline: none;
+  caret-color: var(--gi-fg);
+}
+.goo-input::placeholder { color: rgba(255, 255, 255, 0.7); }
+
+/* Open state */
+.goo:focus-within,
+.goo.is-open {
+  /* The input expands; the trigger + submit become "balls" that merge into the pill */
+}
+.goo:focus-within .goo-input,
+.goo.is-open .goo-input {
+  width: 260px;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+}
+
+/* The submit "balloons" out from the right when open */
+.goo:focus-within .goo-submit,
+.goo.is-open .goo-submit {
+  transform: translateX(-10px);
+}
+
+/* Hover wobble on closed trigger */
+.goo:not(.is-open):not(:focus-within) .goo-trigger:hover {
+  transform: scale(1.05);
+}
+
+/* Color variants */
+.goo-violet { --gi-bg: #8b5cf6; }
+.goo-cyan   { --gi-bg: #22d3ee; }
+.goo-pink   { --gi-bg: #ec4899; }
+.goo-amber  { --gi-bg: #f59e0b; }
+.goo-mint   { --gi-bg: #34d399; }
+.goo-mono   { --gi-bg: #1a1a22; }
+.goo-cosmic {
+  --gi-bg: #6d28d9;
+}
+.goo-cosmic .goo-trigger,
+.goo-cosmic .goo-input,
+.goo-cosmic .goo-submit {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899, #06b6d4);
+}
+
+/* Sizes */
+.goo-sm { --gi-h: 36px; font-size: 0.82rem; }
+.goo-md { --gi-h: 48px; font-size: 0.92rem; }
+.goo-lg { --gi-h: 60px; font-size: 1.05rem; }
+
+/* Floating action button + menu (gooey "family-button" companion) */
+.goo-fab {
+  display: inline-flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 10px;
+  filter: url(#goo);
+  position: relative;
+}
+.goo-fab > button {
+  width: 56px; height: 56px;
+  background: var(--gi-bg, #8b5cf6);
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.55, 0.06, 0.4, 1);
+}
+.goo-fab > .goo-fab-action {
+  width: 44px; height: 44px;
+  transform: scale(0) translateY(20px);
+  opacity: 0;
+}
+.goo-fab.is-open > .goo-fab-action {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+.goo-fab.is-open > .goo-fab-action:nth-child(2) { transition-delay: 0.05s; }
+.goo-fab.is-open > .goo-fab-action:nth-child(3) { transition-delay: 0.1s; }
+.goo-fab.is-open > .goo-fab-action:nth-child(4) { transition-delay: 0.15s; }
+.goo-fab.is-open > .goo-fab-action:nth-child(5) { transition-delay: 0.2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .goo > *, .goo-fab > button { transition: none; }
+}

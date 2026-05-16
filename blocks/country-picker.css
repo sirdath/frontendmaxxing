@@ -1,0 +1,110 @@
+/* ============================================
+   COUNTRY PICKER — Country code / dial code selector with flag emojis
+   Inspired by Stripe checkout / Linear settings
+   ============================================
+   Usage:
+     <div class="cpk" data-country-picker>
+       <button class="cpk-trigger">
+         <span class="cpk-flag">🇺🇸</span>
+         <span class="cpk-code">+1</span>
+         <span class="cpk-caret">▾</span>
+       </button>
+       <div class="cpk-menu">
+         <input class="cpk-search" placeholder="Search countries…">
+         <ul class="cpk-list"></ul>
+       </div>
+     </div>
+     CountryPicker.init('[data-country-picker]', { value: 'US' });
+
+   Variants:
+     cpk-pill          — Pill border-radius
+     cpk-no-code       — Hide dial code (country select only)
+     cpk-with-name     — Show full name in trigger
+   ============================================ */
+
+.cpk {
+  --cpk-bg: rgba(255, 255, 255, 0.04);
+  --cpk-border: rgba(255, 255, 255, 0.12);
+  --cpk-bg-menu: var(--surface-2, #14141f);
+  --cpk-fg: #ffffff;
+  --cpk-muted: rgba(255, 255, 255, 0.55);
+  --cpk-hover: rgba(255, 255, 255, 0.06);
+  --cpk-active: rgba(129, 140, 248, 0.18);
+  --cpk-radius: 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.cpk-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--cpk-bg);
+  border: 1px solid var(--cpk-border);
+  border-radius: var(--cpk-radius);
+  color: var(--cpk-fg);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.cpk-flag { font-size: 1.1rem; line-height: 1; }
+.cpk-code { font-variant-numeric: tabular-nums; }
+.cpk-caret { font-size: 0.7rem; color: var(--cpk-muted); }
+
+.cpk-no-code .cpk-code { display: none; }
+
+.cpk-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 260px;
+  max-height: 320px;
+  background: var(--cpk-bg-menu);
+  border: 1px solid var(--cpk-border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 50;
+}
+.cpk.is-open .cpk-menu { display: flex; }
+
+.cpk-search {
+  padding: 0.6rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--cpk-border);
+  color: var(--cpk-fg);
+  font: inherit;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.cpk-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.cpk-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--cpk-fg);
+  font-size: 0.875rem;
+}
+.cpk-item:hover { background: var(--cpk-hover); }
+.cpk-item.is-active { background: var(--cpk-active); }
+
+.cpk-item-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cpk-item-code { color: var(--cpk-muted); font-variant-numeric: tabular-nums; font-size: 0.8rem; }
+
+.cpk-pill { border-radius: 999px; }

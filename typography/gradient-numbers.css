@@ -1,0 +1,130 @@
+/* ============================================
+   GRADIENT NUMBERS — Hero stat numerals, kinetic counters
+   Inspired by Linear hero stats, Stripe metrics, Apple keynote numbers
+   ============================================
+   Usage:
+     <div class="gnum gnum-aurora">99M+</div>
+     <div class="gnum-set">
+       <span class="gnum gnum-lg gnum-cosmic">240k</span>
+       <span class="gnum-label">Active users</span>
+     </div>
+
+   Variants (color, same family as text):
+     gnum-aurora, gnum-sunset, gnum-cosmic, gnum-cyber, gnum-ocean,
+     gnum-fire, gnum-mint, gnum-rose, gnum-gold, gnum-mono, gnum-rainbow,
+     gnum-instagram, gnum-vercel, gnum-apple (white→muted)
+   Sizes:
+     gnum-md (4rem default), gnum-lg (6rem), gnum-xl (8rem), gnum-hero (12rem)
+   Modifiers:
+     gnum-stroke (outlined, no fill)
+     gnum-shimmer (animated sheen)
+     gnum-glow (text shadow halo)
+     gnum-tabular (tabular-nums for counter use)
+     gnum-italic (slight italic angle)
+   ============================================ */
+
+.gnum {
+  --gn-c1: #8b5cf6;
+  --gn-c2: #ec4899;
+  --gn-c3: #06b6d4;
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  display: inline-block;
+  background: linear-gradient(135deg, var(--gn-c1), var(--gn-c2) 50%, var(--gn-c3));
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Color presets */
+.gnum-aurora    { --gn-c1: #a855f7; --gn-c2: #ec4899; --gn-c3: #06b6d4; }
+.gnum-sunset    { --gn-c1: #f97316; --gn-c2: #ec4899; --gn-c3: #f59e0b; }
+.gnum-cosmic    { --gn-c1: #6d28d9; --gn-c2: #db2777; --gn-c3: #0891b2; }
+.gnum-cyber     { --gn-c1: #00ffff; --gn-c2: #ff00ff; --gn-c3: #00ff7f; }
+.gnum-ocean     { --gn-c1: #0ea5e9; --gn-c2: #06b6d4; --gn-c3: #14b8a6; }
+.gnum-fire      { --gn-c1: #fbbf24; --gn-c2: #f97316; --gn-c3: #ef4444; }
+.gnum-mint      { --gn-c1: #34d399; --gn-c2: #22d3ee; --gn-c3: #14b8a6; }
+.gnum-rose      { --gn-c1: #fb7185; --gn-c2: #f43f5e; --gn-c3: #ec4899; }
+.gnum-gold      { --gn-c1: #fef3c7; --gn-c2: #fbbf24; --gn-c3: #d97706; }
+.gnum-mono      { --gn-c1: #ffffff; --gn-c2: #c4c4c4; --gn-c3: #6b6b6b; }
+.gnum-violet    { --gn-c1: #6366f1; --gn-c2: #8b5cf6; --gn-c3: #a855f7; }
+.gnum-instagram { background: linear-gradient(45deg, #515bd4, #8134af 25%, #dd2a7b 50%, #feda77 75%, #f58529); -webkit-background-clip: text; background-clip: text; }
+.gnum-vercel    { background: linear-gradient(90deg, #ec4899, #8b5cf6, #06b6d4); -webkit-background-clip: text; background-clip: text; }
+.gnum-rainbow   { background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3); -webkit-background-clip: text; background-clip: text; }
+.gnum-apple     {
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 50%, #8b8b8b 100%);
+  -webkit-background-clip: text; background-clip: text;
+}
+
+/* Sizes */
+.gnum-sm    { font-size: 2rem; }
+.gnum-md    { font-size: 4rem; }
+.gnum-lg    { font-size: 6rem; }
+.gnum-xl    { font-size: 8rem; }
+.gnum-hero  { font-size: 12rem; }
+.gnum-mega  { font-size: clamp(6rem, 18vw, 20rem); }
+
+/* Stroke / outlined */
+.gnum-stroke {
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 2px transparent;
+  background: linear-gradient(135deg, var(--gn-c1), var(--gn-c2), var(--gn-c3));
+  -webkit-background-clip: text;
+          background-clip: text;
+}
+.gnum-stroke-thick {
+  -webkit-text-stroke: 5px transparent;
+}
+
+/* Shimmer animation */
+.gnum-shimmer {
+  background-size: 300% 300%;
+  animation: gnum-shimmer-anim 4s linear infinite;
+}
+@keyframes gnum-shimmer-anim {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glow halo */
+.gnum-glow {
+  filter:
+    drop-shadow(0 0 16px color-mix(in srgb, var(--gn-c1) 60%, transparent))
+    drop-shadow(0 0 32px color-mix(in srgb, var(--gn-c2) 50%, transparent));
+}
+
+/* Italic slant */
+.gnum-italic { font-style: italic; }
+
+/* Tabular nums for counters */
+.gnum-tabular { font-variant-numeric: tabular-nums; }
+
+/* Number-set layout (stat block) */
+.gnum-set {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-start;
+}
+.gnum-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Plus / suffix decoration */
+.gnum-plus::after { content: '+'; }
+.gnum-pct::after  { content: '%'; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gnum-shimmer { animation: none; }
+}

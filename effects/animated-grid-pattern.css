@@ -1,0 +1,49 @@
+/* ============================================
+   ANIMATED GRID PATTERN — Moving highlighted cells over a grid background
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <div class="animated-grid-pattern"></div>
+     AnimatedGridPattern.init('.animated-grid-pattern');
+
+   Variants:
+     .animated-grid-pattern-bg    — Dark base
+     .animated-grid-pattern-fade  — Radial fade mask
+   ============================================ */
+
+.animated-grid-pattern {
+  --agp-cell: 36px;
+  --agp-grid-color: rgba(255, 255, 255, 0.08);
+  --agp-highlight: rgba(129, 140, 248, 0.4);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  overflow: hidden;
+  background-image:
+    linear-gradient(to right, var(--agp-grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--agp-grid-color) 1px, transparent 1px);
+  background-size: var(--agp-cell) var(--agp-cell);
+}
+
+.animated-grid-pattern svg.agp-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.animated-grid-pattern-bg {
+  background-color: var(--surface, #0c0c14);
+}
+
+.animated-grid-pattern-fade {
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+          mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+}
+
+.animated-grid-pattern-fade-top {
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 92%);
+          mask-image: linear-gradient(to bottom, #000 30%, transparent 92%);
+}

@@ -1,0 +1,238 @@
+/* ============================================
+   GRADIENT BORDERS — Border-as-gradient utilities (static + animated)
+   Inspired by Magic UI / Aceternity / Linear
+   ============================================
+   Three techniques used here:
+     1. Dual-bg trick: padding-box + border-box gradients
+     2. Pseudo-element ring with mask-composite (best for animation)
+     3. Outline / box-shadow gradients (cheapest)
+
+   Usage:
+     <div class="gbord gbord-static gbord-instagram">…</div>
+     <div class="gbord gbord-rotating gbord-cosmic">…</div>
+     <div class="gbord gbord-double gbord-sunset">…</div>
+
+   Family:
+     gbord-static       — Solid gradient border (no animation)
+     gbord-rotating     — Conic gradient rotating around (@property)
+     gbord-flowing      — Linear gradient sliding around
+     gbord-breathing    — Opacity pulses
+     gbord-beam         — Beam chasing around the perimeter
+     gbord-double       — Two rings (outer + inner)
+     gbord-dashed       — Dashed gradient (use sparingly)
+     gbord-on-hover     — Only appears on hover
+
+   Sizes:
+     gbord-thin    1px · gbord-md  2px (default) · gbord-thick 3px · gbord-xl 5px
+
+   Combine with preset color classes:
+     gbord-instagram / gbord-sunset / gbord-cosmic / gbord-cyber / gbord-rainbow /
+     gbord-aurora / gbord-mono / gbord-gold / gbord-iridescent
+   ============================================ */
+
+.gbord {
+  --gb-size: 2px;
+  --gb-radius: 14px;
+  --gb-bg: var(--surface, #0c0c14);
+  --gb-c1: #c084fc;
+  --gb-c2: #38bdf8;
+  --gb-c3: #f472b6;
+  --gb-duration: 6s;
+  position: relative;
+  border-radius: var(--gb-radius);
+  background: var(--gb-bg);
+  isolation: isolate;
+}
+
+.gbord-thin  { --gb-size: 1px; }
+.gbord-md    { --gb-size: 2px; }
+.gbord-thick { --gb-size: 3px; }
+.gbord-xl    { --gb-size: 5px; }
+
+/* ── 1. Static gradient border (dual-bg trick) ── */
+.gbord-static {
+  background:
+    linear-gradient(var(--gb-bg), var(--gb-bg)) padding-box,
+    linear-gradient(135deg, var(--gb-c1), var(--gb-c2), var(--gb-c3)) border-box;
+  border: var(--gb-size) solid transparent;
+}
+
+/* ── 2. Rotating conic gradient (pseudo-element + mask) ── */
+.gbord-rotating::before,
+.gbord-flowing::before,
+.gbord-breathing::before,
+.gbord-beam::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--gb-size);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.gbord-rotating::before {
+  background: conic-gradient(from var(--gb-angle, 0deg), var(--gb-c1), var(--gb-c2), var(--gb-c3), var(--gb-c1));
+  animation: gbord-spin var(--gb-duration) linear infinite;
+}
+
+@property --gb-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes gbord-spin { to { --gb-angle: 360deg; } }
+
+@supports not (background: conic-gradient(from var(--gb-angle), red, blue)) {
+  .gbord-rotating::before {
+    animation: gbord-spin-fallback var(--gb-duration) linear infinite;
+  }
+  @keyframes gbord-spin-fallback { to { transform: rotate(360deg); } }
+}
+
+/* ── 3. Flowing linear gradient (slides along the ring) ── */
+.gbord-flowing::before {
+  background: linear-gradient(90deg, var(--gb-c1), var(--gb-c2), var(--gb-c3), var(--gb-c1));
+  background-size: 300% 100%;
+  animation: gbord-flow var(--gb-duration) linear infinite;
+}
+@keyframes gbord-flow {
+  from { background-position: 0% 0; }
+  to   { background-position: 300% 0; }
+}
+
+/* ── 4. Breathing (opacity pulse) ── */
+.gbord-breathing::before {
+  background: linear-gradient(135deg, var(--gb-c1), var(--gb-c2));
+  animation: gbord-breathe var(--gb-duration) ease-in-out infinite;
+}
+@keyframes gbord-breathe {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+
+/* ── 5. Beam — partial sweep around perimeter ── */
+.gbord-beam::before {
+  background: conic-gradient(
+    from var(--gb-angle, 0deg),
+    transparent 0deg,
+    transparent 270deg,
+    var(--gb-c1) 300deg,
+    var(--gb-c2) 340deg,
+    transparent 360deg);
+  animation: gbord-spin var(--gb-duration) linear infinite;
+}
+
+/* ── 6. Double ring (outer + inner) ── */
+.gbord-double {
+  padding: 4px;
+  background:
+    linear-gradient(var(--gb-bg), var(--gb-bg)) padding-box,
+    linear-gradient(135deg, var(--gb-c1), var(--gb-c2), var(--gb-c3)) border-box;
+  border: var(--gb-size) solid transparent;
+}
+.gbord-double::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: calc(var(--gb-radius) - 4px);
+  background:
+    linear-gradient(var(--gb-bg), var(--gb-bg)) padding-box,
+    linear-gradient(45deg, var(--gb-c3), var(--gb-c1)) border-box;
+  border: 1px solid transparent;
+  z-index: -1;
+}
+
+/* ── 7. Dashed gradient (segments) ── */
+.gbord-dashed::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--gb-size);
+  background:
+    conic-gradient(from 0deg, var(--gb-c1), var(--gb-c2), var(--gb-c3), var(--gb-c1));
+  -webkit-mask:
+    repeating-conic-gradient(#000 0 4deg, transparent 4deg 8deg),
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+          mask:
+    repeating-conic-gradient(#000 0 4deg, transparent 4deg 8deg),
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: source-in, source-over;
+          mask-composite: intersect;
+}
+
+/* ── 8. Only on hover ── */
+.gbord-on-hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--gb-size);
+  background: linear-gradient(135deg, var(--gb-c1), var(--gb-c2));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.gbord-on-hover:hover::before { opacity: 1; }
+
+/* ===========================================================
+   ── Color presets (mirror gradients-pack) ──
+   =========================================================== */
+
+.gbord-instagram {
+  --gb-c1: #515bd4; --gb-c2: #dd2a7b; --gb-c3: #f58529;
+}
+.gbord-sunset {
+  --gb-c1: #ff6e7f; --gb-c2: #ffafbd; --gb-c3: #bfe9ff;
+}
+.gbord-cosmic {
+  --gb-c1: #c084fc; --gb-c2: #38bdf8; --gb-c3: #f472b6;
+}
+.gbord-cyber {
+  --gb-c1: #00f0ff; --gb-c2: #ff00d4; --gb-c3: #00ff88;
+}
+.gbord-rainbow {
+  --gb-c1: #ff0080; --gb-c2: #ffd700; --gb-c3: #00ffff;
+}
+.gbord-aurora {
+  --gb-c1: #00c9a7; --gb-c2: #845ec2; --gb-c3: #ff6f91;
+}
+.gbord-mono {
+  --gb-c1: rgba(255,255,255,0.6);
+  --gb-c2: rgba(255,255,255,0.1);
+  --gb-c3: rgba(255,255,255,0.6);
+}
+.gbord-gold {
+  --gb-c1: #ffd700; --gb-c2: #b8860b; --gb-c3: #ffe97a;
+}
+.gbord-iridescent {
+  --gb-c1: #00ffd0; --gb-c2: #f5a3ff; --gb-c3: #ffd56b;
+}
+.gbord-vercel {
+  --gb-c1: #ff0080; --gb-c2: #7928ca; --gb-c3: #0070f3;
+}
+
+/* Inner content well (so the border isn't covered by child overflow) */
+.gbord-content {
+  position: relative;
+  padding: 1.25rem 1.5rem;
+  border-radius: calc(var(--gb-radius) - var(--gb-size));
+  background: inherit;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gbord-rotating::before,
+  .gbord-flowing::before,
+  .gbord-breathing::before,
+  .gbord-beam::before { animation: none; }
+}

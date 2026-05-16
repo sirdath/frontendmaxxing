@@ -1,0 +1,160 @@
+/* ============================================
+   GRADIENT CARDS — Surface cards with gradient fills, borders, and overlays
+   Inspired by Apple product cards, Stripe pricing, Linear feature blocks
+   ============================================
+   Usage:
+     <div class="gcard gcard-aurora">
+       <h3>Title</h3>
+       <p>Body text...</p>
+     </div>
+
+   Variants (color):
+     gcard-aurora, gcard-sunset, gcard-cosmic, gcard-ocean, gcard-fire,
+     gcard-mint, gcard-rose, gcard-gold, gcard-holo, gcard-pastel, gcard-noir
+   Styles:
+     gcard-solid (default — filled gradient)
+     gcard-border (gradient border only)
+     gcard-glass (frosted gradient overlay)
+     gcard-glow (heavy ambient glow)
+     gcard-mesh (multi-radial mesh bg)
+     gcard-corner (gradient bleed from corner)
+     gcard-spotlight (mouse-tracked spotlight — needs JS to set --mx/--my)
+   Modifiers:
+     gcard-lg, gcard-sm, gcard-tight
+     gcard-stack (children stacked, gradient overlay on top)
+   ============================================ */
+
+.gcard {
+  --gc-c1: #8b5cf6;
+  --gc-c2: #ec4899;
+  --gc-c3: #06b6d4;
+  --gc-fg: #ffffff;
+  --gc-muted: rgba(255, 255, 255, 0.75);
+  --gc-radius: 16px;
+  --gc-pad: 1.5rem;
+  position: relative;
+  isolation: isolate;
+  padding: var(--gc-pad);
+  border-radius: var(--gc-radius);
+  color: var(--gc-fg);
+  background: linear-gradient(135deg, var(--gc-c1), var(--gc-c2) 50%, var(--gc-c3));
+  overflow: hidden;
+  transition: transform 0.32s ease, box-shadow 0.32s ease;
+}
+.gcard h1, .gcard h2, .gcard h3, .gcard h4 { color: inherit; margin: 0 0 0.5rem; }
+.gcard p { color: var(--gc-muted); margin: 0; line-height: 1.55; }
+
+/* Color presets */
+.gcard-aurora  { --gc-c1: #a855f7; --gc-c2: #ec4899; --gc-c3: #06b6d4; }
+.gcard-sunset  { --gc-c1: #f97316; --gc-c2: #ec4899; --gc-c3: #f59e0b; }
+.gcard-cosmic  { --gc-c1: #6d28d9; --gc-c2: #db2777; --gc-c3: #0891b2; }
+.gcard-ocean   { --gc-c1: #0ea5e9; --gc-c2: #06b6d4; --gc-c3: #14b8a6; }
+.gcard-fire    { --gc-c1: #fbbf24; --gc-c2: #f97316; --gc-c3: #ef4444; }
+.gcard-mint    { --gc-c1: #34d399; --gc-c2: #22d3ee; --gc-c3: #14b8a6; }
+.gcard-rose    { --gc-c1: #fb7185; --gc-c2: #f43f5e; --gc-c3: #ec4899; }
+.gcard-gold    { --gc-c1: #fef3c7; --gc-c2: #fbbf24; --gc-c3: #d97706; --gc-fg: #2a1a02; --gc-muted: rgba(42, 26, 2, 0.7); }
+.gcard-pastel  { --gc-c1: #c4b5fd; --gc-c2: #fbcfe8; --gc-c3: #a5f3fc; --gc-fg: #1a1a2a; --gc-muted: rgba(26, 26, 42, 0.65); }
+.gcard-noir    { --gc-c1: #0f172a; --gc-c2: #1e293b; --gc-c3: #0f172a; }
+.gcard-violet  { --gc-c1: #6366f1; --gc-c2: #8b5cf6; --gc-c3: #a855f7; }
+.gcard-cyber   { --gc-c1: #00ffff; --gc-c2: #ff00ff; --gc-c3: #00ff7f; --gc-fg: #001019; --gc-muted: rgba(0, 16, 25, 0.7); }
+.gcard-holo {
+  background:
+    conic-gradient(from 90deg at 50% 50%,
+      transparent 0deg, rgba(255, 0, 200, 0.4) 60deg,
+      rgba(0, 200, 255, 0.4) 120deg, rgba(200, 255, 0, 0.4) 180deg,
+      transparent 240deg, rgba(255, 100, 0, 0.4) 300deg, transparent 360deg),
+    linear-gradient(135deg, #ff006e, #8338ec 33%, #3a86ff 66%, #06ffa5);
+}
+
+/* Style: border-only */
+.gcard-border {
+  background:
+    linear-gradient(var(--gc-base, #0a0a14), var(--gc-base, #0a0a14)) padding-box,
+    linear-gradient(135deg, var(--gc-c1), var(--gc-c2), var(--gc-c3)) border-box;
+  border: 2px solid transparent;
+}
+
+/* Style: frosted glass on dark gradient bg */
+.gcard-glass {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+    linear-gradient(135deg, var(--gc-c1), var(--gc-c2) 50%, var(--gc-c3));
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Style: heavy glow halo */
+.gcard-glow {
+  box-shadow:
+    0 12px 40px -8px var(--gc-c1),
+    0 24px 60px -12px var(--gc-c2),
+    0 -8px 32px -8px var(--gc-c3);
+}
+
+/* Style: multi-radial mesh bg */
+.gcard-mesh {
+  background:
+    radial-gradient(at 20% 20%, var(--gc-c1) 0%, transparent 50%),
+    radial-gradient(at 80% 30%, var(--gc-c2) 0%, transparent 50%),
+    radial-gradient(at 50% 80%, var(--gc-c3) 0%, transparent 50%),
+    #0a0a14;
+}
+
+/* Style: corner bleed (most of card dark, gradient leaks from corner) */
+.gcard-corner {
+  background:
+    radial-gradient(circle at 100% 0%, var(--gc-c2) 0%, transparent 35%),
+    radial-gradient(circle at 0% 100%, var(--gc-c3) 0%, transparent 35%),
+    linear-gradient(135deg, #0a0a14, #14141f);
+}
+
+/* Style: mouse-tracked spotlight (companion JS sets --mx/--my pixels) */
+.gcard-spotlight {
+  background: #0a0a14;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.gcard-spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--gc-c1) 30%, transparent),
+    transparent 60%);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+.gcard-spotlight:hover::before { opacity: 1; }
+
+/* Hover lift */
+.gcard-hover:hover { transform: translateY(-4px); box-shadow: 0 24px 60px -16px rgba(0,0,0,0.4); }
+
+/* Sizes / spacing */
+.gcard-sm    { --gc-pad: 1rem; --gc-radius: 10px; }
+.gcard-lg    { --gc-pad: 2rem; --gc-radius: 20px; }
+.gcard-tight { --gc-pad: 0.75rem; }
+
+/* Stack layout */
+.gcard-stack > * + * { margin-top: 0.75rem; }
+
+/* Inner content well — for stacking dark surface inside */
+.gcard-inner {
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: calc(var(--gc-radius) - 4px);
+  padding: 1rem;
+  color: #fff;
+}
+
+/* CTA-style card */
+.gcard-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.gcard-cta-action { flex-shrink: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gcard, .gcard-hover { transition: none; }
+}

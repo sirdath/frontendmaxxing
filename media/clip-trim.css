@@ -1,0 +1,111 @@
+/* ============================================
+   CLIP TRIM — Range trimmer for audio/video (in/out handles)
+   Inspired by iMovie / DaVinci / Reels trimmer
+   ============================================
+   Usage:
+     <div class="trim" data-clip-trim>
+       <div class="trim-bar">
+         <div class="trim-bg"></div>
+         <div class="trim-sel" style="--in:10%; --out:80%;"></div>
+         <div class="trim-handle trim-in" style="left:10%;"></div>
+         <div class="trim-handle trim-out" style="left:80%;"></div>
+         <div class="trim-playhead" style="left:40%;"></div>
+       </div>
+       <div class="trim-times">
+         <span>0:01.2</span>
+         <span>0:00.6 selected</span>
+         <span>0:01.8</span>
+       </div>
+     </div>
+     ClipTrim.init('[data-clip-trim]', { duration: 5, onChange: function (inSec, outSec) {…} });
+
+   Variants:
+     trim-waveform     — Show waveform pattern in track
+     trim-compact
+   ============================================ */
+
+.trim {
+  --trim-bg: rgba(255, 255, 255, 0.06);
+  --trim-sel: rgba(129, 140, 248, 0.18);
+  --trim-handle: #818cf8;
+  --trim-fg: #ffffff;
+  --trim-muted: rgba(255, 255, 255, 0.55);
+  width: 100%;
+  max-width: 480px;
+  color: var(--trim-fg);
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+}
+
+.trim-bar {
+  position: relative;
+  height: 48px;
+  background: var(--trim-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+
+.trim-bg {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+}
+
+.trim-sel {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: var(--in, 0%);
+  right: calc(100% - var(--out, 100%));
+  background: var(--trim-sel);
+  border-left: 3px solid var(--trim-handle);
+  border-right: 3px solid var(--trim-handle);
+}
+
+.trim-handle {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 14px;
+  background: var(--trim-handle);
+  border-radius: 4px;
+  cursor: ew-resize;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+.trim-handle::after {
+  content: '⫼';
+}
+
+.trim-playhead {
+  position: absolute;
+  top: -4px; bottom: -4px;
+  width: 2px;
+  background: #f87171;
+  transform: translateX(-50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.trim-times {
+  display: flex;
+  justify-content: space-between;
+  color: var(--trim-muted);
+  font-variant-numeric: tabular-nums;
+}
+.trim-times span:nth-child(2) { color: var(--trim-fg); font-weight: 600; }
+
+/* Waveform variant: fake bars */
+.trim-waveform .trim-bg {
+  background-image: repeating-linear-gradient(to right,
+    rgba(255,255,255,0.18) 0 2px,
+    transparent 2px 4px);
+}
+
+.trim-compact .trim-bar { height: 28px; }
+.trim-compact .trim-handle { width: 10px; }

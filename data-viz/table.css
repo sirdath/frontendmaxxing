@@ -1,0 +1,176 @@
+/* ============================================
+   TABLE — Sortable / selectable / sticky-header data table
+   Inspired by TanStack Table / Linear / Stripe Dashboard
+   ============================================
+   Usage:
+     <table class="tbl" data-table>
+       <thead>
+         <tr>
+           <th data-sort="name">Name</th>
+           <th data-sort="status">Status</th>
+           <th data-sort="amount" data-numeric>Amount</th>
+           <th></th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr>
+           <td>Aurora</td>
+           <td><span class="tbl-badge tbl-badge-success">Active</span></td>
+           <td class="tbl-num">$1,240</td>
+           <td><button>...</button></td>
+         </tr>
+         …
+       </tbody>
+     </table>
+
+   Variants:
+     .tbl-striped      — Zebra rows
+     .tbl-compact      — Tighter padding
+     .tbl-hover        — Hover row highlight (default on)
+     .tbl-bordered     — Full borders
+     .tbl-card         — Card-style with rounded container
+     .tbl-sticky       — Sticky header
+     .tbl-selectable   — Highlights selected rows
+   ============================================ */
+
+.tbl {
+  --tbl-bg: transparent;
+  --tbl-bg-alt: rgba(255, 255, 255, 0.025);
+  --tbl-border: rgba(255, 255, 255, 0.08);
+  --tbl-fg: var(--text, #ffffff);
+  --tbl-muted: rgba(255, 255, 255, 0.6);
+  --tbl-hover: rgba(255, 255, 255, 0.04);
+  --tbl-accent: #818cf8;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  color: var(--tbl-fg);
+}
+
+.tbl thead {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.tbl th,
+.tbl td {
+  text-align: left;
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid var(--tbl-border);
+}
+
+.tbl th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tbl-muted);
+  user-select: none;
+}
+
+.tbl th[data-sort] {
+  cursor: pointer;
+  position: relative;
+}
+.tbl th[data-sort]:hover { color: var(--tbl-fg); }
+.tbl th[data-sort]::after {
+  content: ' ⇅';
+  opacity: 0.4;
+  margin-left: 0.25rem;
+  font-size: 0.75rem;
+}
+.tbl th[data-sort].is-asc::after  { content: ' ↑'; opacity: 1; color: var(--tbl-accent); }
+.tbl th[data-sort].is-desc::after { content: ' ↓'; opacity: 1; color: var(--tbl-accent); }
+
+.tbl th[data-numeric],
+.tbl td.tbl-num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.tbl tbody tr.is-selected { background: rgba(129, 140, 248, 0.08); }
+
+/* ── Variants ── */
+.tbl-striped tbody tr:nth-child(odd) { background: var(--tbl-bg-alt); }
+.tbl-hover tbody tr:hover            { background: var(--tbl-hover); }
+.tbl-compact th, .tbl-compact td     { padding: 0.45rem 0.7rem; }
+
+.tbl-bordered { border: 1px solid var(--tbl-border); border-radius: 10px; overflow: hidden; }
+.tbl-bordered th, .tbl-bordered td   { border-right: 1px solid var(--tbl-border); }
+.tbl-bordered th:last-child,
+.tbl-bordered td:last-child { border-right: none; }
+
+.tbl-card {
+  border: 1px solid var(--tbl-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface-2, #14141f);
+}
+
+.tbl-sticky thead th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-2, #14141f);
+  z-index: 1;
+}
+
+/* Selection checkbox column */
+.tbl-select-col { width: 36px; padding-right: 0; }
+.tbl-select-col input[type="checkbox"] { accent-color: var(--tbl-accent); }
+
+/* Status badges (mini, reusable inside cells) */
+.tbl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--tbl-fg);
+}
+.tbl-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.tbl-badge-success { background: rgba(34, 197, 94, 0.12);  color: #4ade80; }
+.tbl-badge-danger  { background: rgba(239, 68, 68, 0.12);  color: #f87171; }
+.tbl-badge-warning { background: rgba(245, 158, 11, 0.12); color: #fbbf24; }
+.tbl-badge-info    { background: rgba(34, 211, 238, 0.12); color: #67e8f9; }
+.tbl-badge-muted   { background: rgba(255, 255, 255, 0.06); color: var(--tbl-muted); }
+
+/* Cell helpers */
+.tbl-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #818cf8, #c084fc);
+  display: inline-grid; place-items: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-right: 0.6rem;
+  vertical-align: middle;
+}
+
+/* Pagination */
+.tbl-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  border-top: 1px solid var(--tbl-border);
+  font-size: 0.8rem;
+  color: var(--tbl-muted);
+}
+.tbl-pagination button {
+  padding: 0.3rem 0.6rem;
+  background: transparent;
+  border: 1px solid var(--tbl-border);
+  border-radius: 6px;
+  color: var(--tbl-fg);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+}
+.tbl-pagination button:hover { background: var(--tbl-hover); }
+.tbl-pagination button[disabled] { opacity: 0.4; cursor: not-allowed; }

@@ -1,0 +1,121 @@
+/* ============================================
+   SCROLL SNAP SCENES — Full-page snap-to-section with inner animation
+   Inspired by Codrops scroll demos
+   ============================================
+   Usage:
+     <div class="snap-scenes">
+       <section class="snap-scene"><div class="snap-scene-inner">...</div></section>
+       <section class="snap-scene"><div class="snap-scene-inner">...</div></section>
+     </div>
+
+   The inner element animates in when its scene becomes active
+   (use ScrollSnapScenes.init() to manage class state).
+
+   Variants:
+     .snap-scenes-mandatory — Hard snap
+     .snap-scenes-proximity — Soft snap (default)
+     .snap-scenes-axis-x    — Horizontal scroll snap
+   ============================================ */
+
+.snap-scenes {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+  scroll-snap-stop: always;
+}
+
+.snap-scenes-mandatory { scroll-snap-type: y mandatory; }
+.snap-scenes-proximity { scroll-snap-type: y proximity; }
+
+.snap-scenes-axis-x {
+  height: auto;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  display: flex;
+  scroll-snap-type: x mandatory;
+}
+
+.snap-scene {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.snap-scenes-axis-x .snap-scene {
+  width: 100vw;
+  height: auto;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+}
+
+.snap-scene-inner {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition:
+    opacity 0.6s cubic-bezier(0.2, 0.9, 0.25, 1),
+    transform 0.7s cubic-bezier(0.2, 0.9, 0.25, 1);
+  will-change: opacity, transform;
+  text-align: center;
+  padding: 1.5rem;
+  max-width: 800px;
+}
+
+.snap-scene.is-active .snap-scene-inner {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Stagger nested children within an active scene */
+.snap-scene.is-active .snap-scene-inner > * {
+  animation: snap-stagger 0.6s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+.snap-scene.is-active .snap-scene-inner > *:nth-child(1) { animation-delay: 0.05s; }
+.snap-scene.is-active .snap-scene-inner > *:nth-child(2) { animation-delay: 0.15s; }
+.snap-scene.is-active .snap-scene-inner > *:nth-child(3) { animation-delay: 0.25s; }
+.snap-scene.is-active .snap-scene-inner > *:nth-child(4) { animation-delay: 0.35s; }
+.snap-scene.is-active .snap-scene-inner > *:nth-child(5) { animation-delay: 0.45s; }
+
+@keyframes snap-stagger {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Optional pagination dots */
+.snap-pagination {
+  position: fixed;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 50;
+}
+
+.snap-pagination button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.snap-pagination button.is-active {
+  background: var(--primary, #818cf8);
+  transform: scale(1.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snap-scene-inner,
+  .snap-scene.is-active .snap-scene-inner > * { animation: none !important; transition: none; }
+  .snap-scene-inner { opacity: 1; transform: none; }
+}

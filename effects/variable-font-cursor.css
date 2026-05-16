@@ -1,0 +1,87 @@
+/* ============================================
+   VARIABLE FONT CURSOR — Per-glyph weight/width interpolation by cursor distance
+   Inspired by Fancy Components, Magic UI Kinetic Text, recent variable-font demos
+   ============================================
+   Each character's font-variation-settings (`wght`, `wdth`, optionally `slnt`)
+   smoothly interpolate based on its distance to the cursor. Use with any
+   variable font that exposes wght and/or wdth axes (Inter Variable, Recursive,
+   Roboto Flex, Funnel Sans, etc.).
+
+   Setup:
+     - Load a variable font with wght + wdth axes:
+       <link rel="stylesheet" href="...inter-variable...">
+     - Pair with `variable-font-cursor.js` to set --w / --wd per glyph.
+
+   Usage:
+     <h1 class="vfc" data-vfc>This text reacts to your cursor</h1>
+
+     VariableFontCursor.init('[data-vfc]', {
+       maxWeight: 900, minWeight: 200,
+       maxWidth: 130, minWidth: 70,
+       radius: 220,   // px — influence radius
+       smoothing: 0.18
+     });
+
+   Variants (CSS only):
+     vfc                — base
+     vfc-inter          — Inter Variable preset
+     vfc-recursive      — Recursive preset (also uses slnt)
+     vfc-hero           — large hero size
+     vfc-tight          — narrow letter-spacing
+   ============================================ */
+
+.vfc {
+  --vfc-min-w: 200;
+  --vfc-max-w: 900;
+  --vfc-min-wd: 75;
+  --vfc-max-wd: 125;
+  font-family: 'Inter Variable', 'Inter', 'Roboto Flex', system-ui, sans-serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  display: inline-block;
+  user-select: none;
+  line-height: 1.2;
+}
+
+.vfc-char {
+  --w: 400;       /* weight — set by JS */
+  --wd: 100;      /* width — set by JS */
+  --sl: 0;        /* slant — set by JS for recursive-like fonts */
+  display: inline-block;
+  font-variation-settings: 'wght' var(--w), 'wdth' var(--wd), 'slnt' var(--sl);
+  transition: font-variation-settings 0.08s ease-out;
+  white-space: pre;
+}
+
+/* Presets */
+.vfc-inter      { font-family: 'Inter Variable', 'Inter', system-ui, sans-serif; }
+.vfc-recursive  { font-family: 'Recursive', system-ui, monospace; }
+.vfc-roboto     { font-family: 'Roboto Flex', system-ui, sans-serif; }
+.vfc-funnel     { font-family: 'Funnel Sans', system-ui, sans-serif; }
+
+/* Sizes */
+.vfc-sm { font-size: 1rem; }
+.vfc-md { font-size: 2.2rem; }
+.vfc-lg { font-size: 3.5rem; }
+.vfc-hero { font-size: clamp(3rem, 9vw, 7rem); }
+
+.vfc-tight { letter-spacing: -0.02em; }
+.vfc-wide  { letter-spacing: 0.04em; }
+
+/* Color variants */
+.vfc-mono       { color: #fff; }
+.vfc-gradient {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899, #06b6d4);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glow variant — drops shadow that softens at low weight */
+.vfc-glow .vfc-char {
+  text-shadow: 0 0 calc((var(--w) - 200) * 0.04px) currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vfc-char { transition: none; }
+}

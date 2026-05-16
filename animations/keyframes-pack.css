@@ -1,0 +1,264 @@
+/* ============================================
+   KEYFRAMES PACK — 28 additional keyframe animations
+   Inspired by Animate.css / Magic Animations / uiverse.io
+   ============================================
+   Companion to: animations/keyframes.css (additive — does not collide).
+
+   Usage:
+     <div class="kp kp-rubber-band">Bouncy</div>
+     <div class="kp kp-jello kp-once">Jello!</div>
+
+   Conventions:
+     - All animations live under .kp-* class names so they never clash
+       with existing keyframes.css.
+     - `.kp` sets shared defaults (duration, easing, fill-mode).
+     - Add `.kp-once` for play-once (animation removes itself), or use
+       `.kp-infinite` to loop. Default fills both and runs once.
+     - Add `.kp-fast` / `.kp-slow` to retune duration.
+
+   Animations: rubber-band, jello, wobble, swing, heartbeat, tada,
+     flash, bounce, head-shake, hinge, roll-in, roll-out, light-speed-in,
+     light-speed-out, zoom-in-soft, zoom-out-soft, flip-x, flip-y,
+     slide-in-up, slide-in-down, slide-in-left, slide-in-right,
+     spin-bounce, magnetic, sheen, glow-pulse, pop-in, drop-in
+   ============================================ */
+
+.kp {
+  animation-duration: 0.8s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.34, 1.4, 0.64, 1);
+  animation-iteration-count: 1;
+  display: inline-block;
+  transform-origin: center center;
+}
+
+.kp-infinite { animation-iteration-count: infinite; }
+.kp-fast     { animation-duration: 0.4s; }
+.kp-slow     { animation-duration: 1.6s; }
+.kp-delay-1  { animation-delay: 0.15s; }
+.kp-delay-2  { animation-delay: 0.3s; }
+.kp-delay-3  { animation-delay: 0.45s; }
+
+/* ── Rubber band ── */
+.kp-rubber-band { animation-name: kp-rubber-band; }
+@keyframes kp-rubber-band {
+  0%   { transform: scale(1); }
+  30%  { transform: scaleX(1.25) scaleY(0.75); }
+  40%  { transform: scaleX(0.75) scaleY(1.25); }
+  50%  { transform: scaleX(1.15) scaleY(0.85); }
+  65%  { transform: scaleX(0.95) scaleY(1.05); }
+  75%  { transform: scaleX(1.05) scaleY(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* ── Jello ── */
+.kp-jello { animation-name: kp-jello; transform-origin: center; }
+@keyframes kp-jello {
+  0%, 11.1%, 100% { transform: translate3d(0,0,0); }
+  22.2% { transform: skewX(-12.5deg) skewY(-12.5deg); }
+  33.3% { transform: skewX(6.25deg)  skewY(6.25deg); }
+  44.4% { transform: skewX(-3.125deg) skewY(-3.125deg); }
+  55.5% { transform: skewX(1.5625deg) skewY(1.5625deg); }
+  66.6% { transform: skewX(-0.78deg)  skewY(-0.78deg); }
+  77.7% { transform: skewX(0.39deg)   skewY(0.39deg); }
+}
+
+/* ── Wobble ── */
+.kp-wobble { animation-name: kp-wobble; }
+@keyframes kp-wobble {
+  0%, 100% { transform: translate(0,0) rotate(0); }
+  15% { transform: translateX(-25%) rotate(-5deg); }
+  30% { transform: translateX(20%)  rotate(3deg); }
+  45% { transform: translateX(-15%) rotate(-3deg); }
+  60% { transform: translateX(10%)  rotate(2deg); }
+  75% { transform: translateX(-5%)  rotate(-1deg); }
+}
+
+/* ── Swing ── */
+.kp-swing { animation-name: kp-swing; transform-origin: top center; }
+@keyframes kp-swing {
+  20% { transform: rotate(15deg); }
+  40% { transform: rotate(-10deg); }
+  60% { transform: rotate(5deg); }
+  80% { transform: rotate(-5deg); }
+  100% { transform: rotate(0); }
+}
+
+/* ── Heartbeat ── */
+.kp-heartbeat { animation-name: kp-heartbeat; animation-duration: 1.3s; animation-iteration-count: infinite; animation-timing-function: ease-in-out; }
+@keyframes kp-heartbeat {
+  0%   { transform: scale(1); }
+  14%  { transform: scale(1.15); }
+  28%  { transform: scale(1); }
+  42%  { transform: scale(1.15); }
+  70%  { transform: scale(1); }
+}
+
+/* ── Tada ── */
+.kp-tada { animation-name: kp-tada; }
+@keyframes kp-tada {
+  0%   { transform: scale(1); }
+  10%, 20% { transform: scale(0.9) rotate(-3deg); }
+  30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); }
+  40%, 60%, 80%      { transform: scale(1.1) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* ── Flash ── */
+.kp-flash { animation-name: kp-flash; }
+@keyframes kp-flash {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
+/* ── Bounce ── */
+.kp-bounce { animation-name: kp-bounce; }
+@keyframes kp-bounce {
+  0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
+  40%, 43% { transform: translate3d(0, -30px, 0); }
+  70%      { transform: translate3d(0, -15px, 0); }
+  90%      { transform: translate3d(0, -4px, 0); }
+}
+
+/* ── Head shake ── */
+.kp-head-shake { animation-name: kp-head-shake; animation-timing-function: ease-in-out; }
+@keyframes kp-head-shake {
+  0%   { transform: translateX(0); }
+  6.5% { transform: translateX(-6px) rotateY(-9deg); }
+  18.5% { transform: translateX(5px) rotateY(7deg); }
+  31.5% { transform: translateX(-3px) rotateY(-5deg); }
+  43.5% { transform: translateX(2px)  rotateY(3deg); }
+  50%   { transform: translateX(0); }
+}
+
+/* ── Hinge (slow falling door) ── */
+.kp-hinge { animation-name: kp-hinge; animation-duration: 2s; transform-origin: top left; animation-timing-function: ease-in-out; }
+@keyframes kp-hinge {
+  0%   { transform: rotate(0); opacity: 1; }
+  20%, 60% { transform: rotate(80deg); opacity: 1; }
+  40%, 80% { transform: rotate(60deg); opacity: 1; }
+  100% { transform: translateY(700px) rotate(0); opacity: 0; }
+}
+
+/* ── Roll in / out ── */
+.kp-roll-in  { animation-name: kp-roll-in; }
+.kp-roll-out { animation-name: kp-roll-out; }
+@keyframes kp-roll-in {
+  0%   { opacity: 0; transform: translateX(-100%) rotate(-120deg); }
+  100% { opacity: 1; transform: translateX(0) rotate(0); }
+}
+@keyframes kp-roll-out {
+  0%   { opacity: 1; transform: translateX(0) rotate(0); }
+  100% { opacity: 0; transform: translateX(100%) rotate(120deg); }
+}
+
+/* ── Light speed in / out ── */
+.kp-light-speed-in  { animation-name: kp-light-speed-in; }
+.kp-light-speed-out { animation-name: kp-light-speed-out; }
+@keyframes kp-light-speed-in {
+  0%   { opacity: 0; transform: translateX(100%) skewX(-30deg); }
+  60%  { opacity: 1; transform: translateX(-20%) skewX(20deg); }
+  80%  { transform: translateX(0) skewX(-5deg); }
+  100% { transform: translateX(0) skewX(0); }
+}
+@keyframes kp-light-speed-out {
+  0%   { opacity: 1; transform: translateX(0) skewX(0); }
+  100% { opacity: 0; transform: translateX(100%) skewX(30deg); }
+}
+
+/* ── Zoom soft ── */
+.kp-zoom-in-soft  { animation-name: kp-zoom-in-soft;  }
+.kp-zoom-out-soft { animation-name: kp-zoom-out-soft; }
+@keyframes kp-zoom-in-soft {
+  0%   { opacity: 0; transform: scale(0.7); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes kp-zoom-out-soft {
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.7); }
+}
+
+/* ── Flip X / Y ── */
+.kp-flip-x { animation-name: kp-flip-x; backface-visibility: visible; }
+.kp-flip-y { animation-name: kp-flip-y; backface-visibility: visible; }
+@keyframes kp-flip-x {
+  0%   { opacity: 0; transform: perspective(400px) rotateX(-90deg); }
+  60%  { opacity: 1; transform: perspective(400px) rotateX(20deg); }
+  100% { transform: perspective(400px) rotateX(0); }
+}
+@keyframes kp-flip-y {
+  0%   { opacity: 0; transform: perspective(400px) rotateY(-90deg); }
+  60%  { opacity: 1; transform: perspective(400px) rotateY(20deg); }
+  100% { transform: perspective(400px) rotateY(0); }
+}
+
+/* ── Slide-in directions ── */
+.kp-slide-in-up    { animation-name: kp-slide-in-up; }
+.kp-slide-in-down  { animation-name: kp-slide-in-down; }
+.kp-slide-in-left  { animation-name: kp-slide-in-left; }
+.kp-slide-in-right { animation-name: kp-slide-in-right; }
+@keyframes kp-slide-in-up    { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes kp-slide-in-down  { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes kp-slide-in-left  { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes kp-slide-in-right { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+
+/* ── Spin bounce ── */
+.kp-spin-bounce { animation-name: kp-spin-bounce; animation-duration: 1s; }
+@keyframes kp-spin-bounce {
+  0%   { transform: rotate(0)    scale(1); }
+  50%  { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* ── Magnetic wiggle ── */
+.kp-magnetic { animation-name: kp-magnetic; animation-duration: 1.4s; animation-iteration-count: infinite; }
+@keyframes kp-magnetic {
+  0%, 100% { transform: translate(0,0); }
+  20% { transform: translate(2px, -1px); }
+  40% { transform: translate(-2px, 1px); }
+  60% { transform: translate(1px, 2px); }
+  80% { transform: translate(-1px, -2px); }
+}
+
+/* ── Sheen sweep (uses overflow:hidden + ::after) ── */
+.kp-sheen { position: relative; overflow: hidden; }
+.kp-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.4) 50%, transparent 80%);
+  transform: translateX(-100%);
+  animation: kp-sheen 1.8s ease-in-out infinite;
+}
+@keyframes kp-sheen {
+  0%   { transform: translateX(-100%); }
+  60%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ── Glow pulse ── */
+.kp-glow-pulse { animation-name: kp-glow-pulse; animation-duration: 1.6s; animation-iteration-count: infinite; }
+@keyframes kp-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(129, 140, 248, 0.5); }
+  50%      { box-shadow: 0 0 0 16px rgba(129, 140, 248, 0); }
+}
+
+/* ── Pop in ── */
+.kp-pop-in { animation-name: kp-pop-in; }
+@keyframes kp-pop-in {
+  0%   { opacity: 0; transform: scale(0.4); }
+  60%  { opacity: 1; transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* ── Drop in ── */
+.kp-drop-in { animation-name: kp-drop-in; }
+@keyframes kp-drop-in {
+  0%   { opacity: 0; transform: translateY(-60px) scale(0.95); }
+  60%  { opacity: 1; transform: translateY(8px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kp { animation: none !important; }
+}

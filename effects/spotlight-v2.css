@@ -1,0 +1,75 @@
+/* ============================================
+   SPOTLIGHT V2 — Soft radial spotlight blob for dark hero
+   Inspired by Aceternity UI
+   ============================================
+   (Distinct from effects/spotlight-reveal which uses a dot grid + mouse mask.)
+
+   Usage:
+     <div class="spot2">
+       <div class="spot2-light"></div>
+       <div class="spot2-light spot2-light-2"></div>
+       <div class="spot2-content">Your hero</div>
+     </div>
+
+   Variants:
+     .spot2-violet (default) / .spot2-cyan / .spot2-pink / .spot2-amber
+     .spot2-still — Disable drift animation
+   ============================================ */
+
+.spot2 {
+  --spot-bg: #050510;
+  --spot-c1: rgba(129, 140, 248, 0.55);
+  --spot-c2: rgba(192, 132, 252, 0.45);
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  background: var(--spot-bg);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.spot2-light {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--spot-c1) 0%, transparent 60%);
+  filter: blur(60px);
+  pointer-events: none;
+  top: -200px;
+  left: -200px;
+  animation: spot2-drift 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.spot2-light-2 {
+  top: auto;
+  left: auto;
+  bottom: -200px;
+  right: -200px;
+  background: radial-gradient(circle, var(--spot-c2) 0%, transparent 60%);
+  animation-direction: alternate-reverse;
+  animation-duration: 24s;
+}
+
+@keyframes spot2-drift {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(140px, 80px); }
+}
+
+.spot2-content {
+  position: relative;
+  z-index: 1;
+  padding: 6rem 1.5rem;
+  text-align: center;
+}
+
+/* ── Variants ── */
+.spot2-cyan  { --spot-c1: rgba(34, 211, 238, 0.55); --spot-c2: rgba(56, 189, 248, 0.45); }
+.spot2-pink  { --spot-c1: rgba(244, 114, 182, 0.55); --spot-c2: rgba(251, 113, 133, 0.45); }
+.spot2-amber { --spot-c1: rgba(251, 191, 36, 0.55); --spot-c2: rgba(251, 146, 60, 0.45); }
+.spot2-still .spot2-light { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spot2-light { animation: none; }
+}

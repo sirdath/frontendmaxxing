@@ -1,0 +1,94 @@
+/* ============================================
+   RIPPLE — Concentric expanding rings (CSS-only ambient ripple)
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <div class="ripple">
+       <span class="ripple-ring"></span>
+       <span class="ripple-ring"></span>
+       <span class="ripple-ring"></span>
+       <span class="ripple-ring"></span>
+       <span class="ripple-ring"></span>
+     </div>
+
+   Variants:
+     .ripple-fast   — 2s wave
+     .ripple-slow   — 8s wave
+     .ripple-accent — Use primary color
+     .ripple-solid  — Filled rings instead of outlined
+   ============================================ */
+
+.ripple {
+  --ripple-size: 200px;
+  --ripple-duration: 4s;
+  --ripple-color: rgba(129, 140, 248, 0.6);
+  --ripple-count: 5;
+  position: relative;
+  width: var(--ripple-size);
+  height: var(--ripple-size);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.ripple-ring {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 40%;
+  height: 40%;
+  border: 1px solid var(--ripple-color);
+  border-radius: 50%;
+  opacity: 0;
+  animation: ripple-wave var(--ripple-duration) linear infinite;
+}
+
+.ripple-ring:nth-child(1) { animation-delay: 0s; }
+.ripple-ring:nth-child(2) { animation-delay: calc(var(--ripple-duration) / -5); }
+.ripple-ring:nth-child(3) { animation-delay: calc(var(--ripple-duration) / -5 * 2); }
+.ripple-ring:nth-child(4) { animation-delay: calc(var(--ripple-duration) / -5 * 3); }
+.ripple-ring:nth-child(5) { animation-delay: calc(var(--ripple-duration) / -5 * 4); }
+.ripple-ring:nth-child(6) { animation-delay: calc(var(--ripple-duration) / -5 * 5); }
+
+@keyframes ripple-wave {
+  0%   { transform: scale(0.4); opacity: 0; border-width: 2px; }
+  20%  { opacity: 0.9; }
+  100% { transform: scale(2.5); opacity: 0; border-width: 0.5px; }
+}
+
+/* ── Variants ── */
+.ripple-fast { --ripple-duration: 2s; }
+.ripple-slow { --ripple-duration: 8s; }
+.ripple-accent { --ripple-color: var(--primary, #818cf8); }
+.ripple-success { --ripple-color: rgba(74, 222, 128, 0.6); }
+.ripple-danger  { --ripple-color: rgba(248, 113, 113, 0.6); }
+
+.ripple-solid .ripple-ring {
+  background: var(--ripple-color);
+  border: none;
+}
+
+.ripple-solid .ripple-ring {
+  animation-name: ripple-wave-solid;
+}
+
+@keyframes ripple-wave-solid {
+  0%   { transform: scale(0.4); opacity: 0; }
+  20%  { opacity: 0.35; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ── Center dot (optional content well) ── */
+.ripple-core {
+  position: relative;
+  z-index: 1;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: var(--ripple-color);
+  filter: blur(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ripple-ring { animation: none; opacity: 0.3; }
+}

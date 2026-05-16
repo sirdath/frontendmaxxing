@@ -1,0 +1,238 @@
+/* ============================================
+   GRADIENT AVATAR — Identicon-style gradient avatars from a string hash
+   Inspired by Discord, Stripe, GitHub identicons, Boring Avatars, Vercel user pills
+   ============================================
+   Styles only — the colors come from `gradient-avatar.js` which hashes a string
+   (username, email, user id) and sets `--gav-c1/-c2/-c3` CSS variables.
+
+   Usage:
+     <span class="gav" data-gav="dimo@email.com">DA</span>
+     <span class="gav gav-conic gav-lg" data-gav="anthropic"></span>
+     <span class="gav gav-ring" data-gav="claude"><img src="..."></span>
+
+     // Then call once:
+     GradientAvatar.init('[data-gav]');
+
+   Variants:
+     gav-linear     (default — 135deg linear gradient)
+     gav-conic      (conic / pie-slice)
+     gav-radial     (radial out from center)
+     gav-mesh       (multi-blob mesh)
+     gav-stripes    (banded gradient)
+     gav-dots       (Discord-style dot grid)
+     gav-rings      (concentric rings)
+     gav-spiral     (rotating swirl)
+     gav-holo       (animated foil)
+   Sizes:
+     gav-xs (24px), gav-sm (32px), gav-md (48px default), gav-lg (72px), gav-xl (128px), gav-2xl (200px)
+   Shapes:
+     gav-circle (default), gav-square, gav-rounded, gav-squircle
+   Decoration:
+     gav-ring         — gradient ring around inner photo (Instagram-story style)
+     gav-ring-anim    — animated rotating ring
+     gav-glow         — gradient halo
+     gav-border       — solid contrasting border
+     gav-status       — adds a status dot (color via data-gav-status)
+   ============================================ */
+
+.gav {
+  --gav-c1: #8b5cf6;
+  --gav-c2: #ec4899;
+  --gav-c3: #06b6d4;
+  --gav-fg: #ffffff;
+  --gav-size: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--gav-size);
+  height: var(--gav-size);
+  font-size: calc(var(--gav-size) * 0.4);
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--gav-fg);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 50%;
+  flex-shrink: 0;
+  vertical-align: middle;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  user-select: none;
+  background: linear-gradient(135deg, var(--gav-c1), var(--gav-c2) 50%, var(--gav-c3));
+}
+
+/* Style variants */
+.gav-linear  { background: linear-gradient(135deg, var(--gav-c1), var(--gav-c2) 50%, var(--gav-c3)); }
+.gav-radial  { background: radial-gradient(circle at 35% 35%, var(--gav-c1), var(--gav-c2) 50%, var(--gav-c3)); }
+.gav-conic   {
+  background: conic-gradient(from 45deg at 50% 50%,
+    var(--gav-c1), var(--gav-c2), var(--gav-c3), var(--gav-c1));
+}
+.gav-mesh {
+  background:
+    radial-gradient(circle at 20% 20%, var(--gav-c1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 30%, var(--gav-c2) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, var(--gav-c3) 0%, transparent 50%),
+    linear-gradient(135deg, var(--gav-c1), var(--gav-c3));
+}
+.gav-stripes {
+  background:
+    repeating-linear-gradient(135deg,
+      var(--gav-c1) 0% 16%, var(--gav-c2) 16% 33%,
+      var(--gav-c3) 33% 50%, var(--gav-c1) 50% 66%,
+      var(--gav-c2) 66% 83%, var(--gav-c3) 83% 100%);
+}
+.gav-dots {
+  background:
+    radial-gradient(circle at 25% 25%, var(--gav-c1) 0 18%, transparent 19%),
+    radial-gradient(circle at 75% 25%, var(--gav-c2) 0 18%, transparent 19%),
+    radial-gradient(circle at 25% 75%, var(--gav-c3) 0 18%, transparent 19%),
+    radial-gradient(circle at 75% 75%, var(--gav-c1) 0 18%, transparent 19%),
+    radial-gradient(circle at 50% 50%, var(--gav-c2) 0 18%, transparent 19%),
+    var(--gav-c3);
+}
+.gav-rings {
+  background:
+    radial-gradient(circle at center,
+      var(--gav-c1) 0 25%, var(--gav-c2) 25% 50%,
+      var(--gav-c3) 50% 75%, var(--gav-c1) 75% 100%);
+}
+.gav-spiral {
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%,
+      var(--gav-c1) 0deg 30deg, var(--gav-c2) 30deg 60deg, var(--gav-c3) 60deg 90deg);
+  filter: blur(0.5px);
+}
+.gav-holo {
+  background: conic-gradient(from 0deg at 50% 50%,
+    #ff00aa, #00ffff, #aaff00, #ffaa00, #ff00ff, #00aaff, #ff00aa);
+  background-size: 200% 200%;
+  animation: gav-holo-spin 4s linear infinite;
+}
+@keyframes gav-holo-spin {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Sizes */
+.gav-xs   { --gav-size: 24px; }
+.gav-sm   { --gav-size: 32px; }
+.gav-md   { --gav-size: 48px; }
+.gav-lg   { --gav-size: 72px; }
+.gav-xl   { --gav-size: 128px; }
+.gav-2xl  { --gav-size: 200px; }
+
+/* Shapes */
+.gav-circle   { border-radius: 50%; }
+.gav-square   { border-radius: 0; }
+.gav-rounded  { border-radius: 12px; }
+.gav-squircle { border-radius: 30%; }
+.gav-hex {
+  border-radius: 0;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+/* Gradient ring (with inner photo) */
+.gav-ring {
+  background:
+    linear-gradient(135deg, var(--gav-c1), var(--gav-c2) 50%, var(--gav-c3));
+  padding: 3px;
+}
+.gav-ring > img,
+.gav-ring > .gav-inner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  background: #0a0a14;
+  display: block;
+}
+
+.gav-ring-anim {
+  background:
+    conic-gradient(from 0deg, var(--gav-c1), var(--gav-c2), var(--gav-c3), var(--gav-c1));
+  animation: gav-ring-spin 4s linear infinite;
+  padding: 3px;
+}
+@keyframes gav-ring-spin { to { transform: rotate(360deg); } }
+.gav-ring-anim > img {
+  animation: gav-ring-counter-spin 4s linear infinite;
+}
+@keyframes gav-ring-counter-spin { to { transform: rotate(-360deg); } }
+
+/* Decorations */
+.gav-glow {
+  box-shadow:
+    0 0 12px -2px var(--gav-c1),
+    0 0 24px -6px var(--gav-c2);
+}
+.gav-border {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.gav-status::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 30%; height: 30%;
+  border-radius: 50%;
+  background: var(--gav-status-color, #22c55e);
+  border: 2px solid var(--gav-bg, #0a0a14);
+  z-index: 2;
+}
+.gav-status-online  { --gav-status-color: #22c55e; }
+.gav-status-away    { --gav-status-color: #f59e0b; }
+.gav-status-busy    { --gav-status-color: #ef4444; }
+.gav-status-offline { --gav-status-color: #6b7280; }
+
+/* Tooltip-style name plate */
+.gav-stack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.gav-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Group / pile */
+.gav-pile {
+  display: inline-flex;
+  align-items: center;
+}
+.gav-pile > .gav {
+  border: 2px solid var(--gav-pile-bg, #0a0a14);
+  margin-left: -10px;
+}
+.gav-pile > .gav:first-child { margin-left: 0; }
+.gav-pile-count {
+  display: inline-grid;
+  place-items: center;
+  width: var(--gav-size, 48px);
+  height: var(--gav-size, 48px);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 2px solid var(--gav-pile-bg, #0a0a14);
+  margin-left: -10px;
+}
+
+/* Initials helper — wrap initials in a span */
+.gav-initials {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gav-holo,
+  .gav-ring-anim,
+  .gav-ring-anim > img { animation: none; }
+}

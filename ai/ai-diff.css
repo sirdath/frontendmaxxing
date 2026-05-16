@@ -1,0 +1,260 @@
+/* ============================================
+   AI DIFF — Cursor-style inline diff with hunk-level Accept/Reject
+   Inspired by Cursor IDE, Continue.dev, GitHub Copilot inline edits
+   ============================================
+   Renders proposed AI edits as inline +/- hunks with per-hunk accept/reject
+   buttons and a global "Accept all / Reject all" footer. Different from
+   `diff-viewer.js` (read-only LCS) — this one is interactive review UI.
+
+   Usage:
+     <div class="adf" data-adf>
+       <header class="adf-head">
+         <span class="adf-file">src/handlers/user.ts</span>
+         <span class="adf-stats">
+           <span class="adf-add">+12</span>
+           <span class="adf-del">-3</span>
+         </span>
+         <div class="adf-actions">
+           <button class="adf-action adf-accept-all">Accept all</button>
+           <button class="adf-action adf-reject-all">Reject all</button>
+         </div>
+       </header>
+       <div class="adf-body">
+         <div class="adf-hunk" data-adf-hunk="1">
+           <div class="adf-hunk-head">
+             <span class="adf-loc">@@ 42 @@</span>
+             <button class="adf-hunk-accept">✓ Accept</button>
+             <button class="adf-hunk-reject">✕ Reject</button>
+           </div>
+           <ol class="adf-lines" start="42">
+             <li class="adf-line adf-line-context">const user = req.user;</li>
+             <li class="adf-line adf-line-del">  return user.foo;</li>
+             <li class="adf-line adf-line-add">  return user?.foo ?? null;</li>
+             <li class="adf-line adf-line-context">}</li>
+           </ol>
+         </div>
+       </div>
+     </div>
+
+   States:
+     adf-hunk.is-accepted   (green tint, button → ✓)
+     adf-hunk.is-rejected   (struck through, faded)
+     adf-hunk.is-partial    (sub-word level accept)
+   Variants:
+     adf-compact, adf-side-by-side
+   ============================================ */
+
+.adf {
+  --d-bg: rgba(255, 255, 255, 0.02);
+  --d-border: rgba(255, 255, 255, 0.08);
+  --d-fg: #d4d4dc;
+  --d-muted: rgba(212, 212, 220, 0.5);
+  --d-add-bg: rgba(52, 211, 153, 0.1);
+  --d-add-fg: #6ee7b7;
+  --d-del-bg: rgba(248, 113, 113, 0.1);
+  --d-del-fg: #fca5a5;
+  background: var(--d-bg);
+  border: 1px solid var(--d-border);
+  border-radius: 8px;
+  color: var(--d-fg);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+
+.adf-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--d-border);
+  background: rgba(0, 0, 0, 0.2);
+}
+.adf-file {
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--d-fg);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.adf-stats {
+  display: inline-flex;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+.adf-add { color: var(--d-add-fg); font-weight: 600; }
+.adf-del { color: var(--d-del-fg); font-weight: 600; }
+
+.adf-actions {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+.adf-action {
+  padding: 0.3rem 0.55rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--d-border);
+  color: var(--d-fg);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.adf-action:hover { background: rgba(255, 255, 255, 0.12); }
+.adf-accept-all {
+  background: rgba(52, 211, 153, 0.18);
+  border-color: rgba(52, 211, 153, 0.4);
+  color: #6ee7b7;
+}
+.adf-accept-all:hover { background: rgba(52, 211, 153, 0.28); }
+.adf-reject-all {
+  color: #fca5a5;
+}
+
+/* === Hunks === */
+.adf-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.adf-hunk {
+  border-bottom: 1px solid var(--d-border);
+  position: relative;
+  transition: opacity 0.18s ease;
+}
+.adf-hunk:last-child { border-bottom: 0; }
+
+.adf-hunk-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.7rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--d-border);
+  font-size: 0.7rem;
+}
+.adf-loc {
+  color: var(--d-muted);
+  font-variant-numeric: tabular-nums;
+  flex: 1;
+}
+
+.adf-hunk-accept,
+.adf-hunk-reject {
+  padding: 0.2rem 0.5rem;
+  background: transparent;
+  border: 1px solid var(--d-border);
+  color: var(--d-muted);
+  font: inherit;
+  font-size: 0.66rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+.adf-hunk-accept:hover {
+  background: rgba(52, 211, 153, 0.18);
+  border-color: rgba(52, 211, 153, 0.4);
+  color: #6ee7b7;
+}
+.adf-hunk-reject:hover {
+  background: rgba(248, 113, 113, 0.18);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #fca5a5;
+}
+
+.adf-lines {
+  list-style-position: outside;
+  list-style-type: decimal;
+  padding-left: 3.5rem;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+.adf-line {
+  padding: 0 0.7rem 0 0.3rem;
+  white-space: pre;
+  position: relative;
+}
+.adf-line::marker {
+  color: var(--d-muted);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.7rem;
+}
+
+.adf-line-context { color: var(--d-fg); }
+.adf-line-add {
+  background: var(--d-add-bg);
+  color: var(--d-add-fg);
+}
+.adf-line-add::before {
+  content: '+';
+  position: absolute;
+  left: -1.6rem;
+  color: #34d399;
+  font-weight: 700;
+}
+.adf-line-del {
+  background: var(--d-del-bg);
+  color: var(--d-del-fg);
+}
+.adf-line-del::before {
+  content: '-';
+  position: absolute;
+  left: -1.6rem;
+  color: #f87171;
+  font-weight: 700;
+}
+
+/* Word-level highlights inside a line */
+.adf-line .adf-word-add  { background: rgba(52, 211, 153, 0.25); border-radius: 2px; padding: 0 1px; }
+.adf-line .adf-word-del  { background: rgba(248, 113, 113, 0.25); border-radius: 2px; padding: 0 1px; text-decoration: line-through; }
+
+/* Hunk states */
+.adf-hunk.is-accepted .adf-line-del { display: none; }
+.adf-hunk.is-accepted .adf-hunk-accept {
+  background: rgba(52, 211, 153, 0.25);
+  border-color: rgba(52, 211, 153, 0.5);
+  color: #6ee7b7;
+}
+.adf-hunk.is-accepted .adf-hunk-accept::before { content: '✓ '; }
+
+.adf-hunk.is-rejected .adf-line-add { display: none; }
+.adf-hunk.is-rejected .adf-hunk-reject {
+  background: rgba(248, 113, 113, 0.2);
+  color: #fca5a5;
+}
+.adf-hunk.is-rejected .adf-lines { opacity: 0.55; }
+.adf-hunk.is-rejected .adf-hunk-reject::before { content: '✓ '; }
+
+.adf-hunk.is-resolved .adf-hunk-head {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Side-by-side variant */
+.adf-side-by-side .adf-hunk {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.adf-side-by-side .adf-hunk-head {
+  grid-column: 1 / -1;
+}
+
+/* Compact */
+.adf-compact { font-size: 0.74rem; }
+.adf-compact .adf-lines { font-size: 0.7rem; line-height: 1.4; padding-left: 3rem; }
+.adf-compact .adf-head { padding: 0.3rem 0.55rem; }
+
+/* Loading / pending state */
+.adf-loading .adf-body {
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(255, 255, 255, 0.02) 0 6px,
+      rgba(255, 255, 255, 0.04) 6px 12px);
+  min-height: 80px;
+}

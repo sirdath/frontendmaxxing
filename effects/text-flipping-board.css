@@ -1,0 +1,188 @@
+/* ============================================
+   TEXT FLIPPING BOARD — Airport split-flap display
+   Inspired by Aceternity TextFlippingBoard, airport arrival boards, Flapper.js
+   ============================================
+   Each character is a vertical split-flap that animates from current → target.
+   Companion `text-flipping-board.js` drives the animation.
+
+   Usage:
+     <div class="flap" data-flap data-flap-text="PARIS">PARIS</div>
+     <div class="flap" data-flap-chars="*">
+       <span class="flap-cell">A</span><span class="flap-cell">B</span>...
+     </div>
+
+   Variants:
+     flap            (default — black with white text, airport classic)
+     flap-light      (white bg, black text)
+     flap-amber      (amber on black, retro)
+     flap-cyber      (cyan glow)
+     flap-cosmic     (gradient cells)
+   Sizes:
+     flap-xs, flap-sm, flap-md (default), flap-lg, flap-xl
+   ============================================ */
+
+.flap {
+  --f-bg: #1a1a22;
+  --f-fg: #fefefe;
+  --f-border: rgba(255, 255, 255, 0.08);
+  --f-divider: rgba(0, 0, 0, 0.5);
+  --f-shadow: rgba(0, 0, 0, 0.4);
+  --f-cell-w: 0.85em;
+  --f-cell-h: 1.2em;
+  --f-gap: 2px;
+  display: inline-flex;
+  gap: var(--f-gap);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 700;
+  font-size: 2.4rem;
+  letter-spacing: 0.02em;
+  color: var(--f-fg);
+  user-select: none;
+}
+
+.flap-cell {
+  display: inline-block;
+  width: var(--f-cell-w);
+  height: var(--f-cell-h);
+  background: var(--f-bg);
+  border-radius: 4px;
+  border: 1px solid var(--f-border);
+  text-align: center;
+  line-height: var(--f-cell-h);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 8px -4px var(--f-shadow);
+  perspective: 200px;
+  text-transform: uppercase;
+}
+.flap-cell::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--f-divider);
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Inner half-flaps (added by JS during animation) */
+.flap-half {
+  position: absolute;
+  left: 0; right: 0;
+  height: 50%;
+  background: var(--f-bg);
+  color: var(--f-fg);
+  line-height: var(--f-cell-h);
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flap-half-top {
+  top: 0;
+  transform-origin: bottom;
+}
+.flap-half-top span {
+  display: block;
+  transform: translateY(0);
+  position: absolute;
+  width: 100%;
+  text-align: center;
+}
+.flap-half-bottom {
+  bottom: 0;
+  transform-origin: top;
+}
+.flap-half-bottom span {
+  display: block;
+  transform: translateY(-100%);
+  position: absolute;
+  width: 100%;
+  text-align: center;
+}
+
+/* Animation: top falls down, bottom rises up */
+.flap-cell.is-flipping .flap-half-top    { animation: flap-fall 0.4s cubic-bezier(0.55, 0, 0.85, 0.55) forwards; }
+.flap-cell.is-flipping .flap-half-bottom { animation: flap-rise 0.4s 0.4s cubic-bezier(0.16, 0.84, 0.44, 1) forwards; }
+
+@keyframes flap-fall {
+  0%   { transform: rotateX(0deg); }
+  100% { transform: rotateX(-90deg); }
+}
+@keyframes flap-rise {
+  0%   { transform: rotateX(90deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+/* Variants */
+.flap-light {
+  --f-bg: #fefefe;
+  --f-fg: #1a1a22;
+  --f-border: rgba(0, 0, 0, 0.08);
+  --f-divider: rgba(0, 0, 0, 0.2);
+  --f-shadow: rgba(0, 0, 0, 0.18);
+}
+.flap-amber {
+  --f-bg: #1a1208;
+  --f-fg: #fcd34d;
+  --f-border: rgba(252, 211, 77, 0.2);
+  --f-divider: rgba(0, 0, 0, 0.55);
+  --f-shadow: rgba(252, 211, 77, 0.25);
+}
+.flap-amber .flap-cell { box-shadow: inset 0 1px 0 rgba(252, 211, 77, 0.12), 0 0 12px -4px var(--f-shadow); }
+.flap-cyber {
+  --f-bg: #04081a;
+  --f-fg: #67e8f9;
+  --f-border: rgba(103, 232, 249, 0.25);
+  --f-divider: rgba(0, 0, 0, 0.6);
+  --f-shadow: rgba(103, 232, 249, 0.3);
+}
+.flap-cyber .flap-cell { text-shadow: 0 0 8px currentColor; box-shadow: inset 0 1px 0 rgba(103, 232, 249, 0.12), 0 0 16px -4px var(--f-shadow); }
+.flap-cosmic .flap-cell {
+  background: linear-gradient(180deg, #2a103d 0%, #1a0a2a 100%);
+}
+.flap-cosmic { --f-fg: #fbcfe8; --f-divider: rgba(0, 0, 0, 0.6); }
+
+/* Sizes */
+.flap-xs { font-size: 1rem; }
+.flap-sm { font-size: 1.5rem; }
+.flap-md { font-size: 2.4rem; }
+.flap-lg { font-size: 3.5rem; }
+.flap-xl { font-size: 5rem; }
+.flap-hero { font-size: clamp(3rem, 12vw, 8rem); }
+
+/* Group layout — multiple boards side by side */
+.flap-board {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.flap-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.flap-label {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+/* Separator (colon, space) */
+.flap-sep {
+  display: inline-flex;
+  width: 0.4em;
+  text-align: center;
+  font-size: inherit;
+  color: var(--f-fg);
+  align-self: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flap-cell.is-flipping .flap-half-top,
+  .flap-cell.is-flipping .flap-half-bottom { animation: none; }
+}

@@ -1,0 +1,78 @@
+/* ============================================
+   POPOVER — Auto-positioned floating panel
+   Inspired by Radix Popover / Floating UI
+   ============================================
+   Usage:
+     <button data-popover-trigger="#pop1">Help</button>
+     <div class="pop" id="pop1">
+       <div class="pop-arrow"></div>
+       <div class="pop-content">
+         Any content here.
+       </div>
+     </div>
+     Popover.init('.pop');
+     Popover.init('.pop', { placement: 'bottom', offset: 8 });
+
+   Variants:
+     .pop-glass      — Glass background
+     .pop-no-arrow   — Hide pointer arrow
+     .pop-w-sm/-md/-lg
+   ============================================ */
+
+.pop {
+  --pop-bg: var(--surface-2, #14141f);
+  --pop-border: rgba(255, 255, 255, 0.1);
+  --pop-radius: 10px;
+  position: absolute;
+  z-index: 70;
+  background: var(--pop-bg);
+  border: 1px solid var(--pop-border);
+  border-radius: var(--pop-radius);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  display: none;
+  opacity: 0;
+  transform: scale(0.97);
+  transform-origin: var(--pop-origin, center);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  max-width: 320px;
+  min-width: 200px;
+}
+.pop.is-open {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.pop-content {
+  padding: 0.85rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Arrow (positioned by JS via inline styles) */
+.pop-arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--pop-bg);
+  border: 1px solid var(--pop-border);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.pop-no-arrow .pop-arrow { display: none; }
+
+.pop-w-sm { max-width: 240px; }
+.pop-w-md { max-width: 320px; }
+.pop-w-lg { max-width: 480px; }
+
+.pop-glass {
+  background: rgba(20, 20, 31, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pop { transition: none; }
+}

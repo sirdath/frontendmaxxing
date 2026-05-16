@@ -1,0 +1,87 @@
+/* ============================================
+   SCORE COUNTER — Animated score with +N popups
+   Inspired by arcade games / Reddit upvote animation
+   ============================================
+   Usage:
+     <div class="scnt" data-score-counter>
+       <span class="scnt-label">Score</span>
+       <span class="scnt-value">0</span>
+       <span class="scnt-bump"></span>
+     </div>
+     ScoreCounter.add('[data-score-counter]', 50);
+
+   Variants:
+     scnt-big
+     scnt-mono     — Single line
+     scnt-glow
+   ============================================ */
+
+.scnt {
+  --scnt-fg: #ffffff;
+  --scnt-muted: rgba(255, 255, 255, 0.55);
+  --scnt-bump: #4ade80;
+  --scnt-bump-bad: #f87171;
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  color: var(--scnt-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.scnt-mono { flex-direction: row; align-items: baseline; gap: 0.5rem; }
+
+.scnt-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--scnt-muted);
+}
+
+.scnt-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.scnt-big .scnt-value { font-size: 3rem; }
+
+.scnt-glow .scnt-value {
+  text-shadow: 0 0 16px rgba(129, 140, 248, 0.6);
+}
+
+.scnt-bump {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(8px, -50%);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--scnt-bump);
+  color: #052e10;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.scnt-bump.is-bad { background: var(--scnt-bump-bad); color: #fff; }
+.scnt-bump.is-active {
+  animation: scnt-fly 0.9s cubic-bezier(0.2, 0.9, 0.25, 1) forwards;
+}
+@keyframes scnt-fly {
+  0%   { opacity: 0; transform: translate(8px, -50%) scale(0.7); }
+  20%  { opacity: 1; transform: translate(12px, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(60px, calc(-150%)) scale(1); }
+}
+
+.scnt-value.is-bumping {
+  animation: scnt-pulse 0.3s ease-out;
+}
+@keyframes scnt-pulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}

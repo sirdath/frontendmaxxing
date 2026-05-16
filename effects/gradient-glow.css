@@ -1,0 +1,111 @@
+/* ============================================
+   GRADIENT GLOW — Colored auras & halos for any element
+   Inspired by Vercel buttons, Linear CTA, Apple glass glow
+   ============================================
+   Usage:
+     <button class="gglow gglow-aurora">Subscribe</button>
+     <div class="gglow gglow-cosmic gglow-strong">Card</div>
+
+   Variants:
+     gglow-aurora, gglow-sunset, gglow-cyber, gglow-cosmic,
+     gglow-mint, gglow-rose, gglow-fire, gglow-ocean, gglow-gold
+   Modifiers:
+     gglow-soft        — diffused
+     gglow-strong      — saturated, big
+     gglow-pulse       — pulses
+     gglow-hover       — only glow on hover
+     gglow-spin        — rotating glow halo (uses pseudo)
+   ============================================ */
+
+.gglow {
+  --ggl-c1: #8b5cf6;
+  --ggl-c2: #ec4899;
+  --ggl-c3: #06b6d4;
+  --ggl-spread: 20px;
+  --ggl-blur: 30px;
+  position: relative;
+  box-shadow:
+    0 0 var(--ggl-blur) calc(var(--ggl-spread) * -0.5) var(--ggl-c1),
+    0 6px var(--ggl-blur) calc(var(--ggl-spread) * -0.4) var(--ggl-c2),
+    0 -4px var(--ggl-blur) calc(var(--ggl-spread) * -0.5) var(--ggl-c3);
+}
+
+.gglow-aurora { --ggl-c1: #a855f7; --ggl-c2: #ec4899; --ggl-c3: #06b6d4; }
+.gglow-sunset { --ggl-c1: #f97316; --ggl-c2: #ec4899; --ggl-c3: #f59e0b; }
+.gglow-cyber  { --ggl-c1: #00ffff; --ggl-c2: #ff00ff; --ggl-c3: #00ff7f; }
+.gglow-cosmic { --ggl-c1: #6d28d9; --ggl-c2: #db2777; --ggl-c3: #0891b2; }
+.gglow-mint   { --ggl-c1: #34d399; --ggl-c2: #22d3ee; --ggl-c3: #14b8a6; }
+.gglow-rose   { --ggl-c1: #fb7185; --ggl-c2: #f43f5e; --ggl-c3: #ec4899; }
+.gglow-fire   { --ggl-c1: #fbbf24; --ggl-c2: #f97316; --ggl-c3: #ef4444; }
+.gglow-ocean  { --ggl-c1: #0ea5e9; --ggl-c2: #06b6d4; --ggl-c3: #3b82f6; }
+.gglow-gold   { --ggl-c1: #fbbf24; --ggl-c2: #f59e0b; --ggl-c3: #d97706; }
+.gglow-violet { --ggl-c1: #6366f1; --ggl-c2: #8b5cf6; --ggl-c3: #a855f7; }
+.gglow-mono   { --ggl-c1: #475569; --ggl-c2: #64748b; --ggl-c3: #94a3b8; }
+
+/* Intensities */
+.gglow-soft   { --ggl-blur: 60px; --ggl-spread: 10px; opacity: 0.95; filter: saturate(0.9); }
+.gglow-strong { --ggl-blur: 50px; --ggl-spread: 40px; }
+.gglow-huge   { --ggl-blur: 80px; --ggl-spread: 80px; }
+.gglow-tight  { --ggl-blur: 12px; --ggl-spread: 4px; }
+
+/* Behaviors */
+.gglow-pulse { animation: gglow-pulse 2.4s ease-in-out infinite; }
+@keyframes gglow-pulse {
+  0%, 100% { box-shadow:
+      0 0 var(--ggl-blur) calc(var(--ggl-spread) * -0.5) var(--ggl-c1),
+      0 6px var(--ggl-blur) calc(var(--ggl-spread) * -0.4) var(--ggl-c2),
+      0 -4px var(--ggl-blur) calc(var(--ggl-spread) * -0.5) var(--ggl-c3); }
+  50%      { box-shadow:
+      0 0 calc(var(--ggl-blur) * 1.6) calc(var(--ggl-spread) * -0.3) var(--ggl-c1),
+      0 12px calc(var(--ggl-blur) * 1.4) calc(var(--ggl-spread) * -0.2) var(--ggl-c2),
+      0 -8px calc(var(--ggl-blur) * 1.6) calc(var(--ggl-spread) * -0.3) var(--ggl-c3); }
+}
+
+.gglow-hover { box-shadow: 0 0 0 0 transparent; transition: box-shadow 0.32s ease; }
+.gglow-hover:hover {
+  box-shadow:
+    0 0 var(--ggl-blur) calc(var(--ggl-spread) * -0.5) var(--ggl-c1),
+    0 6px var(--ggl-blur) calc(var(--ggl-spread) * -0.4) var(--ggl-c2),
+    0 -4px var(--ggl-blur) calc(var(--ggl-spread) * -0.5) var(--ggl-c3);
+}
+
+/* Spinning halo (uses absolute pseudo) */
+.gglow-spin {
+  position: relative;
+  isolation: isolate;
+  box-shadow: none;
+}
+.gglow-spin::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, var(--ggl-c1), var(--ggl-c2), var(--ggl-c3), var(--ggl-c1));
+  filter: blur(20px);
+  opacity: 0.7;
+  animation: gglow-spin 4s linear infinite;
+}
+@keyframes gglow-spin { to { transform: rotate(360deg); } }
+
+/* Floor reflection (Vercel-style under-glow) */
+.gglow-floor {
+  box-shadow: none;
+  position: relative;
+}
+.gglow-floor::after {
+  content: '';
+  position: absolute;
+  left: 10%; right: 10%;
+  bottom: -30px;
+  height: 40px;
+  background: radial-gradient(ellipse at center, var(--ggl-c1) 0%, transparent 70%);
+  filter: blur(20px);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gglow-pulse, .gglow-spin::before { animation: none; }
+}

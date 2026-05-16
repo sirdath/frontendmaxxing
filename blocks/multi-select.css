@@ -1,0 +1,182 @@
+/* ============================================
+   MULTI-SELECT — Chip-based multi-pick dropdown
+   Inspired by Linear filters / Notion property pickers
+   ============================================
+   Usage:
+     <div class="mse" data-multi-select>
+       <button class="mse-trigger" type="button">
+         <div class="mse-chips"></div>
+         <span class="mse-placeholder">Add tags…</span>
+         <span class="mse-caret">▾</span>
+       </button>
+       <div class="mse-menu" role="listbox">
+         <div class="mse-search"><input placeholder="Search…"></div>
+         <div class="mse-options"></div>
+       </div>
+     </div>
+     MultiSelect.init('[data-multi-select]', { options: [...] });
+
+   Variants:
+     .mse-sm/-lg
+     .mse-no-chips    — Show count only ("3 selected")
+     .mse-glass
+   ============================================ */
+
+.mse {
+  --mse-bg: rgba(255, 255, 255, 0.04);
+  --mse-border: rgba(255, 255, 255, 0.12);
+  --mse-bg-menu: var(--surface-2, #14141f);
+  --mse-fg: #ffffff;
+  --mse-muted: rgba(255, 255, 255, 0.6);
+  --mse-accent: #818cf8;
+  --mse-chip: rgba(129, 140, 248, 0.18);
+  --mse-chip-fg: #c7d2fe;
+  --mse-hover: rgba(255, 255, 255, 0.06);
+  --mse-radius: 10px;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 360px;
+}
+
+.mse-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--mse-bg);
+  border: 1px solid var(--mse-border);
+  border-radius: var(--mse-radius);
+  color: var(--mse-fg);
+  cursor: pointer;
+  min-height: 40px;
+  text-align: left;
+  font: inherit;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.mse.is-open .mse-trigger,
+.mse-trigger:focus-visible {
+  border-color: var(--mse-accent);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+  outline: none;
+}
+
+.mse-chips {
+  display: contents;
+}
+
+.mse-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.55rem 0.2rem 0.6rem;
+  background: var(--mse-chip);
+  color: var(--mse-chip-fg);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.mse-chip button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.7;
+  padding: 0;
+}
+.mse-chip button:hover { opacity: 1; }
+
+.mse-placeholder {
+  color: var(--mse-muted);
+  font-size: 0.9rem;
+  flex: 1;
+}
+.mse-count {
+  color: var(--mse-fg);
+  font-weight: 500;
+  flex: 1;
+}
+
+.mse-caret {
+  margin-left: auto;
+  opacity: 0.6;
+  font-size: 0.75rem;
+  transition: transform 0.18s ease;
+}
+.mse.is-open .mse-caret { transform: rotate(180deg); }
+
+.mse-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--mse-bg-menu);
+  border: 1px solid var(--mse-border);
+  border-radius: var(--mse-radius);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+  padding: 0.35rem;
+  max-height: 280px;
+  overflow-y: auto;
+  display: none;
+}
+.mse.is-open .mse-menu { display: block; }
+
+.mse-search {
+  padding: 0.25rem;
+  border-bottom: 1px solid var(--mse-border);
+  margin-bottom: 0.25rem;
+}
+.mse-search input {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--mse-fg);
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.mse-option {
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--mse-fg);
+  font-size: 0.9rem;
+}
+.mse-option:hover { background: var(--mse-hover); }
+
+.mse-option-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--mse-border);
+  background: transparent;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  color: #fff;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.mse-option.is-selected .mse-option-box {
+  background: var(--mse-accent);
+  border-color: var(--mse-accent);
+}
+.mse-option.is-selected .mse-option-box::after { content: '✓'; }
+
+.mse-no-chips .mse-chip { display: none; }
+
+.mse-glass .mse-menu {
+  background: rgba(20, 20, 31, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}

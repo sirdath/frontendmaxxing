@@ -1,0 +1,321 @@
+/* ============================================
+   CARDS PACK — 10 card variants (product, profile, blog, stat, integration, etc.)
+   Inspired by Linear / Stripe / Vercel / Apple / shadcn
+   ============================================
+   Each uses .cdp- prefix to avoid collisions with cards.css.
+
+   Variants (mix-and-match):
+     cdp-product     — Product/listing card
+     cdp-profile     — Avatar + name + bio
+     cdp-blog        — Article preview
+     cdp-stat        — Big number + label + trend
+     cdp-integration — Logo + name + connect button
+     cdp-pricing     — Plan card
+     cdp-testimonial — Quote + author
+     cdp-feature     — Icon + title + description
+     cdp-quote       — Pull quote
+     cdp-cta         — Mini CTA tile
+
+   Modifiers:
+     cdp-bordered / cdp-glass / cdp-gradient / cdp-dark / cdp-light
+     cdp-hover-lift (default on) / cdp-clickable
+   ============================================ */
+
+.cdp {
+  --cdp-bg: var(--surface-2, #14141f);
+  --cdp-border: rgba(255, 255, 255, 0.08);
+  --cdp-fg: #ffffff;
+  --cdp-muted: rgba(255, 255, 255, 0.6);
+  --cdp-accent: #818cf8;
+  --cdp-radius: 14px;
+  background: var(--cdp-bg);
+  border: 1px solid var(--cdp-border);
+  border-radius: var(--cdp-radius);
+  padding: 1.25rem;
+  color: var(--cdp-fg);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cdp:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.cdp-clickable { cursor: pointer; }
+
+/* ── Product ── */
+.cdp-product {
+  padding: 0;
+  overflow: hidden;
+}
+.cdp-product-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: block;
+  position: relative;
+}
+.cdp-product-body {
+  padding: 1rem 1.15rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.cdp-product-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.cdp-product-price {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.cdp-product-meta {
+  color: var(--cdp-muted);
+  font-size: 0.8rem;
+}
+
+/* ── Profile ── */
+.cdp-profile {
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+}
+.cdp-profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+}
+.cdp-profile-name { margin: 0; font-weight: 600; }
+.cdp-profile-role { color: var(--cdp-muted); font-size: 0.85rem; margin: 0; }
+.cdp-profile-bio  { color: var(--cdp-muted); font-size: 0.85rem; margin: 0.5rem 0 0; line-height: 1.55; }
+
+/* ── Blog ── */
+.cdp-blog-img {
+  width: calc(100% + 2.5rem);
+  margin: -1.25rem -1.25rem 0.75rem;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #f472b6, #fbbf24);
+}
+.cdp-blog-tag {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  background: rgba(129, 140, 248, 0.18);
+  color: #c7d2fe;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.cdp-blog-title { margin: 0; font-weight: 600; line-height: 1.4; }
+.cdp-blog-meta  { color: var(--cdp-muted); font-size: 0.8rem; }
+
+/* ── Stat ── */
+.cdp-stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--cdp-muted);
+}
+.cdp-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.cdp-stat-trend {
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.cdp-stat-trend.is-up   { color: #4ade80; }
+.cdp-stat-trend.is-down { color: #f87171; }
+
+/* ── Integration ── */
+.cdp-integration {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.85rem;
+}
+.cdp-integration-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.cdp-integration-body { flex: 1; }
+.cdp-integration-title { margin: 0; font-size: 0.95rem; font-weight: 600; }
+.cdp-integration-meta  { color: var(--cdp-muted); font-size: 0.8rem; margin: 0; }
+.cdp-integration-action {
+  padding: 0.4rem 0.8rem;
+  background: var(--cdp-accent);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* ── Pricing ── */
+.cdp-pricing { padding: 1.75rem 1.5rem; }
+.cdp-pricing-tier { font-size: 0.85rem; color: var(--cdp-muted); }
+.cdp-pricing-price {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.cdp-pricing-price small { font-size: 0.85rem; color: var(--cdp-muted); font-weight: 400; }
+.cdp-pricing-features {
+  list-style: none;
+  padding: 1rem 0 0;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-top: 1px solid var(--cdp-border);
+}
+.cdp-pricing-features li {
+  position: relative;
+  padding-left: 1.4rem;
+  color: var(--cdp-muted);
+  font-size: 0.85rem;
+}
+.cdp-pricing-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--cdp-accent);
+  font-weight: 700;
+}
+.cdp-pricing-cta {
+  margin-top: 1rem;
+  padding: 0.7rem 1rem;
+  background: var(--cdp-accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+.cdp-pricing-featured {
+  border-color: var(--cdp-accent);
+  box-shadow: 0 0 0 1px var(--cdp-accent), 0 12px 32px -10px rgba(129, 140, 248, 0.45);
+}
+
+/* ── Testimonial ── */
+.cdp-testimonial { gap: 1rem; }
+.cdp-testimonial-quote {
+  font-size: 1rem;
+  line-height: 1.55;
+  margin: 0;
+}
+.cdp-testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.cdp-testimonial-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+.cdp-testimonial-name { font-weight: 600; font-size: 0.875rem; }
+.cdp-testimonial-role { color: var(--cdp-muted); font-size: 0.75rem; }
+
+/* ── Feature ── */
+.cdp-feature {
+  padding: 1.5rem;
+}
+.cdp-feature-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(129,140,248,0.3), rgba(192,132,252,0.3));
+  display: grid;
+  place-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+.cdp-feature-title { margin: 0; font-weight: 600; }
+.cdp-feature-text { color: var(--cdp-muted); font-size: 0.9rem; line-height: 1.55; margin: 0; }
+
+/* ── Quote ── */
+.cdp-quote {
+  padding: 2rem;
+  text-align: center;
+}
+.cdp-quote::before {
+  content: '"';
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 0;
+  color: var(--cdp-accent);
+  display: block;
+  margin-bottom: 1rem;
+}
+.cdp-quote-text {
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── CTA tile ── */
+.cdp-cta {
+  background: linear-gradient(135deg, var(--cdp-accent), #c084fc);
+  border: none;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+.cdp-cta h3 { margin: 0 0 0.4rem; font-size: 1.15rem; font-weight: 700; }
+.cdp-cta p  { margin: 0 0 1rem; color: rgba(255, 255, 255, 0.85); }
+.cdp-cta-btn {
+  padding: 0.55rem 1.2rem;
+  background: #fff;
+  color: var(--cdp-accent);
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ── Modifiers ── */
+.cdp-bordered { background: transparent; }
+.cdp-glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+.cdp-gradient {
+  background:
+    radial-gradient(circle at top left, rgba(129, 140, 248, 0.18), transparent 60%),
+    var(--cdp-bg);
+}
+.cdp-light {
+  --cdp-bg: #ffffff;
+  --cdp-fg: #0c0c14;
+  --cdp-border: rgba(0, 0, 0, 0.08);
+  --cdp-muted: rgba(12, 12, 20, 0.6);
+}

@@ -1,0 +1,130 @@
+/* ============================================
+   COUNTDOWN — Countdown timer display (days/hours/min/sec)
+   Inspired by launch pages / event landing pages
+   ============================================
+   Usage:
+     <div class="cdwn" data-countdown data-cdwn-to="2026-12-31T23:59:59">
+       <div class="cdwn-cell">
+         <div class="cdwn-num" data-cdwn-d>00</div>
+         <div class="cdwn-label">Days</div>
+       </div>
+       <div class="cdwn-cell">
+         <div class="cdwn-num" data-cdwn-h>00</div>
+         <div class="cdwn-label">Hours</div>
+       </div>
+       <div class="cdwn-cell">
+         <div class="cdwn-num" data-cdwn-m>00</div>
+         <div class="cdwn-label">Min</div>
+       </div>
+       <div class="cdwn-cell">
+         <div class="cdwn-num" data-cdwn-s>00</div>
+         <div class="cdwn-label">Sec</div>
+       </div>
+     </div>
+     Countdown.init('[data-countdown]', { onComplete: function () {…} });
+
+   Variants:
+     cdwn-pills        — Each cell a pill
+     cdwn-flip         — Flip-card style
+     cdwn-inline       — Single line "1d 2h 3m 4s"
+     cdwn-big          — Larger numbers
+     cdwn-glass
+   ============================================ */
+
+.cdwn {
+  --cdwn-bg: var(--surface-2, #14141f);
+  --cdwn-border: rgba(255, 255, 255, 0.08);
+  --cdwn-fg: #ffffff;
+  --cdwn-muted: rgba(255, 255, 255, 0.55);
+  --cdwn-accent: #818cf8;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--cdwn-fg);
+}
+
+.cdwn-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 64px;
+  padding: 0.75rem 0.85rem;
+  background: var(--cdwn-bg);
+  border: 1px solid var(--cdwn-border);
+  border-radius: 10px;
+}
+
+.cdwn-num {
+  font-size: 2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.cdwn-label {
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--cdwn-muted);
+}
+
+/* Variants */
+.cdwn-big .cdwn-num { font-size: 3.5rem; }
+.cdwn-big .cdwn-cell { min-width: 96px; padding: 1rem 1.2rem; }
+
+.cdwn-pills .cdwn-cell {
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cdwn-glass .cdwn-cell {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Flip-card style */
+.cdwn-flip .cdwn-cell {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+  border-radius: 8px;
+}
+.cdwn-flip .cdwn-num {
+  position: relative;
+  padding: 0.3rem 0.6rem;
+}
+.cdwn-flip .cdwn-num::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.cdwn-inline {
+  display: inline-flex;
+  gap: 0.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.cdwn-inline .cdwn-cell {
+  background: transparent;
+  border: none;
+  padding: 0;
+  min-width: 0;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+.cdwn-inline .cdwn-num { font-size: 1rem; }
+.cdwn-inline .cdwn-label { margin: 0; font-size: 0.75rem; text-transform: lowercase; letter-spacing: 0; }
+
+/* Color presets */
+.cdwn-accent .cdwn-num { color: var(--cdwn-accent); }
+.cdwn-danger .cdwn-num { color: #f87171; }
+.cdwn-success .cdwn-num { color: #4ade80; }

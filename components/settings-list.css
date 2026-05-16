@@ -1,0 +1,146 @@
+/* ============================================
+   SETTINGS LIST — Sectioned settings rows + toggles + links
+   Inspired by Linear / Stripe / GitHub / iOS settings
+   ============================================
+   Usage:
+     <div class="setl">
+       <section class="setl-section">
+         <h3 class="setl-section-title">Account</h3>
+         <p class="setl-section-desc">Personal information and preferences.</p>
+         <div class="setl-rows">
+           <div class="setl-row">
+             <div class="setl-row-body">
+               <div class="setl-row-title">Email</div>
+               <div class="setl-row-meta">you@example.com</div>
+             </div>
+             <button class="setl-row-action">Change</button>
+           </div>
+           <div class="setl-row">
+             <div class="setl-row-body">
+               <div class="setl-row-title">Marketing emails</div>
+               <div class="setl-row-meta">Receive product updates.</div>
+             </div>
+             <!-- can reuse blocks/toggles.css here -->
+             <label class="tgl tgl-ios"><input type="checkbox" checked><span class="tgl-track"><span class="tgl-thumb"></span></span></label>
+           </div>
+           <div class="setl-row setl-row-danger">
+             <div class="setl-row-body">
+               <div class="setl-row-title">Delete account</div>
+               <div class="setl-row-meta">Permanently remove your workspace.</div>
+             </div>
+             <button class="setl-row-action setl-row-action-danger">Delete</button>
+           </div>
+         </div>
+       </section>
+     </div>
+
+   Variants:
+     setl-card      — Each section in a bordered card
+     setl-aside     — Section title left, rows right (2-col)
+     setl-compact   — Tighter spacing
+   ============================================ */
+
+.setl {
+  --setl-bg: var(--surface-2, #14141f);
+  --setl-border: rgba(255, 255, 255, 0.08);
+  --setl-fg: #ffffff;
+  --setl-muted: rgba(255, 255, 255, 0.55);
+  --setl-accent: #818cf8;
+  --setl-danger: #f87171;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  color: var(--setl-fg);
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.setl-section { display: flex; flex-direction: column; gap: 1rem; }
+.setl-aside .setl-section {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2.5rem;
+}
+@media (max-width: 720px) {
+  .setl-aside .setl-section { grid-template-columns: 1fr; gap: 1rem; }
+}
+
+.setl-section-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.setl-section-desc {
+  margin: 0.15rem 0 0;
+  font-size: 0.85rem;
+  color: var(--setl-muted);
+  line-height: 1.55;
+}
+
+.setl-rows {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--setl-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--setl-bg);
+}
+
+.setl-card .setl-rows {
+  background: var(--setl-bg);
+}
+
+.setl-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--setl-border);
+}
+.setl-row:last-child { border-bottom: none; }
+
+.setl-row-body { flex: 1; min-width: 0; }
+.setl-row-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.setl-row-meta {
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  color: var(--setl-muted);
+  line-height: 1.5;
+}
+
+.setl-row-action {
+  padding: 0.4rem 0.75rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--setl-border);
+  border-radius: 7px;
+  color: var(--setl-fg);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.setl-row-action:hover { background: rgba(255, 255, 255, 0.1); }
+.setl-row-action-danger {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: var(--setl-danger);
+}
+.setl-row-action-danger:hover { background: rgba(248, 113, 113, 0.2); }
+
+.setl-row-danger { background: rgba(248, 113, 113, 0.04); }
+
+.setl-row-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.setl-compact .setl-row { padding: 0.55rem 0.85rem; }
+.setl-compact .setl-row-title { font-size: 0.85rem; }
+.setl-compact .setl-row-meta  { font-size: 0.75rem; }

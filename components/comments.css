@@ -1,0 +1,180 @@
+/* ============================================
+   COMMENTS — Threaded comments with replies, votes, actions
+   Inspired by GitHub PR / Reddit / Linear comments
+   ============================================
+   Usage:
+     <ul class="cmt-thread">
+       <li class="cmt">
+         <div class="cmt-avatar">A</div>
+         <div class="cmt-body">
+           <div class="cmt-meta">
+             <strong class="cmt-author">Aurora</strong>
+             <span class="cmt-time">2h ago</span>
+             <span class="cmt-badge">Author</span>
+           </div>
+           <div class="cmt-text">Looking good! One nit on the spacing.</div>
+           <div class="cmt-actions">
+             <button class="cmt-vote">▲ 12</button>
+             <button class="cmt-action">Reply</button>
+             <button class="cmt-action">Share</button>
+           </div>
+           <ul class="cmt-thread">
+             <li class="cmt cmt-reply">…</li>
+           </ul>
+         </div>
+       </li>
+     </ul>
+
+   Variants:
+     cmt-flat        — No threading lines
+     cmt-card        — Each comment a bordered card
+     cmt-compact     — Tight spacing
+   ============================================ */
+
+.cmt-thread {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cmt-thread .cmt-thread {
+  margin-top: 0.75rem;
+  padding-left: 1.25rem;
+  border-left: 2px solid rgba(255, 255, 255, 0.06);
+}
+
+.cmt {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 0.75rem;
+  color: #fff;
+}
+
+.cmt-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.cmt-body { min-width: 0; }
+
+.cmt-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0.2rem;
+  flex-wrap: wrap;
+}
+.cmt-author { color: #ffffff; font-weight: 600; font-size: 0.85rem; }
+.cmt-time   { font-size: 0.75rem; }
+
+.cmt-badge {
+  padding: 0.05rem 0.4rem;
+  background: rgba(129, 140, 248, 0.18);
+  color: #c7d2fe;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.cmt-text {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cmt-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+.cmt-actions button {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+  font: inherit;
+  font-size: 0.8rem;
+}
+.cmt-actions button:hover { color: #ffffff; background: rgba(255, 255, 255, 0.05); }
+
+.cmt-vote {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+}
+.cmt-vote.is-up   { color: #4ade80; background: rgba(74, 222, 128, 0.12); border-color: rgba(74, 222, 128, 0.3); }
+.cmt-vote.is-down { color: #f87171; background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.3); }
+
+/* Variants */
+.cmt-card {
+  padding: 0.85rem 1rem;
+  background: var(--surface-2, #14141f);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  grid-template-columns: 32px 1fr;
+}
+.cmt-card .cmt-avatar { width: 32px; height: 32px; }
+
+.cmt-flat .cmt-thread .cmt-thread {
+  border-left: none;
+  padding-left: 2.7rem;
+}
+
+.cmt-compact {
+  grid-template-columns: 28px 1fr;
+  gap: 0.5rem;
+}
+.cmt-compact .cmt-avatar { width: 28px; height: 28px; font-size: 0.7rem; }
+
+/* Composer at end of thread */
+.cmt-composer {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.cmt-composer textarea {
+  padding: 0.65rem 0.85rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  resize: vertical;
+  min-height: 60px;
+}
+.cmt-composer-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.cmt-composer-actions button {
+  padding: 0.5rem 1rem;
+  background: #818cf8;
+  border: none;
+  border-radius: 7px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}

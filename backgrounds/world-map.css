@@ -1,0 +1,88 @@
+/* ============================================
+   WORLD MAP — Dotted world silhouette with animated arcs
+   Inspired by Aceternity UI
+   ============================================
+   Usage:
+     <div class="world-map" data-world-map></div>
+     WorldMap.init('[data-world-map]', {
+       dots: [
+         { from: { lat: 40.71,  lng: -74.0  }, to: { lat: 51.5, lng: -0.13 } },
+         { from: { lat: 35.68,  lng: 139.69 }, to: { lat: -33.87, lng: 151.21 } }
+       ],
+       lineColor: '#818cf8'
+     });
+
+   Variants:
+     .world-map-light — Light theme
+     .world-map-dense — More dot density
+   ============================================ */
+
+.world-map {
+  --wm-bg: transparent;
+  --wm-dot: rgba(255, 255, 255, 0.22);
+  --wm-line: #818cf8;
+  --wm-pulse: #c084fc;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2.05 / 1;
+  background: var(--wm-bg);
+  overflow: hidden;
+}
+
+.world-map svg.wm-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.world-map .wm-dot {
+  fill: var(--wm-dot);
+}
+
+.world-map .wm-line {
+  fill: none;
+  stroke: var(--wm-line);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  filter: drop-shadow(0 0 4px var(--wm-line));
+  animation: wm-draw 2.4s ease-in-out forwards;
+}
+
+.world-map .wm-pulse-from,
+.world-map .wm-pulse-to {
+  fill: var(--wm-pulse);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wm-pulse 1.6s ease-in-out infinite;
+}
+
+.world-map .wm-pulse-to { animation-delay: 0.8s; }
+
+@keyframes wm-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes wm-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.6); }
+}
+
+/* ── Variants ── */
+.world-map-light {
+  --wm-dot: rgba(0, 0, 0, 0.18);
+  --wm-bg: #fafafa;
+}
+
+.world-map-cyan  { --wm-line: #22d3ee; --wm-pulse: #38bdf8; }
+.world-map-pink  { --wm-line: #f472b6; --wm-pulse: #fb7185; }
+.world-map-mint  { --wm-line: #4ade80; --wm-pulse: #34d399; }
+
+@media (prefers-reduced-motion: reduce) {
+  .world-map .wm-line { animation: none; stroke-dashoffset: 0; }
+  .world-map .wm-pulse-from,
+  .world-map .wm-pulse-to { animation: none; }
+}

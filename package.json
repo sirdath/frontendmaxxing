@@ -1,0 +1,74 @@
+{
+  "name": "frontendmaxxing",
+  "version": "1.0.0",
+  "description": "481 standalone CSS + JS snippets for frontend design. Vanilla, zero-dep, copy-paste, framework-agnostic.",
+  "keywords": [
+    "ui",
+    "components",
+    "snippets",
+    "css",
+    "javascript",
+    "vanilla",
+    "framework-agnostic",
+    "no-dependencies",
+    "ai-ui",
+    "gradients",
+    "shaders",
+    "webgl",
+    "three.js",
+    "animations",
+    "design-system",
+    "copy-paste",
+    "frontend"
+  ],
+  "homepage": "https://github.com/sirdath/frontendmaxxing#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sirdath/frontendmaxxing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sirdath/frontendmaxxing/issues"
+  },
+  "license": "MIT",
+  "author": "frontendmaxxing contributors",
+  "files": [
+    "3d/",
+    "ai/",
+    "animations/",
+    "backgrounds/",
+    "blocks/",
+    "borders/",
+    "components/",
+    "data-viz/",
+    "effects/",
+    "feedback/",
+    "interactions/",
+    "layout/",
+    "media/",
+    "micro/",
+    "responsive/",
+    "scroll/",
+    "shaders/",
+    "svg/",
+    "transitions/",
+    "typography/",
+    "utils/",
+    "demo/",
+    "AGENTS.md",
+    "INDEX.md",
+    "gradients.skill.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "commonjs",
+  "main": "./utils/dom.js",
+  "scripts": {
+    "demo": "echo 'Open demo/index.html in your browser — no build step needed.'",
+    "stats": "echo 'CSS:' && find . -name \"*.css\" -not -path \"./node_modules/*\" -not -path \"./demo/*\" | wc -l && echo 'JS:' && find . -name \"*.js\" -not -path \"./node_modules/*\" -not -path \"./demo/*\" | wc -l"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "private": false,
+  "sideEffects": false
+}

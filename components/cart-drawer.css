@@ -1,0 +1,222 @@
+/* ============================================
+   CART DRAWER — Slide-out cart with line items + subtotal + checkout
+   Inspired by Shopify / Stripe Checkout / Apple Store
+   ============================================
+   Companion: uses components/drawer.css for the slide-in animation.
+
+   Usage:
+     <button data-drawer-open="#cart">Cart (3)</button>
+     <div class="drw" id="cart">
+       <div class="drw-overlay" data-drawer-close></div>
+       <aside class="drw-panel drw-right drw-w-md cart">
+         <header class="drw-header">
+           <h3>Your cart <span class="cart-count">3</span></h3>
+           <button class="drw-close" data-drawer-close>×</button>
+         </header>
+         <div class="drw-body">
+           <ul class="cart-items">…</ul>
+         </div>
+         <footer class="drw-footer cart-footer">
+           <div class="cart-totals">
+             <div><span>Subtotal</span><span>$129</span></div>
+             <div><span>Shipping</span><span>$8</span></div>
+             <div class="cart-grand"><span>Total</span><span>$137</span></div>
+           </div>
+           <button class="cart-checkout">Checkout →</button>
+         </footer>
+       </aside>
+     </div>
+   ============================================ */
+
+.cart {
+  --cart-accent: #818cf8;
+  --cart-muted: rgba(255, 255, 255, 0.6);
+  --cart-border: rgba(255, 255, 255, 0.08);
+}
+
+.cart .cart-count {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.5rem;
+  background: var(--cart-accent);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.cart-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 0.85rem;
+  align-items: center;
+}
+.cart-item-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.cart-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.cart-item-body { min-width: 0; }
+.cart-item-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cart-item-meta {
+  font-size: 0.75rem;
+  color: var(--cart-muted);
+  margin-top: 0.1rem;
+}
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+/* Quantity stepper inline */
+.cart-qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--cart-border);
+  border-radius: 7px;
+  overflow: hidden;
+}
+.cart-qty button {
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.cart-qty button:hover { background: rgba(255, 255, 255, 0.06); }
+.cart-qty input {
+  width: 28px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  -moz-appearance: textfield;
+}
+.cart-qty input::-webkit-outer-spin-button,
+.cart-qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.cart-item-remove {
+  background: transparent;
+  border: none;
+  color: var(--cart-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+}
+.cart-item-remove:hover { color: #f87171; }
+
+.cart-item-price {
+  font-weight: 600;
+  font-size: 0.95rem;
+  align-self: start;
+}
+
+/* Empty state inside cart */
+.cart-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--cart-muted);
+}
+.cart-empty-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Footer */
+.cart-footer {
+  flex-direction: column;
+  align-items: stretch !important;
+  gap: 0.85rem;
+}
+
+.cart-totals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--cart-muted);
+}
+.cart-totals > div {
+  display: flex;
+  justify-content: space-between;
+}
+.cart-grand {
+  margin-top: 0.4rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--cart-border);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.cart-promo {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.cart-promo input {
+  flex: 1;
+  padding: 0.45rem 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--cart-border);
+  border-radius: 7px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  outline: none;
+}
+.cart-promo button {
+  padding: 0.45rem 0.85rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--cart-border);
+  border-radius: 7px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.cart-checkout {
+  padding: 0.85rem 1.25rem;
+  background: var(--cart-accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: filter 0.15s ease;
+}
+.cart-checkout:hover { filter: brightness(1.08); }

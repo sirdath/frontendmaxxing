@@ -1,0 +1,95 @@
+/* ============================================
+   ANIMATED LIST — Items cycle in from the bottom, stacking up
+   Inspired by Magic UI
+   ============================================
+   Usage:
+     <div class="animated-list" data-animated-list>
+       <div class="animated-list-item">Item 1</div>
+       <div class="animated-list-item">Item 2</div>
+       <div class="animated-list-item">Item 3</div>
+     </div>
+     AnimatedList.init('.animated-list');
+
+   Variants:
+     .animated-list-compact — Smaller items
+     .animated-list-flat    — No card backgrounds
+   ============================================ */
+
+.animated-list {
+  --al-gap: 0.5rem;
+  --al-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--al-gap);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--al-radius);
+  background: var(--surface-2, #14141f);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+.animated-list-item.al-enter {
+  animation: al-enter 0.5s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+@keyframes al-enter {
+  from { transform: translateY(24px) scale(0.92); opacity: 0; }
+  to   { transform: translateY(0)    scale(1);    opacity: 1; }
+}
+
+/* Items beyond the visible window fade out at the top */
+.animated-list-item.al-exit {
+  animation: al-exit 0.4s ease both;
+}
+
+@keyframes al-exit {
+  to { transform: translateY(-12px) scale(0.94); opacity: 0; }
+}
+
+/* ── Variants ── */
+.animated-list-compact { --al-gap: 0.35rem; }
+.animated-list-compact .animated-list-item { padding: 0.6rem 0.85rem; }
+
+.animated-list-flat .animated-list-item {
+  background: transparent;
+  border: none;
+  padding-block: 0.4rem;
+}
+
+/* Optional avatar/icon dot */
+.animated-list-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: var(--primary, #818cf8);
+  color: #fff;
+  font-weight: 600;
+}
+
+.animated-list-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.animated-list-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.animated-list-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+}

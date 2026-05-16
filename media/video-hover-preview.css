@@ -1,0 +1,73 @@
+/* ============================================
+   VIDEO HOVER PREVIEW — Tile that autoplays a video on hover
+   Inspired by Vimeo / Netflix browse / Codrops patterns
+   ============================================
+   Usage:
+     <div class="vhp" data-vhp data-vhp-src="trailer.mp4" data-vhp-poster="poster.jpg">
+       <img class="vhp-poster" src="poster.jpg" alt="">
+       <span class="vhp-title">Title</span>
+     </div>
+     VideoHoverPreview.init('[data-vhp]');
+
+   Variants:
+     .vhp-rounded — Larger rounded corners
+     .vhp-zoom    — Hover scales the tile
+     .vhp-dim     — Dim the poster slightly when video plays
+   ============================================ */
+
+.vhp {
+  --vhp-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--vhp-radius);
+  display: block;
+  width: 100%;
+  background: var(--surface-2, #14141f);
+  isolation: isolate;
+}
+
+.vhp-rounded { --vhp-radius: 20px; }
+
+.vhp .vhp-poster,
+.vhp video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.vhp video {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  opacity: 0;
+}
+
+.vhp.is-playing video       { opacity: 1; }
+.vhp.is-playing .vhp-poster { opacity: 0; }
+.vhp.vhp-dim.is-playing .vhp-poster { opacity: 0.4; }
+
+.vhp-zoom.is-playing video,
+.vhp-zoom.is-playing .vhp-poster { transform: scale(1.04); }
+
+.vhp-title {
+  position: absolute;
+  left: 0.85rem;
+  bottom: 0.75rem;
+  z-index: 2;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.vhp::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.55), transparent 55%);
+  pointer-events: none;
+  z-index: 1;
+}

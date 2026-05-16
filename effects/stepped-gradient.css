@@ -1,0 +1,214 @@
+/* ============================================
+   STEPPED GRADIENT — Banded / posterized / dithered / pixel gradients
+   Inspired by Risograph prints, NES palettes, 80s posters, posterization filters
+   ============================================
+   Hard color stops give banded looks; SVG turbulence + threshold gives dither;
+   stepped sizing gives pixel-aliased gradients. All CSS-only.
+
+   Usage:
+     <div class="step step-rainbow"></div>
+     <div class="step step-sunset step-bands-6"></div>
+     <div class="dither dither-cyan-magenta"></div>
+     <div class="pixel-grad pixel-grad-cosmic"></div>
+
+   Variants (color):
+     step-rainbow, step-sunset, step-cosmic, step-ocean, step-fire, step-mint,
+     step-pastel, step-mono, step-cmyk, step-risograph
+   Band counts:
+     step-bands-3, step-bands-5, step-bands-6 (default), step-bands-8, step-bands-12
+   Modifiers:
+     step-soft        — small blend between bands (1%)
+     step-hard        — no blend (default)
+     step-vertical    — top to bottom
+     step-horizontal  — left to right (default)
+     step-diagonal    — 135deg
+     step-radial      — radial bands
+     step-conic       — pie-slice bands
+
+   Dither / pixel variants live in their own classes (.dither, .pixel-grad).
+   ============================================ */
+
+/* === Base — banded posterized linear === */
+.step {
+  --s-angle: 90deg;
+  background: linear-gradient(var(--s-angle),
+    #ff006e 0%, #ff006e 16.66%,
+    #fb5607 16.66%, #fb5607 33.33%,
+    #ffbe0b 33.33%, #ffbe0b 50%,
+    #8ac926 50%, #8ac926 66.66%,
+    #3a86ff 66.66%, #3a86ff 83.33%,
+    #8338ec 83.33%, #8338ec 100%);
+}
+
+/* Direction modifiers (override --s-angle) */
+.step-horizontal { --s-angle: 90deg; }
+.step-vertical   { --s-angle: 180deg; }
+.step-diagonal   { --s-angle: 135deg; }
+
+/* Soft band-blend */
+.step-soft {
+  background: linear-gradient(var(--s-angle),
+    #ff006e 0%, #ff006e 14.66%, #fb5607 18.66%, #fb5607 31.33%,
+    #ffbe0b 35.33%, #ffbe0b 48%, #8ac926 52%, #8ac926 64.66%,
+    #3a86ff 68.66%, #3a86ff 81.33%, #8338ec 85.33%, #8338ec 100%);
+}
+
+/* Color presets */
+.step-rainbow { /* default */ }
+.step-sunset {
+  background: linear-gradient(var(--s-angle),
+    #4c0a00 0%, #4c0a00 16.66%, #b22222 16.66%, #b22222 33.33%,
+    #ff6b35 33.33%, #ff6b35 50%, #ffa500 50%, #ffa500 66.66%,
+    #ffd700 66.66%, #ffd700 83.33%, #fff8dc 83.33%, #fff8dc 100%);
+}
+.step-cosmic {
+  background: linear-gradient(var(--s-angle),
+    #1a0033 0%, #1a0033 16.66%, #4c0a82 16.66%, #4c0a82 33.33%,
+    #8338ec 33.33%, #8338ec 50%, #ec4899 50%, #ec4899 66.66%,
+    #06b6d4 66.66%, #06b6d4 83.33%, #fbbf24 83.33%, #fbbf24 100%);
+}
+.step-ocean {
+  background: linear-gradient(var(--s-angle),
+    #001a33 0%, #001a33 16.66%, #003d66 16.66%, #003d66 33.33%,
+    #0066cc 33.33%, #0066cc 50%, #4da6ff 50%, #4da6ff 66.66%,
+    #80c1ff 66.66%, #80c1ff 83.33%, #c2e4ff 83.33%, #c2e4ff 100%);
+}
+.step-fire {
+  background: linear-gradient(var(--s-angle),
+    #000 0%, #000 16.66%, #4c0a00 16.66%, #4c0a00 33.33%,
+    #b22222 33.33%, #b22222 50%, #ff4500 50%, #ff4500 66.66%,
+    #ffa500 66.66%, #ffa500 83.33%, #ffd700 83.33%, #ffd700 100%);
+}
+.step-mint {
+  background: linear-gradient(var(--s-angle),
+    #022c22 0%, #022c22 16.66%, #115e59 16.66%, #115e59 33.33%,
+    #0d9488 33.33%, #0d9488 50%, #2dd4bf 50%, #2dd4bf 66.66%,
+    #99f6e4 66.66%, #99f6e4 83.33%, #ccfbf1 83.33%, #ccfbf1 100%);
+}
+.step-pastel {
+  background: linear-gradient(var(--s-angle),
+    #fce7f3 0%, #fce7f3 16.66%, #fbcfe8 16.66%, #fbcfe8 33.33%,
+    #ddd6fe 33.33%, #ddd6fe 50%, #bae6fd 50%, #bae6fd 66.66%,
+    #d1fae5 66.66%, #d1fae5 83.33%, #fef3c7 83.33%, #fef3c7 100%);
+}
+.step-mono {
+  background: linear-gradient(var(--s-angle),
+    #000 0%, #000 16.66%, #333 16.66%, #333 33.33%,
+    #666 33.33%, #666 50%, #999 50%, #999 66.66%,
+    #ccc 66.66%, #ccc 83.33%, #fff 83.33%, #fff 100%);
+}
+.step-cmyk {
+  background: linear-gradient(var(--s-angle),
+    #00ffff 0%, #00ffff 25%, #ff00ff 25%, #ff00ff 50%,
+    #ffff00 50%, #ffff00 75%, #000 75%, #000 100%);
+}
+.step-risograph {
+  background: linear-gradient(var(--s-angle),
+    #ff5a5f 0%, #ff5a5f 33.33%, #50e3c2 33.33%, #50e3c2 66.66%,
+    #f5a623 66.66%, #f5a623 100%);
+}
+
+/* Band counts (overrides everything else with 2-tone, 3-tone, etc.) */
+.step-bands-3 {
+  background: linear-gradient(var(--s-angle, 90deg),
+    #ff006e 0% 33.33%, #ffbe0b 33.33% 66.66%, #3a86ff 66.66% 100%);
+}
+.step-bands-5 {
+  background: linear-gradient(var(--s-angle, 90deg),
+    #ff006e 0% 20%, #fb5607 20% 40%, #ffbe0b 40% 60%, #3a86ff 60% 80%, #8338ec 80% 100%);
+}
+.step-bands-8 {
+  background: linear-gradient(var(--s-angle, 90deg),
+    #ff006e 0% 12.5%, #fb5607 12.5% 25%, #ffbe0b 25% 37.5%, #8ac926 37.5% 50%,
+    #3a86ff 50% 62.5%, #8338ec 62.5% 75%, #ec4899 75% 87.5%, #06b6d4 87.5% 100%);
+}
+.step-bands-12 {
+  background: linear-gradient(var(--s-angle, 90deg),
+    #ff006e 0% 8.33%, #ff5a00 8.33% 16.66%, #ffbe0b 16.66% 25%, #ffe066 25% 33.33%,
+    #8ac926 33.33% 41.66%, #06ffa5 41.66% 50%, #06b6d4 50% 58.33%, #3a86ff 58.33% 66.66%,
+    #6928a8 66.66% 75%, #8338ec 75% 83.33%, #c026d3 83.33% 91.66%, #ec4899 91.66% 100%);
+}
+
+/* Radial bands */
+.step-radial {
+  background: radial-gradient(circle at center,
+    #ff006e 0%, #ff006e 16.66%, #fb5607 16.66%, #fb5607 33.33%,
+    #ffbe0b 33.33%, #ffbe0b 50%, #8ac926 50%, #8ac926 66.66%,
+    #3a86ff 66.66%, #3a86ff 83.33%, #8338ec 83.33%, #8338ec 100%);
+}
+
+/* Conic bands (pie slices) */
+.step-conic {
+  background: conic-gradient(from 0deg at 50% 50%,
+    #ff006e 0deg 60deg, #fb5607 60deg 120deg, #ffbe0b 120deg 180deg,
+    #8ac926 180deg 240deg, #3a86ff 240deg 300deg, #8338ec 300deg 360deg);
+}
+
+
+/* === Dithered gradients — SVG turbulence + threshold === */
+.dither {
+  --d-c1: #ff006e;
+  --d-c2: #3a86ff;
+  --d-angle: 135deg;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 30 -14'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>") repeat,
+    linear-gradient(var(--d-angle), var(--d-c1), var(--d-c2));
+  background-blend-mode: overlay;
+}
+.dither-cyan-magenta { --d-c1: #ff00ff; --d-c2: #00ffff; }
+.dither-fire         { --d-c1: #ef4444; --d-c2: #fbbf24; }
+.dither-cosmic       { --d-c1: #8338ec; --d-c2: #06b6d4; }
+.dither-mono         { --d-c1: #000; --d-c2: #fff; }
+.dither-sunset       { --d-c1: #ff006e; --d-c2: #ffd700; }
+.dither-mint         { --d-c1: #34d399; --d-c2: #22d3ee; }
+.dither-vaporwave    { --d-c1: #ff6ad5; --d-c2: #c774e8; }
+
+
+/* === Pixel gradient — quantized rendering with image-rendering: pixelated === */
+.pixel-grad {
+  --p-c1: #ff006e;
+  --p-c2: #8338ec;
+  --p-c3: #3a86ff;
+  --p-size: 8px;
+  background: linear-gradient(135deg, var(--p-c1), var(--p-c2) 50%, var(--p-c3));
+  background-size: 100% 100%;
+  /* Re-quantize by piping through a backdrop-style downscale trick — use SVG with feColorMatrix step */
+  position: relative;
+  isolation: isolate;
+}
+.pixel-grad::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(135deg, var(--p-c1), var(--p-c2) 50%, var(--p-c3));
+  background-size: var(--p-size) var(--p-size);
+  background-position: 0 0;
+  image-rendering: pixelated;
+  filter: url(#pixel-quantize);
+  /* Fallback: just show banded blocks */
+  background:
+    linear-gradient(90deg,
+      var(--p-c1) 0% 12.5%, var(--p-c2) 12.5% 50%,
+      var(--p-c3) 50% 87.5%, var(--p-c1) 87.5% 100%);
+  background-size: var(--p-size) var(--p-size);
+  opacity: 0;
+}
+
+/* Use background as pixel checker via repeating-linear-gradient */
+.pixel-grad-blocks {
+  --p-c1: #ff006e;
+  --p-c2: #8338ec;
+  --p-c3: #3a86ff;
+  --p-size: 12px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 var(--p-size), rgba(0, 0, 0, 0.06) var(--p-size) calc(var(--p-size) * 2)),
+    repeating-linear-gradient(90deg, transparent 0 var(--p-size), rgba(0, 0, 0, 0.06) var(--p-size) calc(var(--p-size) * 2)),
+    linear-gradient(135deg, var(--p-c1), var(--p-c2) 50%, var(--p-c3));
+}
+
+.pixel-grad-cosmic   { --p-c1: #8338ec; --p-c2: #ec4899; --p-c3: #06b6d4; }
+.pixel-grad-sunset   { --p-c1: #ff006e; --p-c2: #fb5607; --p-c3: #ffbe0b; }
+.pixel-grad-mint     { --p-c1: #34d399; --p-c2: #22d3ee; --p-c3: #14b8a6; }
+.pixel-grad-game-boy { --p-c1: #0f380f; --p-c2: #306230; --p-c3: #8bac0f; }
+.pixel-grad-cga      { --p-c1: #00ffff; --p-c2: #ff00ff; --p-c3: #ffff00; }
+.pixel-grad-nes      { --p-c1: #d83018; --p-c2: #f8a878; --p-c3: #58d8d8; }

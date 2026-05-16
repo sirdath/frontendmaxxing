@@ -1,0 +1,140 @@
+/* ============================================
+   PROPERTIES PANEL — Inspector with property rows (Figma-style right panel)
+   Inspired by Figma / Sketch / Webflow / Framer
+   ============================================
+   Usage:
+     <aside class="prps">
+       <section class="prps-section">
+         <h4 class="prps-section-title">Position</h4>
+         <div class="prps-row">
+           <label>X</label>
+           <input type="number" value="120">
+           <label>Y</label>
+           <input type="number" value="80">
+         </div>
+         <div class="prps-row">
+           <label>W</label>
+           <input type="number" value="240">
+           <label>H</label>
+           <input type="number" value="120">
+         </div>
+       </section>
+       <section class="prps-section">
+         <h4 class="prps-section-title">Fill</h4>
+         <div class="prps-row prps-color-row">
+           <span class="prps-color-swatch" style="background:#818cf8;"></span>
+           <input value="#818CF8">
+           <button class="prps-mini-btn">100%</button>
+         </div>
+       </section>
+       <section class="prps-section">
+         <h4 class="prps-section-title">Effects</h4>
+         <div class="prps-row prps-list-row">
+           <span>Drop shadow</span>
+           <button class="prps-mini-btn">→</button>
+         </div>
+       </section>
+     </aside>
+   ============================================ */
+
+.prps {
+  --prps-bg: var(--surface-2, #14141f);
+  --prps-border: rgba(255, 255, 255, 0.08);
+  --prps-fg: #ffffff;
+  --prps-muted: rgba(255, 255, 255, 0.5);
+  --prps-accent: #818cf8;
+  width: 240px;
+  background: var(--prps-bg);
+  border: 1px solid var(--prps-border);
+  border-radius: 10px;
+  color: var(--prps-fg);
+  font-size: 0.78rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.prps-section {
+  padding: 0.55rem 0.7rem 0.7rem;
+  border-bottom: 1px solid var(--prps-border);
+}
+.prps-section:last-child { border-bottom: none; }
+
+.prps-section-title {
+  margin: 0 0 0.45rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--prps-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prps-row {
+  display: grid;
+  grid-template-columns: 14px 1fr 14px 1fr;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.3rem;
+}
+.prps-row:last-child { margin-bottom: 0; }
+
+.prps-row label {
+  color: var(--prps-muted);
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+.prps-row input {
+  width: 100%;
+  padding: 0.3rem 0.45rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--prps-border);
+  border-radius: 5px;
+  color: var(--prps-fg);
+  font: inherit;
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+  outline: none;
+  -moz-appearance: textfield;
+}
+.prps-row input::-webkit-outer-spin-button,
+.prps-row input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.prps-row input:focus { border-color: var(--prps-accent); }
+
+/* Color row */
+.prps-color-row {
+  grid-template-columns: 22px 1fr 50px;
+}
+.prps-color-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+/* Effects-style list row */
+.prps-list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem 0.4rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.prps-mini-btn {
+  background: transparent;
+  border: none;
+  color: var(--prps-muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+.prps-mini-btn:hover { background: rgba(255, 255, 255, 0.06); color: var(--prps-fg); }

@@ -1,0 +1,211 @@
+/* ============================================
+   VOICE INPUT — Mic button with live waveform / push-to-talk UI
+   Inspired by ChatGPT voice mode, Whisper UIs, Vercel AI SpeechInput
+   ============================================
+   Usage:
+     <button class="vin" data-vin aria-label="Voice input">
+       <span class="vin-icon">🎤</span>
+       <span class="vin-wave">
+         <span class="vin-bar"></span><span class="vin-bar"></span>
+         <span class="vin-bar"></span><span class="vin-bar"></span>
+         <span class="vin-bar"></span>
+       </span>
+       <span class="vin-timer">0:00</span>
+     </button>
+
+     VoiceInput.bind('[data-vin]', {
+       onTranscript: function (text, isFinal) {},
+       onStart, onStop, onError
+     });
+
+   States:
+     vin (idle)
+     is-recording   — bars dance, timer ticks, mic glows red
+     is-processing  — spinner, "transcribing…"
+     is-error
+   Variants:
+     vin-pill, vin-large, vin-icon-only, vin-floating
+   ============================================ */
+
+.vin {
+  --v-bg: rgba(255, 255, 255, 0.06);
+  --v-bg-hover: rgba(255, 255, 255, 0.1);
+  --v-border: rgba(255, 255, 255, 0.1);
+  --v-fg: #ffffff;
+  --v-muted: rgba(255, 255, 255, 0.55);
+  --v-rec: #f87171;
+  --v-active: #8b5cf6;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--v-bg);
+  border: 1px solid var(--v-border);
+  border-radius: 999px;
+  color: var(--v-fg);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.vin:hover { background: var(--v-bg-hover); }
+.vin:focus-visible { outline: 2px solid var(--v-active); outline-offset: 3px; }
+
+.vin-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.85rem;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.vin-wave {
+  display: none;
+  align-items: center;
+  gap: 2.5px;
+  height: 20px;
+}
+.vin-bar {
+  width: 2.5px;
+  height: 100%;
+  background: var(--v-active);
+  border-radius: 999px;
+  transform-origin: 50% 50%;
+  transform: scaleY(0.15);
+  transition: transform 0.08s ease;
+}
+
+.vin-timer {
+  font-variant-numeric: tabular-nums;
+  color: var(--v-muted);
+  font-size: 0.78rem;
+  display: none;
+}
+
+/* States */
+.vin.is-recording {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: var(--v-rec);
+  animation: vin-glow 1.4s ease-in-out infinite;
+}
+.vin.is-recording .vin-icon {
+  background: rgba(248, 113, 113, 0.25);
+  color: var(--v-rec);
+  animation: vin-pulse 1.1s ease-in-out infinite;
+}
+.vin.is-recording .vin-wave { display: inline-flex; }
+.vin.is-recording .vin-timer { display: inline; color: var(--v-rec); }
+
+@keyframes vin-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0); }
+  50%      { box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.18); }
+}
+@keyframes vin-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+.vin.is-processing {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.4);
+  color: var(--v-active);
+  pointer-events: none;
+}
+.vin.is-processing .vin-icon::before {
+  content: '';
+  width: 14px; height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: vin-spin 0.9s linear infinite;
+  display: block;
+}
+.vin.is-processing .vin-icon > * { display: none; }
+.vin.is-processing::after {
+  content: 'Transcribing…';
+  font-size: 0.78rem;
+  color: var(--v-active);
+}
+@keyframes vin-spin { to { transform: rotate(360deg); } }
+
+.vin.is-error {
+  background: rgba(248, 113, 113, 0.18);
+  border-color: rgba(248, 113, 113, 0.5);
+  color: var(--v-rec);
+}
+
+/* Variants */
+.vin-pill { padding: 0.45rem 1rem; }
+
+.vin-large {
+  padding: 0.65rem 1.1rem;
+  font-size: 0.95rem;
+}
+.vin-large .vin-icon { width: 28px; height: 28px; font-size: 1rem; }
+.vin-large .vin-wave { height: 26px; }
+
+.vin-icon-only {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+}
+.vin-icon-only .vin-icon { width: 100%; height: 100%; background: transparent; }
+.vin-icon-only .vin-wave,
+.vin-icon-only .vin-timer { display: none !important; }
+.vin-icon-only.is-recording .vin-icon { background: rgba(248, 113, 113, 0.25); }
+
+.vin-floating {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.3);
+}
+
+/* === Live transcript bubble (optional) === */
+.vin-transcript {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 20, 30, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--v-fg);
+  min-width: 200px;
+  max-width: 360px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  white-space: pre-wrap;
+}
+.vin-transcript-interim {
+  color: rgba(255, 255, 255, 0.55);
+  font-style: italic;
+}
+.vin-transcript::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px; height: 8px;
+  background: rgba(20, 20, 30, 0.96);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vin.is-recording,
+  .vin.is-recording .vin-icon,
+  .vin.is-processing .vin-icon::before { animation: none; }
+}

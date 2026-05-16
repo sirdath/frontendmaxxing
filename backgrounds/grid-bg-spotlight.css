@@ -1,0 +1,80 @@
+/* ============================================
+   GRID BG SPOTLIGHT — Grid background with radial spotlight mask
+   Inspired by Aceternity UI
+   ============================================
+   Usage:
+     <div class="grid-bg-spot">
+       <div class="grid-bg-spot-content">...</div>
+     </div>
+
+   Variants:
+     .grid-bg-spot-dots   — Dot pattern instead of square grid
+     .grid-bg-spot-small  — Tighter grid
+     .grid-bg-spot-light  — Light theme (dark grid on white)
+   ============================================ */
+
+.grid-bg-spot {
+  --gs-cell: 40px;
+  --gs-line: rgba(255, 255, 255, 0.08);
+  --gs-spot: rgba(129, 140, 248, 0.18);
+  --gs-bg: #050510;
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  background-color: var(--gs-bg);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Grid layer */
+.grid-bg-spot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--gs-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--gs-line) 1px, transparent 1px);
+  background-size: var(--gs-cell) var(--gs-cell);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at center, #000 30%, transparent 80%);
+          mask-image: radial-gradient(ellipse 70% 60% at center, #000 30%, transparent 80%);
+}
+
+/* Spotlight glow */
+.grid-bg-spot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--gs-spot) 0%, transparent 60%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.grid-bg-spot-content {
+  position: relative;
+  z-index: 1;
+  padding: 4rem 1.5rem;
+}
+
+/* ── Variants ── */
+.grid-bg-spot-small { --gs-cell: 24px; }
+.grid-bg-spot-large { --gs-cell: 72px; }
+
+.grid-bg-spot-dots::before {
+  background-image: radial-gradient(var(--gs-line) 1px, transparent 1px);
+  background-size: var(--gs-cell) var(--gs-cell);
+}
+
+.grid-bg-spot-cyan  { --gs-spot: rgba(34, 211, 238, 0.22); }
+.grid-bg-spot-pink  { --gs-spot: rgba(244, 114, 182, 0.22); }
+.grid-bg-spot-amber { --gs-spot: rgba(251, 191, 36, 0.22); }
+
+.grid-bg-spot-light {
+  --gs-line: rgba(0, 0, 0, 0.08);
+  --gs-bg: #ffffff;
+  --gs-spot: rgba(129, 140, 248, 0.18);
+}

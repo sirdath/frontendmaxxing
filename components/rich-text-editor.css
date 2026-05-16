@@ -1,0 +1,159 @@
+/* ============================================
+   RICH TEXT EDITOR — Contenteditable WYSIWYG with toolbar
+   Inspired by Notion / Linear / Medium editor
+   ============================================
+   Usage:
+     <div class="rte" data-rich-text-editor>
+       <div class="rte-toolbar">
+         <button data-cmd="bold"   title="Bold (⌘B)"><b>B</b></button>
+         <button data-cmd="italic" title="Italic (⌘I)"><i>I</i></button>
+         <button data-cmd="underline" title="Underline (⌘U)"><u>U</u></button>
+         <span class="rte-sep"></span>
+         <button data-cmd="formatBlock" data-arg="h1">H1</button>
+         <button data-cmd="formatBlock" data-arg="h2">H2</button>
+         <button data-cmd="formatBlock" data-arg="p">P</button>
+         <span class="rte-sep"></span>
+         <button data-cmd="insertUnorderedList">• List</button>
+         <button data-cmd="insertOrderedList">1. List</button>
+         <button data-cmd="formatBlock" data-arg="blockquote">❝</button>
+         <button data-cmd="formatBlock" data-arg="pre">‹/›</button>
+         <span class="rte-sep"></span>
+         <button data-cmd="createLink" data-prompt="URL">🔗</button>
+         <button data-cmd="removeFormat" title="Clear">⌫</button>
+       </div>
+       <div class="rte-content" contenteditable="true" data-placeholder="Write something…"></div>
+     </div>
+     RichTextEditor.init('[data-rich-text-editor]');
+
+   Variants:
+     rte-bordered     — Card border + toolbar separator
+     rte-floating-tb  — Toolbar floats above selection (bubble menu)
+     rte-minimal      — Just contenteditable, no toolbar visible
+   ============================================ */
+
+.rte {
+  --rte-bg: var(--surface-2, #14141f);
+  --rte-border: rgba(255, 255, 255, 0.08);
+  --rte-fg: #ffffff;
+  --rte-muted: rgba(255, 255, 255, 0.55);
+  --rte-accent: #818cf8;
+  --rte-radius: 12px;
+  border: 1px solid var(--rte-border);
+  border-radius: var(--rte-radius);
+  background: var(--rte-bg);
+  color: var(--rte-fg);
+  overflow: hidden;
+}
+
+.rte-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 0.4rem 0.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--rte-border);
+}
+.rte-toolbar button {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  color: var(--rte-fg);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+}
+.rte-toolbar button:hover { background: rgba(255, 255, 255, 0.06); }
+.rte-toolbar button.is-active {
+  background: rgba(129, 140, 248, 0.2);
+  color: #c7d2fe;
+}
+
+.rte-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--rte-border);
+  margin: 0 0.25rem;
+}
+
+.rte-content {
+  padding: 1rem 1.25rem;
+  min-height: 160px;
+  outline: none;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.rte-content:empty::before {
+  content: attr(data-placeholder);
+  color: var(--rte-muted);
+  pointer-events: none;
+}
+
+.rte-content h1 { font-size: 1.6rem; font-weight: 700; margin: 1.2em 0 0.4em; letter-spacing: -0.02em; }
+.rte-content h2 { font-size: 1.3rem; font-weight: 600; margin: 1.1em 0 0.4em; }
+.rte-content h3 { font-size: 1.1rem; font-weight: 600; margin: 1em 0 0.4em; }
+.rte-content p  { margin: 0.6em 0; }
+.rte-content ul, .rte-content ol { padding-left: 1.5rem; margin: 0.6em 0; }
+.rte-content li { margin: 0.2em 0; }
+.rte-content blockquote {
+  margin: 0.8em 0;
+  padding: 0.4rem 1rem;
+  border-left: 3px solid var(--rte-accent);
+  color: var(--rte-muted);
+  font-style: italic;
+}
+.rte-content pre {
+  margin: 0.6em 0;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+}
+.rte-content code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  padding: 0.1rem 0.35rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+.rte-content a {
+  color: var(--rte-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.rte-content img, .rte-content video {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+/* Floating toolbar variant (bubble menu) */
+.rte-floating-tb .rte-toolbar {
+  display: none;
+  position: absolute;
+  background: var(--surface-2, #14141f);
+  border: 1px solid var(--rte-border);
+  border-radius: 8px;
+  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.5);
+  padding: 4px;
+  z-index: 50;
+}
+.rte-floating-tb.has-selection .rte-toolbar { display: flex; }
+
+.rte-minimal .rte-toolbar { display: none; }
+
+/* Word count + footer */
+.rte-foot {
+  padding: 0.4rem 1rem;
+  border-top: 1px solid var(--rte-border);
+  font-size: 0.7rem;
+  color: var(--rte-muted);
+  display: flex;
+  justify-content: space-between;
+}

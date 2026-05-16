@@ -1,0 +1,214 @@
+/* ============================================
+   NOTIFICATION CENTER — Full-panel notification inbox
+   Inspired by Linear / GitHub / Slack notification panels
+   ============================================
+   Usage:
+     <button data-drawer-open="#ncen"><span class="ncen-trigger-dot"></span> Notifications</button>
+     <div class="drw" id="ncen">
+       <div class="drw-overlay" data-drawer-close></div>
+       <aside class="drw-panel drw-right drw-w-md ncen">
+         <header class="drw-header">
+           <h3>Inbox <span class="ncen-count">3</span></h3>
+           <div class="ncen-tabs">
+             <button class="is-active">All</button>
+             <button>Unread</button>
+             <button>@Mentions</button>
+           </div>
+           <button class="drw-close" data-drawer-close>×</button>
+         </header>
+         <div class="drw-body">
+           <ul class="ncen-list">
+             <li class="ncen-item is-unread">
+               <div class="ncen-avatar">A</div>
+               <div class="ncen-body">
+                 <div class="ncen-text"><strong>Aurora</strong> mentioned you in <a>FE-1234</a></div>
+                 <div class="ncen-time">2m ago</div>
+               </div>
+               <button class="ncen-mark" title="Mark read">●</button>
+             </li>
+           </ul>
+         </div>
+         <footer class="drw-footer ncen-foot">
+           <button>Mark all read</button>
+           <a>Settings</a>
+         </footer>
+       </aside>
+     </div>
+
+   Variants:
+     ncen-grouped     — Group items by date
+     ncen-compact
+   ============================================ */
+
+.ncen {
+  --ncen-bg: var(--surface-2, #14141f);
+  --ncen-border: rgba(255, 255, 255, 0.08);
+  --ncen-fg: #ffffff;
+  --ncen-muted: rgba(255, 255, 255, 0.55);
+  --ncen-accent: #818cf8;
+  --ncen-hover: rgba(255, 255, 255, 0.04);
+  --ncen-unread: rgba(129, 140, 248, 0.06);
+}
+
+.ncen .drw-header {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ncen .drw-header h3 .ncen-count {
+  display: inline-block;
+  padding: 0 0.45rem;
+  background: var(--ncen-accent);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+}
+
+.ncen-tabs {
+  display: flex;
+  gap: 0;
+  width: 100%;
+  padding: 0.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 7px;
+  margin-top: 0.5rem;
+}
+.ncen-tabs button {
+  flex: 1;
+  padding: 0.35rem 0.6rem;
+  background: transparent;
+  border: none;
+  color: var(--ncen-muted);
+  font: inherit;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.ncen-tabs button.is-active {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ncen-fg);
+  font-weight: 600;
+}
+
+.ncen-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ncen-item {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  gap: 0.7rem;
+  padding: 0.85rem 0.9rem;
+  border-bottom: 1px solid var(--ncen-border);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.ncen-item:hover { background: var(--ncen-hover); }
+.ncen-item.is-unread { background: var(--ncen-unread); }
+.ncen-item.is-unread::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--ncen-accent);
+  border-radius: 50%;
+  position: absolute;
+  margin-left: -14px;
+  margin-top: 8px;
+}
+
+.ncen-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.ncen-body { min-width: 0; }
+.ncen-text {
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+.ncen-text strong { font-weight: 600; }
+.ncen-text a { color: var(--ncen-accent); text-decoration: none; }
+
+.ncen-time {
+  font-size: 0.7rem;
+  color: var(--ncen-muted);
+  margin-top: 0.2rem;
+}
+
+.ncen-mark {
+  background: transparent;
+  border: none;
+  color: var(--ncen-accent);
+  font-size: 0.7rem;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  align-self: start;
+}
+.ncen-mark:hover { background: rgba(129, 140, 248, 0.15); }
+.ncen-item:not(.is-unread) .ncen-mark { visibility: hidden; }
+
+.ncen-foot {
+  justify-content: space-between !important;
+  font-size: 0.85rem;
+}
+.ncen-foot button {
+  background: transparent;
+  border: none;
+  color: var(--ncen-fg);
+  cursor: pointer;
+  font: inherit;
+}
+.ncen-foot button:hover { color: var(--ncen-accent); }
+.ncen-foot a {
+  color: var(--ncen-muted);
+  text-decoration: none;
+}
+
+.ncen-grouped .ncen-day {
+  padding: 0.6rem 0.9rem 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ncen-muted);
+  background: rgba(255, 255, 255, 0.02);
+  position: sticky;
+  top: 0;
+}
+
+.ncen-compact .ncen-item { padding: 0.55rem 0.7rem; }
+
+.ncen-empty {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--ncen-muted);
+  font-size: 0.85rem;
+}
+
+/* Trigger dot (notification button badge) */
+.ncen-trigger-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ncen-accent);
+  margin-right: 0.35rem;
+  box-shadow: 0 0 6px var(--ncen-accent);
+}

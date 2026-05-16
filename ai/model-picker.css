@@ -1,0 +1,270 @@
+/* ============================================
+   MODEL PICKER — Dropdown for choosing an AI model with capability badges
+   Inspired by Vercel AI Elements ModelSelector, OpenRouter, ChatGPT model picker
+   ============================================
+   Usage:
+     <button class="mpk" type="button" data-mpk>
+       <span class="mpk-logo"></span>
+       <span class="mpk-name">Claude Opus 4.7</span>
+       <span class="mpk-context">200k</span>
+       <span class="mpk-chevron">▾</span>
+     </button>
+
+     <!-- Dropdown is rendered by model-picker.js -->
+
+   Capability tags:
+     mpk-tag-vision, mpk-tag-tools, mpk-tag-reasoning, mpk-tag-fast,
+     mpk-tag-cheap, mpk-tag-multimodal, mpk-tag-code, mpk-tag-creative,
+     mpk-tag-new, mpk-tag-experimental
+   Provider color hints (auto by data-mpk-provider):
+     anthropic, openai, google, meta, mistral, xai, cohere, deepseek
+   ============================================ */
+
+/* Trigger button */
+.mpk {
+  --mpk-bg: rgba(255, 255, 255, 0.06);
+  --mpk-bg-hover: rgba(255, 255, 255, 0.1);
+  --mpk-border: rgba(255, 255, 255, 0.1);
+  --mpk-fg: #ffffff;
+  --mpk-muted: rgba(255, 255, 255, 0.6);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  background: var(--mpk-bg);
+  border: 1px solid var(--mpk-border);
+  border-radius: 10px;
+  color: var(--mpk-fg);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s ease;
+  position: relative;
+}
+.mpk:hover { background: var(--mpk-bg-hover); }
+.mpk[aria-expanded="true"] { background: var(--mpk-bg-hover); }
+
+.mpk-logo {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+  background-size: cover;
+}
+
+.mpk-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.mpk-context {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.1rem 0.4rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  color: var(--mpk-muted);
+}
+.mpk-chevron {
+  font-size: 0.65rem;
+  color: var(--mpk-muted);
+  transition: transform 0.18s ease;
+}
+.mpk[aria-expanded="true"] .mpk-chevron { transform: rotate(-180deg); }
+
+/* === Dropdown panel === */
+.mpk-panel {
+  position: absolute;
+  z-index: 1100;
+  background: rgba(20, 20, 30, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 30px 50px -16px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  min-width: 360px;
+  max-width: calc(100vw - 2rem);
+  max-height: 480px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-size: 0.85rem;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.mpk-panel.is-open { opacity: 1; transform: translateY(0); }
+
+.mpk-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.mpk-search input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  outline: none;
+}
+.mpk-search input::placeholder { color: rgba(255, 255, 255, 0.4); }
+.mpk-search-icon { color: rgba(255, 255, 255, 0.4); }
+
+.mpk-list {
+  overflow-y: auto;
+  padding: 0.35rem 0;
+  flex: 1;
+}
+
+.mpk-group {
+  padding: 0.5rem 0.8rem 0.2rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.mpk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.55rem 0.8rem;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: background 0.12s ease;
+}
+.mpk-item:hover,
+.mpk-item.is-focused { background: rgba(255, 255, 255, 0.06); }
+.mpk-item.is-active {
+  background: rgba(99, 102, 241, 0.1);
+  border-left-color: #8b5cf6;
+}
+.mpk-item-logo {
+  width: 22px; height: 22px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+  background-size: cover;
+  margin-top: 1px;
+}
+.mpk-item-body { flex: 1; min-width: 0; }
+.mpk-item-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.15rem;
+}
+.mpk-item-meta {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.55);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+.mpk-item-desc {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.2rem;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.mpk-item-shortcut {
+  margin-left: auto;
+  font-size: 0.65rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  color: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.mpk-item-check {
+  width: 14px; height: 14px;
+  color: #8b5cf6;
+  margin-left: 0.4rem;
+  flex-shrink: 0;
+}
+.mpk-item:not(.is-active) .mpk-item-check { opacity: 0; }
+
+/* Capability tags */
+.mpk-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.05rem 0.35rem;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.mpk-tag-vision     { background: rgba(96, 165, 250, 0.18); color: #93c5fd; }
+.mpk-tag-tools      { background: rgba(168, 85, 247, 0.18); color: #c4b5fd; }
+.mpk-tag-reasoning  { background: rgba(34, 211, 238, 0.18); color: #67e8f9; }
+.mpk-tag-fast       { background: rgba(52, 211, 153, 0.18); color: #6ee7b7; }
+.mpk-tag-cheap      { background: rgba(132, 204, 22, 0.18); color: #bef264; }
+.mpk-tag-multimodal { background: rgba(236, 72, 153, 0.18); color: #f9a8d4; }
+.mpk-tag-code       { background: rgba(245, 158, 11, 0.18); color: #fcd34d; }
+.mpk-tag-creative   { background: rgba(251, 113, 133, 0.18); color: #fda4af; }
+.mpk-tag-new        { background: rgba(99, 102, 241, 0.22); color: #a5b4fc; }
+.mpk-tag-experimental {
+  background: rgba(217, 70, 239, 0.18); color: #f0abfc;
+  border: 1px dashed rgba(217, 70, 239, 0.4);
+}
+
+/* Provider color hints */
+.mpk-item[data-mpk-provider="anthropic"] .mpk-item-logo { background-color: rgba(204, 120, 92, 0.25); }
+.mpk-item[data-mpk-provider="openai"]    .mpk-item-logo { background-color: rgba(0, 167, 138, 0.2); }
+.mpk-item[data-mpk-provider="google"]    .mpk-item-logo { background-color: rgba(66, 133, 244, 0.2); }
+.mpk-item[data-mpk-provider="meta"]      .mpk-item-logo { background-color: rgba(24, 119, 242, 0.2); }
+.mpk-item[data-mpk-provider="mistral"]   .mpk-item-logo { background-color: rgba(255, 88, 12, 0.2); }
+.mpk-item[data-mpk-provider="xai"]       .mpk-item-logo { background-color: rgba(0, 0, 0, 0.4); }
+.mpk-item[data-mpk-provider="cohere"]    .mpk-item-logo { background-color: rgba(254, 226, 226, 0.2); }
+.mpk-item[data-mpk-provider="deepseek"]  .mpk-item-logo { background-color: rgba(15, 76, 117, 0.3); }
+
+/* Context size pill */
+.mpk-item-context {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.05rem 0.35rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.65);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Empty / no results */
+.mpk-empty {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.78rem;
+}
+
+/* Footer with kbd hint */
+.mpk-foot {
+  padding: 0.4rem 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  justify-content: space-between;
+}
+.mpk-kbd {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  padding: 0.05rem 0.3rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.65rem;
+}

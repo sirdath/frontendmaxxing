@@ -1,0 +1,134 @@
+/* ============================================
+   SKY GRADIENTS — Time-of-day & atmospheric sky presets
+   Inspired by Apple wallpapers, iOS dynamic backgrounds, Procreate skies
+   ============================================
+   Usage:
+     <div class="sky sky-sunset"></div>
+     <section class="sky sky-golden-hour">...</section>
+
+   Variants:
+     sky-dawn, sky-sunrise, sky-morning, sky-noon, sky-golden-hour,
+     sky-sunset, sky-twilight, sky-blue-hour, sky-dusk, sky-night,
+     sky-midnight, sky-aurora-sky, sky-stormy, sky-overcast, sky-foggy,
+     sky-northern-lights, sky-mars, sky-jupiter, sky-venus, sky-pastel-sky,
+     sky-arctic, sky-savanna, sky-tropical, sky-deep-space, sky-galactic
+   Modifiers:
+     sky-radial      — radial instead of linear
+     sky-conic       — conic burst
+     sky-animate     — slow background-position shift
+     sky-overlay     — fixes as ::before overlay
+   ============================================ */
+
+.sky {
+  --sky-angle: 180deg;
+  background: linear-gradient(var(--sky-angle), #87ceeb, #f0f8ff);
+  min-height: 200px;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Pre-dawn → night cycle */
+.sky-dawn          { background: linear-gradient(180deg, #1a1a3e 0%, #4b3f72 35%, #b56576 70%, #e8c2a0 100%); }
+.sky-sunrise       { background: linear-gradient(180deg, #3a1c71 0%, #d76d77 50%, #ffaf7b 100%); }
+.sky-morning       { background: linear-gradient(180deg, #a1c4fd 0%, #c2e9fb 100%); }
+.sky-noon          { background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%); }
+.sky-clear-blue    { background: linear-gradient(180deg, #2980b9 0%, #6dd5fa 50%, #ffffff 100%); }
+.sky-golden-hour   { background: linear-gradient(180deg, #ff9966 0%, #ff5e62 50%, #ffd194 100%); }
+.sky-sunset        { background: linear-gradient(180deg, #ff7e5f 0%, #feb47b 50%, #ffd194 100%); }
+.sky-burnt-sunset  { background: linear-gradient(180deg, #2c1810 0%, #6e2c00 30%, #c0392b 60%, #f39c12 85%, #f1c40f 100%); }
+.sky-magic-hour    { background: linear-gradient(180deg, #ff5f6d 0%, #ffc371 100%); }
+.sky-twilight      { background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
+.sky-blue-hour     { background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%); }
+.sky-dusk          { background: linear-gradient(180deg, #0c0032 0%, #190061 50%, #240090 100%); }
+.sky-pink-dusk     { background: linear-gradient(180deg, #4b0082 0%, #8b008b 35%, #ff1493 70%, #ff69b4 100%); }
+.sky-night         { background: linear-gradient(180deg, #000428 0%, #004e92 100%); }
+.sky-midnight      { background: linear-gradient(180deg, #000000 0%, #1a1a2e 50%, #16213e 100%); }
+.sky-deep-night    { background: linear-gradient(180deg, #000 0%, #0a0a1a 100%); }
+
+/* Phenomena & atmospheric */
+.sky-aurora-sky    { background: linear-gradient(180deg, #0f0c29 0%, #302b63 35%, #00ff87 70%, #60efff 100%); }
+.sky-northern-lights {
+  background:
+    radial-gradient(ellipse at 50% 40%, #00ff87 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 60%, #6f00ff 0%, transparent 50%),
+    linear-gradient(180deg, #000 0%, #0a0a2a 100%);
+}
+.sky-stormy        { background: linear-gradient(180deg, #232526 0%, #414345 100%); }
+.sky-overcast      { background: linear-gradient(180deg, #757f9a 0%, #d7dde8 100%); }
+.sky-foggy         { background: linear-gradient(180deg, #bdc3c7 0%, #2c3e50 100%); }
+.sky-rainy         { background: linear-gradient(180deg, #3a6073 0%, #16222a 100%); }
+.sky-misty-dawn    { background: linear-gradient(180deg, #d3cce3 0%, #e9e4f0 100%); }
+.sky-sandstorm     { background: linear-gradient(180deg, #f2994a 0%, #f2c94c 100%); }
+
+/* Alien worlds */
+.sky-mars          { background: linear-gradient(180deg, #4e0d00 0%, #b22222 50%, #ffd194 100%); }
+.sky-jupiter       { background: linear-gradient(180deg, #c9a07a 0%, #f4a460 30%, #b8860b 60%, #8b4513 100%); }
+.sky-venus         { background: linear-gradient(180deg, #ffeaa7 0%, #f39c12 50%, #d35400 100%); }
+.sky-saturn        { background: linear-gradient(180deg, #ead49b 0%, #c0a575 50%, #8b6914 100%); }
+.sky-neptune       { background: linear-gradient(180deg, #2c3e50 0%, #4a69bd 50%, #6dd5fa 100%); }
+
+/* Stylized */
+.sky-pastel-sky    { background: linear-gradient(180deg, #fbc2eb 0%, #a6c1ee 100%); }
+.sky-cotton-candy  { background: linear-gradient(180deg, #ffafbd 0%, #ffc3a0 100%); }
+.sky-arctic        { background: linear-gradient(180deg, #e0eafc 0%, #cfdef3 100%); }
+.sky-savanna       { background: linear-gradient(180deg, #ff8008 0%, #ffc837 100%); }
+.sky-tropical      { background: linear-gradient(180deg, #ff6e7f 0%, #bfe9ff 100%); }
+.sky-mediterranean { background: linear-gradient(180deg, #2bc0e4 0%, #eaecc6 100%); }
+.sky-tequila       { background: linear-gradient(180deg, #f8b500 0%, #fceabb 100%); }
+.sky-mojave        { background: linear-gradient(180deg, #f0c27b 0%, #4b1248 100%); }
+
+/* Deep space */
+.sky-deep-space    {
+  background:
+    radial-gradient(2px 2px at 20% 30%, white, transparent),
+    radial-gradient(1px 1px at 50% 70%, white, transparent),
+    radial-gradient(1.5px 1.5px at 75% 20%, white, transparent),
+    radial-gradient(1px 1px at 90% 60%, white, transparent),
+    linear-gradient(180deg, #000 0%, #0a0a1f 50%, #1a0a2f 100%);
+  background-size: 200px 200px, 200px 200px, 200px 200px, 200px 200px, 100% 100%;
+}
+.sky-galactic      {
+  background:
+    radial-gradient(ellipse at 40% 50%, #ff00ff 0%, transparent 30%),
+    radial-gradient(ellipse at 60% 40%, #00ffff 0%, transparent 30%),
+    linear-gradient(180deg, #000 0%, #0a0033 100%);
+}
+.sky-nebula        {
+  background:
+    radial-gradient(ellipse at 30% 30%, #ff6b9d 0%, transparent 40%),
+    radial-gradient(ellipse at 70% 60%, #845ec2 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 50%, #00c9a7 0%, transparent 60%),
+    linear-gradient(135deg, #000 0%, #0a0a1f 100%);
+}
+
+/* Modifiers */
+.sky-radial       { background-attachment: fixed; }
+.sky-radial.sky-sunset    { background: radial-gradient(ellipse at bottom, #ff7e5f, #feb47b 50%, #ffd194 100%); }
+.sky-radial.sky-night     { background: radial-gradient(ellipse at top, #000428, #004e92); }
+.sky-radial.sky-aurora-sky { background: radial-gradient(ellipse at bottom, #0f0c29, #302b63 30%, #00ff87 80%); }
+
+.sky-conic.sky-sunrise { background: conic-gradient(from 180deg at 50% 100%, #3a1c71, #d76d77, #ffaf7b, #3a1c71); }
+
+.sky-animate {
+  background-size: 200% 200%;
+  animation: sky-shift 20s ease-in-out infinite alternate;
+}
+@keyframes sky-shift {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+.sky-overlay {
+  position: relative;
+}
+.sky-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-animate { animation: none; }
+}

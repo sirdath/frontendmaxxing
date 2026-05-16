@@ -1,0 +1,102 @@
+/* ============================================
+   BREADCRUMBS — Path navigation indicator
+   Inspired by macOS Finder / Stripe / Linear breadcrumbs
+   ============================================
+   Usage:
+     <nav class="brc">
+       <a href="/">Home</a>
+       <span class="brc-sep">/</span>
+       <a href="/proj">Project</a>
+       <span class="brc-sep">/</span>
+       <span class="brc-current">Settings</span>
+     </nav>
+
+   Variants:
+     brc-chevron     — Chevron separator › (default /)
+     brc-slash       — Slash /
+     brc-arrow       — Arrow →
+     brc-pill        — Each crumb a pill
+     brc-collapse    — Collapse middle crumbs into …
+     brc-with-icons  — Icons before labels
+   ============================================ */
+
+.brc {
+  --brc-fg: #ffffff;
+  --brc-muted: rgba(255, 255, 255, 0.55);
+  --brc-hover: rgba(255, 255, 255, 0.06);
+  --brc-accent: #818cf8;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--brc-muted);
+}
+
+.brc a {
+  color: var(--brc-muted);
+  text-decoration: none;
+  padding: 0.2rem 0.4rem;
+  border-radius: 5px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.brc a:hover { color: var(--brc-fg); background: var(--brc-hover); }
+
+.brc-current {
+  color: var(--brc-fg);
+  font-weight: 500;
+  padding: 0.2rem 0.4rem;
+}
+
+.brc-sep {
+  color: var(--brc-muted);
+  font-size: 0.85rem;
+  user-select: none;
+  opacity: 0.7;
+}
+
+/* Variants */
+.brc-chevron .brc-sep::before { content: '›'; }
+.brc-chevron .brc-sep { content: none; font-size: 1rem; }
+.brc-arrow .brc-sep::before   { content: '→'; }
+.brc-arrow .brc-sep { font-size: 1rem; }
+
+.brc-pill a,
+.brc-pill .brc-current {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+}
+.brc-pill a:hover { background: rgba(255, 255, 255, 0.1); }
+.brc-pill .brc-current {
+  background: rgba(129, 140, 248, 0.18);
+  border-color: rgba(129, 140, 248, 0.4);
+  color: #c7d2fe;
+}
+.brc-pill .brc-sep { display: none; }
+
+/* Collapse middle crumbs */
+.brc-collapse a:not(:first-child):not(:nth-last-child(-n+3)),
+.brc-collapse .brc-sep:nth-child(n+3):nth-last-child(n+4) {
+  display: none;
+}
+.brc-collapse::after {
+  content: '…';
+  color: var(--brc-muted);
+  order: 2;
+  display: inline-block;
+  padding: 0 0.4rem;
+}
+
+.brc-with-icons .brc-ico {
+  display: inline-block;
+  margin-right: 0.25rem;
+  opacity: 0.8;
+}
+
+/* Light variant */
+.brc-light {
+  --brc-fg: #0c0c14;
+  --brc-muted: rgba(12, 12, 20, 0.55);
+  --brc-hover: rgba(0, 0, 0, 0.04);
+}

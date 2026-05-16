@@ -1,0 +1,319 @@
+/* ============================================
+   BUTTONS PACK — 18 additional standalone button styles
+   Inspired by uiverse.io
+   ============================================
+   Companion to: blocks/buttons.css (adds new variants).
+
+   Usage:
+     <button class="btnp btnp-neon">Neon</button>
+     <button class="btnp btnp-glass">Glass</button>
+
+   Variants:
+     btnp-neon, btnp-glass, btnp-3d, btnp-gooey, btnp-soft, btnp-flip,
+     btnp-slide-fill, btnp-border-draw, btnp-glow-arrow, btnp-cta,
+     btnp-skew, btnp-icon-pop, btnp-magnetic-pulse, btnp-rounded-arrow,
+     btnp-ghost-underline, btnp-split, btnp-ribbon, btnp-tag
+
+   Sizes: btnp-sm / btnp-lg / btnp-xl
+   ============================================ */
+
+.btnp {
+  --btnp-bg: #0c0c14;
+  --btnp-fg: #ffffff;
+  --btnp-accent: #818cf8;
+  --btnp-accent-2: #c084fc;
+  --btnp-radius: 10px;
+  --btnp-pad-y: 0.65rem;
+  --btnp-pad-x: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: var(--btnp-pad-y) var(--btnp-pad-x);
+  border: 1px solid transparent;
+  border-radius: var(--btnp-radius);
+  background: var(--btnp-bg);
+  color: var(--btnp-fg);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  isolation: isolate;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.btnp-sm { --btnp-pad-y: 0.4rem; --btnp-pad-x: 0.85rem; font-size: 0.85rem; }
+.btnp-lg { --btnp-pad-y: 0.9rem; --btnp-pad-x: 1.75rem; font-size: 1.05rem; }
+.btnp-xl { --btnp-pad-y: 1.1rem; --btnp-pad-x: 2.25rem; font-size: 1.15rem; }
+
+/* ── 1. btnp-neon — glowing outline ── */
+.btnp-neon {
+  --btnp-bg: transparent;
+  color: var(--btnp-accent);
+  border: 1.5px solid var(--btnp-accent);
+  box-shadow: 0 0 0 0 var(--btnp-accent);
+}
+.btnp-neon:hover {
+  color: #0c0c14;
+  background: var(--btnp-accent);
+  box-shadow: 0 0 16px var(--btnp-accent), 0 0 32px var(--btnp-accent);
+}
+
+/* ── 2. btnp-glass — glassmorphic ── */
+.btnp-glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+.btnp-glass:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── 3. btnp-3d — chunky 3D press ── */
+.btnp-3d {
+  background: var(--btnp-accent);
+  border: none;
+  color: #0c0c14;
+  font-weight: 600;
+  box-shadow: 0 5px 0 0 #5b67c9, 0 8px 12px -4px rgba(0, 0, 0, 0.4);
+  transform: translateY(0);
+}
+.btnp-3d:hover  { transform: translateY(-2px); box-shadow: 0 7px 0 0 #5b67c9, 0 10px 16px -4px rgba(0,0,0,0.5); }
+.btnp-3d:active { transform: translateY(3px);  box-shadow: 0 2px 0 0 #5b67c9, 0 4px 8px -2px rgba(0,0,0,0.3); }
+
+/* ── 4. btnp-gooey — squishy hover with svg-like blob ── */
+.btnp-gooey {
+  background: var(--btnp-accent);
+  color: #fff;
+  border-radius: 999px;
+  transition: border-radius 0.4s cubic-bezier(0.6, -0.5, 0.4, 1.5);
+}
+.btnp-gooey:hover {
+  border-radius: 12px 999px 12px 999px;
+  transform: scale(1.04);
+}
+
+/* ── 5. btnp-soft — soft pastel pill ── */
+.btnp-soft {
+  background: rgba(129, 140, 248, 0.15);
+  color: var(--btnp-accent);
+  border-radius: 999px;
+  font-weight: 500;
+}
+.btnp-soft:hover { background: rgba(129, 140, 248, 0.25); }
+
+/* ── 6. btnp-flip — text flips up on hover ── */
+.btnp-flip {
+  overflow: hidden;
+  background: var(--btnp-accent);
+  color: #fff;
+  padding-block: 0;
+  height: 2.6em;
+}
+.btnp-flip > span {
+  display: block;
+  height: 100%;
+  line-height: 2.6em;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+.btnp-flip > span::after {
+  content: attr(data-hover);
+  position: absolute;
+  inset: 100% 0 -100%;
+  display: grid; place-items: center;
+  background: inherit;
+}
+.btnp-flip:hover > span { transform: translateY(-100%); }
+
+/* ── 7. btnp-slide-fill — color fills from left on hover ── */
+.btnp-slide-fill {
+  background: transparent;
+  color: var(--btnp-accent);
+  border: 1.5px solid var(--btnp-accent);
+  overflow: hidden;
+}
+.btnp-slide-fill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--btnp-accent);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+.btnp-slide-fill:hover { color: #0c0c14; }
+.btnp-slide-fill:hover::before { transform: translateX(0); }
+
+/* ── 8. btnp-border-draw — border draws around on hover ── */
+.btnp-border-draw {
+  background: transparent;
+  color: var(--btnp-fg);
+  border: none;
+}
+.btnp-border-draw::before,
+.btnp-border-draw::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid var(--btnp-accent);
+  clip-path: inset(0 100% 100% 0);
+  transition: clip-path 0.4s ease;
+}
+.btnp-border-draw::after {
+  clip-path: inset(100% 0 0 100%);
+  transition-delay: 0.05s;
+}
+.btnp-border-draw:hover::before { clip-path: inset(0 0 100% 0); }
+.btnp-border-draw:hover::after  { clip-path: inset(100% 0 0 0); }
+
+/* ── 9. btnp-glow-arrow — arrow that glides forward ── */
+.btnp-glow-arrow {
+  background: var(--btnp-accent);
+  color: #fff;
+  padding-right: 2rem;
+  overflow: hidden;
+}
+.btnp-glow-arrow::after {
+  content: '→';
+  position: absolute;
+  right: 1rem;
+  transition: transform 0.25s ease;
+}
+.btnp-glow-arrow:hover { box-shadow: 0 8px 24px -8px var(--btnp-accent); }
+.btnp-glow-arrow:hover::after { transform: translateX(6px); }
+
+/* ── 10. btnp-cta — bold call-to-action with gradient ── */
+.btnp-cta {
+  background: linear-gradient(135deg, var(--btnp-accent), var(--btnp-accent-2));
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 6px 20px -8px var(--btnp-accent);
+}
+.btnp-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 28px -8px var(--btnp-accent); }
+
+/* ── 11. btnp-skew — italic skewed press ── */
+.btnp-skew {
+  background: var(--btnp-fg);
+  color: #0c0c14;
+  font-weight: 600;
+  transform: skewX(-12deg);
+}
+.btnp-skew > span { display: inline-block; transform: skewX(12deg); }
+.btnp-skew:hover { transform: skewX(-12deg) translateY(-2px); }
+
+/* ── 12. btnp-icon-pop — icon scales on hover ── */
+.btnp-icon-pop > .ico {
+  display: inline-block;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btnp-icon-pop:hover > .ico { transform: scale(1.3) rotate(-8deg); }
+
+/* ── 13. btnp-magnetic-pulse — subtle resting pulse ── */
+.btnp-magnetic-pulse {
+  background: var(--btnp-accent);
+  color: #fff;
+  animation: btnp-pulse 2.4s ease-in-out infinite;
+}
+@keyframes btnp-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--btnp-accent); }
+  50%      { box-shadow: 0 0 0 14px transparent; }
+}
+
+/* ── 14. btnp-rounded-arrow — pill with leading arrow ── */
+.btnp-rounded-arrow {
+  border-radius: 999px;
+  background: var(--btnp-fg);
+  color: #0c0c14;
+  padding-left: 1.5rem;
+}
+.btnp-rounded-arrow::before {
+  content: '→';
+  margin-right: 0.5rem;
+  transition: transform 0.25s ease;
+}
+.btnp-rounded-arrow:hover::before { transform: translateX(4px); }
+
+/* ── 15. btnp-ghost-underline — underline animates in ── */
+.btnp-ghost-underline {
+  background: transparent;
+  color: var(--btnp-fg);
+  padding-inline: 0.25rem;
+  border-radius: 0;
+}
+.btnp-ghost-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 2px;
+  background: var(--btnp-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.btnp-ghost-underline:hover::after { transform: scaleX(1); }
+
+/* ── 16. btnp-split — two-tone split button ── */
+.btnp-split {
+  padding: 0;
+  overflow: hidden;
+  background: var(--btnp-accent);
+  color: #fff;
+}
+.btnp-split > .a,
+.btnp-split > .b {
+  padding: var(--btnp-pad-y) var(--btnp-pad-x);
+  transition: background 0.2s ease;
+}
+.btnp-split > .b {
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 1px solid rgba(0, 0, 0, 0.15);
+}
+.btnp-split > .a:hover { background: rgba(0, 0, 0, 0.1); }
+.btnp-split > .b:hover { background: rgba(0, 0, 0, 0.3); }
+
+/* ── 17. btnp-ribbon — diagonal ribbon ribbon corner ── */
+.btnp-ribbon {
+  background: var(--btnp-fg);
+  color: #0c0c14;
+  padding-left: 2rem;
+  overflow: hidden;
+}
+.btnp-ribbon::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1.25rem;
+  background: var(--btnp-accent);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+/* ── 18. btnp-tag — pill with leading dot ── */
+.btnp-tag {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.btnp-tag::before {
+  content: '';
+  display: inline-block;
+  width: 7px; height: 7px;
+  margin-right: 0.5rem;
+  background: var(--btnp-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--btnp-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btnp,
+  .btnp::before,
+  .btnp::after { transition: none; animation: none; }
+}

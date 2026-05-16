@@ -1,0 +1,128 @@
+/* ============================================
+   WORKSPACE SWITCHER — Multi-org / multi-workspace switcher
+   Inspired by Linear / Slack / Notion / Vercel
+   ============================================
+   Usage:
+     <div class="wss" data-workspace-switcher>
+       <button class="wss-trigger">
+         <span class="wss-logo">A</span>
+         <span class="wss-name">Aurora Inc.</span>
+         <span class="wss-caret">▾</span>
+       </button>
+       <div class="wss-menu">
+         <div class="wss-section" data-label="Workspaces">
+           <button class="wss-option is-active">
+             <span class="wss-option-logo">A</span>
+             <span class="wss-option-name">Aurora Inc.</span>
+             <span class="wss-option-check">✓</span>
+           </button>
+           <button class="wss-option">
+             <span class="wss-option-logo">B</span>
+             <span class="wss-option-name">Beacon Studio</span>
+           </button>
+         </div>
+         <div class="wss-section">
+           <button class="wss-option wss-option-action">＋ Create workspace</button>
+           <button class="wss-option wss-option-action">⇆ Switch account</button>
+         </div>
+       </div>
+     </div>
+     WorkspaceSwitcher.init('[data-workspace-switcher]');
+
+   Notes: Reuses dropdown-menu.js pattern but specialized for workspace UX.
+   ============================================ */
+
+.wss {
+  --wss-bg: var(--surface-2, #14141f);
+  --wss-border: rgba(255, 255, 255, 0.1);
+  --wss-fg: #ffffff;
+  --wss-muted: rgba(255, 255, 255, 0.55);
+  --wss-hover: rgba(255, 255, 255, 0.06);
+  --wss-active: rgba(129, 140, 248, 0.15);
+  position: relative;
+  display: inline-block;
+}
+
+.wss-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.65rem;
+  background: transparent;
+  border: 1px solid var(--wss-border);
+  border-radius: 8px;
+  color: var(--wss-fg);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.wss-trigger:hover { background: var(--wss-hover); }
+
+.wss-logo,
+.wss-option-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #c084fc, #38bdf8);
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.wss-name { font-weight: 600; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wss-caret { font-size: 0.7rem; color: var(--wss-muted); }
+
+.wss-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 50;
+  min-width: 240px;
+  background: var(--wss-bg);
+  border: 1px solid var(--wss-border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+  padding: 0.3rem;
+  display: none;
+}
+.wss.is-open .wss-menu { display: block; }
+
+.wss-section { padding: 0.2rem 0; }
+.wss-section + .wss-section { border-top: 1px solid var(--wss-border); padding-top: 0.4rem; margin-top: 0.2rem; }
+.wss-section[data-label]::before {
+  content: attr(data-label);
+  display: block;
+  padding: 0.4rem 0.6rem 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--wss-muted);
+}
+
+.wss-option {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.45rem 0.55rem;
+  background: transparent;
+  border: none;
+  color: var(--wss-fg);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-radius: 7px;
+  text-align: left;
+}
+.wss-option:hover { background: var(--wss-hover); }
+.wss-option.is-active { background: var(--wss-active); }
+.wss-option-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wss-option-check { color: var(--wss-muted); display: none; }
+.wss-option.is-active .wss-option-check { display: inline; color: #818cf8; }
+.wss-option-action { color: var(--wss-muted); font-size: 0.85rem; }
+.wss-option-action:hover { color: var(--wss-fg); }

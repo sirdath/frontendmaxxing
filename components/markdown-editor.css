@@ -1,0 +1,151 @@
+/* ============================================
+   MARKDOWN EDITOR — Split-pane editor with live preview
+   Inspired by Linear / Bear / Obsidian / GitHub markdown editor
+   ============================================
+   Usage:
+     <div class="md" data-markdown-editor>
+       <div class="md-toolbar">
+         <button data-md-mode="edit" class="is-active">Edit</button>
+         <button data-md-mode="split">Split</button>
+         <button data-md-mode="preview">Preview</button>
+         <span class="md-spacer"></span>
+         <button data-md-insert="**" data-md-end="**" title="Bold (⌘B)"><b>B</b></button>
+         <button data-md-insert="*"  data-md-end="*"  title="Italic (⌘I)"><i>I</i></button>
+         <button data-md-insert="# " title="Heading">H</button>
+         <button data-md-insert="- " title="List">•</button>
+         <button data-md-insert="> " title="Quote">❝</button>
+         <button data-md-insert="\`"  data-md-end="\`"  title="Code">‹/›</button>
+         <button data-md-insert="[" data-md-end="](url)" title="Link">🔗</button>
+       </div>
+       <div class="md-panes">
+         <textarea class="md-source" placeholder="Write markdown…"></textarea>
+         <div class="md-preview"></div>
+       </div>
+     </div>
+     MarkdownEditor.init('[data-markdown-editor]');
+
+   Variants:
+     md-bordered
+     md-compact
+   ============================================ */
+
+.md {
+  --md-bg: var(--surface-2, #14141f);
+  --md-border: rgba(255, 255, 255, 0.08);
+  --md-fg: #ffffff;
+  --md-muted: rgba(255, 255, 255, 0.6);
+  --md-accent: #818cf8;
+  --md-code-bg: rgba(0, 0, 0, 0.4);
+  --md-radius: 12px;
+  background: var(--md-bg);
+  border: 1px solid var(--md-border);
+  border-radius: var(--md-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: var(--md-fg);
+  min-height: 380px;
+}
+
+.md-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0.4rem 0.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--md-border);
+  flex-wrap: wrap;
+}
+.md-toolbar button {
+  padding: 0.35rem 0.6rem;
+  background: transparent;
+  border: none;
+  color: var(--md-muted);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.md-toolbar button:hover { background: rgba(255, 255, 255, 0.06); color: var(--md-fg); }
+.md-toolbar button.is-active { background: rgba(129, 140, 248, 0.18); color: #c7d2fe; }
+.md-spacer { flex: 1; }
+
+.md-panes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+}
+.md[data-mode="edit"]    .md-panes { grid-template-columns: 1fr; }
+.md[data-mode="edit"]    .md-preview { display: none; }
+.md[data-mode="preview"] .md-panes { grid-template-columns: 1fr; }
+.md[data-mode="preview"] .md-source { display: none; }
+
+.md-source {
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: var(--md-fg);
+  font: inherit;
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  padding: 1rem 1.25rem;
+  border-right: 1px solid var(--md-border);
+}
+.md[data-mode="preview"] .md-source,
+.md[data-mode="edit"] .md-source { border-right: none; }
+
+.md-preview {
+  padding: 1rem 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  overflow-y: auto;
+}
+.md-preview h1 { font-size: 1.7rem; font-weight: 700; margin: 1.2em 0 0.4em; letter-spacing: -0.02em; border-bottom: 1px solid var(--md-border); padding-bottom: 0.3em; }
+.md-preview h2 { font-size: 1.4rem; font-weight: 600; margin: 1.1em 0 0.4em; }
+.md-preview h3 { font-size: 1.15rem; font-weight: 600; margin: 1em 0 0.4em; }
+.md-preview p  { margin: 0.65em 0; }
+.md-preview ul, .md-preview ol { padding-left: 1.5rem; margin: 0.6em 0; }
+.md-preview li { margin: 0.25em 0; }
+.md-preview blockquote {
+  margin: 0.8em 0;
+  padding: 0.5rem 1rem;
+  border-left: 3px solid var(--md-accent);
+  color: var(--md-muted);
+}
+.md-preview pre {
+  margin: 0.7em 0;
+  padding: 0.85rem 1rem;
+  background: var(--md-code-bg);
+  border-radius: 8px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  overflow-x: auto;
+}
+.md-preview code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  padding: 0.1rem 0.35rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+.md-preview pre code { background: transparent; padding: 0; }
+.md-preview a { color: var(--md-accent); text-decoration: underline; text-underline-offset: 2px; }
+.md-preview hr { border: none; border-top: 1px solid var(--md-border); margin: 1.4em 0; }
+.md-preview table { border-collapse: collapse; margin: 1em 0; }
+.md-preview th, .md-preview td {
+  border: 1px solid var(--md-border);
+  padding: 0.4rem 0.65rem;
+  font-size: 0.85rem;
+}
+.md-preview img { max-width: 100%; border-radius: 8px; }
+.md-preview input[type="checkbox"] { accent-color: var(--md-accent); margin-right: 0.4rem; }
+
+.md-compact { min-height: 240px; }
+.md-bordered { border-width: 1.5px; }
+
+@media (max-width: 720px) {
+  .md-panes { grid-template-columns: 1fr; }
+  .md-source { border-right: none; border-bottom: 1px solid var(--md-border); }
+}

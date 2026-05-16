@@ -1,0 +1,190 @@
+/* ============================================
+   INFINITE CANVAS — Pan & zoom viewport with infinite tiled grid
+   Inspired by tldraw, Excalidraw, Figma, FigJam, Miro
+   ============================================
+   Usage:
+     <div class="icv" data-icv>
+       <div class="icv-grid"></div>
+       <div class="icv-world">
+         <!-- your shapes / nodes go in here, positioned in world coords -->
+         <div class="icv-node" style="left:200px;top:120px;">Node 1</div>
+       </div>
+       <div class="icv-ui">
+         <!-- floating UI (screen coords) -->
+       </div>
+     </div>
+
+     // Wire it up:
+     InfiniteCanvas.init('.icv');
+
+   Variants:
+     icv-dots   (default — dotted grid)
+     icv-lines  (line grid)
+     icv-blueprint (blueprint blue lines)
+     icv-graph  (heavier major lines every 5)
+     icv-plain  (no grid)
+   Background:
+     icv-dark, icv-light, icv-canvas (off-white)
+   Modifiers:
+     icv-no-pan      — disable pan
+     icv-no-zoom     — disable zoom
+     icv-snap        — snap world translations to grid
+   ============================================ */
+
+.icv {
+  --icv-bg: #0a0a14;
+  --icv-grid: rgba(255, 255, 255, 0.08);
+  --icv-grid-major: rgba(255, 255, 255, 0.12);
+  --icv-cell: 32px;
+  --icv-zoom: 1;
+  --icv-tx: 0px;
+  --icv-ty: 0px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  overflow: hidden;
+  background: var(--icv-bg);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.icv.is-panning { cursor: grabbing; }
+
+/* Grid layer (background, sits in screen space) */
+.icv-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at center, var(--icv-grid) 1px, transparent 1px);
+  background-size: calc(var(--icv-cell) * var(--icv-zoom)) calc(var(--icv-cell) * var(--icv-zoom));
+  background-position: calc(var(--icv-tx) * 1px) calc(var(--icv-ty) * 1px);
+  /* The above keeps the grid moving with the world while staying crisp at any zoom */
+}
+
+.icv-lines .icv-grid {
+  background-image:
+    linear-gradient(0deg, var(--icv-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--icv-grid) 1px, transparent 1px);
+}
+.icv-graph .icv-grid {
+  background-image:
+    linear-gradient(0deg, var(--icv-grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--icv-grid-major) 1px, transparent 1px),
+    linear-gradient(0deg, var(--icv-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--icv-grid) 1px, transparent 1px);
+  background-size:
+    calc(var(--icv-cell) * 5 * var(--icv-zoom)) calc(var(--icv-cell) * 5 * var(--icv-zoom)),
+    calc(var(--icv-cell) * 5 * var(--icv-zoom)) calc(var(--icv-cell) * 5 * var(--icv-zoom)),
+    calc(var(--icv-cell) * var(--icv-zoom)) calc(var(--icv-cell) * var(--icv-zoom)),
+    calc(var(--icv-cell) * var(--icv-zoom)) calc(var(--icv-cell) * var(--icv-zoom));
+}
+.icv-blueprint {
+  --icv-bg: #0c1429;
+  --icv-grid: rgba(100, 180, 255, 0.15);
+  --icv-grid-major: rgba(100, 180, 255, 0.28);
+}
+.icv-blueprint .icv-grid {
+  background-image:
+    linear-gradient(0deg, var(--icv-grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--icv-grid-major) 1px, transparent 1px),
+    linear-gradient(0deg, var(--icv-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--icv-grid) 1px, transparent 1px);
+  background-size:
+    calc(var(--icv-cell) * 5 * var(--icv-zoom)) calc(var(--icv-cell) * 5 * var(--icv-zoom)),
+    calc(var(--icv-cell) * 5 * var(--icv-zoom)) calc(var(--icv-cell) * 5 * var(--icv-zoom)),
+    calc(var(--icv-cell) * var(--icv-zoom)) calc(var(--icv-cell) * var(--icv-zoom)),
+    calc(var(--icv-cell) * var(--icv-zoom)) calc(var(--icv-cell) * var(--icv-zoom));
+}
+.icv-plain .icv-grid { display: none; }
+
+/* Background colors */
+.icv-dark   { --icv-bg: #0a0a14; --icv-grid: rgba(255, 255, 255, 0.08); }
+.icv-light  { --icv-bg: #fafafa; --icv-grid: rgba(0, 0, 0, 0.08); --icv-grid-major: rgba(0, 0, 0, 0.14); }
+.icv-canvas { --icv-bg: #faf8f3; --icv-grid: rgba(0, 0, 0, 0.07); --icv-grid-major: rgba(0, 0, 0, 0.14); }
+
+/* The world — translated/scaled by JS */
+.icv-world {
+  position: absolute;
+  top: 0; left: 0;
+  transform-origin: 0 0;
+  transform: translate(var(--icv-tx, 0px), var(--icv-ty, 0px)) scale(var(--icv-zoom, 1));
+  will-change: transform;
+}
+.icv-world > * {
+  position: absolute;
+}
+
+/* UI overlay — for buttons, minimap, etc. (stays in screen space) */
+.icv-ui {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.icv-ui > * {
+  pointer-events: auto;
+}
+
+/* Zoom HUD */
+.icv-hud {
+  position: absolute;
+  bottom: 1rem; right: 1rem;
+  display: inline-flex;
+  background: rgba(20, 20, 30, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  color: #fff;
+  font-size: 0.8rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.icv-hud button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.icv-hud button:hover { background: rgba(255, 255, 255, 0.08); }
+.icv-hud-level {
+  display: inline-grid;
+  place-items: center;
+  min-width: 56px;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+.icv-hud-level:hover { color: #fff; background: rgba(255, 255, 255, 0.04); }
+
+/* Selection rectangle (set by JS for marquee select) */
+.icv-marquee {
+  position: absolute;
+  border: 1.5px solid #8b5cf6;
+  background: rgba(139, 92, 246, 0.08);
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+/* Nodes — sample styling */
+.icv-node {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  color: #fff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.icv-node:hover { border-color: rgba(255, 255, 255, 0.25); }
+.icv-node.is-selected {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+}

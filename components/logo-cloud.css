@@ -1,0 +1,96 @@
+/* ============================================
+   LOGO CLOUD — "Trusted by" / "As featured in" patterns
+   Inspired by Stripe / Linear / Vercel landing pages
+   ============================================
+   Usage:
+     <section class="lclo lclo-marquee">
+       <p class="lclo-title">Trusted by the best teams</p>
+       <ul class="lclo-list">
+         <li>VENDOR</li><li>FACTORY</li><li>SPARK</li><li>PRISMA</li>
+         <li>HORIZON</li><li>BRIDGE</li><li>BEACON</li><li>PIVOT</li>
+       </ul>
+     </section>
+
+   Variants:
+     lclo-grid       — Static grid layout
+     lclo-marquee    — Auto-scrolling row
+     lclo-fade-rows  — 2 rows with edge fades
+     lclo-compact    — Smaller logo size
+     lclo-bordered   — Card with border
+   ============================================ */
+
+.lclo {
+  --lclo-color: rgba(255, 255, 255, 0.5);
+  --lclo-fg: #ffffff;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.lclo-title {
+  margin: 0 0 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lclo-color);
+}
+
+.lclo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 2.5rem 1.5rem;
+  align-items: center;
+}
+.lclo-list > li {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--lclo-color);
+  letter-spacing: -0.01em;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  text-align: center;
+}
+.lclo-list > li:hover { opacity: 1; color: var(--lclo-fg); }
+
+/* ── Marquee variant ── */
+.lclo-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+.lclo-marquee .lclo-list {
+  display: flex;
+  gap: 3rem;
+  width: max-content;
+  animation: lclo-scroll 28s linear infinite;
+}
+.lclo-marquee .lclo-list > li { flex-shrink: 0; white-space: nowrap; font-size: 1.4rem; }
+@keyframes lclo-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Fade rows ── */
+.lclo-fade-rows .lclo-list {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+}
+@media (max-width: 720px) {
+  .lclo-fade-rows .lclo-list { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Compact / bordered ── */
+.lclo-compact .lclo-list > li { font-size: 0.875rem; }
+.lclo-bordered {
+  padding: 1.5rem;
+  background: var(--surface-2, #14141f);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lclo-marquee .lclo-list { animation: none; }
+}

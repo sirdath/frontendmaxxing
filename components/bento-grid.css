@@ -1,0 +1,110 @@
+/* ============================================
+   BENTO GRID — Asymmetric grid layout primitive
+   Inspired by Magic UI / Apple bento-style landing pages
+   ============================================
+   Usage:
+     <div class="bento-grid">
+       <div class="bento-item bento-md">A</div>
+       <div class="bento-item bento-lg">B</div>
+       <div class="bento-item bento-sm">C</div>
+       <div class="bento-item bento-wide">D</div>
+       <div class="bento-item bento-tall">E</div>
+       <div class="bento-item bento-xl">F</div>
+     </div>
+
+   Cell variants:
+     .bento-sm    — 1 col × 1 row
+     .bento-md    — 2 cols × 1 row
+     .bento-lg    — 2 cols × 2 rows
+     .bento-wide  — 3 cols × 1 row
+     .bento-tall  — 1 col × 2 rows
+     .bento-xl    — 3 cols × 2 rows
+
+   Grid variants:
+     .bento-grid-tight  — Smaller gap
+     .bento-grid-loose  — Larger gap
+     .bento-grid-rounded — Bigger radius
+   ============================================ */
+
+.bento-grid {
+  --bento-cols: 4;
+  --bento-gap: 1rem;
+  --bento-row: 180px;
+  --bento-radius: 18px;
+  display: grid;
+  grid-template-columns: repeat(var(--bento-cols), minmax(0, 1fr));
+  grid-auto-rows: var(--bento-row);
+  grid-auto-flow: dense;
+  gap: var(--bento-gap);
+  width: 100%;
+}
+
+.bento-item {
+  position: relative;
+  border-radius: var(--bento-radius);
+  background: var(--surface-2, #14141f);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  padding: 1.25rem;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.bento-item:hover {
+  border-color: var(--border-strong, rgba(255, 255, 255, 0.18));
+  transform: translateY(-2px);
+}
+
+/* ── Sizes ── */
+.bento-sm   { grid-column: span 1; grid-row: span 1; }
+.bento-md   { grid-column: span 2; grid-row: span 1; }
+.bento-lg   { grid-column: span 2; grid-row: span 2; }
+.bento-wide { grid-column: span 3; grid-row: span 1; }
+.bento-tall { grid-column: span 1; grid-row: span 2; }
+.bento-xl   { grid-column: span 3; grid-row: span 2; }
+.bento-full { grid-column: 1 / -1; grid-row: span 1; }
+
+/* ── Grid variants ── */
+.bento-grid-tight { --bento-gap: 0.5rem; }
+.bento-grid-loose { --bento-gap: 1.75rem; }
+.bento-grid-rounded { --bento-radius: 28px; }
+.bento-grid-cols-3 { --bento-cols: 3; }
+.bento-grid-cols-5 { --bento-cols: 5; }
+.bento-grid-cols-6 { --bento-cols: 6; }
+
+/* ── Item heading layout helper ── */
+.bento-item h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.bento-item p {
+  margin: 0;
+  color: var(--text-muted, rgba(255, 255, 255, 0.6));
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ── Visual variant: gradient cell ── */
+.bento-item-gradient {
+  background:
+    radial-gradient(circle at top left, rgba(129, 140, 248, 0.25), transparent 60%),
+    var(--surface-2, #14141f);
+}
+
+.bento-item-accent {
+  background: linear-gradient(135deg, var(--primary, #818cf8), #a78bfa);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* ── Responsive collapse ── */
+@media (max-width: 900px) {
+  .bento-grid { --bento-cols: 2; }
+  .bento-wide, .bento-xl { grid-column: span 2; }
+  .bento-md, .bento-lg { grid-column: span 2; }
+}
+
+@media (max-width: 540px) {
+  .bento-grid { --bento-cols: 1; --bento-row: 160px; }
+  .bento-item { grid-column: span 1 !important; grid-row: span 1 !important; }
+}

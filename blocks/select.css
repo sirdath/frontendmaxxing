@@ -1,0 +1,177 @@
+/* ============================================
+   SELECT — Custom dropdown select (single + searchable + grouped)
+   Inspired by Radix Select / shadcn / Linear
+   ============================================
+   Usage:
+     <div class="sel" data-select>
+       <button class="sel-trigger">
+         <span class="sel-value">Choose…</span>
+         <span class="sel-caret">▾</span>
+       </button>
+       <div class="sel-menu" role="listbox">
+         <div class="sel-search"><input placeholder="Search…"></div>
+         <div class="sel-group" data-label="Frameworks">
+           <div class="sel-option" data-value="react">React</div>
+           <div class="sel-option" data-value="vue">Vue</div>
+         </div>
+       </div>
+     </div>
+     Select.init('[data-select]');
+
+   Variants:
+     .sel-sm/-lg     — Size
+     .sel-glass      — Glass dropdown
+     .sel-no-search  — Hide search input
+   ============================================ */
+
+.sel {
+  --sel-bg: rgba(255, 255, 255, 0.04);
+  --sel-border: rgba(255, 255, 255, 0.12);
+  --sel-bg-menu: var(--surface-2, #14141f);
+  --sel-fg: #ffffff;
+  --sel-muted: rgba(255, 255, 255, 0.6);
+  --sel-accent: #818cf8;
+  --sel-hover: rgba(255, 255, 255, 0.06);
+  --sel-active: rgba(129, 140, 248, 0.18);
+  --sel-radius: 10px;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 280px;
+}
+
+.sel-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--sel-bg);
+  border: 1px solid var(--sel-border);
+  border-radius: var(--sel-radius);
+  color: var(--sel-fg);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.sel.is-open .sel-trigger,
+.sel-trigger:focus-visible {
+  border-color: var(--sel-accent);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
+  outline: none;
+}
+
+.sel-value { color: var(--sel-fg); }
+.sel.is-empty .sel-value { color: var(--sel-muted); }
+
+.sel-caret {
+  display: inline-block;
+  transition: transform 0.18s ease;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+.sel.is-open .sel-caret { transform: rotate(180deg); }
+
+.sel-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--sel-bg-menu);
+  border: 1px solid var(--sel-border);
+  border-radius: var(--sel-radius);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+  padding: 0.35rem;
+  max-height: 280px;
+  overflow-y: auto;
+  display: none;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+  transform-origin: top center;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.sel.is-open .sel-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.sel-search {
+  padding: 0.25rem;
+  border-bottom: 1px solid var(--sel-border);
+  margin-bottom: 0.25rem;
+  position: sticky;
+  top: 0;
+  background: var(--sel-bg-menu);
+  z-index: 1;
+}
+.sel-search input {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--sel-fg);
+  font: inherit;
+  font-size: 0.9rem;
+}
+.sel-search input::placeholder { color: var(--sel-muted); }
+.sel-no-search .sel-search { display: none; }
+
+.sel-group { padding: 0.25rem 0; }
+.sel-group[data-label]::before {
+  content: attr(data-label);
+  display: block;
+  padding: 0.35rem 0.6rem 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sel-muted);
+}
+
+.sel-option {
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: var(--sel-fg);
+  font-size: 0.9rem;
+  transition: background 0.12s ease;
+}
+.sel-option:hover { background: var(--sel-hover); }
+.sel-option.is-active { background: var(--sel-active); }
+.sel-option.is-focused { background: var(--sel-hover); }
+.sel-option[data-disabled] { opacity: 0.4; cursor: not-allowed; }
+
+.sel-option.is-selected::after {
+  content: '✓';
+  color: var(--sel-accent);
+  margin-left: auto;
+  font-weight: 700;
+}
+
+.sel-empty {
+  padding: 1rem;
+  text-align: center;
+  color: var(--sel-muted);
+  font-size: 0.85rem;
+}
+
+/* ── Variants ── */
+.sel-sm .sel-trigger { padding: 0.45rem 0.7rem; font-size: 0.85rem; }
+.sel-lg .sel-trigger { padding: 0.85rem 1rem; font-size: 1.05rem; }
+.sel-glass .sel-menu {
+  background: rgba(20, 20, 31, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sel-menu { transition: none; }
+}

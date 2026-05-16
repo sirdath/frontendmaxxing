@@ -1,0 +1,195 @@
+/* ============================================
+   STEPS WIZARD — Multi-step form/onboarding wizard layout
+   Inspired by Stripe Connect / Vercel onboarding / Linear setup
+   ============================================
+   Companion to checkout-flow.css's stepper but this is a full wizard layout.
+
+   Usage:
+     <div class="wzd">
+       <aside class="wzd-side">
+         <ol class="wzd-steps">
+           <li class="is-done">  <span class="wzd-step-num">1</span> <span>Account</span> </li>
+           <li class="is-current"><span class="wzd-step-num">2</span> <span>Profile</span> </li>
+           <li>                  <span class="wzd-step-num">3</span> <span>Workspace</span></li>
+           <li>                  <span class="wzd-step-num">4</span> <span>Invite</span>   </li>
+         </ol>
+       </aside>
+       <section class="wzd-main">
+         <header class="wzd-head">
+           <span class="wzd-eyebrow">Step 2 of 4</span>
+           <h2 class="wzd-title">Tell us about you</h2>
+           <p class="wzd-text">Help us personalize your experience.</p>
+         </header>
+         <div class="wzd-body">…fields…</div>
+         <footer class="wzd-foot">
+           <button class="wzd-back">← Back</button>
+           <button class="wzd-skip">Skip</button>
+           <button class="wzd-next">Continue →</button>
+         </footer>
+         <div class="wzd-progress"><span style="--p:50%"></span></div>
+       </section>
+     </div>
+
+   Variants:
+     wzd-stack       — Single column, no side rail (stepper at top)
+     wzd-glass
+   ============================================ */
+
+.wzd {
+  --wzd-bg: var(--surface, #0c0c14);
+  --wzd-card-bg: var(--surface-2, #14141f);
+  --wzd-border: rgba(255, 255, 255, 0.08);
+  --wzd-fg: #ffffff;
+  --wzd-muted: rgba(255, 255, 255, 0.55);
+  --wzd-accent: #818cf8;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0;
+  background: var(--wzd-bg);
+  border: 1px solid var(--wzd-border);
+  border-radius: 18px;
+  overflow: hidden;
+  color: var(--wzd-fg);
+  min-height: 460px;
+}
+.wzd-stack { grid-template-columns: 1fr; }
+
+.wzd-side {
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid var(--wzd-border);
+  padding: 1.5rem 1rem;
+}
+.wzd-stack .wzd-side { display: none; }
+
+.wzd-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+}
+.wzd-steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 7px;
+  color: var(--wzd-muted);
+}
+.wzd-step-num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.wzd-steps li.is-current {
+  color: var(--wzd-fg);
+  background: rgba(129, 140, 248, 0.1);
+}
+.wzd-steps li.is-current .wzd-step-num {
+  background: var(--wzd-accent);
+  color: #fff;
+}
+.wzd-steps li.is-done {
+  color: var(--wzd-fg);
+}
+.wzd-steps li.is-done .wzd-step-num {
+  background: rgba(74, 222, 128, 0.18);
+  color: #4ade80;
+}
+
+.wzd-main {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.wzd-head {
+  padding: 2rem 2.25rem 1rem;
+}
+
+.wzd-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--wzd-muted);
+}
+.wzd-title {
+  margin: 0.4rem 0 0.4rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.wzd-text {
+  margin: 0;
+  color: var(--wzd-muted);
+  line-height: 1.55;
+  max-width: 560px;
+}
+
+.wzd-body {
+  flex: 1;
+  padding: 1rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.wzd-foot {
+  padding: 1.25rem 2.25rem;
+  border-top: 1px solid var(--wzd-border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.wzd-back, .wzd-skip, .wzd-next {
+  padding: 0.65rem 1.25rem;
+  background: transparent;
+  border: 1px solid var(--wzd-border);
+  border-radius: 9px;
+  color: var(--wzd-fg);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+.wzd-skip { color: var(--wzd-muted); border: none; }
+.wzd-skip:hover { color: var(--wzd-fg); }
+.wzd-back { margin-right: auto; }
+.wzd-next {
+  background: var(--wzd-accent);
+  border-color: var(--wzd-accent);
+  color: #fff;
+  font-weight: 600;
+}
+.wzd-next:hover { filter: brightness(1.08); }
+
+/* Progress bar at bottom */
+.wzd-progress {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.wzd-progress > span {
+  display: block;
+  height: 100%;
+  width: var(--p, 0%);
+  background: var(--wzd-accent);
+  transition: width 0.35s ease;
+}
+
+.wzd-glass .wzd-side {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+@media (max-width: 720px) {
+  .wzd { grid-template-columns: 1fr; }
+  .wzd-side { display: none; }
+}

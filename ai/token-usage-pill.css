@@ -1,0 +1,176 @@
+/* ============================================
+   TOKEN USAGE PILL — Context window indicator (12.4k / 200k)
+   Inspired by Cursor, Claude, ChatGPT context-window status
+   ============================================
+   Usage:
+     <span class="tup" style="--tup-pct: 0.62;">
+       <svg class="tup-arc" viewBox="0 0 24 24">
+         <circle class="tup-track" cx="12" cy="12" r="9"/>
+         <circle class="tup-fill"  cx="12" cy="12" r="9"/>
+       </svg>
+       <span class="tup-text">
+         <span class="tup-used">124k</span>
+         <span class="tup-sep">/</span>
+         <span class="tup-max">200k</span>
+       </span>
+     </span>
+
+     // Or JS-driven:
+     TokenUsagePill.init('.tup');
+     TokenUsagePill.set('.tup', { used: 124000, max: 200000 });
+
+   Variants:
+     tup-soft, tup-strong, tup-mono, tup-compact, tup-icon-only
+   States (auto from --tup-pct):
+     <50% = green, 50-75% = mid, 75-90% = warn (amber), 90-100% = critical (red)
+   Manual color override:
+     tup-green, tup-amber, tup-red, tup-violet
+   ============================================ */
+
+.tup {
+  --tup-pct: 0;
+  --tup-green: #34d399;
+  --tup-amber: #fbbf24;
+  --tup-red: #f87171;
+  --tup-violet: #8b5cf6;
+  --tup-current: var(--tup-green);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem 0.25rem 0.4rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.tup-arc {
+  width: 16px; height: 16px;
+  flex-shrink: 0;
+  transform: rotate(-90deg);
+}
+.tup-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 3;
+}
+.tup-fill {
+  fill: none;
+  stroke: var(--tup-current);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: calc(var(--tup-pct) * 56.55) 56.55;
+  transition: stroke-dasharray 0.4s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease;
+}
+
+.tup-text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15rem;
+}
+.tup-used {
+  font-weight: 600;
+  color: var(--tup-current);
+}
+.tup-sep { color: rgba(255, 255, 255, 0.35); }
+.tup-max {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+}
+
+/* Auto-color via --tup-pct (use one of these state classes added by JS) */
+.tup.is-low    { --tup-current: var(--tup-green); }
+.tup.is-mid    { --tup-current: #818cf8; }
+.tup.is-warn   {
+  --tup-current: var(--tup-amber);
+  border-color: rgba(251, 191, 36, 0.3);
+  background: rgba(251, 191, 36, 0.05);
+}
+.tup.is-critical {
+  --tup-current: var(--tup-red);
+  border-color: rgba(248, 113, 113, 0.3);
+  background: rgba(248, 113, 113, 0.05);
+  animation: tup-pulse 1.6s ease-in-out infinite;
+}
+@keyframes tup-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(248, 113, 113, 0); }
+  50%      { box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.15); }
+}
+
+/* Manual color overrides */
+.tup-green   { --tup-current: var(--tup-green); }
+.tup-amber   { --tup-current: var(--tup-amber); }
+.tup-red     { --tup-current: var(--tup-red); }
+.tup-violet  { --tup-current: var(--tup-violet); }
+
+/* Variants */
+.tup-soft {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+.tup-strong {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.16);
+  font-size: 0.78rem;
+}
+.tup-mono {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.7rem;
+}
+.tup-compact {
+  padding: 0.15rem 0.4rem 0.15rem 0.25rem;
+  font-size: 0.65rem;
+}
+.tup-compact .tup-arc { width: 13px; height: 13px; }
+
+.tup-icon-only { padding: 0.25rem; }
+.tup-icon-only .tup-text { display: none; }
+
+/* Linear bar variant — replaces the arc */
+.tup-bar {
+  padding: 0.3rem 0.65rem;
+  border-radius: 8px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.3rem;
+  min-width: 140px;
+}
+.tup-bar .tup-arc { display: none; }
+.tup-bar .tup-text {
+  display: flex;
+  justify-content: space-between;
+}
+.tup-bar::after {
+  content: '';
+  display: block;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  position: relative;
+  overflow: hidden;
+}
+.tup-bar::before {
+  content: '';
+  position: absolute;
+  bottom: 0.3rem;
+  left: 0.65rem;
+  right: calc((1 - var(--tup-pct)) * (100% - 1.3rem) + 0.65rem);
+  height: 3px;
+  background: var(--tup-current);
+  border-radius: 999px;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+}
+
+/* Label prefix */
+.tup-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+  margin-right: 0.15rem;
+}
