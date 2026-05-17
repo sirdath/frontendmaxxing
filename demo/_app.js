@@ -550,7 +550,19 @@
     if (cur.length) blocks.push(cur.join('\n'));
     if (!blocks.length) return null;
     // Join all blocks with a separator (we'll render them all)
-    return blocks.map(function (b) { return b.trim(); }).filter(Boolean).join('\n\n');
+    var joined = blocks.map(function (b) { return b.trim(); }).filter(Boolean).join('\n\n');
+    // Reject blocks that are mostly placeholder content (just `…` or `...` between tags).
+    // These produce empty divs in the preview and look broken.
+    var stripped = joined
+      .replace(/<[^>]+>/g, ' ')      // drop tags
+      .replace(/\s+/g, ' ')          // collapse whitespace
+      .trim();
+    // If the remaining "text" content is only ellipsis placeholders + comments, treat as no HTML
+    var textOnly = stripped.replace(/[…\.…]+/g, '').replace(/\/\/.+/g, '').trim();
+    if (joined.length > 0 && textOnly.length < 3 && joined.indexOf('…') !== -1) {
+      return null;
+    }
+    return joined;
   }
 
   // Try to auto-init a JS module on the rendered preview.
