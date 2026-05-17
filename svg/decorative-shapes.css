@@ -1,0 +1,194 @@
+/* ============================================
+   DECORATIVE SHAPES — 10 SVG-mask background decorations
+   Inspired by Hero Patterns / dribbble illustrations / lukacho decorations
+   ============================================
+   Pure CSS — uses radial/conic/linear gradients, masks, and clip-paths
+   to draw decorative shapes you can layer behind content.
+
+   Variants:
+     dec-blob, dec-blob-2 (organic morphing blob backdrops)
+     dec-waves, dec-stripes (line patterns)
+     dec-dots, dec-grid-soft (dot/grid)
+     dec-scribble (hand-drawn squiggle)
+     dec-arrow (chunky decorative arrow)
+     dec-ribbon (curving ribbon)
+     dec-sparkles (sparkle scatter)
+     dec-checker (diagonal checker)
+     dec-zigzag, dec-circuit, dec-honeycomb
+   ============================================ */
+
+.dec-host {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.dec-host > .dec {
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 1. BLOB — Two morphing organic blobs */
+.dec-blob {
+  width: 360px; height: 360px;
+  background: radial-gradient(circle at 30% 30%, #8b5cf6 0%, #ec4899 100%);
+  filter: blur(60px);
+  opacity: 0.5;
+  border-radius: 60% 40% 70% 30% / 60% 40% 60% 40%;
+  animation: dec-blob-morph 12s ease-in-out infinite alternate;
+}
+.dec-blob-2 {
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, #06b6d4 0%, #8b5cf6 100%);
+  filter: blur(60px);
+  opacity: 0.45;
+  border-radius: 50% 60% 30% 70% / 40% 60% 70% 30%;
+  animation: dec-blob-morph 14s ease-in-out -3s infinite alternate;
+}
+@keyframes dec-blob-morph {
+  0%   { border-radius: 60% 40% 70% 30% / 60% 40% 60% 40%; transform: rotate(0); }
+  50%  { border-radius: 30% 70% 40% 60% / 50% 50% 30% 70%; transform: rotate(180deg); }
+  100% { border-radius: 70% 30% 60% 40% / 30% 70% 50% 50%; transform: rotate(360deg); }
+}
+
+/* 2. WAVES — Animated wave lines */
+.dec-waves {
+  width: 100%; height: 120px;
+  background:
+    repeating-linear-gradient(180deg,
+      transparent 0 20px,
+      rgba(139, 92, 246, 0.18) 20px 22px,
+      transparent 22px 40px);
+  -webkit-mask: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+          mask: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+}
+.dec-waves-amber { background:
+  repeating-linear-gradient(180deg,
+    transparent 0 20px,
+    rgba(245, 158, 11, 0.22) 20px 22px,
+    transparent 22px 40px);
+}
+
+/* 3. STRIPES — Diagonal stripes */
+.dec-stripes {
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(45deg,
+    transparent 0 8px,
+    rgba(255, 255, 255, 0.06) 8px 10px);
+}
+
+/* 4. DOTS — Dot grid */
+.dec-dots {
+  width: 100%; height: 100%;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+  -webkit-mask: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+          mask: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+}
+.dec-dots-tight { background-size: 12px 12px; }
+
+/* 5. GRID SOFT — Faint grid */
+.dec-grid-soft {
+  width: 100%; height: 100%;
+  background:
+    linear-gradient(90deg, transparent 49.5%, rgba(255,255,255,0.05) 50%, transparent 50.5%) 0/40px 40px,
+    linear-gradient(0deg, transparent 49.5%, rgba(255,255,255,0.05) 50%, transparent 50.5%) 0/40px 40px;
+  -webkit-mask: radial-gradient(ellipse at center, #000 30%, transparent 90%);
+          mask: radial-gradient(ellipse at center, #000 30%, transparent 90%);
+}
+
+/* 6. SCRIBBLE — Hand-drawn squiggle (SVG via background) */
+.dec-scribble {
+  width: 200px; height: 60px;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' fill='none' stroke='%23ec4899' stroke-width='3' stroke-linecap='round'><path d='M5 30 C 25 10, 45 50, 65 30 S 105 10, 125 30 S 165 50, 195 30'/></svg>") center/contain no-repeat;
+}
+.dec-scribble-cyan {
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' fill='none' stroke='%2306b6d4' stroke-width='3' stroke-linecap='round'><path d='M5 30 C 25 10, 45 50, 65 30 S 105 10, 125 30 S 165 50, 195 30'/></svg>") center/contain no-repeat;
+}
+
+/* 7. ARROW — Chunky decorative curved arrow */
+.dec-arrow {
+  width: 120px; height: 80px;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80' fill='none' stroke='%23fbbf24' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><path d='M10 60 Q 30 20, 60 30 T 100 30 M 90 20 L 105 30 L 90 40'/></svg>") center/contain no-repeat;
+}
+
+/* 8. RIBBON — Curving wide ribbon SVG */
+.dec-ribbon {
+  width: 220px; height: 60px;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 60' fill='%238b5cf6' opacity='0.6'><path d='M0 30 Q 55 0, 110 30 T 220 30 L 220 50 Q 165 80, 110 50 T 0 50 Z'/></svg>") center/contain no-repeat;
+}
+
+/* 9. SPARKLES — Scattered sparkle stars */
+.dec-sparkles {
+  width: 100%; height: 100%;
+  background-image:
+    radial-gradient(circle 1.5px at 12% 24%, #fff 99%, transparent 100%),
+    radial-gradient(circle 2px   at 38% 60%, #fde047 99%, transparent 100%),
+    radial-gradient(circle 1px   at 72% 18%, #fff 99%, transparent 100%),
+    radial-gradient(circle 1.5px at 88% 78%, #c084fc 99%, transparent 100%),
+    radial-gradient(circle 1.5px at 24% 86%, #fff 99%, transparent 100%),
+    radial-gradient(circle 2px   at 56% 14%, #22d3ee 99%, transparent 100%),
+    radial-gradient(circle 1px   at 92% 42%, #fff 99%, transparent 100%);
+  background-repeat: no-repeat;
+  animation: dec-sparkle-twinkle 3s ease-in-out infinite;
+}
+@keyframes dec-sparkle-twinkle {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+/* 10. CHECKER — Diagonal checker tiles */
+.dec-checker {
+  width: 100%; height: 100%;
+  background:
+    conic-gradient(rgba(255,255,255,0.04) 90deg, transparent 90deg 180deg, rgba(255,255,255,0.04) 180deg 270deg, transparent 270deg);
+  background-size: 32px 32px;
+  -webkit-mask: linear-gradient(135deg, #000, transparent 70%);
+          mask: linear-gradient(135deg, #000, transparent 70%);
+}
+
+/* 11. ZIGZAG — Sharp zigzag pattern */
+.dec-zigzag {
+  width: 100%; height: 8px;
+  background:
+    linear-gradient(135deg, #fbbf24 25%, transparent 25%) 0 0/16px 8px,
+    linear-gradient(225deg, #fbbf24 25%, transparent 25%) 0 0/16px 8px;
+}
+
+/* 12. CIRCUIT — Tech circuit-board lines */
+.dec-circuit {
+  width: 100%; height: 100%;
+  background:
+    linear-gradient(90deg, transparent 95%, rgba(6,182,212,0.4) 100%) 0/40px 1px,
+    linear-gradient(0deg,  transparent 95%, rgba(6,182,212,0.4) 100%) 0/1px 40px,
+    radial-gradient(circle 3px at 0 0, rgba(6,182,212,0.7) 99%, transparent 100%) 0/40px 40px;
+  opacity: 0.4;
+}
+
+/* 13. HONEYCOMB — Hex pattern */
+.dec-honeycomb {
+  width: 100%; height: 100%;
+  --hc-c: rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(circle at 50% 0, var(--hc-c) 8px, transparent 8.5px),
+    radial-gradient(circle at 0 50%, var(--hc-c) 8px, transparent 8.5px),
+    radial-gradient(circle at 100% 50%, var(--hc-c) 8px, transparent 8.5px),
+    radial-gradient(circle at 50% 100%, var(--hc-c) 8px, transparent 8.5px);
+  background-size: 40px 40px;
+}
+
+/* Position helpers */
+.dec-tl { top: 0; left: 0; }
+.dec-tr { top: 0; right: 0; }
+.dec-bl { bottom: 0; left: 0; }
+.dec-br { bottom: 0; right: 0; }
+.dec-center { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.dec-full { inset: 0; width: auto; height: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dec-blob, .dec-blob-2, .dec-sparkles { animation: none; }
+}

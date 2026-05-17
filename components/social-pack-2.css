@@ -1,0 +1,293 @@
+/* ============================================
+   SOCIAL PACK 2 — 7 collaboration/community patterns (extends social-pack.css)
+   reaction-picker, mention-dropdown, poll, voting, reaction-pile,
+   live-cursor-presence, slack-thread
+   ============================================ */
+
+:where(.s2-react, .s2-ment, .s2-poll, .s2-vote, .s2-pile, .s2-cur, .s2-thread) {
+  --s-bg: #14141e;
+  --s-bg-2: #1f1f2e;
+  --s-fg: #f5f5fa;
+  --s-muted: rgba(245, 245, 250, 0.55);
+  --s-line: rgba(255, 255, 255, 0.08);
+  --s-accent: #8b5cf6;
+  color: var(--s-fg);
+  font-family: inherit;
+}
+
+/* 1. REACTION PICKER — Slack-style emoji shelf with frequent + categories */
+.s2-react {
+  width: 280px;
+  background: var(--s-bg);
+  border: 1px solid var(--s-line);
+  border-radius: 12px;
+  padding: 0.5rem;
+  box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
+}
+.s2-react-search {
+  width: 100%; box-sizing: border-box;
+  background: var(--s-bg-2);
+  border: 1px solid var(--s-line);
+  color: var(--s-fg);
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  font: inherit; font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  outline: 0;
+}
+.s2-react-tabs {
+  display: flex; gap: 0.2rem;
+  margin-bottom: 0.3rem;
+}
+.s2-react-tab {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--s-muted);
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.s2-react-tab:hover { background: var(--s-bg-2); color: var(--s-fg); }
+.s2-react-tab.is-active { background: rgba(139,92,246,0.18); color: var(--s-accent); }
+.s2-react-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+  max-height: 160px; overflow-y: auto;
+}
+.s2-react-emoji {
+  appearance: none; border: 0;
+  background: transparent;
+  width: 100%; aspect-ratio: 1;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: grid; place-items: center;
+}
+.s2-react-emoji:hover { background: rgba(255,255,255,0.06); }
+.s2-react-foot {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--s-line);
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--s-muted);
+}
+.s2-react-foot strong { font-size: 1.4rem; }
+
+/* 2. MENTION DROPDOWN — @user typeahead */
+.s2-ment {
+  width: 260px;
+  background: var(--s-bg);
+  border: 1px solid var(--s-line);
+  border-radius: 10px;
+  padding: 0.3rem;
+  box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
+}
+.s2-ment-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 0.5rem; align-items: center;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.s2-ment-row:hover, .s2-ment-row.is-active { background: rgba(139,92,246,0.15); }
+.s2-ment-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.s2-ment-name { font-weight: 600; }
+.s2-ment-handle {
+  font-size: 0.74rem; color: var(--s-muted);
+  font-family: ui-monospace, monospace;
+}
+.s2-ment-presence {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+}
+.s2-ment-presence.away { background: #f59e0b; }
+.s2-ment-presence.off { background: var(--s-muted); }
+
+/* 3. POLL — Live poll with bars filling on vote */
+.s2-poll {
+  width: 100%; max-width: 380px;
+  background: var(--s-bg);
+  border: 1px solid var(--s-line);
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+}
+.s2-poll h4 { margin: 0 0 0.7rem; font-size: 0.95rem; }
+.s2-poll-opt {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  margin: 0.25rem 0;
+  background: var(--s-bg-2);
+  border: 1px solid var(--s-line);
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.15s ease;
+}
+.s2-poll-opt:hover { background: rgba(255,255,255,0.04); }
+.s2-poll-opt.voted::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: var(--pct, 0%);
+  background: rgba(139, 92, 246, 0.2);
+  transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.s2-poll-opt.is-pick.voted::before { background: rgba(139, 92, 246, 0.35); }
+.s2-poll-opt > * { position: relative; }
+.s2-poll-text { flex: 1; font-size: 0.88rem; }
+.s2-poll-pct { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+.s2-poll-meta {
+  margin-top: 0.4rem;
+  font-size: 0.72rem;
+  color: var(--s-muted);
+  display: flex; justify-content: space-between;
+}
+
+/* 4. VOTING — Upvote/downvote with score (Reddit/HN style) */
+.s2-vote {
+  display: inline-flex; flex-direction: column; align-items: center;
+  background: var(--s-bg-2);
+  border: 1px solid var(--s-line);
+  border-radius: 8px;
+  padding: 0.3rem 0.2rem;
+  width: 40px;
+}
+.s2-vote-btn {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--s-muted);
+  width: 28px; height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem; line-height: 1;
+}
+.s2-vote-btn:hover { background: rgba(255,255,255,0.06); color: var(--s-fg); }
+.s2-vote-btn.is-on.up { color: #f97316; }
+.s2-vote-btn.is-on.down { color: #6366f1; }
+.s2-vote-score {
+  font-size: 0.82rem; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 0.15rem 0;
+}
+
+.s2-vote-h {
+  flex-direction: row; gap: 0.3rem;
+  padding: 0.25rem 0.5rem;
+  width: auto;
+}
+.s2-vote-h .s2-vote-score { padding: 0 0.2rem; }
+
+/* 5. REACTION PILE — Cluster of reaction chips */
+.s2-pile { display: inline-flex; flex-wrap: wrap; gap: 0.25rem; }
+.s2-pile-chip {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.15rem 0.5rem;
+  background: var(--s-bg-2);
+  border: 1px solid var(--s-line);
+  border-radius: 999px;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.s2-pile-chip:hover { background: rgba(255,255,255,0.06); }
+.s2-pile-chip.is-mine { background: rgba(139, 92, 246, 0.15); border-color: var(--s-accent); color: var(--s-accent); }
+.s2-pile-add {
+  width: 28px; height: 24px;
+  background: var(--s-bg-2);
+  border: 1px dashed var(--s-line);
+  border-radius: 999px;
+  color: var(--s-muted);
+  display: grid; place-items: center;
+  cursor: pointer;
+  font-size: 0.9rem; line-height: 1;
+  padding: 0;
+}
+.s2-pile-add:hover { background: rgba(255,255,255,0.04); color: var(--s-fg); }
+
+/* 6. LIVE CURSOR PRESENCE — Multi-user cursors */
+.s2-cur {
+  position: absolute;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.08s linear;
+  transform: translate(var(--x, 0), var(--y, 0));
+}
+.s2-cur-arrow {
+  width: 0; height: 0;
+  border: 12px solid transparent;
+  border-top: 14px solid var(--c, #8b5cf6);
+  border-bottom: 0;
+  transform: rotate(-30deg);
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+}
+.s2-cur-name {
+  margin-left: 6px;
+  margin-top: -10px;
+  display: inline-block;
+  background: var(--c, #8b5cf6);
+  color: #fff;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.s2-cur-pink   { --c: #ec4899; }
+.s2-cur-cyan   { --c: #06b6d4; }
+.s2-cur-mint   { --c: #10b981; }
+.s2-cur-amber  { --c: #f59e0b; }
+
+/* 7. SLACK THREAD — Threaded message replies */
+.s2-thread {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  position: relative;
+  background: var(--s-bg);
+  border: 1px solid var(--s-line);
+  width: 100%; max-width: 480px;
+}
+.s2-thread:hover { background: rgba(255, 255, 255, 0.02); }
+.s2-thread-avatar {
+  width: 36px; height: 36px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+}
+.s2-thread-head { display: flex; align-items: baseline; gap: 0.4rem; }
+.s2-thread-name { font-weight: 700; }
+.s2-thread-time { font-size: 0.7rem; color: var(--s-muted); }
+.s2-thread-body { font-size: 0.88rem; line-height: 1.5; margin: 0.2rem 0; }
+.s2-thread-replies {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  margin-top: 0.4rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(139,92,246,0.06);
+  color: var(--s-accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.s2-thread-replies:hover { background: rgba(139,92,246,0.12); }
+.s2-thread-avatars { display: flex; }
+.s2-thread-avatars > div {
+  width: 18px; height: 18px; border-radius: 3px;
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
+  border: 1.5px solid var(--s-bg);
+  margin-left: -4px;
+}
+.s2-thread-avatars > div:first-child { margin-left: 0; }

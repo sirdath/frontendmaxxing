@@ -1,0 +1,243 @@
+/* ============================================
+   TIMER PACK — 5 timer/clock display patterns
+   pomodoro, focus-timer (ring), stopwatch, race-clock, alarm
+   ============================================ */
+
+:where(.tmr-pom, .tmr-focus, .tmr-watch, .tmr-race, .tmr-alarm) {
+  --t-bg: #14141e;
+  --t-bg-2: #1f1f2e;
+  --t-fg: #f5f5fa;
+  --t-muted: rgba(245, 245, 250, 0.55);
+  --t-line: rgba(255, 255, 255, 0.08);
+  --t-accent: #8b5cf6;
+  --t-up: #10b981;
+  --t-warn: #f59e0b;
+  --t-down: #ef4444;
+  color: var(--t-fg);
+  font-family: inherit;
+}
+
+/* 1. POMODORO — Tomato-themed work/break with phase pills */
+.tmr-pom {
+  display: grid; place-items: center; gap: 1rem;
+  padding: 1.4rem;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 16px;
+  width: 100%; max-width: 280px;
+  text-align: center;
+}
+.tmr-pom-phase {
+  font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 700;
+  color: var(--t-down);
+  padding: 0.2rem 0.6rem;
+  background: rgba(239, 68, 68, 0.15);
+  border-radius: 999px;
+}
+.tmr-pom.is-break .tmr-pom-phase { color: var(--t-up); background: rgba(16, 185, 129, 0.15); }
+.tmr-pom-time {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 3.4rem; font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.tmr-pom-controls { display: flex; gap: 0.4rem; }
+.tmr-pom-controls button {
+  appearance: none; border: 0;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--t-bg-2);
+  color: var(--t-fg);
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: grid; place-items: center;
+}
+.tmr-pom-controls .play { background: var(--t-down); color: #fff; }
+.tmr-pom.is-break .tmr-pom-controls .play { background: var(--t-up); }
+.tmr-pom-dots {
+  display: flex; gap: 4px;
+}
+.tmr-pom-dots > i {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+}
+.tmr-pom-dots > i.is-done { background: var(--t-down); }
+
+/* 2. FOCUS TIMER — Animated ring countdown */
+.tmr-focus {
+  --pct: 65;
+  position: relative;
+  width: 200px; height: 200px;
+  display: inline-grid; place-items: center;
+}
+.tmr-focus::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background:
+    conic-gradient(var(--t-accent) calc(var(--pct) * 1%), rgba(255,255,255,0.08) 0);
+  -webkit-mask: radial-gradient(transparent 75px, #000 76px);
+          mask: radial-gradient(transparent 75px, #000 76px);
+  filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.5));
+  transition: --pct 1s linear;
+}
+@property --pct {
+  syntax: '<number>'; inherits: true; initial-value: 0;
+}
+.tmr-focus-inner {
+  position: relative;
+  display: grid; place-items: center; gap: 0.2rem;
+}
+.tmr-focus-time {
+  font-family: ui-monospace, monospace;
+  font-size: 2.4rem; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.tmr-focus-label {
+  font-size: 0.7rem;
+  color: var(--t-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* 3. STOPWATCH — Lap-style precision display */
+.tmr-watch {
+  width: 100%; max-width: 320px;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+}
+.tmr-watch-time {
+  font-family: ui-monospace, monospace;
+  font-size: 2.6rem; font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  line-height: 1;
+}
+.tmr-watch-time small {
+  font-size: 0.5em; color: var(--t-muted); font-weight: 500;
+  display: inline-block;
+  width: 1.6em;
+  text-align: left;
+}
+.tmr-watch-controls {
+  display: flex; gap: 0.4rem;
+  margin-top: 0.8rem;
+}
+.tmr-watch-controls button {
+  appearance: none; border: 0;
+  flex: 1;
+  padding: 0.55rem;
+  background: var(--t-bg-2);
+  color: var(--t-fg);
+  border-radius: 8px;
+  font: inherit; font-weight: 600; font-size: 0.85rem;
+  cursor: pointer;
+}
+.tmr-watch-controls .start { background: var(--t-up); color: #fff; }
+.tmr-watch-controls .stop { background: var(--t-down); color: #fff; }
+.tmr-watch-laps {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--t-line);
+  max-height: 140px; overflow-y: auto;
+}
+.tmr-watch-lap {
+  display: flex; justify-content: space-between;
+  padding: 0.25rem 0;
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.tmr-watch-lap span { color: var(--t-muted); }
+.tmr-watch-lap.best { color: var(--t-up); }
+.tmr-watch-lap.worst { color: var(--t-down); }
+
+/* 4. RACE CLOCK — Big-screen scoreboard timer */
+.tmr-race {
+  display: inline-block;
+  background: #000;
+  border: 3px solid var(--t-warn);
+  border-radius: 8px;
+  padding: 0.4rem 1.2rem;
+  font-family: 'Orbitron', ui-monospace, monospace;
+  letter-spacing: 0.06em;
+}
+.tmr-race-time {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: var(--t-warn);
+  text-shadow: 0 0 14px var(--t-warn);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.tmr-race-label {
+  font-size: 0.7rem;
+  color: rgba(245, 158, 11, 0.6);
+  text-align: center;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.tmr-race-cyan {
+  --t-warn: #06b6d4;
+  border-color: #06b6d4;
+}
+.tmr-race-cyan .tmr-race-time { color: #06b6d4; text-shadow: 0 0 14px #06b6d4; }
+.tmr-race-red {
+  --t-warn: #ef4444;
+  border-color: #ef4444;
+}
+.tmr-race-red .tmr-race-time { color: #ef4444; text-shadow: 0 0 14px #ef4444; }
+
+/* 5. ALARM — iPhone-style alarm row */
+.tmr-alarm {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 12px;
+  width: 100%; max-width: 320px;
+}
+.tmr-alarm-time {
+  font-family: ui-monospace, monospace;
+  font-size: 2.4rem; font-weight: 300;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.tmr-alarm-time small { font-size: 0.5em; color: var(--t-muted); margin-left: 0.2em; font-weight: 500; }
+.tmr-alarm-meta {
+  margin-top: 0.2rem;
+  font-size: 0.75rem; color: var(--t-muted);
+}
+.tmr-alarm-toggle {
+  appearance: none; border: 0;
+  width: 50px; height: 28px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.1);
+  cursor: pointer; position: relative;
+  transition: background 0.2s ease;
+}
+.tmr-alarm-toggle::before {
+  content: ''; position: absolute;
+  top: 2px; left: 2px;
+  width: 24px; height: 24px;
+  border-radius: 50%; background: #fff;
+  transition: transform 0.2s ease;
+}
+.tmr-alarm.is-on .tmr-alarm-toggle { background: var(--t-up); }
+.tmr-alarm.is-on .tmr-alarm-toggle::before { transform: translateX(22px); }
+.tmr-alarm:not(.is-on) .tmr-alarm-time,
+.tmr-alarm:not(.is-on) .tmr-alarm-meta { opacity: 0.4; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tmr-focus::before { transition: none; }
+}

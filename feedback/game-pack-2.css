@@ -1,0 +1,433 @@
+/* ============================================
+   GAME PACK 2 — 9 game-UI patterns (extends existing feedback/game-hud.css)
+   inventory-grid, skill-tree, quest-log, boss-bar, dialogue-box,
+   loot-drop, crosshair, mini-map, ammo-counter
+   ============================================ */
+
+:where(.gp-inv, .gp-skl, .gp-quest, .gp-boss, .gp-dlg, .gp-loot, .gp-cross, .gp-mmap, .gp-ammo) {
+  --g-bg: #14141e;
+  --g-bg-2: #1f1f2e;
+  --g-fg: #f5f5fa;
+  --g-muted: rgba(245, 245, 250, 0.55);
+  --g-line: rgba(255, 255, 255, 0.12);
+  --g-accent: #fbbf24;
+  --g-rare: #06b6d4;
+  --g-epic: #a855f7;
+  --g-legendary: #f59e0b;
+  --g-mythic: #ec4899;
+  color: var(--g-fg);
+  font-family: inherit;
+}
+
+/* 1. INVENTORY GRID — D&D / Diablo style item grid */
+.gp-inv {
+  display: grid;
+  grid-template-columns: repeat(8, 48px);
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px;
+  border: 2px solid rgba(251, 191, 36, 0.4);
+  border-radius: 6px;
+  width: max-content;
+}
+.gp-inv-cell {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, #2d2d44, #1f1f2e);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  display: grid; place-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.gp-inv-cell:hover { transform: scale(1.06); border-color: var(--g-accent); }
+.gp-inv-cell.is-rare      { border-color: var(--g-rare);      box-shadow: inset 0 0 12px rgba(6,182,212,0.4); }
+.gp-inv-cell.is-epic      { border-color: var(--g-epic);      box-shadow: inset 0 0 12px rgba(168,85,247,0.4); }
+.gp-inv-cell.is-legendary { border-color: var(--g-legendary); box-shadow: inset 0 0 14px rgba(245,158,11,0.5); }
+.gp-inv-cell.is-mythic    { border-color: var(--g-mythic);    box-shadow: inset 0 0 14px rgba(236,72,153,0.5); }
+.gp-inv-item {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, var(--g-accent), #b45309);
+  border-radius: 4px;
+}
+.gp-inv-stack {
+  position: absolute;
+  bottom: 1px; right: 3px;
+  font-size: 0.62rem; font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 1px #000;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 2. SKILL TREE — Node graph */
+.gp-skl {
+  position: relative;
+  width: 100%; max-width: 320px;
+  height: 280px;
+  padding: 1rem;
+}
+.gp-skl-node {
+  position: absolute;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--g-bg-2);
+  border: 3px solid rgba(255,255,255,0.15);
+  display: grid; place-items: center;
+  color: var(--g-muted);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  font-weight: 700;
+  z-index: 2;
+}
+.gp-skl-node:hover { transform: scale(1.12); }
+.gp-skl-node.is-unlocked {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: var(--g-accent);
+  color: var(--g-accent);
+  box-shadow: 0 0 16px rgba(251,191,36,0.4);
+}
+.gp-skl-node.is-active {
+  background: var(--g-accent);
+  border-color: #fff;
+  color: #14141e;
+}
+.gp-skl-link {
+  position: absolute;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  transform-origin: left center;
+  z-index: 1;
+}
+.gp-skl-link.is-unlocked { background: var(--g-accent); box-shadow: 0 0 6px rgba(251,191,36,0.5); }
+
+/* 3. QUEST LOG */
+.gp-quest {
+  width: 100%; max-width: 360px;
+  background:
+    linear-gradient(180deg, rgba(140, 90, 40, 0.1), transparent 50%),
+    var(--g-bg);
+  border: 1px solid rgba(140, 90, 40, 0.5);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  font-family: Georgia, serif;
+}
+.gp-quest-title {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin: 0 0 0.6rem;
+  font-size: 1.1rem; font-weight: 700;
+  color: #fde047;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+.gp-quest-reward {
+  font-size: 0.78rem; color: #c084fc;
+}
+.gp-quest-obj {
+  list-style: none; margin: 0; padding: 0;
+}
+.gp-quest-obj li {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 0.88rem;
+  color: var(--g-fg);
+}
+.gp-quest-obj li::before {
+  content: '○';
+  color: var(--g-muted);
+  font-size: 1rem;
+}
+.gp-quest-obj li.done {
+  text-decoration: line-through;
+  color: var(--g-muted);
+}
+.gp-quest-obj li.done::before { content: '●'; color: #10b981; }
+.gp-quest-prog {
+  font-size: 0.78rem; color: var(--g-muted);
+  margin-top: 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 4. BOSS HEALTH BAR */
+.gp-boss {
+  width: 100%; max-width: 600px;
+  display: grid; gap: 0.3rem;
+  padding: 0.6rem 1rem;
+  background:
+    linear-gradient(180deg, rgba(239, 68, 68, 0.15), transparent);
+}
+.gp-boss-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.gp-boss-name {
+  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-weight: 800; font-size: 1.3rem;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(239,68,68,0.7), 0 2px 4px rgba(0,0,0,0.8);
+}
+.gp-boss-rank {
+  font-size: 0.72rem; color: #fde047;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.gp-boss-bar {
+  height: 14px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(239,68,68,0.5);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.gp-boss-bar > i {
+  display: block; height: 100%;
+  width: var(--hp, 70%);
+  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.gp-boss-bar > i::after {
+  content: ''; position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: gp-boss-shimmer 2s linear infinite;
+}
+@keyframes gp-boss-shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+.gp-boss-meta { font-size: 0.74rem; color: var(--g-muted); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* 5. DIALOGUE BOX — Visual novel / RPG dialogue */
+.gp-dlg {
+  position: relative;
+  width: 100%; max-width: 560px;
+  padding: 1.2rem 1.4rem 1rem;
+  background: rgba(20, 20, 30, 0.92);
+  border: 2px solid var(--g-accent);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,0.5),
+    0 8px 20px rgba(0,0,0,0.4);
+}
+.gp-dlg::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.gp-dlg-name {
+  position: absolute;
+  top: -10px; left: 24px;
+  background: var(--g-bg);
+  padding: 0.15rem 0.7rem;
+  border: 1px solid var(--g-accent);
+  border-radius: 4px;
+  color: var(--g-accent);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+.gp-dlg-text {
+  font-family: Georgia, serif;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+.gp-dlg-cursor {
+  display: inline-block;
+  width: 12px; height: 12px;
+  background: var(--g-accent);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  margin-left: 0.4rem;
+  animation: gp-dlg-blink 0.8s steps(2) infinite;
+}
+@keyframes gp-dlg-blink { 50% { opacity: 0; } }
+.gp-dlg-choices {
+  margin-top: 0.7rem;
+  display: grid; gap: 0.3rem;
+}
+.gp-dlg-choice {
+  display: block;
+  padding: 0.4rem 0.7rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  color: var(--g-fg);
+  text-align: left;
+  font: inherit; font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.gp-dlg-choice:hover { background: rgba(251, 191, 36, 0.1); border-color: var(--g-accent); }
+
+/* 6. LOOT DROP — Floating loot card */
+.gp-loot {
+  position: relative;
+  width: 220px;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(180deg, rgba(168, 85, 247, 0.15), transparent);
+  border: 1px solid var(--g-epic);
+  border-radius: 8px;
+  box-shadow: 0 0 24px rgba(168,85,247,0.3);
+  animation: gp-loot-pop 0.6s cubic-bezier(0.32, 1.6, 0.5, 1) both;
+}
+.gp-loot.rare      { border-color: var(--g-rare);      box-shadow: 0 0 24px rgba(6,182,212,0.3); }
+.gp-loot.legendary { border-color: var(--g-legendary); box-shadow: 0 0 32px rgba(245,158,11,0.5); }
+.gp-loot.mythic    { border-color: var(--g-mythic);    box-shadow: 0 0 36px rgba(236,72,153,0.55); }
+@keyframes gp-loot-pop {
+  from { opacity: 0; transform: scale(0.3) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.gp-loot-rarity {
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--g-epic);
+}
+.gp-loot.rare      .gp-loot-rarity { color: var(--g-rare); }
+.gp-loot.legendary .gp-loot-rarity { color: var(--g-legendary); }
+.gp-loot.mythic    .gp-loot-rarity { color: var(--g-mythic); }
+.gp-loot-name { font-size: 1rem; font-weight: 700; margin: 0.15rem 0; }
+.gp-loot-stat {
+  font-size: 0.78rem;
+  color: var(--g-muted);
+  display: block;
+}
+.gp-loot-stat b { color: #10b981; }
+
+/* 7. CROSSHAIR — FPS-style center reticle */
+.gp-cross {
+  width: 32px; height: 32px;
+  position: relative;
+  display: inline-block;
+}
+.gp-cross::before, .gp-cross::after {
+  content: '';
+  position: absolute;
+  background: #fff;
+  box-shadow: 0 0 4px rgba(0,0,0,0.7);
+}
+.gp-cross::before { /* horizontal */
+  left: 0; right: 0; top: 50%; height: 2px;
+  transform: translateY(-50%);
+}
+.gp-cross::after { /* vertical */
+  top: 0; bottom: 0; left: 50%; width: 2px;
+  transform: translateX(-50%);
+}
+.gp-cross-dot {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 4px; height: 4px;
+  background: var(--g-down, #ef4444);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 4px rgba(0,0,0,0.7);
+}
+.gp-cross-circle {
+  position: absolute; inset: 0;
+  border: 1.5px solid rgba(255,255,255,0.65);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0,0,0,0.7);
+}
+.gp-cross-spread {
+  --spread: 4px;
+}
+.gp-cross-spread::before {
+  background: transparent;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
+  left: calc(-1 * var(--spread));
+  right: calc(-1 * var(--spread));
+}
+.gp-cross-spread::after {
+  background: transparent;
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  top: calc(-1 * var(--spread));
+  bottom: calc(-1 * var(--spread));
+}
+
+/* 8. MINI MAP — Top-down game-style map */
+.gp-mmap {
+  width: 140px; height: 140px;
+  background: radial-gradient(circle at center, rgba(16,185,129,0.1), transparent 70%), #0a0a14;
+  border: 2px solid var(--g-accent);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.5);
+}
+.gp-mmap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(251,191,36,0.06) 50%, transparent 51%) 0/24px 24px,
+    linear-gradient(0deg, transparent 49%, rgba(251,191,36,0.06) 50%, transparent 51%) 0/24px 24px;
+}
+.gp-mmap-player {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 10px solid #fbbf24;
+  filter: drop-shadow(0 0 4px rgba(251,191,36,0.8));
+}
+.gp-mmap-enemy {
+  position: absolute;
+  width: 6px; height: 6px;
+  background: #ef4444;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #ef4444;
+}
+.gp-mmap-friendly {
+  position: absolute;
+  width: 6px; height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #10b981;
+}
+.gp-mmap-objective {
+  position: absolute;
+  width: 12px; height: 12px;
+  background: var(--g-accent);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  filter: drop-shadow(0 0 4px rgba(251,191,36,0.8));
+}
+.gp-mmap-sweep {
+  position: absolute; inset: 0;
+  background: conic-gradient(from 0deg, transparent 270deg, rgba(251,191,36,0.25) 360deg);
+  animation: gp-mmap-sweep 3s linear infinite;
+}
+@keyframes gp-mmap-sweep { to { transform: rotate(360deg); } }
+
+/* 9. AMMO COUNTER */
+.gp-ammo {
+  display: inline-flex; align-items: baseline; gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(251,191,36,0.4);
+  border-radius: 8px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-weight: 700;
+  color: #fbbf24;
+  text-shadow: 0 0 4px rgba(251,191,36,0.4);
+  font-variant-numeric: tabular-nums;
+}
+.gp-ammo-now { font-size: 1.6rem; line-height: 1; }
+.gp-ammo-sep, .gp-ammo-max { color: rgba(251,191,36,0.6); font-size: 1rem; }
+.gp-ammo-low { color: #ef4444; border-color: rgba(239,68,68,0.5); text-shadow: 0 0 4px rgba(239,68,68,0.5); animation: gp-ammo-warn 0.7s ease-in-out infinite; }
+@keyframes gp-ammo-warn {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+.gp-ammo-icon {
+  display: inline-block;
+  width: 12px; height: 18px;
+  background: currentColor;
+  clip-path: polygon(40% 0, 60% 0, 100% 40%, 100% 100%, 0 100%, 0 40%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gp-boss-bar > i::after, .gp-mmap-sweep, .gp-ammo-low, .gp-loot,
+  .gp-dlg-cursor { animation: none; }
+}

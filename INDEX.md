@@ -2241,3 +2241,44 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **emoji-spree.js** `feedback/emoji-spree.js` (JS, global: `EmojiSpree`) — tags: emoji-spree burst particles spawn count extra toggle picked onPick
   `EmojiSpree.init('[data-espree]', {count, extra, toggle, onPick})`. Auto-extracts emoji from chip text; spawns N particles drifting up + rotating. Also `EmojiSpree.burst(x, y, pool, count, vertical)` for direct calls.
+
+**Phase 20 — Mega expansion: dashboards, maps, game UI, social, decorations, editor (13 files, ~77 patterns)**
+
+**kpi-pack.css** `components/kpi-pack.css` (CSS) — tags: kpi-pack dashboard tile metric trend spark spark-bars ring bar compare glow icon stacked split pill live pulse small large light analytics linear notion stripe
+  12 KPI tile patterns in one file: clean, trend (sparkline), spark-bars, ring (conic), bar, compare (vs prev), glow (featured), icon, stacked (3-row), split (2-up), pill (compact), live (pulse dot). Sizes: sm/lg. Light variant.
+
+**admin-pack.css** `components/admin-pack.css` (CSS) — tags: admin-pack devops server-health build-pipeline queue job-runner audit-log api-endpoint webhook-log database-table env-secret reveal cpu mem disk
+  8 admin/devops widgets: server-health (multi-bar w/ status pill), build-pipeline (connected stages dots), queue/job-runner (running/done/failed rows), audit-log (actor + action + tag), api-endpoint (method badge GET/POST/PUT/DELETE/PATCH + perf), webhook-log (status code rows), db-table-card (columns + index/row count), env-secret-row (blur-reveal value).
+
+**maps-pack.css** `components/maps-pack.css` (CSS) — tags: maps-pack map-pin marker pulse map-tooltip callout map-legend cluster-bubble route-summary distance-pill location-search mini-map preview
+  9 map-UI patterns: map-pin (drop pin SVG), pulsing marker (live presence), map-tooltip (callout with arrow), map-legend (frosted), cluster-bubble (sm/md/lg), route-summary (A→B with dashed line + duration), distance-pill (floating chip), location-search results (rows with addr), mini-map-card (stylized roads + pin).
+
+**game-pack-2.css** `feedback/game-pack-2.css` (CSS) — tags: game-pack-2 inventory-grid rarity common rare epic legendary mythic skill-tree node-graph quest-log boss-bar dialogue-box loot-drop crosshair fps mini-map ammo-counter rpg fantasy
+  9 game-UI patterns (extends game-hud.css): inventory-grid (8-col D&D/Diablo cells with rarity glows), skill-tree (positioned nodes + links), quest-log (RPG scroll style with objectives), boss-bar (uppercase name + shimmer health), dialogue-box (visual novel with choices), loot-drop (animated card with rarity tier), crosshair (FPS reticle with spread variant), mini-map (radar with player+enemies+sweep), ammo-counter (low-warn pulse).
+
+**social-pack-2.css** `components/social-pack-2.css` (CSS) — tags: social-pack-2 reaction-picker slack-emoji mention-dropdown poll voting upvote downvote reaction-pile live-cursor presence multi-user thread reply
+  7 collaboration patterns: reaction-picker (Slack-style with search + categories + frequent), mention-dropdown (@user typeahead with presence dot), poll (with fill-bar on vote), voting (Reddit/HN upvote+downvote with score, vertical+horizontal), reaction-pile (chip cluster with add-button), live-cursor-presence (multi-user named arrows), slack-thread (reply with avatar pile).
+
+**social-pack-2.js** `components/social-pack-2.js` (JS, global: `Social2`) — tags: social-pack-2 poll vote pile toggle cursors multi-user mention keyboard
+  `Social2.poll({onVote})`, `.reactionPile({onToggle, onAdd})`, `.cursors(host, {users}).update(id, x, y)`, `.mention({onPick})` with keyboard-nav helpers.
+
+**decorative-shapes.css** `svg/decorative-shapes.css` (CSS) — tags: decorative-shapes svg backgrounds patterns blob waves stripes dots grid scribble arrow ribbon sparkles checker zigzag circuit honeycomb position tl tr bl br center
+  13 decorative SVG/CSS shapes for backgrounds: blob (morphing organic), waves, stripes (diagonal), dots, grid-soft, scribble (hand-drawn SVG), arrow (decorative curved), ribbon, sparkles (twinkling), checker, zigzag, circuit (tech), honeycomb. Position helpers tl/tr/bl/br/center/full.
+
+**stepper-pack.css** `blocks/stepper-pack.css` (CSS) — tags: stepper-pack number-input increment decrement plus minus stripe-style pill large vertical gradient outline compact bordered currency
+  8 stepper variants: clean (default), pill (rounded ends), large, vertical, gradient (accent +/-), outline, compact, bordered (separate buttons), plus currency-prefix mod. Disabled state when at min/max.
+
+**stepper-pack.js** `blocks/stepper-pack.js` (JS, global: `Stepper`) — tags: stepper increment decrement clamp step min max long-press repeat wheel keyboard onChange
+  `Stepper.init('[data-stp]', {min, max, step, value, longPress, longPressDelay, repeatInterval, onChange})`. Click + long-press repeat + wheel + ArrowUp/Down. Methods: `.set()`, `.get()`, `.inc()`, `.dec()`.
+
+**timer-pack.css** `components/timer-pack.css` (CSS) — tags: timer-pack pomodoro focus-timer ring stopwatch laps race-clock alarm phase work break long round dots
+  5 timer patterns: pomodoro (phase pills + dots), focus-timer (animated ring countdown w/ @property), stopwatch (laps with best/worst), race-clock (scoreboard glow, cyan/red variants), alarm (toggle row).
+
+**timer-pack.js** `components/timer-pack.js` (JS, global: `TimerPack`) — tags: timer-pack pomodoro focus stopwatch lap alarm interval tick phase complete onTick onPhase onLap onDone
+  `TimerPack.pomodoro({work, break, longBreak, rounds, onTick, onPhase, onComplete})`, `.focus({duration, onTick, onDone})`, `.stopwatch({onLap, onStop})`, `.alarm({onToggle})`.
+
+**editor-pack.css** `components/editor-pack.css` (CSS) — tags: editor-pack code-editor ide vscode find-replace regex case whole-word goto-line tab-strip overflow dirty pinned gutter line-numbers diff add del mod git-status branch ahead behind breadcrumb path
+  6 IDE chrome patterns: find-replace bar (case/whole/regex toggles + count + actions), goto-line bar, tab-overflow strip (active border + dirty dot + close), gutter (line numbers with add/del/mod/error/warn marks + current-line), git-status-strip (branch + ahead/behind + M/A/D/U counts), breadcrumb-path (file path with function-name highlight).
+
+**editor-pack.js** `components/editor-pack.js` (JS, global: `EditorPack`) — tags: editor-pack find replace regex case-sensitive whole-word match navigation tabs close goto-line
+  `EditorPack.find({text, onMatch, onReplace})` (real regex search with case/whole/regex toggles + match navigation), `.tabs({onSelect, onClose})` (active state + close-x), `.goto({onSubmit, onCancel})` (Enter/Escape).

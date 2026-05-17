@@ -1,0 +1,214 @@
+/* ============================================
+   KPI PACK — 12 KPI dashboard tile patterns
+   Inspired by Linear / Notion / Vercel / Stripe analytics tiles
+   ============================================
+   Usage:
+     <div class="kpi kpi-clean">…</div>
+
+   Variants (12):
+     kpi-clean, kpi-trend, kpi-spark, kpi-ring, kpi-bar, kpi-compare,
+     kpi-glow, kpi-icon, kpi-stacked, kpi-split, kpi-pill, kpi-live
+   ============================================ */
+
+.kpi {
+  --k-bg: #14141e;
+  --k-bg-2: #1f1f2e;
+  --k-fg: #f5f5fa;
+  --k-muted: rgba(245, 245, 250, 0.55);
+  --k-line: rgba(255, 255, 255, 0.08);
+  --k-accent: #8b5cf6;
+  --k-up: #10b981;
+  --k-down: #ef4444;
+  --k-radius: 14px;
+  display: grid; gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  background: var(--k-bg);
+  border: 1px solid var(--k-line);
+  border-radius: var(--k-radius);
+  color: var(--k-fg);
+  min-width: 200px;
+  font-family: inherit;
+}
+.kpi-label { font-size: 0.72rem; color: var(--k-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.kpi-val { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.kpi-val small { font-size: 0.85rem; color: var(--k-muted); font-weight: 500; margin-left: 0.15em; }
+.kpi-delta { font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.25rem; }
+.kpi-delta.up { color: var(--k-up); }
+.kpi-delta.down { color: var(--k-down); }
+.kpi-delta.up::before { content: '↑'; }
+.kpi-delta.down::before { content: '↓'; }
+
+/* 1. CLEAN — Label, value, delta */
+.kpi-clean { /* default */ }
+
+/* 2. TREND — Big sparkline next to value */
+.kpi-trend {
+  grid-template-columns: 1fr 80px;
+  align-items: end;
+}
+.kpi-trend-spark {
+  height: 50px; grid-column: 2;
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.3), transparent);
+  clip-path: polygon(0 70%, 15% 60%, 30% 75%, 45% 50%, 60% 55%, 75% 30%, 100% 10%, 100% 100%, 0 100%);
+}
+
+/* 3. SPARK BAR — Mini bar chart row */
+.kpi-spark-bars {
+  display: flex; align-items: end; gap: 2px; height: 28px; margin-top: 0.3rem;
+}
+.kpi-spark-bars > i {
+  flex: 1; min-width: 3px;
+  height: var(--h, 50%);
+  background: var(--k-accent);
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
+/* 4. RING — Conic progress ring */
+.kpi-ring {
+  grid-template-columns: 60px 1fr;
+  align-items: center; gap: 0.8rem;
+}
+.kpi-ring-vis {
+  --pct: 65;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: conic-gradient(var(--k-accent) calc(var(--pct) * 1%), rgba(255,255,255,0.08) 0);
+  position: relative;
+  display: grid; place-items: center;
+  grid-row: span 3;
+}
+.kpi-ring-vis::before {
+  content: ''; position: absolute; inset: 8px;
+  background: var(--k-bg); border-radius: 50%;
+}
+.kpi-ring-vis-num {
+  position: relative;
+  font-size: 0.82rem; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+
+/* 5. BAR — Inline progress bar */
+.kpi-bar-track {
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 0.3rem;
+}
+.kpi-bar-track > i {
+  display: block;
+  height: 100%;
+  width: var(--p, 60%);
+  background: linear-gradient(90deg, var(--k-accent), #ec4899);
+  border-radius: inherit;
+}
+
+/* 6. COMPARE — Big number + small "vs prev" */
+.kpi-compare {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+}
+.kpi-compare-vs {
+  font-size: 0.72rem; color: var(--k-muted);
+  text-align: right;
+}
+.kpi-compare-vs b { display: block; color: var(--k-fg); font-weight: 600; }
+
+/* 7. GLOW — Featured tile with corner gradient + accent border */
+.kpi-glow {
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(139, 92, 246, 0.15), transparent 60%),
+    var(--k-bg);
+}
+.kpi-glow::after {
+  content: ''; position: absolute;
+  top: -50%; right: -30%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent 60%);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+/* 8. ICON — Leading icon */
+.kpi-icon {
+  grid-template-columns: 40px 1fr;
+  gap: 0.7rem;
+  align-items: center;
+}
+.kpi-icon-vis {
+  grid-row: span 3;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--k-accent);
+  display: grid; place-items: center;
+  font-size: 1.1rem;
+}
+
+/* 9. STACKED — Multiple metrics stacked */
+.kpi-stacked { padding: 0.7rem 1rem; }
+.kpi-stacked-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.3rem 0;
+}
+.kpi-stacked-row + .kpi-stacked-row { border-top: 1px solid var(--k-line); }
+.kpi-stacked-row span { color: var(--k-muted); font-size: 0.78rem; }
+.kpi-stacked-row b { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* 10. SPLIT — Two metrics side by side */
+.kpi-split {
+  grid-template-columns: 1fr 1px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+.kpi-split-sep { background: var(--k-line); align-self: stretch; }
+.kpi-split-half { display: grid; gap: 0.2rem; }
+.kpi-split-val { font-size: 1.4rem; font-weight: 700; }
+
+/* 11. PILL — Compact pill shape */
+.kpi-pill {
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  align-items: center; gap: 0.5rem;
+  min-width: 0;
+}
+.kpi-pill .kpi-label { letter-spacing: 0.02em; text-transform: none; font-size: 0.78rem; }
+.kpi-pill .kpi-val { font-size: 1rem; font-weight: 700; }
+
+/* 12. LIVE — Animated pulse dot */
+.kpi-live-head {
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.kpi-live-head::before {
+  content: ''; width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--k-up);
+  box-shadow: 0 0 0 0 var(--k-up);
+  animation: kpi-pulse 1.6s ease-out infinite;
+}
+@keyframes kpi-pulse {
+  0%   { box-shadow: 0 0 0 0 currentColor; }
+  100% { box-shadow: 0 0 0 8px transparent; }
+}
+
+/* Sizes */
+.kpi-sm { padding: 0.7rem 0.9rem; min-width: 140px; }
+.kpi-sm .kpi-val { font-size: 1.4rem; }
+.kpi-lg .kpi-val { font-size: 2.6rem; }
+
+/* Light variant */
+.kpi-light {
+  --k-bg: #fff;
+  --k-bg-2: #f9fafb;
+  --k-fg: #111827;
+  --k-muted: rgba(17, 24, 39, 0.55);
+  --k-line: rgba(17, 24, 39, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kpi-live-head::before { animation: none; }
+}

@@ -1,0 +1,259 @@
+/* ============================================
+   EDITOR PACK — 6 code-editor / IDE chrome patterns
+   find-replace bar, goto-line bar, tab-overflow strip, gutter-mark,
+   git-status-strip, breadcrumb-path
+   ============================================ */
+
+:where(.ep-find, .ep-goto, .ep-tabs, .ep-gut, .ep-git, .ep-bread) {
+  --e-bg: #0f0f1a;
+  --e-bg-2: #1a1a25;
+  --e-fg: #e5e7eb;
+  --e-muted: rgba(229, 231, 235, 0.5);
+  --e-line: rgba(255, 255, 255, 0.06);
+  --e-accent: #8b5cf6;
+  --e-up: #10b981;
+  --e-warn: #f59e0b;
+  --e-down: #ef4444;
+  color: var(--e-fg);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* 1. FIND / REPLACE BAR */
+.ep-find {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--e-bg-2);
+  border: 1px solid var(--e-line);
+  border-radius: 8px;
+  width: 100%; max-width: 480px;
+  font-size: 0.84rem;
+}
+.ep-find-row {
+  display: flex; align-items: center; gap: 0.3rem;
+  background: var(--e-bg);
+  border: 1px solid var(--e-line);
+  border-radius: 6px;
+  padding: 0.2rem 0.4rem;
+}
+.ep-find-input {
+  flex: 1; min-width: 0;
+  background: transparent; border: 0; outline: 0;
+  color: var(--e-fg);
+  font: inherit;
+  padding: 0.3rem 0.2rem;
+}
+.ep-find-count {
+  font-size: 0.74rem;
+  color: var(--e-muted);
+  font-variant-numeric: tabular-nums;
+  padding: 0 0.3rem;
+}
+.ep-find-btn {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--e-muted);
+  width: 22px; height: 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  font: inherit; font-size: 0.78rem;
+}
+.ep-find-btn:hover { background: rgba(255, 255, 255, 0.08); color: var(--e-fg); }
+.ep-find-btn.is-on { background: rgba(139,92,246,0.2); color: var(--e-accent); }
+.ep-find-row-replace { grid-column: 1 / -1; }
+.ep-find-actions { grid-column: 1 / -1; display: flex; gap: 0.4rem; justify-content: flex-end; padding-top: 0.3rem; }
+.ep-find-actions button {
+  padding: 0.2rem 0.6rem;
+  background: var(--e-bg);
+  border: 1px solid var(--e-line);
+  color: var(--e-fg);
+  border-radius: 4px;
+  font: inherit; font-size: 0.78rem;
+  cursor: pointer;
+}
+.ep-find-actions .replace-all { background: var(--e-accent); color: #fff; border-color: transparent; }
+
+/* 2. GOTO LINE BAR */
+.ep-goto {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.4rem 0.7rem;
+  background: var(--e-bg-2);
+  border: 1px solid var(--e-line);
+  border-radius: 8px;
+  width: 100%; max-width: 320px;
+}
+.ep-goto-icon {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  background: rgba(139,92,246,0.15); color: var(--e-accent);
+  display: grid; place-items: center;
+  font-size: 0.7rem; font-weight: 700;
+}
+.ep-goto-input {
+  flex: 1; background: transparent; border: 0; outline: 0;
+  color: var(--e-fg);
+  font: inherit; font-size: 0.88rem;
+}
+.ep-goto-hint {
+  font-size: 0.7rem; color: var(--e-muted);
+}
+
+/* 3. TAB OVERFLOW STRIP — VSCode-style file tabs */
+.ep-tabs {
+  display: flex;
+  background: var(--e-bg);
+  border-bottom: 1px solid var(--e-line);
+  position: relative;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.ep-tabs::-webkit-scrollbar { height: 4px; }
+.ep-tabs::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+.ep-tab {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.82rem;
+  color: var(--e-muted);
+  background: transparent;
+  border: 0; border-right: 1px solid var(--e-line);
+  cursor: pointer;
+  white-space: nowrap;
+  max-width: 200px;
+  font: inherit;
+}
+.ep-tab:hover { color: var(--e-fg); }
+.ep-tab.is-active {
+  background: var(--e-bg-2);
+  color: var(--e-fg);
+  border-top: 2px solid var(--e-accent);
+  padding-top: calc(0.5rem - 2px);
+}
+.ep-tab-name { overflow: hidden; text-overflow: ellipsis; }
+.ep-tab.dirty .ep-tab-name::after {
+  content: ' •';
+  color: var(--e-warn);
+}
+.ep-tab-close {
+  width: 16px; height: 16px;
+  display: grid; place-items: center;
+  border-radius: 3px;
+  background: transparent;
+  border: 0; padding: 0;
+  color: var(--e-muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+.ep-tab-close:hover { background: rgba(255,255,255,0.1); opacity: 1; }
+.ep-tab-pin {
+  font-size: 0.65rem;
+}
+.ep-tab-overflow {
+  margin-left: auto;
+  padding: 0.5rem 0.7rem;
+  color: var(--e-muted);
+  background: var(--e-bg);
+  border: 0; cursor: pointer;
+}
+
+/* 4. GUTTER MARKS — Line-number gutter with diff/error marks */
+.ep-gut {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  background: var(--e-bg);
+  padding: 0.5rem 0;
+  border-right: 1px solid var(--e-line);
+  user-select: none;
+  text-align: right;
+  min-width: 56px;
+}
+.ep-gut-line {
+  display: grid;
+  grid-template-columns: 1fr 8px;
+  gap: 0.4rem;
+  padding: 0.05rem 0.5rem 0.05rem 0.7rem;
+  color: var(--e-muted);
+}
+.ep-gut-line.has-error,
+.ep-gut-line.has-warn {
+  color: var(--e-fg);
+}
+.ep-gut-mark {
+  width: 8px;
+  border-radius: 0 2px 2px 0;
+}
+.ep-gut-line.add .ep-gut-mark    { background: var(--e-up); }
+.ep-gut-line.del .ep-gut-mark    { background: var(--e-down); }
+.ep-gut-line.mod .ep-gut-mark    { background: var(--e-warn); }
+.ep-gut-line.has-error .ep-gut-mark { background: var(--e-down); border-radius: 50%; height: 6px; width: 6px; align-self: center; margin: auto; }
+.ep-gut-line.has-warn .ep-gut-mark  { background: var(--e-warn); border-radius: 50%; height: 6px; width: 6px; align-self: center; margin: auto; }
+.ep-gut-line.is-current {
+  background: rgba(139,92,246,0.12);
+  color: var(--e-fg);
+}
+
+/* 5. GIT STATUS STRIP — File diff status badges */
+.ep-git {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  background: var(--e-bg-2);
+  border: 1px solid var(--e-line);
+  border-radius: 6px;
+  font-size: 0.78rem;
+}
+.ep-git-branch {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  color: var(--e-fg);
+}
+.ep-git-branch::before { content: 'ᚦ'; color: var(--e-accent); font-weight: 700; }
+.ep-git-counts { display: flex; gap: 0.3rem; }
+.ep-git-counts span { font-variant-numeric: tabular-nums; }
+.ep-git-ahead   { color: var(--e-up); }
+.ep-git-ahead::before  { content: '↑'; margin-right: 0.1rem; }
+.ep-git-behind  { color: var(--e-warn); }
+.ep-git-behind::before { content: '↓'; margin-right: 0.1rem; }
+.ep-git-mod     { color: var(--e-warn); }
+.ep-git-mod::before    { content: 'M '; }
+.ep-git-add     { color: var(--e-up); }
+.ep-git-add::before    { content: 'A '; }
+.ep-git-del     { color: var(--e-down); }
+.ep-git-del::before    { content: 'D '; }
+.ep-git-unt     { color: var(--e-muted); }
+.ep-git-unt::before    { content: 'U '; }
+
+/* 6. BREADCRUMB PATH — File path breadcrumbs */
+.ep-bread {
+  display: inline-flex; align-items: center;
+  flex-wrap: nowrap;
+  padding: 0.3rem 0.7rem;
+  background: var(--e-bg-2);
+  border: 1px solid var(--e-line);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  gap: 0.2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  max-width: 100%;
+}
+.ep-bread::-webkit-scrollbar { display: none; }
+.ep-bread-seg {
+  color: var(--e-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.ep-bread-seg:hover { background: rgba(255,255,255,0.04); color: var(--e-fg); }
+.ep-bread-seg.is-current { color: var(--e-fg); font-weight: 600; }
+.ep-bread-sep {
+  color: var(--e-muted);
+  opacity: 0.6;
+}
+.ep-bread-sep::before { content: '›'; }
+.ep-bread-fn {
+  color: var(--e-accent);
+  font-weight: 600;
+}
