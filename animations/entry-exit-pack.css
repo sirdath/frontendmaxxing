@@ -1,0 +1,147 @@
+/* ============================================
+   ENTRY EXIT PACK — Element entry / exit animation utilities
+   ============================================
+   Usage:
+     <div class="ee ee-fade-in">…</div>
+     // Modifiers: ee-delay-100..1000, ee-fast, ee-slow, ee-stagger-N
+
+   Animations:
+     fade-in, fade-out, fade-up, fade-down, fade-left, fade-right,
+     zoom-in, zoom-out, scale-in, scale-out, blur-in, blur-out,
+     slide-in-up/down/left/right, slide-out-up/down/left/right,
+     rotate-in, rotate-out, bounce-in, bounce-out, flip-in-x, flip-in-y,
+     wipe-in-right, wipe-in-bottom, expand-in, collapse-out
+   ============================================ */
+
+.ee {
+  --ee-dur: 0.55s;
+  --ee-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --ee-d: 0s;
+  animation-duration: var(--ee-dur);
+  animation-fill-mode: both;
+  animation-timing-function: var(--ee-ease);
+  animation-delay: var(--ee-d);
+}
+.ee-fast { --ee-dur: 0.3s; }
+.ee-slow { --ee-dur: 1.1s; }
+
+.ee-delay-100  { --ee-d: 0.1s; }
+.ee-delay-200  { --ee-d: 0.2s; }
+.ee-delay-300  { --ee-d: 0.3s; }
+.ee-delay-500  { --ee-d: 0.5s; }
+.ee-delay-700  { --ee-d: 0.7s; }
+.ee-delay-1000 { --ee-d: 1s; }
+
+/* Stagger via :nth-child */
+.ee-stagger > .ee:nth-child(1) { --ee-d: 0s; }
+.ee-stagger > .ee:nth-child(2) { --ee-d: 0.08s; }
+.ee-stagger > .ee:nth-child(3) { --ee-d: 0.16s; }
+.ee-stagger > .ee:nth-child(4) { --ee-d: 0.24s; }
+.ee-stagger > .ee:nth-child(5) { --ee-d: 0.32s; }
+.ee-stagger > .ee:nth-child(6) { --ee-d: 0.4s; }
+.ee-stagger > .ee:nth-child(7) { --ee-d: 0.48s; }
+.ee-stagger > .ee:nth-child(8) { --ee-d: 0.56s; }
+.ee-stagger > .ee:nth-child(n+9) { --ee-d: 0.64s; }
+
+/* Entry */
+.ee-fade-in    { animation-name: ee-fade-in; }
+.ee-fade-up    { animation-name: ee-fade-up; }
+.ee-fade-down  { animation-name: ee-fade-down; }
+.ee-fade-left  { animation-name: ee-fade-left; }
+.ee-fade-right { animation-name: ee-fade-right; }
+.ee-zoom-in    { animation-name: ee-zoom-in; }
+.ee-scale-in   { animation-name: ee-scale-in; animation-timing-function: cubic-bezier(0.32, 1.4, 0.5, 1); }
+.ee-blur-in    { animation-name: ee-blur-in; }
+.ee-slide-in-up    { animation-name: ee-slide-in-up; }
+.ee-slide-in-down  { animation-name: ee-slide-in-down; }
+.ee-slide-in-left  { animation-name: ee-slide-in-left; }
+.ee-slide-in-right { animation-name: ee-slide-in-right; }
+.ee-rotate-in  { animation-name: ee-rotate-in; }
+.ee-bounce-in  { animation-name: ee-bounce-in; animation-timing-function: cubic-bezier(0.32, 1.5, 0.5, 1); }
+.ee-flip-in-x  { animation-name: ee-flip-x; }
+.ee-flip-in-y  { animation-name: ee-flip-y; }
+.ee-wipe-in-right  { animation-name: ee-wipe-r; }
+.ee-wipe-in-bottom { animation-name: ee-wipe-b; }
+.ee-expand-in  { animation-name: ee-expand-in; }
+
+/* Exit */
+.ee-fade-out   { animation-name: ee-fade-out; }
+.ee-zoom-out   { animation-name: ee-zoom-out; }
+.ee-scale-out  { animation-name: ee-scale-out; }
+.ee-blur-out   { animation-name: ee-blur-out; }
+.ee-slide-out-up    { animation-name: ee-slide-out-up; }
+.ee-slide-out-down  { animation-name: ee-slide-out-down; }
+.ee-slide-out-left  { animation-name: ee-slide-out-left; }
+.ee-slide-out-right { animation-name: ee-slide-out-right; }
+.ee-rotate-out { animation-name: ee-rotate-out; }
+.ee-bounce-out { animation-name: ee-bounce-out; }
+.ee-collapse-out { animation-name: ee-collapse-out; }
+
+/* Keyframes */
+@keyframes ee-fade-in    { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ee-fade-out   { from { opacity: 1; } to { opacity: 0; } }
+@keyframes ee-fade-up    { from { opacity: 0; transform: translateY(20px); }  to { opacity: 1; transform: none; } }
+@keyframes ee-fade-down  { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: none; } }
+@keyframes ee-fade-left  { from { opacity: 0; transform: translateX(20px); }  to { opacity: 1; transform: none; } }
+@keyframes ee-fade-right { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: none; } }
+@keyframes ee-zoom-in    { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+@keyframes ee-zoom-out   { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.7); } }
+@keyframes ee-scale-in   { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
+@keyframes ee-scale-out  { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.4); } }
+@keyframes ee-blur-in    { from { opacity: 0; filter: blur(16px); } to { opacity: 1; filter: blur(0); } }
+@keyframes ee-blur-out   { from { opacity: 1; filter: blur(0); } to { opacity: 0; filter: blur(16px); } }
+@keyframes ee-slide-in-up    { from { opacity: 0; transform: translateY(60px); }  to { opacity: 1; transform: none; } }
+@keyframes ee-slide-in-down  { from { opacity: 0; transform: translateY(-60px); } to { opacity: 1; transform: none; } }
+@keyframes ee-slide-in-left  { from { opacity: 0; transform: translateX(60px); }  to { opacity: 1; transform: none; } }
+@keyframes ee-slide-in-right { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: none; } }
+@keyframes ee-slide-out-up    { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-60px); } }
+@keyframes ee-slide-out-down  { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(60px); } }
+@keyframes ee-slide-out-left  { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(-60px); } }
+@keyframes ee-slide-out-right { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(60px); } }
+@keyframes ee-rotate-in {
+  from { opacity: 0; transform: rotate(-180deg) scale(0.5); }
+  to   { opacity: 1; transform: rotate(0) scale(1); }
+}
+@keyframes ee-rotate-out {
+  from { opacity: 1; transform: rotate(0) scale(1); }
+  to   { opacity: 0; transform: rotate(180deg) scale(0.5); }
+}
+@keyframes ee-bounce-in {
+  0%   { opacity: 0; transform: scale(0.3); }
+  60%  { opacity: 1; transform: scale(1.1); }
+  80%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+@keyframes ee-bounce-out {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(0.95); }
+  100% { opacity: 0; transform: scale(0.3); }
+}
+@keyframes ee-flip-x {
+  from { opacity: 0; transform: perspective(800px) rotateX(-90deg); }
+  to   { opacity: 1; transform: perspective(800px) rotateX(0); }
+}
+@keyframes ee-flip-y {
+  from { opacity: 0; transform: perspective(800px) rotateY(-90deg); }
+  to   { opacity: 1; transform: perspective(800px) rotateY(0); }
+}
+@keyframes ee-wipe-r {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@keyframes ee-wipe-b {
+  from { clip-path: inset(100% 0 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@keyframes ee-expand-in {
+  from { opacity: 0; transform: scaleY(0); transform-origin: top; }
+  to   { opacity: 1; transform: scaleY(1); transform-origin: top; }
+}
+@keyframes ee-collapse-out {
+  from { opacity: 1; transform: scaleY(1); transform-origin: top; max-height: 1000px; }
+  to   { opacity: 0; transform: scaleY(0); transform-origin: top; max-height: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ee { animation: none !important; }
+}

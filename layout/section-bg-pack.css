@@ -1,0 +1,204 @@
+/* ============================================
+   SECTION BG PACK — 16 background patterns/decorations for sections
+   ============================================
+   Apply to <section> or any container with min-height.
+   ============================================ */
+
+.sbg {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #0a0a14;
+  color: #f5f5fa;
+  padding: 4rem 1.4rem;
+  min-height: 320px;
+}
+
+/* 1. Aurora */
+.sbg-aurora::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(139, 92, 246, 0.3), transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(236, 72, 153, 0.3), transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.18), transparent 60%);
+  filter: blur(60px);
+  z-index: -1;
+}
+
+/* 2. Mesh */
+.sbg-mesh {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(139,92,246,0.18), transparent 50%),
+    radial-gradient(circle at 100% 0%, rgba(236,72,153,0.18), transparent 50%),
+    radial-gradient(circle at 50% 100%, rgba(6,182,212,0.18), transparent 50%),
+    #0a0a14;
+}
+
+/* 3. Grid floor */
+.sbg-grid::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, transparent 49.5%, rgba(255,255,255,0.04) 50%, transparent 50.5%) 0/40px 40px,
+    linear-gradient(0deg, transparent 49.5%, rgba(255,255,255,0.04) 50%, transparent 50.5%) 0/40px 40px;
+  -webkit-mask: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+          mask: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  z-index: -1;
+}
+
+/* 4. Dots */
+.sbg-dots::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  -webkit-mask: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+          mask: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+  z-index: -1;
+}
+
+/* 5. Retro grid floor (synthwave) */
+.sbg-retro {
+  background: linear-gradient(180deg, #0a0a14 50%, #1a0a30 100%);
+}
+.sbg-retro::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0; height: 50%;
+  background:
+    linear-gradient(0deg, transparent 0%, transparent 95%, #ff006e 96%, #ff006e 100%) 0 0/100% 60px,
+    linear-gradient(90deg, transparent 0%, transparent 99%, rgba(255, 0, 110, 0.5) 100%) 0 0/40px 100%;
+  transform: perspective(400px) rotateX(60deg);
+  transform-origin: top;
+  z-index: -1;
+}
+
+/* 6. Conic burst */
+.sbg-conic::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: conic-gradient(from 0deg at 50% 100%,
+    #14141e 0deg, rgba(139,92,246,0.3) 90deg, #14141e 180deg);
+  z-index: -1;
+}
+
+/* 7. Spotlight from top */
+.sbg-spot::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 0;
+  transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: conic-gradient(from 180deg at 50% 0%, rgba(139,92,246,0.45) 0deg, transparent 90deg, transparent 270deg, rgba(139,92,246,0.45) 360deg);
+  filter: blur(40px);
+  z-index: -1;
+}
+
+/* 8. Stripes diagonal */
+.sbg-stripes::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg,
+    transparent 0 12px,
+    rgba(255,255,255,0.03) 12px 14px);
+  z-index: -1;
+}
+
+/* 9. Blob shapes */
+.sbg-blob {
+  background: #0a0a14;
+}
+.sbg-blob::before, .sbg-blob::after {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  z-index: -1;
+}
+.sbg-blob::before { background: #8b5cf6; top: 10%; left: 10%; }
+.sbg-blob::after  { background: #ec4899; bottom: 10%; right: 10%; }
+
+/* 10. Glow vertical */
+.sbg-vline::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.6) 50%, transparent);
+  z-index: -1;
+}
+
+/* 11. Noise grain */
+.sbg-grain::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.15 0'/></filter><rect width='100' height='100' filter='url(%23n)'/></svg>");
+  opacity: 0.4;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* 12. Wave-bottom */
+.sbg-wave {
+  padding-bottom: 8rem;
+}
+.sbg-wave::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 80px;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 80' preserveAspectRatio='none' fill='%2314141e'><path d='M0 80 C 300 0 900 0 1200 80 L 1200 80 L 0 80 Z'/></svg>") center bottom/100% 80px no-repeat;
+}
+
+/* 13. Triangle bottom (clip-path) */
+.sbg-clip-down {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 80px), 50% 100%, 0 calc(100% - 80px));
+}
+
+/* 14. Honeycomb */
+.sbg-hex::before {
+  content: '';
+  position: absolute; inset: 0;
+  --hc: rgba(255, 255, 255, 0.05);
+  background:
+    radial-gradient(circle at 50% 0, var(--hc) 8px, transparent 8.5px),
+    radial-gradient(circle at 0 50%, var(--hc) 8px, transparent 8.5px),
+    radial-gradient(circle at 100% 50%, var(--hc) 8px, transparent 8.5px),
+    radial-gradient(circle at 50% 100%, var(--hc) 8px, transparent 8.5px);
+  background-size: 60px 60px;
+  z-index: -1;
+}
+
+/* 15. Beam light */
+.sbg-beam::before {
+  content: '';
+  position: absolute;
+  width: 200px; height: 100vh;
+  left: 20%; top: -50%;
+  background: linear-gradient(180deg, rgba(139,92,246,0.4), transparent);
+  transform: rotate(20deg);
+  filter: blur(30px);
+  z-index: -1;
+}
+
+/* 16. Star scatter */
+.sbg-stars::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle 1px at 12% 24%, #fff 99%, transparent 100%),
+    radial-gradient(circle 1.5px at 38% 60%, #fff 99%, transparent 100%),
+    radial-gradient(circle 1px at 72% 18%, #fff 99%, transparent 100%),
+    radial-gradient(circle 1px at 88% 78%, #fff 99%, transparent 100%),
+    radial-gradient(circle 1.5px at 24% 86%, #fff 99%, transparent 100%),
+    radial-gradient(circle 1px at 56% 14%, #fff 99%, transparent 100%),
+    radial-gradient(circle 1px at 92% 42%, #fff 99%, transparent 100%),
+    radial-gradient(circle 1.5px at 8% 62%, #fff 99%, transparent 100%);
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  z-index: -1;
+}

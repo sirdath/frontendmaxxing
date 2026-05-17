@@ -1,0 +1,268 @@
+/* ============================================
+   BORDERS PACK 2 — 14 animated border effects (extends borders/animated-borders.css)
+   marching-ants, dashed-rotate, gradient-flow, color-wash, glow-pulse,
+   double-corner, neon-trace, conic-rotate, particle-border, snake-border,
+   stripe-shift, mosaic-corner, beam-trail, square-trace
+   ============================================ */
+
+.bd2 {
+  --b-c: #8b5cf6;
+  --b-c2: #ec4899;
+  --b-w: 2px;
+  position: relative;
+  padding: 1.4rem 1.6rem;
+  border-radius: 12px;
+  background: #14141e;
+  color: #f5f5fa;
+  font-family: inherit;
+  display: inline-block;
+}
+
+/* 1. MARCHING ANTS — Dashed border that scrolls */
+.bd2-ants {
+  background-image:
+    linear-gradient(90deg, var(--b-c) 50%, transparent 50%),
+    linear-gradient(90deg, var(--b-c) 50%, transparent 50%),
+    linear-gradient(0deg, var(--b-c) 50%, transparent 50%),
+    linear-gradient(0deg, var(--b-c) 50%, transparent 50%);
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: 16px var(--b-w), 16px var(--b-w), var(--b-w) 16px, var(--b-w) 16px;
+  background-position: 0 0, 0 100%, 0 0, 100% 0;
+  animation: bd2-ants 1.4s linear infinite;
+}
+@keyframes bd2-ants {
+  to {
+    background-position: 16px 0, -16px 100%, 0 -16px, 100% 16px;
+  }
+}
+
+/* 2. DASHED ROTATE — SVG-mask rotating dashed */
+.bd2-dash-rot {
+  border: var(--b-w) dashed var(--b-c);
+  animation: bd2-dash 4s linear infinite;
+}
+@keyframes bd2-dash {
+  to { background-position: 100% 0; }
+}
+
+/* 3. GRADIENT FLOW — Color flows around border */
+.bd2-flow {
+  background:
+    linear-gradient(#14141e, #14141e) padding-box,
+    linear-gradient(90deg, var(--b-c), var(--b-c2), var(--b-c)) border-box;
+  border: var(--b-w) solid transparent;
+  background-size: 200% 100%;
+  animation: bd2-flow 3s linear infinite;
+}
+@keyframes bd2-flow {
+  to { background-position: 0 0, 200% 0; }
+}
+
+/* 4. COLOR WASH */
+.bd2-wash {
+  border: var(--b-w) solid var(--b-c);
+  animation: bd2-wash 3s ease-in-out infinite;
+}
+@keyframes bd2-wash {
+  0%   { border-color: #8b5cf6; }
+  33%  { border-color: #ec4899; }
+  66%  { border-color: #06b6d4; }
+  100% { border-color: #8b5cf6; }
+}
+
+/* 5. GLOW PULSE */
+.bd2-glow {
+  border: var(--b-w) solid var(--b-c);
+  animation: bd2-glow 1.8s ease-in-out infinite;
+}
+@keyframes bd2-glow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--b-c), 0 0 10px 0 rgba(139,92,246,0.2); }
+  50%      { box-shadow: 0 0 0 4px rgba(139,92,246,0.18), 0 0 30px 2px rgba(139,92,246,0.4); }
+}
+
+/* 6. DOUBLE CORNER — Corner brackets only */
+.bd2-corner {
+  border: 0;
+  background:
+    linear-gradient(var(--b-c), var(--b-c)) top left,
+    linear-gradient(var(--b-c), var(--b-c)) top left,
+    linear-gradient(var(--b-c), var(--b-c)) top right,
+    linear-gradient(var(--b-c), var(--b-c)) top right,
+    linear-gradient(var(--b-c), var(--b-c)) bottom left,
+    linear-gradient(var(--b-c), var(--b-c)) bottom left,
+    linear-gradient(var(--b-c), var(--b-c)) bottom right,
+    linear-gradient(var(--b-c), var(--b-c)) bottom right,
+    #14141e;
+  background-size: 16px 2px, 2px 16px;
+  background-repeat: no-repeat;
+}
+
+/* 7. NEON TRACE — Single dot traces around */
+.bd2-neon {
+  border: var(--b-w) solid rgba(139,92,246,0.2);
+}
+.bd2-neon::before {
+  content: '';
+  position: absolute; inset: 0;
+  border: var(--b-w) solid transparent;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent 30%, var(--b-c) 50%, transparent 70%) border-box;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  animation: bd2-trace 3s linear infinite;
+}
+@keyframes bd2-trace {
+  0%   { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 8. CONIC ROTATE — Conic gradient rotates */
+.bd2-conic {
+  background: linear-gradient(#14141e, #14141e) padding-box,
+              conic-gradient(from 0deg, var(--b-c), var(--b-c2), var(--b-c)) border-box;
+  border: var(--b-w) solid transparent;
+}
+.bd2-conic::before {
+  content: '';
+  position: absolute; inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, var(--b-c), var(--b-c2), var(--b-c));
+  z-index: -1;
+  animation: bd2-spin 4s linear infinite;
+}
+@keyframes bd2-spin { to { transform: rotate(360deg); } }
+
+/* 9. PARTICLE BORDER — Floating particles */
+.bd2-particle {
+  border: 1px solid var(--b-c);
+  position: relative; overflow: hidden;
+}
+.bd2-particle::before, .bd2-particle::after {
+  content: '';
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--b-c);
+  filter: drop-shadow(0 0 6px var(--b-c));
+}
+.bd2-particle::before {
+  top: 50%; left: 0;
+  animation: bd2-p1 4s ease-in-out infinite;
+}
+.bd2-particle::after {
+  top: 50%; left: 100%;
+  animation: bd2-p2 4s ease-in-out infinite;
+}
+@keyframes bd2-p1 {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(40px); }
+}
+@keyframes bd2-p2 {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-40px); }
+}
+
+/* 10. SNAKE BORDER — Glowing snake traces around */
+.bd2-snake {
+  border: 1px solid rgba(139,92,246,0.15);
+  background: #14141e;
+  position: relative;
+}
+.bd2-snake::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from 0deg, transparent, transparent 270deg, var(--b-c) 290deg, var(--b-c2) 300deg, transparent 320deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  animation: bd2-spin 3s linear infinite;
+}
+
+/* 11. STRIPE SHIFT — Diagonal stripes shift */
+.bd2-stripe {
+  border: var(--b-w) solid;
+  border-image: repeating-linear-gradient(45deg, var(--b-c) 0 6px, transparent 6px 12px) 1;
+  animation: bd2-stripe 1s linear infinite;
+}
+@keyframes bd2-stripe {
+  to { border-image-source: repeating-linear-gradient(45deg, var(--b-c) -12px 6px, transparent 6px 12px); }
+}
+
+/* 12. MOSAIC CORNER — Mosaic corners */
+.bd2-mosaic {
+  border: 2px solid var(--b-c);
+  position: relative;
+}
+.bd2-mosaic::before, .bd2-mosaic::after {
+  content: '';
+  position: absolute;
+  width: 12px; height: 12px;
+  border: 2px solid var(--b-c2);
+}
+.bd2-mosaic::before { top: -8px; left: -8px; transform: rotate(45deg); }
+.bd2-mosaic::after { bottom: -8px; right: -8px; transform: rotate(45deg); }
+
+/* 13. BEAM TRAIL — Light beam runs along edges */
+.bd2-beam {
+  border: 1px solid rgba(139,92,246,0.18);
+  background: #14141e;
+  position: relative;
+  overflow: hidden;
+}
+.bd2-beam::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--b-c), transparent);
+  animation: bd2-beam 2.5s linear infinite;
+}
+@keyframes bd2-beam {
+  0%   { left: -100%; top: 0; }
+  25%  { left: 100%; top: 0; }
+  26%  { left: 100%; top: 100%; transform: translateX(0); }
+  50%  { left: 0; top: 100%; transform: translateX(-100%); }
+  100% { left: 0; top: 100%; transform: translateX(-100%); }
+}
+
+/* 14. SQUARE TRACE — Animated outline traces edges */
+.bd2-trace-sq {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(#14141e, #14141e) padding-box;
+  position: relative;
+}
+.bd2-trace-sq::before, .bd2-trace-sq::after {
+  content: '';
+  position: absolute;
+  background: var(--b-c);
+}
+.bd2-trace-sq::before {
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  animation: bd2-h 2s linear infinite;
+  transform-origin: left center;
+}
+.bd2-trace-sq::after {
+  bottom: 0; right: 0;
+  width: 2px; height: 100%;
+  animation: bd2-v 2s linear infinite;
+  animation-delay: 1s;
+  transform-origin: center top;
+}
+@keyframes bd2-h {
+  0%, 100% { transform: scaleX(0); }
+  50% { transform: scaleX(1); }
+}
+@keyframes bd2-v {
+  0%, 100% { transform: scaleY(0); }
+  50% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bd2, .bd2::before, .bd2::after { animation: none !important; }
+}

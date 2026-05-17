@@ -2550,3 +2550,17 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **permissions-pack.css** `components/permissions-pack.css` (CSS) — tags: permissions-pack permission-matrix role-card scope-tree indeterminate role-picker-dropdown permission-toggle role-comparison
   6 permission UI patterns: permission-matrix (resource × action w/ section dividers), role-card (perms list), scope-tree (nested w/ indeterminate state), role-picker-dropdown (with description), permission-inline-toggle (mono-name + desc), role-comparison (side-by-side).
+
+**Phase 29 — Final polish: dashboard-blocks / borders-2 / section-bg / entry-exit (4 files, ~52 patterns)**
+
+**dashboard-blocks.css** `components/dashboard-blocks.css` (CSS) — tags: dashboard-blocks revenue-overview top-products recent-orders user-acquisition region-stats conversion-funnel retention-cohort leaderboard
+  8 pre-built dashboard sections: revenue-overview (number + delta + area chart), top-products-table (ranked w/ thumb + sales), recent-orders-table (status pills), user-acquisition-channel-bars, region-stats (flag rows), conversion-funnel mini (5 tapering steps), retention-cohort grid (12-week heatmap), leaderboard (rank colors gold/silver/bronze).
+
+**borders-pack-2.css** `effects/borders-pack-2.css` (CSS) — tags: borders-pack-2 marching-ants dashed-rotate gradient-flow color-wash glow-pulse double-corner neon-trace conic-rotate particle-border snake-border stripe-shift mosaic-corner beam-trail square-trace animated
+  14 animated border effects: marching-ants (scrolling dashes), dashed-rotate, gradient-flow (color flows around), color-wash (cycles hue), glow-pulse, double-corner brackets, neon-trace (dot orbits), conic-rotate, particle-border, snake-border (gradient sweep), stripe-shift, mosaic-corner, beam-trail, square-trace.
+
+**section-bg-pack.css** `layout/section-bg-pack.css` (CSS) — tags: section-bg-pack aurora mesh grid dots retro spotlight conic stripes blob vline grain wave clip-down honeycomb beam stars synthwave
+  16 section background presets: aurora (3 radial), mesh (3 corners), grid floor, dots, retro synthwave, conic burst, spotlight from top, diagonal stripes, blob shapes, vline glow, noise grain (SVG turbulence), wave bottom, clip-down triangle, honeycomb, light beam, star scatter.
+
+**entry-exit-pack.css** `animations/entry-exit-pack.css` (CSS) — tags: entry-exit-pack fade zoom scale blur slide rotate bounce flip wipe expand collapse delay stagger reusable utility
+  ~28 entry/exit animation utilities: fade-in/out, fade-up/down/left/right, zoom-in/out, scale-in/out, blur-in/out, slide-in/out (4 directions), rotate-in/out, bounce-in/out, flip-in-x/y, wipe-in (right/bottom), expand-in, collapse-out. Modifiers: fast/slow, delay-100-1000, stagger via :nth-child.

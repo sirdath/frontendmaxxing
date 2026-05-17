@@ -1,0 +1,252 @@
+/* ============================================
+   DASHBOARD BLOCKS — 8 pre-built dashboard sections
+   revenue-overview, top-products-table, recent-orders-table, user-acquisition-chart,
+   region-stats, conversion-funnel-mini, retention-cohort-grid, leaderboard
+   ============================================ */
+
+:where(.db) {
+  --d-bg: #14141e;
+  --d-bg-2: #1f1f2e;
+  --d-fg: #f5f5fa;
+  --d-muted: rgba(245, 245, 250, 0.55);
+  --d-line: rgba(255, 255, 255, 0.08);
+  --d-accent: #8b5cf6;
+  --d-good: #10b981;
+  --d-bad: #ef4444;
+  --d-warn: #f59e0b;
+  background: var(--d-bg);
+  border: 1px solid var(--d-line);
+  border-radius: 14px;
+  padding: 1.2rem 1.4rem;
+  color: var(--d-fg);
+  font-family: inherit;
+}
+.db-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem; }
+.db-title { font-weight: 700; font-size: 1rem; margin: 0; }
+.db-action { font-size: 0.78rem; color: var(--d-accent); cursor: pointer; text-decoration: none; }
+
+/* 1. REVENUE OVERVIEW */
+.db-rev {
+  width: 100%; max-width: 540px;
+}
+.db-rev-amt { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.db-rev-delta { font-size: 0.85rem; color: var(--d-good); font-weight: 600; }
+.db-rev-delta::before { content: '↑ '; }
+.db-rev-delta.down { color: var(--d-bad); }
+.db-rev-delta.down::before { content: '↓ '; }
+.db-rev-chart {
+  margin-top: 1rem; height: 120px;
+  background: linear-gradient(180deg, rgba(139,92,246,0.3), transparent);
+  clip-path: polygon(0 80%, 8% 60%, 16% 75%, 24% 50%, 32% 55%, 40% 30%, 48% 40%, 56% 25%, 64% 35%, 72% 20%, 80% 15%, 88% 30%, 100% 10%, 100% 100%, 0 100%);
+  position: relative;
+}
+.db-rev-chart::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-top: 2px solid var(--d-accent);
+  clip-path: polygon(0 80%, 8% 60%, 16% 75%, 24% 50%, 32% 55%, 40% 30%, 48% 40%, 56% 25%, 64% 35%, 72% 20%, 80% 15%, 88% 30%, 100% 10%, 100% 100%, 0 100%);
+}
+.db-rev-axis {
+  display: flex; justify-content: space-between;
+  margin-top: 0.4rem;
+  font-size: 0.7rem; color: var(--d-muted);
+}
+
+/* 2. TOP PRODUCTS TABLE */
+.db-top {
+  width: 100%; max-width: 480px;
+}
+.db-top-list { display: grid; gap: 0.4rem; }
+.db-top-row {
+  display: grid;
+  grid-template-columns: 28px 36px 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+}
+.db-top-row:hover { background: rgba(255,255,255,0.03); }
+.db-top-rank {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--d-bg-2);
+  color: var(--d-muted);
+  display: grid; place-items: center;
+  font-size: 0.78rem; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.db-top-row:nth-child(-n+3) .db-top-rank { background: var(--d-accent); color: #fff; }
+.db-top-thumb {
+  width: 36px; height: 36px; border-radius: 6px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.db-top-name { font-weight: 500; font-size: 0.88rem; }
+.db-top-sales { font-size: 0.72rem; color: var(--d-muted); }
+.db-top-amt { font-weight: 700; font-variant-numeric: tabular-nums; font-size: 0.92rem; }
+
+/* 3. RECENT ORDERS TABLE */
+.db-orders {
+  width: 100%; max-width: 720px;
+}
+.db-orders table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.85rem; }
+.db-orders th, .db-orders td {
+  text-align: left;
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid var(--d-line);
+}
+.db-orders th {
+  background: var(--d-bg-2);
+  font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--d-muted); font-weight: 600;
+}
+.db-orders tr:last-child td { border-bottom: 0; }
+.db-orders-status {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.66rem; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.db-orders-status.paid { background: rgba(16,185,129,0.15); color: var(--d-good); }
+.db-orders-status.pending { background: rgba(245,158,11,0.15); color: var(--d-warn); }
+.db-orders-status.refund { background: rgba(239,68,68,0.15); color: var(--d-bad); }
+.db-orders-amt { font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; }
+
+/* 4. USER ACQUISITION — Channel bars */
+.db-ua {
+  width: 100%; max-width: 380px;
+}
+.db-ua-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 50px;
+  gap: 0.7rem;
+  align-items: center;
+  margin: 0.45rem 0;
+  font-size: 0.85rem;
+}
+.db-ua-label { color: var(--d-muted); }
+.db-ua-bar { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+.db-ua-bar > i { display: block; height: 100%; width: var(--p, 60%); background: var(--d-accent); }
+.db-ua-row:nth-child(2) .db-ua-bar > i { background: #ec4899; }
+.db-ua-row:nth-child(3) .db-ua-bar > i { background: #06b6d4; }
+.db-ua-row:nth-child(4) .db-ua-bar > i { background: #f59e0b; }
+.db-ua-row:nth-child(5) .db-ua-bar > i { background: #10b981; }
+.db-ua-amt {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* 5. REGION STATS — Country list w/ flags */
+.db-region {
+  width: 100%; max-width: 380px;
+}
+.db-region-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--d-line);
+  font-size: 0.85rem;
+}
+.db-region-row:last-child { border-bottom: 0; }
+.db-region-flag {
+  width: 28px; height: 20px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #ef4444 50%, #fff 50%);
+  border: 1px solid var(--d-line);
+}
+.db-region-name { font-weight: 500; }
+.db-region-count { color: var(--d-muted); font-variant-numeric: tabular-nums; }
+.db-region-pct { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* 6. CONVERSION FUNNEL (mini) */
+.db-funnel {
+  width: 100%; max-width: 320px;
+}
+.db-funnel-step {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.45rem 0.7rem;
+  background: var(--d-accent);
+  color: #fff;
+  margin: 0 auto 0.3rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.db-funnel-step:nth-child(1) { width: 100%; }
+.db-funnel-step:nth-child(2) { width: 85%; background: rgba(139,92,246,0.85); }
+.db-funnel-step:nth-child(3) { width: 65%; background: rgba(139,92,246,0.7); }
+.db-funnel-step:nth-child(4) { width: 45%; background: rgba(139,92,246,0.55); }
+.db-funnel-step:nth-child(5) { width: 25%; background: rgba(139,92,246,0.4); }
+.db-funnel-val { font-variant-numeric: tabular-nums; }
+.db-funnel-drop {
+  font-size: 0.7rem; color: var(--d-muted);
+  text-align: center;
+  margin: 0.2rem 0 0.4rem;
+}
+
+/* 7. RETENTION COHORT GRID */
+.db-cohort {
+  width: 100%; max-width: 540px;
+}
+.db-cohort-grid {
+  display: grid;
+  grid-template-columns: 60px repeat(12, 1fr);
+  gap: 2px;
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+.db-cohort-head {
+  text-align: center;
+  color: var(--d-muted);
+  padding: 0.3rem 0;
+}
+.db-cohort-label {
+  text-align: right;
+  color: var(--d-muted);
+  padding-right: 0.4rem;
+  align-self: center;
+}
+.db-cohort-cell {
+  aspect-ratio: 1.4;
+  display: grid; place-items: center;
+  background: var(--v, rgba(139,92,246,0.08));
+  border-radius: 2px;
+  color: rgba(255,255,255,0.85);
+}
+
+/* 8. LEADERBOARD */
+.db-board {
+  width: 100%; max-width: 380px;
+}
+.db-board-row {
+  display: grid;
+  grid-template-columns: 32px 32px 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.5rem 0.4rem;
+  border-radius: 6px;
+}
+.db-board-row:hover { background: rgba(255,255,255,0.03); }
+.db-board-rank {
+  font-weight: 800;
+  font-size: 0.92rem;
+  color: var(--d-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.db-board-row:nth-child(1) .db-board-rank { color: #fbbf24; }
+.db-board-row:nth-child(2) .db-board-rank { color: #d1d5db; }
+.db-board-row:nth-child(3) .db-board-rank { color: #b45309; }
+.db-board-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.db-board-name { font-weight: 600; font-size: 0.88rem; }
+.db-board-pts { font-weight: 700; font-variant-numeric: tabular-nums; }
+.db-board-pts::after { content: ' pts'; font-size: 0.72rem; color: var(--d-muted); font-weight: 500; }
