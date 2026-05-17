@@ -1,0 +1,165 @@
+/* ============================================
+   IMAGE GALLERY PRO — Pro lightbox + thumb grid + pinch zoom
+   Distinct from existing media/lightbox + components/image-crop
+   ============================================
+   Usage:
+     <div class="igp" data-igp>
+       <div class="igp-grid">
+         <div class="igp-tile" data-full="path/to/full.jpg"></div>
+         …
+       </div>
+       <div class="igp-overlay">
+         <button class="igp-close">×</button>
+         <button class="igp-prev">‹</button>
+         <button class="igp-next">›</button>
+         <div class="igp-stage">
+           <img class="igp-img">
+         </div>
+         <div class="igp-caption"></div>
+         <div class="igp-strip"></div>
+       </div>
+     </div>
+   ============================================ */
+
+.igp {
+  --i-bg: rgba(0, 0, 0, 0.92);
+  --i-fg: #fff;
+  --i-muted: rgba(255, 255, 255, 0.6);
+  --i-accent: #8b5cf6;
+}
+
+/* Grid of tiles */
+.igp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.4rem;
+}
+.igp-tile {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border-radius: 8px;
+  cursor: zoom-in;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s ease;
+}
+.igp-tile:nth-child(3n) { background: linear-gradient(135deg, #06b6d4, #8b5cf6); }
+.igp-tile:nth-child(5n) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.igp-tile:hover { transform: scale(1.03); }
+.igp-tile::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.5));
+  opacity: 0; transition: opacity 0.18s ease;
+}
+.igp-tile:hover::after { opacity: 1; }
+
+/* Overlay (lightbox) */
+.igp-overlay {
+  position: fixed; inset: 0;
+  background: var(--i-bg);
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  z-index: 200;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.igp.is-open .igp-overlay {
+  opacity: 1; pointer-events: auto;
+}
+.igp-close, .igp-prev, .igp-next {
+  position: absolute;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0;
+  color: var(--i-fg);
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: grid; place-items: center;
+  z-index: 3;
+  backdrop-filter: blur(12px);
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.igp-close { top: 16px; right: 16px; }
+.igp-prev  { top: 50%; left: 16px;  transform: translateY(-50%); }
+.igp-next  { top: 50%; right: 16px; transform: translateY(-50%); }
+.igp-close:hover { background: rgba(255,255,255,0.18); }
+.igp-prev:hover  { background: rgba(255,255,255,0.18); transform: translateY(-50%) scale(1.1); }
+.igp-next:hover  { background: rgba(255,255,255,0.18); transform: translateY(-50%) scale(1.1); }
+
+.igp-stage {
+  position: relative;
+  overflow: hidden;
+  display: grid; place-items: center;
+  padding: 1.4rem 4rem;
+  touch-action: none;
+}
+.igp-img {
+  max-width: 100%; max-height: 100%;
+  border-radius: 6px;
+  transform-origin: var(--ox, 50%) var(--oy, 50%);
+  transform: scale(var(--sc, 1));
+  transition: transform 0.2s ease;
+  cursor: grab;
+  user-select: none;
+}
+.igp.is-zoomed .igp-img { cursor: grabbing; transition: none; }
+
+.igp-caption {
+  text-align: center;
+  color: var(--i-muted);
+  font-size: 0.88rem;
+  padding: 0.4rem 1rem;
+}
+.igp-counter {
+  position: absolute;
+  top: 16px; left: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: var(--i-fg);
+  backdrop-filter: blur(12px);
+}
+
+/* Bottom thumb strip */
+.igp-strip {
+  display: flex; gap: 0.4rem;
+  padding: 0.8rem 1rem 1rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  justify-content: center;
+}
+.igp-strip::-webkit-scrollbar { display: none; }
+.igp-strip-thumb {
+  flex: 0 0 56px;
+  height: 56px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  cursor: pointer;
+  opacity: 0.6;
+  border: 2px solid transparent;
+  transition: opacity 0.18s ease, border-color 0.18s ease;
+}
+.igp-strip-thumb:nth-child(3n) { background: linear-gradient(135deg, #06b6d4, #8b5cf6); }
+.igp-strip-thumb:nth-child(5n) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.igp-strip-thumb:hover { opacity: 0.85; }
+.igp-strip-thumb.is-active { opacity: 1; border-color: var(--i-accent); }
+
+/* Pinch-zoom controls */
+.igp-zoom {
+  position: absolute;
+  bottom: 80px; right: 16px;
+  display: flex; flex-direction: column; gap: 0.3rem;
+  z-index: 3;
+}
+.igp-zoom button {
+  width: 36px; height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0; color: var(--i-fg);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  backdrop-filter: blur(12px);
+}

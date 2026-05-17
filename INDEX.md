@@ -2282,3 +2282,65 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **editor-pack.js** `components/editor-pack.js` (JS, global: `EditorPack`) — tags: editor-pack find replace regex case-sensitive whole-word match navigation tabs close goto-line
   `EditorPack.find({text, onMatch, onReplace})` (real regex search with case/whole/regex toggles + match navigation), `.tabs({onSelect, onClose})` (active state + close-x), `.goto({onSubmit, onCancel})` (Enter/Escape).
+
+**Phase 21 — Comprehensive sweep: animations / commerce / email / whiteboard / 3D scenes / onboarding / heroes (24 files, ~150 patterns)**
+
+**keyframes-pack-2.css** `animations/keyframes-pack-2.css` (CSS) — tags: keyframes-pack-2 animations jelly rubber jello wobble swing tada bounce-strong heartbeat pop-in pop-out slide-in-up slide-in-down slide-in-left slide-in-right slide-out fade zoom flip-x flip-y hinge roll-in light-speed blur drop-in delay fast slow infinite
+  30+ named keyframe utilities with delay/duration/iteration modifiers. Apply `.kf2 .kf2-<name>` and optional `.kf2-fast/slow/infinite/delay-100…1000`.
+
+**lottie-look.css** `animations/lottie-look.css` (CSS) — tags: lottie-look css-only success-check error-cross spinner-orb heart-burst confetti rocket bell-shake thumbs-up clock-spin cloud-rain illustration animated
+  10 CSS-only animated illustrations mimicking common Lottie scenes. `.lot .lot-check / -cross / -spinner-orb / -heart-burst / -confetti-burst / -rocket / -bell-shake / -thumbs-up-pop / -clock-spin / -cloud-rain` + sizes sm/lg/xl.
+
+**text-pack-2.css** `typography/text-pack-2.css` (CSS) — tags: text-pack-2 split-shadow embossed debossed chrome etched retro-3d mirrored neon-deep kinetic-split outline-fill drop-cap vertical-cjk big-stretch wraparound stencil
+  15 text effects: split-shadow, embossed, debossed, chrome polish, etched (outline), retro-3d w/ stacked shadows + pink/cyan variants, mirrored reflection, neon-deep (multi-glow), kinetic per-letter stagger, outline-fill hover, drop-cap, vertical-cjk, big-stretch variable-font, SVG wraparound, stencil.
+
+**3d-cards-pack.css** `effects/3d-cards-pack.css` (CSS) — tags: 3d-cards-pack parallax holo depth-pop fold-out lift-stack glass-3d perspective rotate hover
+  6 CSS-only 3D card variants: parallax (mouse-driven --mx/--my), holo (conic + chromatic), depth-pop (translateZ on hover), fold-out (top half folds back), lift-stack (3-layer stack on hover), glass-3d (frosted + tilt).
+
+**hero-pack.css** `components/hero-pack.css` (CSS) — tags: hero-pack landing-page centered split video-bg gradient-mesh animated-grid marquee-strip badge-row kbd-cta asymmetric card-stack-bg glow-orb code-side cta linear vercel stripe anthropic apple cursor
+  12 landing-page hero variants: centered, split (left+art right), video-bg, gradient-mesh-bg, animated-grid floor, marquee-strip top/bottom, badge-row (trust badges), kbd-cta (⌘K search), asymmetric, card-stack-bg, glow-orb, code-side (code preview right).
+
+**marketing-pack.css** `components/marketing-pack.css` (CSS) — tags: marketing-pack social-proof testimonial-strip logo-cloud-pro faq-grid comparison-3col feature-list-2col integration-row stat-strip avatars stars trust
+  8 marketing blocks: social-proof-bar (avatars + stars), testimonial-strip (horizontal scroll), logo-cloud-pro (+ marquee variant), faq-grid (auto-fit 2-col), comparison-3col w/ featured highlight, feature-list-2col, integration-row (logos + more), stat-strip (gradient numerals).
+
+**commerce-pack.css** `components/commerce-pack.css` (CSS) — tags: commerce-pack product-gallery zoom color-swatch size-picker qty-stepper add-to-cart-fly mini-cart-badge save-heart wishlist stock-status price-strike sale discount
+  9 e-commerce patterns: product-gallery (thumb rail + zoom on hover), color swatches (ring active + disabled cross), size picker (square buttons + disabled strikethrough), qty stepper, add-to-cart w/ loading→added states, mini-cart badge w/ bump, save-heart toggle, stock-status pill (in/low/out + pulse), price-strike (old/new/off%).
+
+**commerce-pack.js** `components/commerce-pack.js` (JS, global: `Commerce`) — tags: commerce-pack gallery zoom swatch size add-to-cart fly animate cart save heart toggle
+  `Commerce.gallery()` (thumb swap + zoom-on-mousemove), `.swatches({onPick})`, `.sizes({onPick})`, `.addToCart({target, onComplete})` (loading→added + fly-to-cart animation + badge bump), `.save({onToggle})`, `.fly(from, toSel)`.
+
+**checkout-pack.css** `components/checkout-pack.css` (CSS) — tags: checkout-pack step-progress address-form payment-methods order-summary discount-input success-receipt stepper apple-pay google-pay crypto coupon
+  6 checkout patterns: step-progress (cart→shipping→payment→review w/ ✓ done state), address-form (2-col), payment-methods (Apple/Google/Card with picked ring), order-summary (with discount + total), discount-input (apply with error/success state), success-receipt (animated tick + order number).
+
+**image-gallery-pro.css** `media/image-gallery-pro.css` (CSS) — tags: image-gallery-pro lightbox thumbs zoom pan pinch counter strip overlay close prev next double-click
+  Pro lightbox + thumb-grid + zoom/pan controls. `.igp > .igp-grid + .igp-overlay (stage, prev/next, close, strip, zoom)`. Distinct from `media/lightbox.css/.js` and `components/image-crop.css/.js`.
+
+**image-gallery-pro.js** `media/image-gallery-pro.js` (JS, global: `ImageGalleryPro`) — tags: image-gallery-pro lightbox open close keyboard arrow escape zoom wheel pan drag double-click
+  `ImageGalleryPro.init('[data-igp]', {images, startIndex, onOpen, onClose, onChange})`. Click tile to open. Keyboard ←/→/Escape/+/−/0. Wheel zoom, double-click toggle, drag to pan when zoomed.
+
+**email-pack.css** `components/email-pack.css` (CSS) — tags: email-pack email-row inbox thread compose sidebar label-filter sender-card snooze gmail outlook
+  6 email-client patterns: email-list-row (pick + star + sender + subject + preview + tag + time + attach), email-thread (subject + collapsible message stack + quick replies), label-filter-sidebar (Inbox/Starred/Sent w/ counts), compose-modal (floating bottom-right), sender-card popover, snooze-picker.
+
+**email-pack.js** `components/email-pack.js` (JS, global: `EmailPack`) — tags: email-pack thread expand compose send minimize fullscreen close list select star unread snooze pick
+  `EmailPack.thread()` (expand collapsed messages), `.compose({onSend})` (min/full/close + send), `.list({onSelect, onStar})`, `.snooze({onPick})`.
+
+**whiteboard-pack.css** `components/whiteboard-pack.css` (CSS) — tags: whiteboard-pack tldraw canvas toolbar shape-picker sticky-note color-bar eraser-cursor selection-marquee hand-arrow zoomchrome curve violet pink
+  Whiteboard chrome + tools: floating-toolbar (with kbd hints), shape-picker (rect/round/tri/diamond/arrow/line), sticky-note (5 colors with tape + crinkle), color-bar (active ring), custom cursors (pen/eraser/hand), selection-marquee, hand-drawn arrow (straight + curve), zoomchrome.
+
+**whiteboard-pack.js** `components/whiteboard-pack.js` (JS, global: `Whiteboard`) — tags: whiteboard-pack draw pen eraser canvas quadratic dpr tool-switch sticky-draggable color stroke
+  `Whiteboard.init('[data-wb-host]', {tools, defaultTool, defaultColor, defaultStroke, onChangeTool, onDrawEnd})`. Canvas drawing w/ pen + eraser (destination-out), tool switcher binding, methods `.setTool() .setColor() .setStroke() .clear()`. Also `Whiteboard.makeStickyDraggable('.wb-sticky')`.
+
+**onboarding-pack.css** `components/onboarding-pack.css` (CSS) — tags: onboarding-pack welcome-modal profile-wizard tour-launcher plan-picker whats-next-checklist install-prompt pwa progress
+  6 onboarding patterns: welcome-modal (illustration + dual-CTA), profile-setup-wizard (step dots + 2x2 grid choices + back/next), tour-launcher pill, plan-picker (3-tier with recommended badge), what's-next-checklist (progress bar + persistent ticks), install-prompt (PWA bar with dismiss).
+
+**onboarding-pack.js** `components/onboarding-pack.js` (JS, global: `OnboardingPack`) — tags: onboarding-pack wizard step plan pick next checklist storage progress install dismiss
+  `OnboardingPack.wizard({steps, onStep, onComplete})` (multi-step + grid choices + back/next), `.plan({onPick})`, `.next({storageKey, onProgress})` (localStorage persisted), `.install({onInstall, onDismiss})`.
+
+**scroll-fx-pack.css** `scroll/scroll-fx-pack.css` (CSS) — tags: scroll-fx-pack parallax-bg multi-layer sticky-stagger fade-in-out reveal-on-view ribbon-pin scroll-text-zoom up down left right zoom flip
+  6 advanced scroll effects: parallax-bg (3-layer perspective), sticky-stagger (revealed via JS observer), fade-in-out section, reveal-on-view (up/down/left/right/zoom/flip directions), ribbon-pin (sticky slanted marquee), scroll-text-zoom (text scales as you scroll).
+
+**scroll-fx-pack.js** `scroll/scroll-fx-pack.js` (JS, global: `ScrollFx`) — tags: scroll-fx-pack reveal IntersectionObserver opacity zoom parallax mousemove progress sticky
+  `ScrollFx.reveal(selector, {threshold, once, stagger})`, `.opacity({fadeIn, fadeOut})`, `.zoom({from, to})`, `.parallax()` (mousemove-driven layer offsets).
+
+**scenes-pack.js** `3d/scenes-pack.js` (JS, global: `ScenesPack`) — tags: scenes-pack three.js shader-ball gltf-cards ascii hologram gradient-cube-array ribbon-trail wireframe rim-light catmull-rom torus-knot scanline
+  6 self-contained Three.js scenes: shaderBall (glossy sphere + rim light), gltfCards (drag-rotate stack), ascii (torus knot rendered as ASCII grid), hologram (wireframe icosahedron + scanline overlay), gradientCubeArray (HSL grid with sine wave), ribbonTrail (animated Catmull-Rom tube). Each returns `{destroy}`. Requires three.js global.

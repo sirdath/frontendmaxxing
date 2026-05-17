@@ -1,0 +1,179 @@
+/* ============================================
+   3D CARDS PACK — 6 CSS-only 3D card variants
+   Inspired by Apple cards / Stripe pricing / dribbble showcases
+   ============================================
+   Usage:
+     <div class="tdc tdc-parallax">
+       <div class="tdc-back">…</div>
+       <div class="tdc-mid">…</div>
+       <div class="tdc-front">…</div>
+     </div>
+
+   Variants: tdc-parallax, tdc-holo, tdc-depth-pop, tdc-fold-out,
+             tdc-lift-stack, tdc-glass-3d
+   ============================================ */
+
+.tdc {
+  --c-radius: 16px;
+  --c-w: 280px;
+  --c-h: 360px;
+  width: var(--c-w); height: var(--c-h);
+  border-radius: var(--c-radius);
+  position: relative;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+/* 1. PARALLAX — Layers shift on hover (CSS-only with --mx/--my) */
+.tdc-parallax {
+  --mx: 50%; --my: 50%;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease;
+}
+.tdc-parallax:hover {
+  transform: rotateY(calc((var(--mx) - 50%) * -0.12)) rotateX(calc((var(--my) - 50%) * 0.12));
+}
+.tdc-parallax > .tdc-back, .tdc-parallax > .tdc-mid, .tdc-parallax > .tdc-front {
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  transition: transform 0.4s ease;
+}
+.tdc-parallax > .tdc-back {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  transform: translateZ(0);
+}
+.tdc-parallax > .tdc-mid {
+  display: grid; place-items: center;
+  font-size: 4rem; color: #fff;
+  transform: translateZ(24px);
+}
+.tdc-parallax > .tdc-front {
+  padding: 1.4rem;
+  display: flex; align-items: flex-end;
+  color: #fff;
+  font-weight: 700;
+  transform: translateZ(60px);
+}
+.tdc-parallax:hover > .tdc-front { transform: translateZ(80px); }
+
+/* 2. HOLO — Holographic conic + chromatic */
+.tdc-holo {
+  background: conic-gradient(from 0deg at 50% 50%,
+    #f0abfc, #c4b5fd, #93c5fd, #67e8f9, #6ee7b7, #fde047, #fb923c, #f9a8d4, #f0abfc);
+  background-size: 200% 200%;
+  background-position: 50% 50%;
+  transition: background-position 0.4s ease, transform 0.4s ease;
+}
+.tdc-holo::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 40%, rgba(255,255,255,0.3) 100%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.tdc-holo:hover {
+  background-position: 100% 0%;
+  transform: rotateY(-8deg) rotateX(4deg);
+}
+
+/* 3. DEPTH POP — Pops forward + offset shadow */
+.tdc-depth-pop {
+  background: linear-gradient(160deg, #14141e, #2d2d44);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 12px -2px rgba(0,0,0,0.4);
+  transition: transform 0.4s cubic-bezier(0.32, 1.6, 0.5, 1), box-shadow 0.4s ease;
+}
+.tdc-depth-pop:hover {
+  transform: translateY(-18px) translateZ(40px);
+  box-shadow:
+    0 30px 50px -10px rgba(0,0,0,0.55),
+    0 0 60px -10px rgba(139, 92, 246, 0.4);
+}
+
+/* 4. FOLD OUT — Top half folds back on hover */
+.tdc-fold-out {
+  transform-style: preserve-3d;
+  background: linear-gradient(135deg, #1f1f2e, #14141e);
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.tdc-fold-out::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, #8b5cf6, #6366f1);
+  transform-origin: bottom center;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 1;
+}
+.tdc-fold-out:hover::before {
+  transform: rotateX(-180deg) translateY(50%);
+}
+.tdc-fold-out > .tdc-content {
+  position: absolute;
+  bottom: 1rem; left: 1.4rem; right: 1.4rem;
+  color: #fff; z-index: 2;
+}
+
+/* 5. LIFT STACK — Stacked card layers on hover */
+.tdc-lift-stack {
+  background: linear-gradient(160deg, #14141e, #1f1f2e);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  position: relative;
+  transition: transform 0.4s ease;
+}
+.tdc-lift-stack::before,
+.tdc-lift-stack::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  border: inherit;
+  border-radius: inherit;
+  z-index: -1;
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.tdc-lift-stack::before { transform: translateY(0); opacity: 0.7; }
+.tdc-lift-stack::after  { transform: translateY(0); opacity: 0.4; }
+.tdc-lift-stack:hover { transform: translateY(-8px); }
+.tdc-lift-stack:hover::before { transform: translateY(10px); }
+.tdc-lift-stack:hover::after  { transform: translateY(20px); }
+
+/* 6. GLASS 3D — Frosted glass with tilt */
+.tdc-glass-3d {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    0 12px 24px -8px rgba(0,0,0,0.4);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.tdc-glass-3d::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 50%);
+  pointer-events: none;
+}
+.tdc-glass-3d:hover {
+  transform: rotateY(-6deg) rotateX(3deg) translateZ(30px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.3),
+    0 30px 60px -12px rgba(0,0,0,0.5),
+    0 0 40px -8px rgba(139,92,246,0.3);
+}
+
+/* Sizes */
+.tdc-sm { --c-w: 200px; --c-h: 260px; }
+.tdc-lg { --c-w: 340px; --c-h: 440px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tdc, .tdc *, .tdc::before, .tdc::after { transition: none !important; }
+}

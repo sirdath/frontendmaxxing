@@ -1,0 +1,322 @@
+/* ============================================
+   EMAIL PACK — 6 email-client UI patterns
+   email-list-row, email-thread, label-filter-sidebar, compose-modal,
+   email-sender-card, snooze-picker
+   ============================================ */
+
+:where(.eml-row, .eml-thread, .eml-side, .eml-comp, .eml-sender, .eml-snooze) {
+  --e-bg: #14141e;
+  --e-bg-2: #1f1f2e;
+  --e-fg: #f5f5fa;
+  --e-muted: rgba(245, 245, 250, 0.55);
+  --e-line: rgba(255, 255, 255, 0.08);
+  --e-accent: #8b5cf6;
+  color: var(--e-fg);
+  font-family: inherit;
+}
+
+/* 1. EMAIL LIST ROW — Inbox row with star + read/unread + chips */
+.eml-row {
+  display: grid;
+  grid-template-columns: 20px 20px 160px 1fr 80px;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.55rem 1rem;
+  background: var(--e-bg);
+  border: 1px solid var(--e-line);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: background 0.18s ease;
+  max-width: 720px;
+}
+.eml-row:hover { background: var(--e-bg-2); }
+.eml-row.is-unread { background: rgba(139,92,246,0.04); border-left: 3px solid var(--e-accent); }
+.eml-row.is-unread .eml-row-sender,
+.eml-row.is-unread .eml-row-subject { font-weight: 700; }
+.eml-row-pick {
+  appearance: none; border: 1.5px solid var(--e-line);
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+}
+.eml-row-pick:checked { background: var(--e-accent); border-color: var(--e-accent); }
+.eml-row-star {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--e-muted);
+  cursor: pointer;
+  font-size: 0.95rem;
+  width: 20px; padding: 0;
+}
+.eml-row-star.is-starred { color: #fbbf24; }
+.eml-row-star::before { content: '☆'; }
+.eml-row-star.is-starred::before { content: '★'; }
+.eml-row-sender { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.eml-row-meta { display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
+.eml-row-subject { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 1; }
+.eml-row-preview { color: var(--e-muted); margin-left: 0.3rem; }
+.eml-row-time { font-size: 0.74rem; color: var(--e-muted); text-align: right; font-variant-numeric: tabular-nums; }
+.eml-row-tag {
+  padding: 0.05rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(139,92,246,0.18);
+  color: var(--e-accent);
+}
+.eml-row-tag.work { background: rgba(6,182,212,0.18); color: #06b6d4; }
+.eml-row-tag.urgent { background: rgba(239,68,68,0.18); color: #ef4444; }
+.eml-row-tag.personal { background: rgba(16,185,129,0.18); color: #10b981; }
+.eml-row-attach::after { content: '📎'; margin-left: 0.2rem; font-size: 0.78rem; opacity: 0.6; }
+
+/* 2. EMAIL THREAD — Conversation with collapsed reply heads */
+.eml-thread {
+  width: 100%; max-width: 700px;
+  background: var(--e-bg);
+  border: 1px solid var(--e-line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.eml-thread-head {
+  padding: 1.2rem 1.4rem;
+  border-bottom: 1px solid var(--e-line);
+}
+.eml-thread-subject {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.4rem;
+}
+.eml-thread-labels { display: inline-flex; gap: 0.3rem; }
+.eml-thread-msg {
+  padding: 1.1rem 1.4rem;
+}
+.eml-thread-msg + .eml-thread-msg { border-top: 1px solid var(--e-line); }
+.eml-thread-msg.is-collapsed { padding: 0.7rem 1.4rem; cursor: pointer; }
+.eml-thread-msg.is-collapsed:hover { background: var(--e-bg-2); }
+.eml-thread-msg-head {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+}
+.eml-thread-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.eml-thread-from { font-weight: 600; font-size: 0.92rem; }
+.eml-thread-to { font-size: 0.78rem; color: var(--e-muted); }
+.eml-thread-time { font-size: 0.78rem; color: var(--e-muted); }
+.eml-thread-body {
+  margin-top: 0.8rem;
+  line-height: 1.6;
+  font-size: 0.92rem;
+}
+.eml-thread-attach {
+  margin-top: 0.7rem;
+  display: flex; gap: 0.4rem; flex-wrap: wrap;
+}
+.eml-thread-attach-item {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  background: var(--e-bg-2);
+  border: 1px solid var(--e-line);
+  border-radius: 8px;
+  font-size: 0.78rem;
+}
+.eml-thread-quick {
+  display: flex; gap: 0.4rem;
+  padding: 0.6rem 1.4rem 1rem;
+  border-top: 1px solid var(--e-line);
+}
+.eml-thread-quick button {
+  appearance: none; border: 1px solid var(--e-line);
+  background: transparent;
+  color: var(--e-fg);
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font: inherit; font-size: 0.82rem; font-weight: 500;
+  cursor: pointer;
+}
+.eml-thread-quick button:hover { background: var(--e-bg-2); }
+
+/* 3. LABEL FILTER SIDEBAR — Gmail-style labels */
+.eml-side {
+  width: 220px;
+  padding: 0.6rem;
+  background: var(--e-bg);
+  border: 1px solid var(--e-line);
+  border-radius: 10px;
+}
+.eml-side-section {
+  font-size: 0.7rem; color: var(--e-muted);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.5rem 0.5rem 0.3rem;
+}
+.eml-side-item {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  align-items: center; gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--e-fg);
+  text-decoration: none;
+}
+.eml-side-item:hover { background: var(--e-bg-2); }
+.eml-side-item.is-active {
+  background: rgba(139,92,246,0.15); color: var(--e-accent); font-weight: 600;
+}
+.eml-side-icon {
+  width: 16px; height: 16px;
+  border-radius: 3px;
+  background: var(--e-accent);
+}
+.eml-side-count {
+  font-size: 0.72rem; color: var(--e-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 4. COMPOSE MODAL */
+.eml-comp {
+  position: fixed; bottom: 16px; right: 16px;
+  width: 480px; max-width: calc(100% - 32px);
+  background: var(--e-bg);
+  border: 1px solid var(--e-line);
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -10px 30px -10px rgba(0,0,0,0.5);
+  z-index: 100;
+  display: flex; flex-direction: column;
+}
+.eml-comp-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--e-line);
+  font-size: 0.88rem; font-weight: 600;
+}
+.eml-comp-head-actions { display: flex; gap: 0.3rem; }
+.eml-comp-head-actions button {
+  width: 28px; height: 28px;
+  background: transparent; border: 0;
+  color: var(--e-muted);
+  border-radius: 4px; cursor: pointer;
+}
+.eml-comp-head-actions button:hover { background: var(--e-bg-2); color: var(--e-fg); }
+.eml-comp-fields {
+  padding: 0 1rem;
+}
+.eml-comp-field {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--e-line);
+}
+.eml-comp-field label {
+  font-size: 0.78rem; color: var(--e-muted);
+  flex: 0 0 50px;
+}
+.eml-comp-field input {
+  flex: 1; background: transparent; border: 0; outline: 0;
+  color: var(--e-fg);
+  font: inherit; font-size: 0.88rem;
+}
+.eml-comp-body {
+  flex: 1; min-height: 200px;
+  padding: 0.8rem 1rem;
+  background: transparent; border: 0; outline: 0;
+  color: var(--e-fg);
+  font: inherit; font-size: 0.92rem; line-height: 1.6;
+  resize: none;
+}
+.eml-comp-foot {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--e-line);
+}
+.eml-comp-send {
+  appearance: none; border: 0;
+  padding: 0.55rem 1.2rem;
+  background: var(--e-accent); color: #fff;
+  border-radius: 8px;
+  font: inherit; font-weight: 700; font-size: 0.85rem;
+  cursor: pointer;
+}
+.eml-comp-tools { display: flex; gap: 0.2rem; margin-left: auto; }
+.eml-comp-tools button {
+  width: 30px; height: 30px;
+  background: transparent; border: 0;
+  color: var(--e-muted); border-radius: 4px;
+  cursor: pointer; font-size: 0.95rem;
+}
+.eml-comp-tools button:hover { background: var(--e-bg-2); color: var(--e-fg); }
+
+/* 5. SENDER CARD — Floating sender info popover */
+.eml-sender {
+  width: 280px;
+  background: var(--e-bg);
+  border: 1px solid var(--e-line);
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
+}
+.eml-sender-head {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 0.7rem;
+  align-items: center;
+  margin-bottom: 0.7rem;
+}
+.eml-sender-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.eml-sender-name { font-weight: 700; font-size: 0.98rem; }
+.eml-sender-email { font-size: 0.78rem; color: var(--e-muted); font-family: ui-monospace, monospace; }
+.eml-sender-actions {
+  display: flex; gap: 0.4rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--e-line);
+}
+.eml-sender-actions button {
+  flex: 1; padding: 0.4rem;
+  background: var(--e-bg-2);
+  border: 0; color: var(--e-fg);
+  border-radius: 6px;
+  font: inherit; font-size: 0.78rem;
+  cursor: pointer;
+}
+.eml-sender-bio {
+  font-size: 0.82rem;
+  color: var(--e-muted);
+  line-height: 1.5;
+  margin: 0 0 0.7rem;
+}
+
+/* 6. SNOOZE PICKER — Quick snooze options */
+.eml-snooze {
+  width: 240px;
+  background: var(--e-bg);
+  border: 1px solid var(--e-line);
+  border-radius: 10px;
+  padding: 0.3rem;
+  box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
+}
+.eml-snooze-row {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 0.5rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  align-items: center;
+}
+.eml-snooze-row:hover { background: var(--e-bg-2); }
+.eml-snooze-row.is-custom { border-top: 1px solid var(--e-line); margin-top: 0.3rem; padding-top: 0.55rem; color: var(--e-accent); font-weight: 600; }
+.eml-snooze-ic { font-size: 0.95rem; }
+.eml-snooze-when { color: var(--e-muted); font-size: 0.72rem; font-variant-numeric: tabular-nums; }

@@ -1,0 +1,276 @@
+/* ============================================
+   CHECKOUT PACK — 6 checkout flow patterns
+   step-progress, address-form, payment-methods, order-summary,
+   discount-input, success-receipt
+   ============================================ */
+
+:where(.ck-step, .ck-addr, .ck-pay, .ck-sum, .ck-disc, .ck-succ) {
+  --k-bg: #14141e;
+  --k-bg-2: #1f1f2e;
+  --k-fg: #f5f5fa;
+  --k-muted: rgba(245, 245, 250, 0.55);
+  --k-line: rgba(255, 255, 255, 0.08);
+  --k-accent: #8b5cf6;
+  --k-good: #10b981;
+  color: var(--k-fg);
+  font-family: inherit;
+}
+
+/* 1. STEP PROGRESS — Checkout stepper (cart → shipping → payment → review) */
+.ck-step {
+  display: flex; align-items: center;
+  width: 100%; max-width: 540px;
+}
+.ck-step-item {
+  flex: 1; display: grid; place-items: center; gap: 0.3rem;
+  position: relative;
+  color: var(--k-muted);
+  font-size: 0.78rem;
+}
+.ck-step-item::before {
+  content: counter(ck-step);
+  counter-increment: ck-step;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--k-bg-2);
+  display: grid; place-items: center;
+  font-size: 0.82rem; font-weight: 700;
+  border: 2px solid var(--k-line);
+}
+.ck-step { counter-reset: ck-step; }
+.ck-step-item.is-done {
+  color: var(--k-good);
+}
+.ck-step-item.is-done::before {
+  background: var(--k-good); border-color: var(--k-good);
+  color: #fff; content: '✓';
+}
+.ck-step-item.is-active {
+  color: var(--k-fg); font-weight: 600;
+}
+.ck-step-item.is-active::before {
+  background: var(--k-accent); border-color: var(--k-accent); color: #fff;
+}
+.ck-step-item + .ck-step-item::after {
+  content: ''; position: absolute;
+  top: 14px; left: -50%; width: 100%; height: 2px;
+  background: var(--k-line);
+  z-index: -1;
+}
+.ck-step-item.is-done + .ck-step-item::after,
+.ck-step-item.is-active::after {
+  background: var(--k-good);
+}
+
+/* 2. ADDRESS FORM — Stacked fields card */
+.ck-addr {
+  display: grid; gap: 0.6rem;
+  padding: 1.2rem;
+  background: var(--k-bg);
+  border: 1px solid var(--k-line);
+  border-radius: 14px;
+  max-width: 460px;
+}
+.ck-addr h3 { margin: 0 0 0.4rem; font-size: 1rem; }
+.ck-addr-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+.ck-addr label {
+  font-size: 0.72rem;
+  color: var(--k-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+  display: block;
+}
+.ck-addr input, .ck-addr select {
+  width: 100%; box-sizing: border-box;
+  background: var(--k-bg-2);
+  border: 1px solid var(--k-line);
+  color: var(--k-fg);
+  padding: 0.55rem 0.8rem;
+  border-radius: 8px;
+  font: inherit; font-size: 0.9rem;
+  outline: 0;
+}
+.ck-addr input:focus, .ck-addr select:focus { border-color: var(--k-accent); }
+.ck-addr-full { grid-column: 1 / -1; }
+
+/* 3. PAYMENT METHODS — Card / Apple / Google / Crypto picker */
+.ck-pay {
+  display: grid; gap: 0.4rem;
+  max-width: 460px;
+}
+.ck-pay-opt {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 0.7rem; align-items: center;
+  padding: 0.7rem 1rem;
+  background: var(--k-bg);
+  border: 2px solid var(--k-line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.18s ease;
+}
+.ck-pay-opt:hover { background: var(--k-bg-2); }
+.ck-pay-opt.is-picked {
+  border-color: var(--k-accent);
+  background: rgba(139, 92, 246, 0.06);
+}
+.ck-pay-opt input { display: none; }
+.ck-pay-logo {
+  width: 40px; height: 28px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+}
+.ck-pay-name { font-weight: 600; font-size: 0.92rem; }
+.ck-pay-sub { font-size: 0.75rem; color: var(--k-muted); display: block; }
+.ck-pay-tick {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--k-line);
+}
+.ck-pay-opt.is-picked .ck-pay-tick {
+  background: var(--k-accent);
+  border-color: var(--k-accent);
+  display: grid; place-items: center;
+}
+.ck-pay-opt.is-picked .ck-pay-tick::after {
+  content: '✓'; color: #fff; font-size: 0.78rem; font-weight: 700;
+}
+
+/* 4. ORDER SUMMARY */
+.ck-sum {
+  padding: 1.2rem;
+  background: var(--k-bg);
+  border: 1px solid var(--k-line);
+  border-radius: 14px;
+  width: 100%; max-width: 360px;
+}
+.ck-sum h3 { margin: 0 0 0.8rem; font-size: 1rem; }
+.ck-sum-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0.3rem 0;
+  font-size: 0.88rem;
+}
+.ck-sum-row span { color: var(--k-muted); }
+.ck-sum-row b { font-variant-numeric: tabular-nums; font-weight: 600; }
+.ck-sum-row.discount b { color: var(--k-good); }
+.ck-sum-total {
+  margin-top: 0.5rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--k-line);
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex; justify-content: space-between;
+}
+.ck-sum-total b {
+  font-size: 1.4rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.ck-sum-cta {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--k-accent); color: #fff;
+  border: 0; border-radius: 10px;
+  font: inherit; font-weight: 700; font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* 5. DISCOUNT INPUT — Apply code with feedback */
+.ck-disc {
+  display: flex; gap: 0.4rem;
+  width: 100%; max-width: 360px;
+}
+.ck-disc-input {
+  flex: 1; min-width: 0;
+  background: var(--k-bg-2);
+  border: 1px solid var(--k-line);
+  color: var(--k-fg);
+  padding: 0.55rem 0.8rem;
+  border-radius: 8px;
+  font: inherit; font-size: 0.88rem;
+  outline: 0;
+  text-transform: uppercase;
+}
+.ck-disc-input:focus { border-color: var(--k-accent); }
+.ck-disc-btn {
+  appearance: none; border: 0;
+  background: var(--k-fg); color: #14141e;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font: inherit; font-weight: 700; font-size: 0.85rem;
+  cursor: pointer;
+}
+.ck-disc.is-applied .ck-disc-input {
+  border-color: var(--k-good);
+  background: rgba(16, 185, 129, 0.06);
+  color: var(--k-good);
+}
+.ck-disc-msg {
+  font-size: 0.74rem;
+  margin-top: 0.3rem;
+  color: var(--k-muted);
+}
+.ck-disc.is-applied .ck-disc-msg { color: var(--k-good); }
+.ck-disc.is-error   .ck-disc-msg { color: #ef4444; }
+
+/* 6. SUCCESS RECEIPT */
+.ck-succ {
+  padding: 2rem 1.6rem;
+  background: var(--k-bg);
+  border: 1px solid var(--k-line);
+  border-radius: 18px;
+  text-align: center;
+  max-width: 380px;
+}
+.ck-succ-tick {
+  width: 64px; height: 64px;
+  margin: 0 auto 1rem;
+  background: var(--k-good);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: #fff;
+  font-size: 2rem; font-weight: 700;
+  animation: ck-succ-pop 0.5s cubic-bezier(0.32, 1.6, 0.5, 1);
+}
+@keyframes ck-succ-pop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.ck-succ h3 { margin: 0 0 0.4rem; font-size: 1.3rem; }
+.ck-succ p {
+  margin: 0 0 1.2rem;
+  color: var(--k-muted); font-size: 0.92rem;
+}
+.ck-succ-num {
+  display: inline-block;
+  font-family: ui-monospace, monospace;
+  background: var(--k-bg-2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+}
+.ck-succ-actions { display: flex; gap: 0.5rem; justify-content: center; }
+.ck-succ-actions button {
+  appearance: none; border: 0;
+  padding: 0.5rem 1rem;
+  background: var(--k-bg-2);
+  color: var(--k-fg);
+  border-radius: 8px;
+  font: inherit; font-weight: 600; font-size: 0.85rem;
+  cursor: pointer;
+}
+.ck-succ-actions .primary {
+  background: var(--k-accent); color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ck-succ-tick { animation: none; }
+}

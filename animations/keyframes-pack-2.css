@@ -1,0 +1,181 @@
+/* ============================================
+   KEYFRAMES PACK 2 — 30+ named keyframe utilities
+   Extends animations/keyframes-pack.css with motion + entrance/exit
+   ============================================
+   Usage:
+     <div class="kf2 kf2-jelly">…</div>
+     <div class="kf2 kf2-pop-in kf2-delay-200">…</div>
+
+   Modifiers:
+     kf2-fast (.4s), kf2-slow (1.8s), kf2-infinite
+     kf2-delay-100/200/300/500/700/1000
+
+   Animations:
+     jelly, rubber, jello, wobble, swing, tada, bounce-strong, heartbeat,
+     pop-in, pop-out, slide-in-up/down/left/right, slide-out-up/down/left/right,
+     fade-up, fade-down, zoom-in, zoom-out, flip-x, flip-y, hinge, roll-in,
+     light-speed-in, light-speed-out, blur-in, blur-out, drop-in
+   ============================================ */
+
+.kf2 {
+  --kf-dur: 0.7s;
+  --kf-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  animation-duration: var(--kf-dur);
+  animation-fill-mode: both;
+  animation-timing-function: var(--kf-ease);
+}
+.kf2-fast { --kf-dur: 0.4s; }
+.kf2-slow { --kf-dur: 1.8s; }
+.kf2-infinite { animation-iteration-count: infinite; }
+.kf2-delay-100  { animation-delay: 0.1s; }
+.kf2-delay-200  { animation-delay: 0.2s; }
+.kf2-delay-300  { animation-delay: 0.3s; }
+.kf2-delay-500  { animation-delay: 0.5s; }
+.kf2-delay-700  { animation-delay: 0.7s; }
+.kf2-delay-1000 { animation-delay: 1s; }
+
+.kf2-jelly      { animation-name: kf2-jelly; }
+.kf2-rubber     { animation-name: kf2-rubber; }
+.kf2-jello      { animation-name: kf2-jello; }
+.kf2-wobble     { animation-name: kf2-wobble; }
+.kf2-swing      { animation-name: kf2-swing; transform-origin: top center; }
+.kf2-tada       { animation-name: kf2-tada; }
+.kf2-bounce-strong { animation-name: kf2-bounce-strong; }
+.kf2-heartbeat  { animation-name: kf2-heartbeat; animation-timing-function: ease-in-out; }
+.kf2-pop-in     { animation-name: kf2-pop-in; animation-timing-function: cubic-bezier(0.32, 1.5, 0.6, 1); }
+.kf2-pop-out    { animation-name: kf2-pop-out; }
+.kf2-slide-in-up    { animation-name: kf2-slide-in-up; }
+.kf2-slide-in-down  { animation-name: kf2-slide-in-down; }
+.kf2-slide-in-left  { animation-name: kf2-slide-in-left; }
+.kf2-slide-in-right { animation-name: kf2-slide-in-right; }
+.kf2-slide-out-up    { animation-name: kf2-slide-out-up; }
+.kf2-slide-out-down  { animation-name: kf2-slide-out-down; }
+.kf2-slide-out-left  { animation-name: kf2-slide-out-left; }
+.kf2-slide-out-right { animation-name: kf2-slide-out-right; }
+.kf2-fade-up    { animation-name: kf2-fade-up; }
+.kf2-fade-down  { animation-name: kf2-fade-down; }
+.kf2-zoom-in    { animation-name: kf2-zoom-in; }
+.kf2-zoom-out   { animation-name: kf2-zoom-out; }
+.kf2-flip-x     { animation-name: kf2-flip-x; backface-visibility: visible; }
+.kf2-flip-y     { animation-name: kf2-flip-y; backface-visibility: visible; }
+.kf2-hinge      { animation-name: kf2-hinge; transform-origin: top left; animation-duration: 1.6s; }
+.kf2-roll-in    { animation-name: kf2-roll-in; }
+.kf2-light-in   { animation-name: kf2-light-in; animation-timing-function: ease-out; }
+.kf2-light-out  { animation-name: kf2-light-out; animation-timing-function: ease-in; }
+.kf2-blur-in    { animation-name: kf2-blur-in; }
+.kf2-blur-out   { animation-name: kf2-blur-out; }
+.kf2-drop-in    { animation-name: kf2-drop-in; }
+
+@keyframes kf2-jelly {
+  0%, 11.1%, 100% { transform: none; }
+  22.2% { transform: skew(-12.5deg, -6.25deg); }
+  33.3% { transform: skew(6.25deg, 3.125deg); }
+  44.4% { transform: skew(-3.125deg, -1.56deg); }
+  55.5% { transform: skew(1.56deg, 0.78deg); }
+  66.6% { transform: skew(-0.78deg, -0.39deg); }
+}
+@keyframes kf2-rubber {
+  0%, 100% { transform: scale(1, 1); }
+  30%  { transform: scale(1.25, 0.75); }
+  40%  { transform: scale(0.75, 1.25); }
+  50%  { transform: scale(1.15, 0.85); }
+  65%  { transform: scale(0.95, 1.05); }
+  75%  { transform: scale(1.05, 0.95); }
+}
+@keyframes kf2-jello {
+  0%, 11.1%, 100% { transform: none; }
+  22.2% { transform: skew(-12.5deg, -12.5deg); }
+  33.3% { transform: skew(6.25deg, 6.25deg); }
+  44.4% { transform: skew(-3.125deg, -3.125deg); }
+  55.5% { transform: skew(1.5deg, 1.5deg); }
+}
+@keyframes kf2-wobble {
+  0%, 100% { transform: none; }
+  15% { transform: translateX(-25%) rotate(-5deg); }
+  30% { transform: translateX(20%) rotate(3deg); }
+  45% { transform: translateX(-15%) rotate(-3deg); }
+  60% { transform: translateX(10%) rotate(2deg); }
+  75% { transform: translateX(-5%) rotate(-1deg); }
+}
+@keyframes kf2-swing {
+  20% { transform: rotate(15deg); }
+  40% { transform: rotate(-10deg); }
+  60% { transform: rotate(5deg); }
+  80% { transform: rotate(-5deg); }
+  100% { transform: rotate(0); }
+}
+@keyframes kf2-tada {
+  0%, 100% { transform: scale(1); }
+  10%, 20% { transform: scale(0.9) rotate(-3deg); }
+  30%, 50%, 70%, 90% { transform: scale(1.1) rotate(3deg); }
+  40%, 60%, 80% { transform: scale(1.1) rotate(-3deg); }
+}
+@keyframes kf2-bounce-strong {
+  0%, 20%, 53%, 80%, 100% { transform: translateY(0); }
+  40%, 43% { transform: translateY(-30px); }
+  70% { transform: translateY(-15px); }
+  90% { transform: translateY(-4px); }
+}
+@keyframes kf2-heartbeat {
+  0%, 70%, 100% { transform: scale(1); }
+  15%, 50% { transform: scale(1.15); }
+  30% { transform: scale(1); }
+}
+@keyframes kf2-pop-in {
+  from { opacity: 0; transform: scale(0.3); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes kf2-pop-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.3); }
+}
+@keyframes kf2-slide-in-up    { from { opacity: 0; transform: translateY(40px); }  to { opacity: 1; transform: none; } }
+@keyframes kf2-slide-in-down  { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: none; } }
+@keyframes kf2-slide-in-left  { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: none; } }
+@keyframes kf2-slide-in-right { from { opacity: 0; transform: translateX(40px); }  to { opacity: 1; transform: none; } }
+@keyframes kf2-slide-out-up    { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-40px); } }
+@keyframes kf2-slide-out-down  { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(40px); } }
+@keyframes kf2-slide-out-left  { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(-40px); } }
+@keyframes kf2-slide-out-right { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(40px); } }
+@keyframes kf2-fade-up   { from { opacity: 0; transform: translateY(16px); }  to { opacity: 1; transform: none; } }
+@keyframes kf2-fade-down { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
+@keyframes kf2-zoom-in   { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes kf2-zoom-out  { from { opacity: 1; transform: scale(1); }  to { opacity: 0; transform: scale(0.6); } }
+@keyframes kf2-flip-x { from { transform: perspective(800px) rotateX(-90deg); opacity: 0; } to { transform: perspective(800px) rotateX(0); opacity: 1; } }
+@keyframes kf2-flip-y { from { transform: perspective(800px) rotateY(-90deg); opacity: 0; } to { transform: perspective(800px) rotateY(0); opacity: 1; } }
+@keyframes kf2-hinge {
+  0% { transform: rotate(0); }
+  40% { transform: rotate(80deg); }
+  60% { transform: rotate(60deg); }
+  80% { transform: rotate(70deg); }
+  100% { transform: rotate(70deg) translateY(400px); opacity: 0; }
+}
+@keyframes kf2-roll-in { from { opacity: 0; transform: translateX(-100%) rotate(-120deg); } to { opacity: 1; transform: none; } }
+@keyframes kf2-light-in {
+  0% { opacity: 0; transform: translate3d(80%, 0, 0) skewX(-30deg); }
+  60% { opacity: 1; transform: skewX(20deg); }
+  80% { transform: skewX(-5deg); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes kf2-light-out {
+  0% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translate3d(100%, 0, 0) skewX(30deg); }
+}
+@keyframes kf2-blur-in {
+  from { opacity: 0; filter: blur(20px); }
+  to   { opacity: 1; filter: blur(0); }
+}
+@keyframes kf2-blur-out {
+  from { opacity: 1; filter: blur(0); }
+  to   { opacity: 0; filter: blur(20px); }
+}
+@keyframes kf2-drop-in {
+  0%   { transform: translateY(-200%) scale(0.8); opacity: 0; }
+  60%  { transform: translateY(10%) scale(1.05); opacity: 1; }
+  80%  { transform: translateY(-4%); }
+  100% { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kf2 { animation: none !important; }
+}

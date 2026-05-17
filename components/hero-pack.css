@@ -1,0 +1,317 @@
+/* ============================================
+   HERO PACK — 12 landing-page hero variants
+   Inspired by Linear, Vercel, Stripe, Anthropic, Apple, Cursor landing pages
+   ============================================
+   Usage:
+     <section class="hp hp-centered">…</section>
+     <section class="hp hp-split">…</section>
+
+   Variants (12):
+     centered, split, video-bg, gradient-mesh-bg, animated-grid,
+     marquee-strip, badge-row, kbd-cta, asymmetric, card-stack-bg,
+     glow-orb, code-side
+   ============================================ */
+
+.hp {
+  --h-bg: #0a0a14;
+  --h-fg: #f5f5fa;
+  --h-muted: rgba(245, 245, 250, 0.6);
+  --h-accent: #8b5cf6;
+  --h-line: rgba(255, 255, 255, 0.08);
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  padding: 4rem 2rem;
+  background: var(--h-bg);
+  color: var(--h-fg);
+  overflow: hidden;
+  isolation: isolate;
+  font-family: inherit;
+}
+.hp h1 {
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin: 0 0 1rem;
+  font-weight: 800;
+}
+.hp p {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: var(--h-muted);
+  line-height: 1.55;
+  max-width: 580px;
+  margin: 0 0 2rem;
+}
+.hp-cta {
+  display: inline-flex; gap: 0.6rem; flex-wrap: wrap;
+}
+.hp-btn {
+  appearance: none; border: 0;
+  padding: 0.7rem 1.4rem;
+  background: var(--h-fg); color: #14141e;
+  border-radius: 10px;
+  font: inherit; font-weight: 600; font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+.hp-btn-secondary { background: rgba(255,255,255,0.08); color: var(--h-fg); }
+.hp-btn-ghost { background: transparent; border: 1px solid var(--h-line); color: var(--h-fg); }
+.hp-btn-primary {
+  background: linear-gradient(135deg, var(--h-accent), #ec4899);
+  color: #fff;
+}
+
+/* 1. CENTERED — Big middle headline */
+.hp-centered {
+  text-align: center;
+  display: grid; place-items: center;
+}
+.hp-centered .hp-cta { justify-content: center; }
+.hp-centered p { margin-left: auto; margin-right: auto; }
+
+/* 2. SPLIT — Left content + right visual */
+.hp-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.4rem;
+  align-items: center;
+}
+.hp-split-art {
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px -10px rgba(139,92,246,0.4);
+}
+@media (max-width: 768px) { .hp-split { grid-template-columns: 1fr; } }
+
+/* 3. VIDEO BG — Fullscreen video behind content */
+.hp-video-bg {
+  display: grid; place-items: center;
+  text-align: center;
+}
+.hp-video-bg video, .hp-video-bg-fallback {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  background: linear-gradient(135deg, #14141e, #2d2d44);
+}
+.hp-video-bg::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(10,10,20,0.4) 0%, rgba(10,10,20,0.85) 100%);
+  z-index: -1;
+}
+
+/* 4. GRADIENT MESH BG — Animated mesh */
+.hp-gradient-mesh {
+  background: var(--h-bg);
+}
+.hp-gradient-mesh::before, .hp-gradient-mesh::after {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+  z-index: -1;
+  animation: hp-blob 18s ease-in-out infinite alternate;
+}
+.hp-gradient-mesh::before {
+  background: radial-gradient(circle, #8b5cf6, #ec4899);
+  top: -200px; left: -100px;
+}
+.hp-gradient-mesh::after {
+  background: radial-gradient(circle, #06b6d4, #8b5cf6);
+  bottom: -200px; right: -100px;
+  animation-delay: -8s;
+}
+@keyframes hp-blob {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(60px, 40px) scale(1.1); }
+}
+
+/* 5. ANIMATED GRID — Moving grid floor */
+.hp-animated-grid::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(139,92,246,0.18) 50%, transparent 51%) 0 0/40px 40px,
+    linear-gradient(0deg, transparent 49%, rgba(139,92,246,0.18) 50%, transparent 51%) 0 0/40px 40px;
+  -webkit-mask: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+          mask: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  animation: hp-grid-move 30s linear infinite;
+  z-index: -1;
+}
+@keyframes hp-grid-move {
+  to { background-position: 40px 40px, 40px 40px; }
+}
+
+/* 6. MARQUEE STRIP — Top/bottom marquee badges */
+.hp-marquee {
+  text-align: center;
+}
+.hp-marquee-strip {
+  position: absolute;
+  left: 0; right: 0;
+  background: var(--h-accent);
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.4rem 0;
+  overflow: hidden;
+  font-size: 0.78rem;
+  transform: rotate(-2deg);
+}
+.hp-marquee-strip.top { top: 30px; }
+.hp-marquee-strip.bottom { bottom: 30px; transform: rotate(2deg); background: #ec4899; }
+.hp-marquee-strip-track {
+  display: inline-block; white-space: nowrap;
+  animation: hp-marquee 16s linear infinite;
+}
+@keyframes hp-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* 7. BADGE ROW — Trust badges + featured */
+.hp-badge-row {
+  text-align: center;
+}
+.hp-badges {
+  display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap;
+  margin-bottom: 1.4rem;
+}
+.hp-badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--h-line);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  color: var(--h-muted);
+}
+.hp-badge.is-accent {
+  background: rgba(139, 92, 246, 0.12);
+  border-color: rgba(139,92,246,0.3);
+  color: var(--h-accent);
+}
+.hp-badge::before {
+  content: '✦'; color: var(--h-accent);
+}
+
+/* 8. KBD CTA — Centered with ⌘K-style search */
+.hp-kbd { text-align: center; display: grid; place-items: center; }
+.hp-kbd-search {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.7rem 1.2rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--h-line);
+  border-radius: 12px;
+  width: 100%; max-width: 380px;
+  font-size: 0.95rem;
+  color: var(--h-muted);
+}
+.hp-kbd-search input {
+  flex: 1; background: transparent; border: 0; outline: 0;
+  color: var(--h-fg); font: inherit;
+}
+.hp-kbd-search kbd {
+  display: inline-flex; gap: 0.15rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.35rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--h-line);
+  border-radius: 4px;
+}
+
+/* 9. ASYMMETRIC — Title big-left + small offset right */
+.hp-asymmetric {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.hp-asymmetric .hp-side {
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--h-line);
+  border-radius: 16px;
+  margin-top: 4rem;
+}
+@media (max-width: 768px) { .hp-asymmetric { grid-template-columns: 1fr; } }
+
+/* 10. CARD STACK BG — Stacked cards behind text */
+.hp-card-stack {
+  display: grid; place-items: center; text-align: center;
+}
+.hp-card-stack::before,
+.hp-card-stack::after {
+  content: '';
+  position: absolute;
+  width: 280px; height: 360px;
+  background: linear-gradient(135deg, #1f1f2e, #14141e);
+  border: 1px solid var(--h-line);
+  border-radius: 18px;
+  z-index: -1;
+  filter: blur(0.5px);
+}
+.hp-card-stack::before {
+  transform: translate(-60%, 0) rotate(-12deg);
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  box-shadow: 0 20px 40px -10px rgba(139,92,246,0.4);
+}
+.hp-card-stack::after {
+  transform: translate(60%, 0) rotate(12deg);
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
+  box-shadow: 0 20px 40px -10px rgba(236,72,153,0.4);
+}
+
+/* 11. GLOW ORB — Big colored glow with content centered */
+.hp-glow-orb {
+  display: grid; place-items: center; text-align: center;
+}
+.hp-glow-orb::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139,92,246,0.35), transparent 60%);
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  filter: blur(20px);
+}
+
+/* 12. CODE SIDE — Right side shows code preview */
+.hp-code-side {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.hp-code-preview {
+  background: #0d0d18;
+  border: 1px solid var(--h-line);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #d4d4d8;
+  box-shadow: 0 20px 50px -10px rgba(0,0,0,0.4);
+}
+.hp-code-preview .kw  { color: #ec4899; }
+.hp-code-preview .str { color: #10b981; }
+.hp-code-preview .com { color: var(--h-muted); font-style: italic; }
+.hp-code-preview .fn  { color: #06b6d4; }
+.hp-code-preview .num { color: #f59e0b; }
+@media (max-width: 768px) { .hp-code-side { grid-template-columns: 1fr; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-gradient-mesh::before, .hp-gradient-mesh::after,
+  .hp-animated-grid::before, .hp-marquee-strip-track { animation: none; }
+}

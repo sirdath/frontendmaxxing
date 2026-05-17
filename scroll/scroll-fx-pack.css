@@ -1,0 +1,136 @@
+/* ============================================
+   SCROLL FX PACK — 6 advanced scroll effects
+   parallax-bg, sticky-stagger, fade-in-out-section,
+   reveal-on-view, ribbon-pin, scroll-text-zoom
+   ============================================ */
+
+:where(.sfx-bg, .sfx-stk, .sfx-fades, .sfx-rev, .sfx-rib, .sfx-tz) {
+  --s-bg: #14141e;
+  --s-fg: #f5f5fa;
+  --s-muted: rgba(245, 245, 250, 0.55);
+  --s-accent: #8b5cf6;
+  color: var(--s-fg);
+  font-family: inherit;
+}
+
+/* 1. PARALLAX BG — Multi-layer parallax */
+.sfx-bg {
+  position: relative;
+  height: 480px;
+  overflow: hidden;
+  perspective: 8px;
+  perspective-origin: 0%;
+}
+.sfx-bg-scene {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+}
+.sfx-bg-layer {
+  position: absolute;
+  width: 100%; height: 100%;
+}
+.sfx-bg-layer-1 { transform: translateZ(-12px) scale(2.5); background: radial-gradient(circle at 30% 70%, #8b5cf6, transparent 60%); }
+.sfx-bg-layer-2 { transform: translateZ(-8px)  scale(2);   background: radial-gradient(circle at 70% 40%, #ec4899, transparent 60%); }
+.sfx-bg-layer-3 { transform: translateZ(-4px)  scale(1.5); background: radial-gradient(circle at 20% 30%, #06b6d4, transparent 60%); }
+.sfx-bg-front {
+  position: relative;
+  z-index: 2;
+  display: grid; place-items: center;
+  height: 100%;
+}
+
+/* 2. STICKY STAGGER — Items reveal as you scroll past their threshold */
+.sfx-stk {
+  display: grid; gap: 6rem;
+  padding: 4rem 0;
+}
+.sfx-stk-item {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.sfx-stk-item.is-shown { opacity: 1; transform: none; }
+
+/* 3. FADE-IN-OUT SECTION — Content fades while scrolling through */
+.sfx-fades {
+  height: 200vh;
+  position: relative;
+}
+.sfx-fades-sticky {
+  position: sticky; top: 0;
+  height: 100vh;
+  display: grid; place-items: center;
+  opacity: var(--sfx-opacity, 1);
+}
+
+/* 4. REVEAL ON VIEW — Different reveal animations */
+.sfx-rev {
+  --d: 0s;
+  opacity: 0;
+  transition: opacity 0.7s ease var(--d), transform 0.7s cubic-bezier(0.32, 0.72, 0, 1) var(--d);
+}
+.sfx-rev-up    { transform: translateY(40px); }
+.sfx-rev-down  { transform: translateY(-40px); }
+.sfx-rev-left  { transform: translateX(40px); }
+.sfx-rev-right { transform: translateX(-40px); }
+.sfx-rev-zoom  { transform: scale(0.8); }
+.sfx-rev-flip  { transform: rotateX(-60deg); transform-origin: bottom; }
+.sfx-rev.is-shown {
+  opacity: 1; transform: none;
+}
+
+/* 5. RIBBON PIN — Pinned slanted ribbon strip */
+.sfx-rib {
+  position: relative;
+  padding: 6rem 0;
+  overflow: hidden;
+}
+.sfx-rib-pin {
+  position: sticky; top: 30vh;
+  background: var(--s-accent);
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: clamp(1.4rem, 4vw, 2.8rem);
+  padding: 0.6rem 0;
+  transform: rotate(-3deg);
+  text-align: center;
+  white-space: nowrap;
+  width: 110%;
+  margin-left: -5%;
+  overflow: hidden;
+}
+.sfx-rib-track {
+  display: inline-block;
+  animation: sfx-rib-roll 24s linear infinite;
+}
+@keyframes sfx-rib-roll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* 6. SCROLL TEXT ZOOM — Text scales on scroll */
+.sfx-tz {
+  height: 200vh;
+  display: grid;
+  align-items: start;
+}
+.sfx-tz-sticky {
+  position: sticky; top: 0;
+  height: 100vh;
+  display: grid; place-items: center;
+  font-size: clamp(2rem, var(--scale, 1) * 4rem, 12rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sfx-stk-item, .sfx-rev, .sfx-rib-track { animation: none !important; transition: none; opacity: 1; transform: none; }
+}

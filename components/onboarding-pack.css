@@ -1,0 +1,292 @@
+/* ============================================
+   ONBOARDING PACK — 6 onboarding/welcome patterns
+   welcome-modal, profile-setup-wizard, tour-launcher, plan-picker,
+   what's-next-checklist, install-prompt
+   ============================================ */
+
+:where(.onb-welc, .onb-wiz, .onb-launch, .onb-plan, .onb-next, .onb-install) {
+  --o-bg: #14141e;
+  --o-bg-2: #1f1f2e;
+  --o-fg: #f5f5fa;
+  --o-muted: rgba(245, 245, 250, 0.55);
+  --o-line: rgba(255, 255, 255, 0.08);
+  --o-accent: #8b5cf6;
+  color: var(--o-fg);
+  font-family: inherit;
+}
+
+/* 1. WELCOME MODAL — Big intro with illustration */
+.onb-welc {
+  width: 100%; max-width: 440px;
+  background: linear-gradient(160deg, #14141e, #1f1f2e);
+  border: 1px solid var(--o-line);
+  border-radius: 20px;
+  padding: 0; overflow: hidden;
+}
+.onb-welc-illus {
+  height: 180px;
+  background:
+    radial-gradient(circle at 30% 60%, rgba(139,92,246,0.4), transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(236,72,153,0.4), transparent 50%),
+    linear-gradient(135deg, #2d2d44, #14141e);
+  display: grid; place-items: center;
+  position: relative;
+}
+.onb-welc-illus::before {
+  content: '✨';
+  font-size: 4rem;
+  filter: drop-shadow(0 8px 16px rgba(139,92,246,0.4));
+}
+.onb-welc-body { padding: 1.4rem 1.6rem; text-align: center; }
+.onb-welc h2 { margin: 0 0 0.4rem; font-size: 1.5rem; letter-spacing: -0.03em; }
+.onb-welc p { margin: 0 0 1.4rem; color: var(--o-muted); line-height: 1.55; }
+.onb-welc-cta {
+  display: flex; gap: 0.5rem; justify-content: center;
+}
+.onb-welc-cta button {
+  appearance: none; border: 0;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  font: inherit; font-weight: 600; font-size: 0.92rem;
+  cursor: pointer;
+}
+.onb-welc-cta .primary { background: var(--o-accent); color: #fff; }
+.onb-welc-cta .ghost   { background: transparent; color: var(--o-muted); }
+
+/* 2. PROFILE SETUP WIZARD — Multi-step */
+.onb-wiz {
+  width: 100%; max-width: 480px;
+  background: var(--o-bg);
+  border: 1px solid var(--o-line);
+  border-radius: 16px;
+  padding: 1.6rem;
+}
+.onb-wiz-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1rem;
+}
+.onb-wiz-step-label {
+  font-size: 0.75rem;
+  color: var(--o-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.onb-wiz-dots {
+  display: flex; gap: 0.3rem;
+}
+.onb-wiz-dots > i {
+  width: 24px; height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  transition: background 0.2s ease, width 0.3s ease;
+}
+.onb-wiz-dots > i.is-done   { background: var(--o-accent); }
+.onb-wiz-dots > i.is-active { background: var(--o-accent); width: 36px; }
+.onb-wiz h3 { margin: 0 0 0.4rem; font-size: 1.2rem; letter-spacing: -0.02em; }
+.onb-wiz-sub { color: var(--o-muted); font-size: 0.9rem; margin: 0 0 1.2rem; }
+.onb-wiz-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+}
+.onb-wiz-choice {
+  appearance: none; border: 1.5px solid var(--o-line);
+  background: var(--o-bg-2);
+  color: var(--o-fg);
+  padding: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+.onb-wiz-choice:hover { background: rgba(255, 255, 255, 0.06); }
+.onb-wiz-choice.is-picked {
+  border-color: var(--o-accent);
+  background: rgba(139, 92, 246, 0.08);
+}
+.onb-wiz-choice-icon {
+  font-size: 1.4rem; margin-bottom: 0.4rem;
+}
+.onb-wiz-choice-title { font-weight: 600; font-size: 0.9rem; }
+.onb-wiz-choice-desc { font-size: 0.74rem; color: var(--o-muted); margin-top: 0.2rem; }
+.onb-wiz-foot {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 1.4rem;
+}
+.onb-wiz-back, .onb-wiz-next {
+  appearance: none; border: 0;
+  padding: 0.55rem 1.2rem;
+  border-radius: 8px;
+  font: inherit; font-weight: 600; font-size: 0.88rem;
+  cursor: pointer;
+}
+.onb-wiz-back { background: transparent; color: var(--o-muted); }
+.onb-wiz-next { background: var(--o-accent); color: #fff; }
+.onb-wiz-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* 3. TOUR LAUNCHER — Pill that triggers tour */
+.onb-launch {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.8rem 0.5rem 0.5rem;
+  background: var(--o-bg);
+  border: 1px solid var(--o-line);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  box-shadow: 0 8px 20px -6px rgba(0,0,0,0.3);
+  transition: transform 0.18s ease;
+}
+.onb-launch:hover { transform: translateY(-2px); }
+.onb-launch-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  display: grid; place-items: center;
+  color: #fff; font-weight: 700; font-size: 0.78rem;
+}
+.onb-launch b { font-weight: 700; }
+.onb-launch-tag {
+  margin-left: 0.3rem;
+  padding: 0.1rem 0.4rem;
+  background: rgba(139,92,246,0.18);
+  color: var(--o-accent);
+  border-radius: 4px;
+  font-size: 0.7rem; font-weight: 700;
+}
+
+/* 4. PLAN PICKER — Pricing during onboarding */
+.onb-plan {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;
+  width: 100%; max-width: 540px;
+}
+.onb-plan-card {
+  position: relative;
+  padding: 1rem;
+  background: var(--o-bg);
+  border: 2px solid var(--o-line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+.onb-plan-card:hover { transform: translateY(-2px); }
+.onb-plan-card.is-picked {
+  border-color: var(--o-accent);
+  background: rgba(139, 92, 246, 0.05);
+}
+.onb-plan-card.recommended {
+  border-color: var(--o-accent);
+}
+.onb-plan-card.recommended::before {
+  content: 'Recommended';
+  position: absolute;
+  top: -10px; left: 50%; transform: translateX(-50%);
+  background: var(--o-accent); color: #fff;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+.onb-plan-name { font-weight: 700; font-size: 0.95rem; }
+.onb-plan-price {
+  font-size: 1.6rem; font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0.4rem 0;
+}
+.onb-plan-price small { font-size: 0.78rem; color: var(--o-muted); font-weight: 500; }
+.onb-plan-feats { list-style: none; padding: 0; margin: 0.5rem 0 0; font-size: 0.78rem; }
+.onb-plan-feats li::before { content: '✓ '; color: var(--o-accent); }
+
+/* 5. WHAT'S NEXT CHECKLIST — Post-signup TODO */
+.onb-next {
+  width: 100%; max-width: 360px;
+  background: var(--o-bg);
+  border: 1px solid var(--o-line);
+  border-radius: 14px;
+  padding: 1.1rem 1.3rem;
+}
+.onb-next h4 {
+  margin: 0 0 0.7rem;
+  font-size: 1rem;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.onb-next-pct {
+  font-size: 0.78rem; color: var(--o-muted);
+  font-variant-numeric: tabular-nums;
+}
+.onb-next-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0.7rem;
+}
+.onb-next-bar > i {
+  display: block; height: 100%;
+  width: var(--p, 40%);
+  background: var(--o-accent);
+  border-radius: inherit;
+  transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.onb-next-item {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  gap: 0.6rem; align-items: center;
+  padding: 0.45rem 0;
+  font-size: 0.88rem;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.onb-next-item:hover { background: rgba(255,255,255,0.03); }
+.onb-next-tick {
+  width: 22px; height: 22px;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: transparent;
+}
+.onb-next-item.is-done {
+  color: var(--o-muted);
+  text-decoration: line-through;
+}
+.onb-next-item.is-done .onb-next-tick {
+  background: #10b981; border-color: #10b981;
+  color: #fff;
+}
+.onb-next-item.is-done .onb-next-tick::before {
+  content: '✓'; font-size: 0.7rem; font-weight: 800;
+}
+.onb-next-arrow { color: var(--o-muted); font-size: 1.1rem; }
+
+/* 6. INSTALL PROMPT — PWA install bar */
+.onb-install {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  background: var(--o-bg);
+  border: 1px solid var(--o-line);
+  border-radius: 12px;
+  width: 100%; max-width: 460px;
+}
+.onb-install-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.onb-install-body { min-width: 0; }
+.onb-install-body b { font-size: 0.88rem; }
+.onb-install-body p { margin: 0.1rem 0 0; font-size: 0.78rem; color: var(--o-muted); }
+.onb-install-cta {
+  appearance: none; border: 0;
+  padding: 0.5rem 1rem;
+  background: var(--o-accent); color: #fff;
+  border-radius: 8px;
+  font: inherit; font-weight: 600; font-size: 0.82rem;
+  cursor: pointer;
+}
+.onb-install-dismiss {
+  appearance: none; border: 0;
+  width: 28px; height: 28px;
+  background: transparent;
+  color: var(--o-muted);
+  border-radius: 4px; cursor: pointer;
+  font-size: 1rem;
+}

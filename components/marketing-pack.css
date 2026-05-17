@@ -1,0 +1,303 @@
+/* ============================================
+   MARKETING PACK — 8 marketing/landing block patterns
+   social-proof-bar, testimonial-strip, logo-cloud-pro, faq-grid,
+   comparison-3col, feature-list-2col, integration-row, stat-strip
+   ============================================ */
+
+:where(.mkt-proof, .mkt-test, .mkt-logos, .mkt-faq, .mkt-cmp, .mkt-feats, .mkt-int, .mkt-statbar) {
+  --m-bg: #14141e;
+  --m-bg-2: #1f1f2e;
+  --m-fg: #f5f5fa;
+  --m-muted: rgba(245, 245, 250, 0.55);
+  --m-line: rgba(255, 255, 255, 0.08);
+  --m-accent: #8b5cf6;
+  color: var(--m-fg);
+  font-family: inherit;
+}
+
+/* 1. SOCIAL PROOF BAR — "Loved by 10k+ teams" with avatars */
+.mkt-proof {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.5rem 0.9rem 0.5rem 0.5rem;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 999px;
+}
+.mkt-proof-avatars { display: flex; }
+.mkt-proof-avatars > div {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border: 2px solid var(--m-bg);
+  margin-left: -8px;
+}
+.mkt-proof-avatars > div:first-child { margin-left: 0; }
+.mkt-proof-avatars > div:nth-child(2) { background: linear-gradient(135deg, #06b6d4, #8b5cf6); }
+.mkt-proof-avatars > div:nth-child(3) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.mkt-proof-avatars > div:nth-child(4) { background: linear-gradient(135deg, #10b981, #06b6d4); }
+.mkt-proof-stars {
+  display: inline-flex; color: #fbbf24; font-size: 0.78rem;
+  margin-right: 0.2rem;
+}
+.mkt-proof-text { font-size: 0.82rem; }
+.mkt-proof-text b { font-weight: 700; }
+
+/* 2. TESTIMONIAL STRIP — Horizontal scroll of quotes */
+.mkt-test {
+  display: flex; gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 1rem 0;
+  scrollbar-width: none;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+          mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.mkt-test::-webkit-scrollbar { display: none; }
+.mkt-test-card {
+  flex: 0 0 320px;
+  scroll-snap-align: center;
+  padding: 1.4rem;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 14px;
+  position: relative;
+}
+.mkt-test-card::before {
+  content: '"';
+  position: absolute;
+  top: -10px; left: 14px;
+  font-size: 4rem;
+  font-family: Georgia, serif;
+  color: var(--m-accent);
+  opacity: 0.25;
+  line-height: 1;
+}
+.mkt-test-body {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.mkt-test-author {
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.mkt-test-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.mkt-test-name { font-weight: 600; font-size: 0.88rem; }
+.mkt-test-role { font-size: 0.76rem; color: var(--m-muted); }
+
+/* 3. LOGO CLOUD PRO — Featured logos row with "in use at" */
+.mkt-logos {
+  text-align: center;
+  padding: 2rem 0;
+}
+.mkt-logos h4 {
+  font-size: 0.78rem;
+  color: var(--m-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin: 0 0 1.2rem;
+}
+.mkt-logos-row {
+  display: flex;
+  justify-content: center;
+  gap: 2.4rem;
+  flex-wrap: wrap;
+  filter: grayscale(1) opacity(0.7);
+  transition: filter 0.3s ease;
+}
+.mkt-logos-row:hover { filter: grayscale(0) opacity(1); }
+.mkt-logos-item {
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.04em;
+}
+.mkt-logos-item.style-1 { font-family: Georgia, serif; }
+.mkt-logos-item.style-2 { font-family: ui-monospace, monospace; }
+.mkt-logos-item.style-3 { font-family: 'Brush Script MT', cursive; font-weight: 400; }
+.mkt-logos-marquee {
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+          mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.mkt-logos-marquee .mkt-logos-row {
+  flex-wrap: nowrap;
+  display: inline-flex;
+  animation: mkt-logos-roll 24s linear infinite;
+  filter: grayscale(1) opacity(0.5);
+}
+
+@keyframes mkt-logos-roll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* 4. FAQ GRID — 2-col grid of accordions */
+.mkt-faq {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.6rem;
+}
+.mkt-faq-item {
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+}
+.mkt-faq-q {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+  display: flex; align-items: center; gap: 0.6rem;
+  cursor: pointer;
+}
+.mkt-faq-q::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--m-muted);
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+.mkt-faq-item[open] .mkt-faq-q::after { transform: rotate(45deg); }
+.mkt-faq-a {
+  margin: 0.5rem 0 0;
+  color: var(--m-muted);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+/* 5. COMPARISON 3-COLUMN — Pricing/feature comparison */
+.mkt-cmp {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, 1fr);
+  border: 1px solid var(--m-line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--m-bg);
+}
+.mkt-cmp-row {
+  display: contents;
+}
+.mkt-cmp-row > * {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--m-line);
+  font-size: 0.88rem;
+}
+.mkt-cmp-row.head > * {
+  background: var(--m-bg-2);
+  font-weight: 700;
+  text-align: center;
+}
+.mkt-cmp-row.head > .mkt-cmp-feat { text-align: left; }
+.mkt-cmp-row > .mkt-cmp-feat { font-weight: 500; }
+.mkt-cmp-row > .mkt-cmp-cell { text-align: center; color: var(--m-muted); }
+.mkt-cmp-row > .mkt-cmp-cell.yes { color: #10b981; }
+.mkt-cmp-row > .mkt-cmp-cell.yes::before { content: '✓ '; }
+.mkt-cmp-row > .mkt-cmp-cell.no::before { content: '–'; opacity: 0.5; }
+.mkt-cmp-popular > .mkt-cmp-cell-2 {
+  background: rgba(139,92,246,0.05);
+  border-left: 1px solid rgba(139,92,246,0.2);
+  border-right: 1px solid rgba(139,92,246,0.2);
+}
+.mkt-cmp-popular.head > .mkt-cmp-cell-2 {
+  background: rgba(139,92,246,0.18);
+  color: var(--m-accent);
+}
+
+/* 6. FEATURE LIST 2-COL — Icon + title + desc grid */
+.mkt-feats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.mkt-feat {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 0.8rem;
+  padding: 1rem;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 12px;
+}
+.mkt-feat-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--m-accent);
+  display: grid; place-items: center;
+  font-size: 1.1rem;
+}
+.mkt-feat-title { font-weight: 600; margin: 0 0 0.2rem; font-size: 0.95rem; }
+.mkt-feat-desc { color: var(--m-muted); font-size: 0.82rem; line-height: 1.5; margin: 0; }
+
+/* 7. INTEGRATION ROW — Logos with "+ 50 more" */
+.mkt-int {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.9rem 1.2rem;
+  background: var(--m-bg-2);
+  border-radius: 14px;
+  width: 100%; max-width: 540px;
+}
+.mkt-int-logos {
+  display: flex; flex-wrap: wrap; gap: 0.3rem;
+  flex: 1; min-width: 0;
+}
+.mkt-int-logo {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border: 2px solid var(--m-bg);
+}
+.mkt-int-logo:nth-child(2n) { background: linear-gradient(135deg, #06b6d4, #8b5cf6); }
+.mkt-int-logo:nth-child(3n) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.mkt-int-logo:nth-child(5n) { background: linear-gradient(135deg, #10b981, #06b6d4); }
+.mkt-int-more {
+  padding: 0.3rem 0.6rem;
+  background: var(--m-bg);
+  border: 1px dashed var(--m-line);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: var(--m-muted);
+}
+
+/* 8. STAT STRIP — Horizontal stat row */
+.mkt-statbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.mkt-statbar-cell {
+  padding: 1.4rem 1.2rem;
+  text-align: center;
+  border-right: 1px solid var(--m-line);
+}
+.mkt-statbar-cell:last-child { border-right: 0; }
+.mkt-statbar-val {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, var(--m-accent), #ec4899);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-variant-numeric: tabular-nums;
+}
+.mkt-statbar-label {
+  font-size: 0.78rem;
+  color: var(--m-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mkt-logos-marquee .mkt-logos-row { animation: none; }
+}

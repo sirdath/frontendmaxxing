@@ -1,0 +1,287 @@
+/* ============================================
+   LOTTIE-LOOK — 10 CSS-only "Lottie-style" animated illustrations
+   No JSON, no library — pure CSS+SVG to mimic common Lottie scenes.
+   ============================================
+   Usage:
+     <div class="lot lot-check"></div>
+     <div class="lot lot-heart-burst"></div>
+
+   Patterns:
+     lot-check (success draw), lot-cross (error X draw), lot-spinner-orb,
+     lot-heart-burst (heart pop + sparkle ring), lot-confetti-burst,
+     lot-rocket (launch with trail), lot-bell-shake, lot-thumbs-up-pop,
+     lot-clock-spin (loading clock), lot-cloud-rain
+   ============================================ */
+
+.lot {
+  --l-c: #8b5cf6;
+  --l-c2: #ec4899;
+  --l-good: #10b981;
+  --l-bad: #ef4444;
+  --l-amber: #f59e0b;
+  --l-bg: transparent;
+  width: 96px; height: 96px;
+  display: inline-block;
+  position: relative;
+  background: var(--l-bg);
+}
+
+/* 1. CHECK — success checkmark draw */
+.lot-check {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, transparent 0 40px, var(--l-good) 41px 42px, transparent 43px),
+    radial-gradient(circle at center, rgba(16,185,129,0.15) 0 38px, transparent 39px);
+}
+.lot-check::before {
+  content: '';
+  position: absolute;
+  left: 25%; top: 50%;
+  width: 18px; height: 32px;
+  border-right: 4px solid var(--l-good);
+  border-bottom: 4px solid var(--l-good);
+  transform: translate(-50%, -60%) rotate(45deg) scale(0);
+  transform-origin: center;
+  animation: lot-check-draw 0.6s cubic-bezier(0.32, 1.5, 0.5, 1) 0.2s forwards;
+}
+@keyframes lot-check-draw {
+  0%   { transform: translate(-50%, -60%) rotate(45deg) scale(0); }
+  100% { transform: translate(-50%, -60%) rotate(45deg) scale(1); }
+}
+
+/* 2. CROSS — error X */
+.lot-cross {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, transparent 0 40px, var(--l-bad) 41px 42px, transparent 43px),
+    radial-gradient(circle at center, rgba(239,68,68,0.15) 0 38px, transparent 39px);
+}
+.lot-cross::before,
+.lot-cross::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 4px; height: 36px;
+  background: var(--l-bad);
+  border-radius: 2px;
+  transform-origin: center;
+}
+.lot-cross::before {
+  transform: translate(-50%, -50%) rotate(45deg) scaleY(0);
+  animation: lot-cross-1 0.4s cubic-bezier(0.32, 1.5, 0.5, 1) 0.1s forwards;
+}
+.lot-cross::after  {
+  transform: translate(-50%, -50%) rotate(-45deg) scaleY(0);
+  animation: lot-cross-1 0.4s cubic-bezier(0.32, 1.5, 0.5, 1) 0.25s forwards;
+}
+@keyframes lot-cross-1 { to { transform: translate(-50%, -50%) rotate(var(--rot, 45deg)) scaleY(1); } }
+.lot-cross::after { --rot: -45deg; }
+
+/* 3. SPINNER ORB — gradient orb with glow trail */
+.lot-spinner-orb {
+  border-radius: 50%;
+}
+.lot-spinner-orb::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent, var(--l-c), var(--l-c2), transparent);
+  -webkit-mask: radial-gradient(transparent 28px, #000 30px);
+          mask: radial-gradient(transparent 28px, #000 30px);
+  filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.6));
+  animation: lot-spin 1.2s linear infinite;
+}
+@keyframes lot-spin { to { transform: rotate(360deg); } }
+
+/* 4. HEART BURST — heart that pops + radial sparkle ring */
+.lot-heart-burst::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 40px; height: 40px;
+  background: var(--l-c2);
+  clip-path: path('M20 36 C20 36 4 22 4 12 C4 6 8 2 14 2 C17 2 19 4 20 6 C21 4 23 2 26 2 C32 2 36 6 36 12 C36 22 20 36 20 36 Z');
+  transform: translate(-50%, -50%) scale(0);
+  animation: lot-heart-pop 0.8s cubic-bezier(0.32, 1.6, 0.5, 1) forwards;
+  filter: drop-shadow(0 4px 10px rgba(236, 72, 153, 0.4));
+}
+.lot-heart-burst::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 3px solid var(--l-c2);
+  opacity: 0;
+  animation: lot-heart-ring 1s ease-out 0.3s forwards;
+}
+@keyframes lot-heart-pop {
+  0%  { transform: translate(-50%, -50%) scale(0); }
+  50% { transform: translate(-50%, -50%) scale(1.2); }
+  70% { transform: translate(-50%, -50%) scale(0.9); }
+  100%{ transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes lot-heart-ring {
+  0%   { opacity: 0.8; transform: scale(0.4); border-width: 8px; }
+  100% { opacity: 0;   transform: scale(1.4); border-width: 0; }
+}
+
+/* 5. CONFETTI BURST — radial paper bits */
+.lot-confetti-burst {
+  background:
+    radial-gradient(circle 4px at 50% 50%, var(--l-c) 99%, transparent 100%),
+    radial-gradient(circle 3px at 30% 30%, var(--l-c2) 99%, transparent 100%),
+    radial-gradient(circle 3px at 70% 30%, var(--l-amber) 99%, transparent 100%),
+    radial-gradient(circle 3px at 30% 70%, var(--l-good) 99%, transparent 100%),
+    radial-gradient(circle 3px at 70% 70%, #06b6d4 99%, transparent 100%),
+    radial-gradient(circle 2px at 20% 50%, var(--l-c) 99%, transparent 100%),
+    radial-gradient(circle 2px at 80% 50%, var(--l-c2) 99%, transparent 100%),
+    radial-gradient(circle 2px at 50% 20%, var(--l-amber) 99%, transparent 100%),
+    radial-gradient(circle 2px at 50% 80%, var(--l-good) 99%, transparent 100%);
+  background-repeat: no-repeat;
+  animation: lot-confetti 1s ease-out forwards;
+  transform-origin: center;
+}
+@keyframes lot-confetti {
+  0%   { transform: scale(0); opacity: 0; }
+  20%  { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+/* 6. ROCKET — diagonal launch with trail */
+.lot-rocket {
+  overflow: hidden;
+}
+.lot-rocket::before {
+  content: '';
+  position: absolute;
+  left: 10%; bottom: 10%;
+  width: 16px; height: 28px;
+  background:
+    linear-gradient(180deg, #ef4444 0%, #f97316 50%, transparent 70%);
+  clip-path: polygon(50% 0, 100% 70%, 100% 100%, 0 100%, 0 70%);
+  transform-origin: center bottom;
+  animation: lot-rocket-fly 1.4s cubic-bezier(0.5, 0, 0.7, 0.3) infinite;
+}
+.lot-rocket::after {
+  content: '';
+  position: absolute;
+  left: 14%; bottom: 5%;
+  width: 8px; height: 14px;
+  background: radial-gradient(ellipse, rgba(251,146,60,0.7), transparent 70%);
+  filter: blur(2px);
+  animation: lot-rocket-fly 1.4s cubic-bezier(0.5, 0, 0.7, 0.3) infinite;
+}
+@keyframes lot-rocket-fly {
+  0%   { transform: translate(0, 0) rotate(45deg); }
+  100% { transform: translate(60px, -60px) rotate(45deg); opacity: 0; }
+}
+
+/* 7. BELL SHAKE — Notification bell with ringing motion */
+.lot-bell-shake {
+  display: grid; place-items: center;
+}
+.lot-bell-shake::before {
+  content: '';
+  width: 40px; height: 44px;
+  background: var(--l-amber);
+  clip-path: path('M20 4 C12 4 8 9 8 15 V25 L4 32 H36 L32 25 V15 C32 9 28 4 20 4 Z M14 36 A6 6 0 0 0 26 36 Z');
+  transform-origin: 50% 4px;
+  animation: lot-bell 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(245,158,11,0.4));
+}
+@keyframes lot-bell {
+  0%, 100% { transform: rotate(0); }
+  10%, 30%, 50% { transform: rotate(-15deg); }
+  20%, 40%, 60% { transform: rotate(15deg); }
+  65% { transform: rotate(0); }
+}
+
+/* 8. THUMBS UP POP */
+.lot-thumbs-up-pop::before {
+  content: '👍';
+  position: absolute;
+  left: 50%; top: 50%;
+  font-size: 48px;
+  transform: translate(-50%, -50%) scale(0);
+  animation: lot-thumbs 0.7s cubic-bezier(0.32, 1.6, 0.5, 1) forwards;
+}
+@keyframes lot-thumbs {
+  0%  { transform: translate(-50%, -50%) scale(0) rotate(-25deg); }
+  60% { transform: translate(-50%, -50%) scale(1.2) rotate(8deg); }
+  80% { transform: translate(-50%, -50%) scale(0.95) rotate(-3deg); }
+  100%{ transform: translate(-50%, -50%) scale(1) rotate(0); }
+}
+
+/* 9. CLOCK SPIN — Loading clock w/ moving hand */
+.lot-clock-spin {
+  border-radius: 50%;
+  border: 3px solid var(--l-c);
+  box-sizing: border-box;
+}
+.lot-clock-spin::before { /* minute */
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 3px; height: 32px;
+  background: var(--l-c);
+  border-radius: 2px;
+  transform-origin: 50% 100%;
+  transform: translate(-50%, -100%);
+  animation: lot-clock-min 1.5s linear infinite;
+}
+.lot-clock-spin::after { /* hour */
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 3px; height: 22px;
+  background: var(--l-c2);
+  border-radius: 2px;
+  transform-origin: 50% 100%;
+  transform: translate(-50%, -100%);
+  animation: lot-clock-hr 6s linear infinite;
+}
+@keyframes lot-clock-min { from { transform: translate(-50%, -100%) rotate(0); } to { transform: translate(-50%, -100%) rotate(360deg); } }
+@keyframes lot-clock-hr  { from { transform: translate(-50%, -100%) rotate(0); } to { transform: translate(-50%, -100%) rotate(360deg); } }
+
+/* 10. CLOUD RAIN — Rain dripping from a cloud */
+.lot-cloud-rain {
+  overflow: hidden;
+}
+.lot-cloud-rain::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 18%;
+  width: 56px; height: 28px;
+  transform: translateX(-50%);
+  background: #94a3b8;
+  border-radius: 24px;
+  box-shadow:
+    -14px 4px 0 -4px #94a3b8,
+    14px 4px 0 -4px #94a3b8;
+}
+.lot-cloud-rain::after {
+  content: '';
+  position: absolute;
+  left: 30%; top: 50%; width: 40%; height: 30%;
+  background:
+    radial-gradient(circle 2px at 10% 30%, #06b6d4 99%, transparent),
+    radial-gradient(circle 2px at 30% 60%, #06b6d4 99%, transparent),
+    radial-gradient(circle 2px at 50% 30%, #06b6d4 99%, transparent),
+    radial-gradient(circle 2px at 70% 60%, #06b6d4 99%, transparent),
+    radial-gradient(circle 2px at 90% 30%, #06b6d4 99%, transparent);
+  background-repeat: no-repeat;
+  animation: lot-rain 0.8s linear infinite;
+}
+@keyframes lot-rain {
+  0%   { transform: translateY(-12px); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(20px); opacity: 0; }
+}
+
+/* Sizes */
+.lot-sm { width: 64px; height: 64px; }
+.lot-lg { width: 128px; height: 128px; }
+.lot-xl { width: 180px; height: 180px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lot *, .lot::before, .lot::after { animation: none !important; }
+}
