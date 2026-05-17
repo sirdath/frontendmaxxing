@@ -2841,4 +2841,321 @@
   P['shaders/gradient-flow.glsl.js']     = function (t) { shaderStage(t, 'GradientFlowShader',     { note: 'Smooth gradient flow' }); };
   P['shaders/mesh-gradient-wgl.glsl.js'] = function (t) { shaderStage(t, 'MeshGradientWGLShader',  { note: 'Whatamesh-style WebGL mesh gradient' }); };
 
+  // ============================================
+  // Remaining major packs — hand-crafted markup
+  // ============================================
+
+  P['blocks/progress-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'gauge', html: '<div class="gauge" style="--g-pct:72;width:140px;height:140px;"></div>' },
+      { label: 'adaptive slider', html: '<div class="aslider" style="width:220px;"><div class="aslider-track"><div class="aslider-fill" style="width:65%;"></div><div class="aslider-bubble" style="left:65%;">65</div></div><div class="aslider-ticks"><span></span><span></span><span></span><span></span><span></span></div></div>' },
+      { label: 'labeled', html: '<div class="lprog" style="width:220px;"><div class="lprog-track"><div class="lprog-fill" style="width:48%;"></div></div><div class="lprog-label">48% · Compiling…</div></div>' }
+    ], null, 260);
+  };
+
+  P['components/admin-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'server health', html: '<div class="adm-srv" style="width:260px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;"><span style="font-weight:600;">web-01</span><span style="color:#10b981;font-size:0.7rem;">● healthy</span></div><div style="display:grid;gap:0.35rem;font-size:0.72rem;"><div>CPU <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;margin-top:2px;"><div style="height:100%;background:#10b981;width:42%;border-radius:3px;"></div></div></div><div>RAM <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;margin-top:2px;"><div style="height:100%;background:#f59e0b;width:78%;border-radius:3px;"></div></div></div><div>Disk <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;margin-top:2px;"><div style="height:100%;background:#8b5cf6;width:35%;border-radius:3px;"></div></div></div></div></div>' },
+      { label: 'build pipeline', html: '<div class="adm-pipe" style="display:flex;align-items:center;gap:0.3rem;font-size:0.72rem;"><span style="padding:0.3rem 0.55rem;background:rgba(16,185,129,0.15);border:1px solid #10b981;border-radius:5px;color:#86efac;">✓ Lint</span>→<span style="padding:0.3rem 0.55rem;background:rgba(16,185,129,0.15);border:1px solid #10b981;border-radius:5px;color:#86efac;">✓ Build</span>→<span style="padding:0.3rem 0.55rem;background:rgba(245,158,11,0.15);border:1px solid #f59e0b;border-radius:5px;color:#fcd34d;">◐ Test</span>→<span style="padding:0.3rem 0.55rem;background:rgba(255,255,255,0.05);border:1px dashed rgba(255,255,255,0.15);border-radius:5px;color:rgba(255,255,255,0.5);">Deploy</span></div>' },
+      { label: 'api endpoint', html: '<div class="adm-api" style="font-family:monospace;font-size:0.78rem;padding:0.6rem 0.8rem;background:rgba(255,255,255,0.04);border-left:3px solid #8b5cf6;border-radius:6px;"><span style="padding:0.05rem 0.4rem;background:#22c55e;color:#000;border-radius:3px;font-size:0.65rem;font-weight:700;">GET</span> <span style="color:#fff;">/api/users/:id</span><div style="margin-top:0.3rem;font-size:0.65rem;color:rgba(255,255,255,0.45);">200 · 24ms · v2</div></div>' },
+      { label: 'env secret', html: '<div class="adm-env" style="font-family:monospace;font-size:0.78rem;padding:0.5rem 0.7rem;background:rgba(255,255,255,0.04);border-radius:6px;display:flex;align-items:center;gap:0.5rem;"><span style="color:#a78bfa;">DATABASE_URL</span><span style="background:rgba(0,0,0,0.4);padding:0.15rem 0.4rem;border-radius:3px;letter-spacing:0.2em;">••••••••</span><button style="background:rgba(139,92,246,0.18);border:1px solid #a78bfa;border-radius:4px;color:#c4b5fd;font-size:0.65rem;padding:0.15rem 0.4rem;cursor:pointer;">Reveal</button></div>' },
+      { label: 'queue', html: '<div class="adm-q" style="width:240px;font-size:0.72rem;"><div style="display:flex;justify-content:space-between;margin-bottom:0.4rem;"><span style="font-weight:600;">image-resize</span><span style="color:#fcd34d;">142 pending</span></div><div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;"><div style="height:100%;background:linear-gradient(90deg,#8b5cf6,#ec4899);width:62%;border-radius:3px;"></div></div><div style="display:flex;gap:0.7rem;margin-top:0.35rem;font-size:0.65rem;color:rgba(255,255,255,0.5);"><span>✓ 826</span><span>◐ 4</span><span>✗ 3</span></div></div>' },
+      { label: 'audit log', html: '<div class="adm-audit" style="width:240px;font-family:monospace;font-size:0.72rem;"><div style="padding:0.35rem 0.5rem;background:rgba(255,255,255,0.04);border-radius:4px;margin-bottom:0.2rem;"><span style="color:#86efac;">CREATE</span> alice@co.com · users.456 <span style="opacity:0.5;">· 2m ago</span></div><div style="padding:0.35rem 0.5rem;background:rgba(255,255,255,0.04);border-radius:4px;"><span style="color:#fca5a5;">DELETE</span> bob@co.com · keys.7 <span style="opacity:0.5;">· 11m ago</span></div></div>' }
+    ], null, 280);
+  };
+
+  P['components/auth-pack-2.css'] = function (target) {
+    packGrid(target, [
+      { label: '2FA OTP', html: '<div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;"><div style="font-size:0.75rem;color:rgba(255,255,255,0.6);">Enter 6-digit code</div><div style="display:flex;gap:0.4rem;">' + [1,2,3,4,5,6].map(function(d,i){return '<input value="' + (i<4?d:'') + '" style="width:38px;height:46px;background:rgba(255,255,255,0.05);border:1.5px solid ' + (i<4?'#a78bfa':'rgba(255,255,255,0.12)') + ';border-radius:6px;text-align:center;font-size:1.2rem;font-weight:700;color:#fff;">';}).join('') + '</div></div>' },
+      { label: 'SSO', html: '<div style="display:flex;flex-direction:column;gap:0.4rem;width:220px;">' + [['🔍','Google','#fff'],['🐙','GitHub','#fff'],['🍎','Apple','#fff'],['Ⓜ','Microsoft','#fff']].map(function(p){return '<button style="display:flex;align-items:center;gap:0.5rem;padding:0.55rem 0.85rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:' + p[2] + ';font-size:0.82rem;cursor:pointer;text-align:left;"><span style="font-size:1.05rem;">' + p[0] + '</span> Continue with ' + p[1] + '</button>';}).join('') + '</div>' },
+      { label: 'magic link', html: '<div style="text-align:center;padding:1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;max-width:260px;"><div style="font-size:2rem;margin-bottom:0.4rem;">📧</div><div style="font-size:0.85rem;color:#fff;font-weight:600;margin-bottom:0.3rem;">Check your email</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.55);">Link sent to <span style="color:#c4b5fd;">you@example.com</span></div></div>' },
+      { label: 'session row', html: '<div style="display:flex;align-items:center;gap:0.7rem;padding:0.6rem 0.8rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:7px;width:280px;"><span style="font-size:1.4rem;">💻</span><div style="flex:1;"><div style="font-size:0.78rem;color:#fff;font-weight:600;">MacBook Pro · Chrome</div><div style="font-size:0.65rem;color:rgba(255,255,255,0.45);">San Francisco · current</div></div><button style="background:rgba(239,68,68,0.15);border:1px solid #ef4444;border-radius:4px;color:#fca5a5;font-size:0.65rem;padding:0.2rem 0.5rem;cursor:pointer;">Revoke</button></div>' },
+      { label: 'account locked', html: '<div style="padding:0.8rem 1rem;background:rgba(239,68,68,0.1);border-left:3px solid #ef4444;border-radius:6px;max-width:280px;"><div style="display:flex;align-items:center;gap:0.4rem;color:#fca5a5;font-weight:700;font-size:0.85rem;margin-bottom:0.3rem;">🔒 Account locked</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.6);line-height:1.4;">Too many failed attempts. Try again in 15 minutes or reset your password.</div></div>' }
+    ], null, 280);
+  };
+
+  P['components/cards-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'basic', html: '<div style="width:200px;padding:0.9rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;"><div style="font-weight:700;color:#fff;margin-bottom:0.3rem;">Basic card</div><div style="font-size:0.78rem;color:rgba(255,255,255,0.6);">Simple container with padding and border.</div></div>' },
+      { label: 'glass', html: '<div style="width:200px;padding:0.9rem;background:linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0.04));backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:10px;"><div style="font-weight:700;color:#fff;margin-bottom:0.3rem;">Glass</div><div style="font-size:0.78rem;color:rgba(255,255,255,0.7);">Frosted backdrop blur.</div></div>' },
+      { label: 'gradient border', html: '<div style="width:200px;padding:2px;background:linear-gradient(135deg,#8b5cf6,#ec4899);border-radius:10px;"><div style="padding:0.85rem;background:#15152a;border-radius:8px;"><div style="font-weight:700;color:#fff;margin-bottom:0.3rem;">Gradient</div><div style="font-size:0.78rem;color:rgba(255,255,255,0.6);">Gradient border ring.</div></div></div>' },
+      { label: 'glow', html: '<div style="width:200px;padding:0.9rem;background:rgba(255,255,255,0.04);border:1px solid rgba(139,92,246,0.4);border-radius:10px;box-shadow:0 0 24px rgba(139,92,246,0.35);"><div style="font-weight:700;color:#fff;margin-bottom:0.3rem;">Glow</div><div style="font-size:0.78rem;color:rgba(255,255,255,0.6);">Soft purple glow.</div></div>' },
+      { label: 'stat', html: '<div style="width:200px;padding:0.9rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;"><div style="font-size:0.65rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;">Revenue</div><div style="font-size:1.8rem;font-weight:800;color:#fff;line-height:1.1;">$48.2k</div><div style="font-size:0.72rem;color:#86efac;">↑ 12.4%</div></div>' },
+      { label: 'media', html: '<div style="width:200px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;"><div style="height:80px;background:linear-gradient(135deg,#8b5cf6,#ec4899);"></div><div style="padding:0.7rem 0.85rem;"><div style="font-weight:700;color:#fff;font-size:0.85rem;">With media</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.55);">Image / gradient header.</div></div></div>' }
+    ], null, 220);
+  };
+
+  P['components/checkout-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'step progress', html: '<div style="display:flex;align-items:center;gap:0.4rem;width:280px;">' + ['Cart','Shipping','Payment','Done'].map(function(s,i){var on=i<=1;var cur=i===1;return '<div style="display:flex;align-items:center;gap:0.4rem;font-size:0.7rem;flex:1;"><span style="width:22px;height:22px;border-radius:50%;background:' + (on?'#8b5cf6':'rgba(255,255,255,0.1)') + ';color:#fff;display:grid;place-items:center;font-weight:700;font-size:0.7rem;border:' + (cur?'2px solid #c4b5fd':'none') + ';">' + (on&&!cur?'✓':(i+1)) + '</span><span style="color:' + (on?'#fff':'rgba(255,255,255,0.45)') + ';">' + s + '</span>' + (i<3?'<span style="flex:1;height:1px;background:' + (i<1?'#8b5cf6':'rgba(255,255,255,0.12)') + ';"></span>':'') + '</div>';}).join('') + '</div>' },
+      { label: 'payment methods', html: '<div style="display:flex;flex-direction:column;gap:0.35rem;width:240px;">' + [['💳','Card ending 4242',true],['🍎','Apple Pay',false],['🟢','Google Pay',false]].map(function(p){return '<div style="display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0.8rem;background:' + (p[2]?'rgba(139,92,246,0.12)':'rgba(255,255,255,0.04)') + ';border:1px solid ' + (p[2]?'#a78bfa':'rgba(255,255,255,0.1)') + ';border-radius:7px;"><span style="font-size:1.1rem;">' + p[0] + '</span><span style="font-size:0.8rem;color:#fff;flex:1;">' + p[1] + '</span>' + (p[2]?'<span style="color:#86efac;">✓</span>':'') + '</div>';}).join('') + '</div>' },
+      { label: 'order summary', html: '<div style="width:240px;padding:0.9rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;font-size:0.78rem;"><div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.7);margin-bottom:0.3rem;">Subtotal<span>$84.00</span></div><div style="display:flex;justify-content:space-between;color:rgba(255,255,255,0.7);margin-bottom:0.3rem;">Shipping<span>$8.00</span></div><div style="display:flex;justify-content:space-between;color:#86efac;margin-bottom:0.6rem;">Discount<span>−$10.00</span></div><div style="display:flex;justify-content:space-between;font-weight:700;color:#fff;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.1);">Total<span>$82.00</span></div></div>' },
+      { label: 'discount input', html: '<div style="display:flex;align-items:center;gap:0;width:280px;background:rgba(255,255,255,0.05);border:1px solid #22c55e;border-radius:8px;overflow:hidden;"><span style="padding:0 0.6rem;color:#86efac;">🎟</span><input value="WELCOME10" style="flex:1;padding:0.55rem 0;background:transparent;border:none;color:#fff;font-family:monospace;font-size:0.85rem;outline:none;letter-spacing:0.1em;font-weight:700;"><span style="padding:0 0.7rem;color:#86efac;font-size:0.75rem;font-weight:700;">−$10.00 ✓</span></div>' },
+      { label: 'success receipt', html: '<div style="text-align:center;padding:1.2rem 1rem;background:rgba(34,197,94,0.08);border:1px solid #22c55e;border-radius:10px;max-width:240px;"><div style="width:50px;height:50px;border-radius:50%;background:#22c55e;display:grid;place-items:center;font-size:1.6rem;margin:0 auto 0.5rem;">✓</div><div style="font-weight:700;color:#fff;margin-bottom:0.2rem;">Order placed!</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.55);">#A1B2C3 · $82.00</div></div>' }
+    ], null, 280);
+  };
+
+  P['components/commerce-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'add to cart', html: '<button style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);border:none;border-radius:8px;color:#fff;font-weight:700;font-size:0.85rem;cursor:pointer;box-shadow:0 4px 16px rgba(139,92,246,0.4);">🛒 Add to cart · $48</button>' },
+      { label: 'qty stepper', html: '<div style="display:inline-flex;align-items:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:7px;overflow:hidden;"><button style="padding:0.4rem 0.7rem;background:transparent;border:none;color:#fff;cursor:pointer;font-size:1rem;">−</button><span style="padding:0 0.7rem;color:#fff;font-weight:700;min-width:34px;text-align:center;">3</span><button style="padding:0.4rem 0.7rem;background:transparent;border:none;color:#fff;cursor:pointer;font-size:1rem;">+</button></div>' },
+      { label: 'color swatches', html: '<div style="display:flex;gap:0.4rem;">' + [['#1a1a2e',true],['#8b5cf6',false],['#ec4899',false],['#22c55e',false],['#facc15',false],['#0a0a14',false,true]].map(function(c){return '<button style="width:30px;height:30px;border-radius:50%;background:' + c[0] + ';border:2px solid ' + (c[1]?'#fff':'transparent') + ';position:relative;cursor:pointer;' + (c[2]?'opacity:0.4;':'') + '">' + (c[2]?'<span style="position:absolute;inset:0;display:grid;place-items:center;color:#fff;">×</span>':'') + '</button>';}).join('') + '</div>' },
+      { label: 'size picker', html: '<div style="display:flex;gap:0.3rem;">' + ['XS','S','M','L','XL'].map(function(s,i){var on=i===2;var dis=i===4;return '<button style="width:38px;height:38px;border-radius:6px;background:' + (on?'#fff':'rgba(255,255,255,0.04)') + ';border:1px solid ' + (on?'#fff':'rgba(255,255,255,0.12)') + ';color:' + (on?'#000':dis?'rgba(255,255,255,0.25)':'#fff') + ';font-weight:700;font-size:0.78rem;cursor:pointer;text-decoration:' + (dis?'line-through':'none') + ';">' + s + '</button>';}).join('') + '</div>' },
+      { label: 'price strike', html: '<div style="display:inline-flex;align-items:baseline;gap:0.5rem;"><span style="font-size:1.4rem;font-weight:800;color:#ec4899;">$24</span><span style="color:rgba(255,255,255,0.4);text-decoration:line-through;font-size:0.95rem;">$48</span><span style="padding:0.15rem 0.45rem;background:rgba(239,68,68,0.15);color:#fca5a5;border-radius:4px;font-size:0.65rem;font-weight:700;">−50%</span></div>' },
+      { label: 'stock status', html: '<div style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.78rem;padding:0.3rem 0.6rem;background:rgba(34,197,94,0.1);border:1px solid #22c55e;border-radius:5px;color:#86efac;"><span style="width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e;animation:dapp-pulse 1.6s ease-in-out infinite;"></span>In stock · 4 left</div>' }
+    ], null, 250);
+  };
+
+  P['components/cta-sections.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:0.8rem;width:100%;max-width:520px;">' +
+        '<div style="padding:1.4rem;background:linear-gradient(135deg,#1a1a2e,#15152a);border:1px solid rgba(255,255,255,0.08);border-radius:12px;text-align:center;">' +
+          '<div style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:0.3rem;">Ship faster. Sleep better.</div>' +
+          '<div style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-bottom:0.8rem;">Drop-in components your team will love.</div>' +
+          '<button style="padding:0.6rem 1.3rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);border:none;border-radius:8px;color:#fff;font-weight:700;cursor:pointer;">Get started — it\'s free</button>' +
+        '</div>' +
+        '<div style="padding:1rem 1.2rem;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.25);border-radius:10px;display:flex;align-items:center;gap:0.8rem;">' +
+          '<div style="font-size:1.8rem;">🎯</div>' +
+          '<div style="flex:1;"><div style="font-weight:700;color:#fff;">Save 30% on Pro</div><div style="font-size:0.75rem;color:rgba(255,255,255,0.6);">Black Friday — ends in 2 days.</div></div>' +
+          '<button style="padding:0.4rem 0.95rem;background:#fff;border:none;border-radius:6px;color:#000;font-weight:700;font-size:0.8rem;cursor:pointer;">Claim →</button>' +
+        '</div>' +
+      '</div>';
+  };
+
+  P['components/editor-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'find-replace', html: '<div style="display:flex;flex-direction:column;gap:0.3rem;padding:0.5rem;background:#1a1a2e;border-radius:7px;width:280px;border:1px solid rgba(255,255,255,0.1);"><div style="display:flex;gap:0.3rem;align-items:center;"><input value="useEffect" style="flex:1;padding:0.3rem 0.5rem;background:rgba(255,255,255,0.05);border:1px solid rgba(139,92,246,0.4);border-radius:4px;color:#fff;font-family:monospace;font-size:0.78rem;outline:none;"><span style="font-size:0.65rem;color:rgba(255,255,255,0.6);font-family:monospace;">3 of 12</span></div><div style="display:flex;gap:0.3rem;align-items:center;"><input value="useLayoutEffect" placeholder="Replace" style="flex:1;padding:0.3rem 0.5rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;font-family:monospace;font-size:0.78rem;outline:none;"><div style="display:flex;gap:0.15rem;"><button style="padding:0.15rem 0.35rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:#c4b5fd;font-size:0.65rem;cursor:pointer;font-family:monospace;">Aa</button><button style="padding:0.15rem 0.35rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:#c4b5fd;font-size:0.65rem;cursor:pointer;font-family:monospace;">W</button><button style="padding:0.15rem 0.35rem;background:rgba(139,92,246,0.25);border:1px solid #a78bfa;border-radius:3px;color:#c4b5fd;font-size:0.65rem;cursor:pointer;font-family:monospace;">.*</button></div></div></div>' },
+      { label: 'gutter', html: '<div style="display:flex;background:#0a0a14;border:1px solid rgba(255,255,255,0.08);border-radius:7px;overflow:hidden;font-family:ui-monospace,monospace;font-size:0.78rem;line-height:1.6;">' + '<div style="padding:0.5rem 0.6rem;background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.35);text-align:right;border-right:1px solid rgba(255,255,255,0.06);">' + [42,43,44,45,46].map(function(n,i){var dot = i===1?'<span style="color:#22c55e;">+</span>':i===3?'<span style="color:#ef4444;">●</span>':'';return n + ' ' + dot;}).join('<br>') + '</div>' + '<div style="padding:0.5rem 0.7rem;color:#e6e6f0;">' + ['<span style="color:#c4b5fd;">function</span> add(a, b) {','&nbsp;&nbsp;<span style="color:#86efac;">// validate inputs</span>','&nbsp;&nbsp;<span style="color:#c4b5fd;">if</span> (!a) <span style="color:#c4b5fd;">return</span>;','&nbsp;&nbsp;<span style="color:#fda4af;">throw new Error()</span>;','}'].join('<br>') + '</div></div>' },
+      { label: 'tab strip', html: '<div style="display:flex;background:#0a0a14;border-radius:7px 7px 0 0;overflow:hidden;border:1px solid rgba(255,255,255,0.1);">' + [['App.tsx',false,false],['index.tsx',true,true],['utils.ts',false,false],['types.d.ts',false,false]].map(function(t){return '<div style="display:flex;align-items:center;gap:0.4rem;padding:0.4rem 0.7rem;background:' + (t[1]?'#1a1a2e':'transparent') + ';border-right:1px solid rgba(255,255,255,0.06);font-size:0.72rem;font-family:monospace;color:' + (t[1]?'#fff':'rgba(255,255,255,0.55)') + ';cursor:pointer;border-bottom:2px solid ' + (t[1]?'#8b5cf6':'transparent') + ';">' + t[0] + (t[2]?' <span style="color:#fcd34d;">●</span>':'') + ' <span style="opacity:0.5;">×</span></div>';}).join('') + '</div>' },
+      { label: 'git status', html: '<div style="display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0.7rem;background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:6px;font-family:monospace;font-size:0.72rem;"><span style="color:#a78bfa;">⌥ feature/auth</span><span style="color:rgba(255,255,255,0.4);">|</span><span style="color:#86efac;">↑2</span><span style="color:#fcd34d;">↓1</span><span style="color:rgba(255,255,255,0.4);">|</span><span style="color:#86efac;">+12</span><span style="color:#fcd34d;">~3</span><span style="color:#fca5a5;">−5</span></div>' }
+    ], null, 320);
+  };
+
+  P['components/email-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'email row', html: '<div style="display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0.85rem;background:rgba(139,92,246,0.08);border-left:3px solid #a78bfa;border-radius:6px;width:320px;"><span style="width:28px;height:28px;border-radius:50%;background:#8b5cf6;color:#fff;font-size:0.7rem;display:grid;place-items:center;font-weight:700;">AS</span><div style="flex:1;min-width:0;"><div style="font-size:0.8rem;color:#fff;font-weight:700;">Alice Sterling <span style="color:rgba(255,255,255,0.5);font-weight:400;font-size:0.7rem;float:right;">2h</span></div><div style="font-size:0.72rem;color:rgba(255,255,255,0.55);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Quick question about the integration plan…</div></div><span style="padding:0.05rem 0.35rem;background:rgba(139,92,246,0.3);color:#c4b5fd;border-radius:3px;font-size:0.6rem;font-weight:700;">WORK</span></div>' },
+      { label: 'compose modal', html: '<div style="width:300px;background:#1a1a2e;border:1px solid rgba(255,255,255,0.12);border-radius:8px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.5);"><div style="padding:0.5rem 0.7rem;background:rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="font-size:0.78rem;color:#fff;font-weight:600;">New message</span><span style="color:rgba(255,255,255,0.5);font-size:1rem;">_ □ ×</span></div><div style="padding:0.7rem;"><input value="alice@co.com" style="width:100%;padding:0.25rem 0;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.06);color:#fff;font-size:0.78rem;outline:none;margin-bottom:0.4rem;"><input value="Re: design review" style="width:100%;padding:0.25rem 0;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.06);color:#fff;font-size:0.78rem;outline:none;font-weight:700;margin-bottom:0.4rem;"><div style="min-height:54px;color:rgba(255,255,255,0.45);font-size:0.78rem;line-height:1.5;">Thanks for the notes — I\'ll have v2 ready by EOD.</div></div></div>' },
+      { label: 'label sidebar', html: '<div style="display:flex;flex-direction:column;gap:0.2rem;width:200px;padding:0.6rem;background:rgba(255,255,255,0.02);border-radius:7px;">' + [['📥','Inbox',24,true],['⭐','Starred',8,false],['📤','Sent',0,false],['📁','Archive',0,false]].map(function(it){return '<div style="display:flex;align-items:center;gap:0.5rem;padding:0.4rem 0.6rem;background:' + (it[3]?'rgba(139,92,246,0.15)':'transparent') + ';border-radius:5px;font-size:0.78rem;color:' + (it[3]?'#fff':'rgba(255,255,255,0.7)') + ';cursor:pointer;"><span>' + it[0] + '</span><span style="flex:1;font-weight:' + (it[3]?'700':'400') + ';">' + it[1] + '</span>' + (it[2]>0?'<span style="font-size:0.65rem;color:rgba(255,255,255,0.55);">' + it[2] + '</span>':'') + '</div>';}).join('') + '</div>' }
+    ], null, 320);
+  };
+
+  P['components/form-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'multi-step', html: '<div style="width:300px;"><div style="display:flex;gap:0.4rem;margin-bottom:0.6rem;">' + [1,2,3,4].map(function(n,i){return '<div style="flex:1;height:4px;background:' + (i<2?'#8b5cf6':'rgba(255,255,255,0.08)') + ';border-radius:2px;"></div>';}).join('') + '</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">Step 2 of 4 — Your profile</div></div>' },
+      { label: 'field validation', html: '<div style="display:flex;flex-direction:column;gap:0.3rem;width:240px;"><label style="font-size:0.7rem;color:rgba(255,255,255,0.7);font-weight:600;">Email</label><div style="position:relative;"><input value="alice@" style="width:100%;padding:0.5rem 2rem 0.5rem 0.7rem;background:rgba(255,255,255,0.05);border:1.5px solid #ef4444;border-radius:6px;color:#fff;font-size:0.85rem;outline:none;"><span style="position:absolute;right:0.6rem;top:50%;transform:translateY(-50%);color:#ef4444;">⚠</span></div><div style="font-size:0.7rem;color:#fca5a5;">✕ Invalid email format</div></div>' },
+      { label: 'password meter', html: '<div style="width:240px;"><input type="password" value="Tr0ub4dor!" style="width:100%;padding:0.5rem 0.7rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:#fff;font-size:0.85rem;outline:none;font-family:monospace;margin-bottom:0.4rem;"><div style="display:flex;gap:0.25rem;margin-bottom:0.3rem;"><div style="flex:1;height:3px;background:#22c55e;border-radius:2px;"></div><div style="flex:1;height:3px;background:#22c55e;border-radius:2px;"></div><div style="flex:1;height:3px;background:#22c55e;border-radius:2px;"></div><div style="flex:1;height:3px;background:#fcd34d;border-radius:2px;"></div></div><div style="font-size:0.7rem;color:#fcd34d;">Strong · 3/4</div></div>' },
+      { label: 'file upload', html: '<div style="width:260px;height:120px;border:2px dashed rgba(139,92,246,0.4);border-radius:10px;background:rgba(139,92,246,0.05);display:grid;place-items:center;text-align:center;"><div><div style="font-size:1.8rem;margin-bottom:0.2rem;">📤</div><div style="font-size:0.78rem;color:#c4b5fd;font-weight:600;">Drop files here</div><div style="font-size:0.65rem;color:rgba(255,255,255,0.5);">or click to browse</div></div></div>' },
+      { label: 'captcha', html: '<div style="display:flex;align-items:center;gap:0.7rem;padding:0.7rem 1rem;background:#fff;border-radius:6px;width:240px;"><input type="checkbox" checked style="width:22px;height:22px;accent-color:#22c55e;"><span style="font-size:0.85rem;color:#000;font-weight:600;flex:1;">I\'m not a robot</span><div style="font-size:0.55rem;color:#666;font-weight:700;text-align:center;line-height:1;">reCAPTCHA<br><span style="font-weight:400;">privacy</span></div></div>' }
+    ], null, 280);
+  };
+
+  P['components/input-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'basic', html: '<input placeholder="Email" style="padding:0.55rem 0.85rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:0.85rem;outline:none;width:220px;">' },
+      { label: 'underline', html: '<input value="Alice" style="padding:0.4rem 0;background:transparent;border:none;border-bottom:1.5px solid #a78bfa;color:#fff;font-size:0.95rem;outline:none;width:220px;">' },
+      { label: 'pill', html: '<input placeholder="Search…" style="padding:0.55rem 1.1rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:999px;color:#fff;font-size:0.85rem;outline:none;width:220px;">' },
+      { label: 'with icon', html: '<div style="position:relative;width:220px;"><span style="position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.55);">🔍</span><input placeholder="Search" style="width:100%;padding:0.55rem 0.85rem 0.55rem 2rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:0.85rem;outline:none;"></div>' },
+      { label: 'gradient border', html: '<div style="padding:1.5px;background:linear-gradient(135deg,#8b5cf6,#ec4899);border-radius:8px;width:220px;"><input value="Premium" style="width:100%;padding:0.5rem 0.85rem;background:#15152a;border:none;border-radius:6.5px;color:#fff;font-size:0.85rem;outline:none;"></div>' },
+      { label: 'floating label', html: '<div style="position:relative;width:220px;"><input value="alice@co" style="width:100%;padding:1.1rem 0.85rem 0.4rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:0.85rem;outline:none;"><label style="position:absolute;left:0.85rem;top:0.35rem;font-size:0.6rem;color:#a78bfa;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Email</label></div>' }
+    ], null, 240);
+  };
+
+  P['components/ratings-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'stars', html: '<div style="font-size:1.4rem;letter-spacing:0.1em;color:#fcd34d;">★★★★<span style="color:rgba(255,255,255,0.15);">★</span></div>' },
+      { label: 'distribution', html: '<div style="width:240px;font-family:monospace;font-size:0.72rem;color:#fff;">' + [[5,68],[4,18],[3,8],[2,4],[1,2]].map(function(r){return '<div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.25rem;"><span style="color:#fcd34d;">' + r[0] + '★</span><div style="flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;"><div style="width:' + r[1] + '%;height:100%;background:#fcd34d;border-radius:3px;"></div></div><span style="color:rgba(255,255,255,0.5);">' + r[1] + '%</span></div>';}).join('') + '</div>' },
+      { label: 'review card', html: '<div style="padding:0.8rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;width:280px;"><div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;"><span style="width:30px;height:30px;border-radius:50%;background:#8b5cf6;color:#fff;font-size:0.78rem;display:grid;place-items:center;font-weight:700;">AS</span><div style="flex:1;"><div style="font-size:0.78rem;color:#fff;font-weight:600;">Alice S. <span style="color:#22c55e;font-size:0.62rem;">✓ Verified</span></div><div style="font-size:1rem;letter-spacing:0.05em;color:#fcd34d;">★★★★★</div></div></div><div style="font-size:0.78rem;color:rgba(255,255,255,0.7);line-height:1.5;">Game-changer. Saved us weeks of frontend work.</div></div>' },
+      { label: 'NPS', html: '<div style="display:flex;gap:0.2rem;">' + [0,1,2,3,4,5,6,7,8,9,10].map(function(n){var c=n<=6?'#ef4444':n<=8?'#fcd34d':'#22c55e';var on=n===9;return '<button style="width:28px;height:28px;border-radius:5px;background:' + (on?c:'rgba(255,255,255,0.04)') + ';border:1.5px solid ' + (on?c:'rgba(255,255,255,0.1)') + ';color:' + (on?'#000':'#fff') + ';font-weight:700;font-size:0.72rem;cursor:pointer;">' + n + '</button>';}).join('') + '</div>' },
+      { label: 'thumbs', html: '<div style="display:flex;gap:0.4rem;"><button style="padding:0.5rem 1.1rem;background:rgba(34,197,94,0.15);border:1px solid #22c55e;border-radius:7px;color:#86efac;font-size:0.85rem;cursor:pointer;">👍 124</button><button style="padding:0.5rem 1.1rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);border-radius:7px;color:rgba(255,255,255,0.55);font-size:0.85rem;cursor:pointer;">👎 3</button></div>' }
+    ], null, 300);
+  };
+
+  P['components/scheduler-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'availability grid', html: '<div style="width:280px;"><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:0.4rem;">' + ['M','T','W','T','F','S','S'].map(function(d){return '<div style="text-align:center;font-size:0.65rem;color:rgba(255,255,255,0.5);font-weight:600;">' + d + '</div>';}).join('') + '</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;">' + Array.from({length:35},function(_,i){var on=[2,3,4,5,9,10,11,12,16,17,18,23,24,25].indexOf(i)!==-1;return '<div style="height:14px;background:' + (on?'#8b5cf6':'rgba(255,255,255,0.05)') + ';border-radius:2px;"></div>';}).join('') + '</div></div>' },
+      { label: 'calendar strip', html: '<div style="display:flex;gap:0.3rem;overflow-x:auto;padding-bottom:0.3rem;max-width:300px;">' + ['Mon 12','Tue 13','Wed 14','Thu 15','Fri 16','Sat 17'].map(function(d,i){var on=i===2;return '<button style="flex-shrink:0;padding:0.5rem 0.7rem;background:' + (on?'#8b5cf6':'rgba(255,255,255,0.04)') + ';border:1px solid ' + (on?'#a78bfa':'rgba(255,255,255,0.1)') + ';border-radius:7px;color:#fff;font-size:0.72rem;font-weight:' + (on?'700':'500') + ';cursor:pointer;">' + d + '</button>';}).join('') + '</div>' },
+      { label: 'timeline slots', html: '<div style="width:280px;font-size:0.72rem;font-family:monospace;">' + ['09:00 — Standup','11:30 — Design review','14:00 — 1:1 with Alice','16:30 — Demo'].map(function(s,i){var c=['#a78bfa','#86efac','#fcd34d','#fda4af'][i];return '<div style="display:flex;align-items:center;gap:0.4rem;padding:0.35rem 0.55rem;background:rgba(255,255,255,0.03);border-left:3px solid ' + c + ';border-radius:0 5px 5px 0;margin-bottom:3px;color:#fff;">' + s + '</div>';}).join('') + '</div>' }
+    ], null, 300);
+  };
+
+  P['components/search-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'search input', html: '<div style="position:relative;width:280px;"><span style="position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.55);">🔍</span><input value="React hooks" style="width:100%;padding:0.55rem 4rem 0.55rem 2.2rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:7px;color:#fff;font-size:0.85rem;outline:none;"><span style="position:absolute;right:2.4rem;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.4);font-size:0.75rem;cursor:pointer;">×</span><kbd style="position:absolute;right:0.5rem;top:50%;transform:translateY(-50%);padding:0.15rem 0.4rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:4px;font-size:0.65rem;color:rgba(255,255,255,0.55);font-family:monospace;">⌘K</kbd></div>' },
+      { label: 'filter chips', html: '<div style="display:flex;flex-wrap:wrap;gap:0.3rem;max-width:300px;">' + [['Frontend',true],['React',true],['TypeScript',false],['CSS',false]].map(function(c){return '<span style="padding:0.25rem 0.65rem 0.25rem 0.7rem;background:' + (c[1]?'rgba(139,92,246,0.15)':'rgba(255,255,255,0.04)') + ';border:1px solid ' + (c[1]?'#a78bfa':'rgba(255,255,255,0.1)') + ';border-radius:999px;color:' + (c[1]?'#c4b5fd':'rgba(255,255,255,0.7)') + ';font-size:0.7rem;cursor:pointer;">' + c[0] + (c[1]?' <span style="opacity:0.6;">×</span>':'') + '</span>';}).join('') + ' <button style="padding:0.25rem 0.65rem;background:transparent;border:none;color:rgba(255,255,255,0.5);font-size:0.7rem;cursor:pointer;text-decoration:underline;">Clear all</button></div>' },
+      { label: 'result card', html: '<div style="padding:0.6rem 0.85rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:7px;width:300px;"><div style="font-size:0.85rem;color:#fff;font-weight:600;margin-bottom:0.2rem;">Build a custom <mark style="background:rgba(252,211,77,0.3);color:#fcd34d;padding:0.05rem 0.2rem;border-radius:2px;">hook</mark> in React</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.55);">react.dev · Docs · 4 min read</div></div>' },
+      { label: 'no results', html: '<div style="text-align:center;padding:1.2rem 1rem;width:280px;"><div style="font-size:2.5rem;margin-bottom:0.4rem;">🔍</div><div style="font-size:0.9rem;color:#fff;font-weight:600;margin-bottom:0.3rem;">No results for "xyzzy"</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.5);">Try different keywords or check spelling.</div></div>' }
+    ], null, 320);
+  };
+
+  P['components/table-pack-2.css'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:520px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;">' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr 80px 80px;gap:0;font-size:0.72rem;">' +
+          ['Name','Email','Role','Status'].map(function(h){return '<div style="padding:0.55rem 0.8rem;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.55);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;font-size:0.65rem;">' + h + '</div>';}).join('') +
+          [
+            ['Alice Sterling','alice@co.com','Admin','#22c55e'],
+            ['Bob Jensen','bob@co.com','Member','#22c55e'],
+            ['Carol Diaz','carol@co.com','Member','#facc15'],
+            ['Dan Park','dan@co.com','Viewer','#ef4444']
+          ].map(function(r,i){return r.slice(0,3).map(function(c){return '<div style="padding:0.55rem 0.8rem;border-top:1px solid rgba(255,255,255,0.05);color:#fff;font-size:0.78rem;">' + c + '</div>';}).join('') + '<div style="padding:0.55rem 0.8rem;border-top:1px solid rgba(255,255,255,0.05);"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + r[3] + ';"></span></div>';}).join('') +
+        '</div>' +
+        '<div style="padding:0.4rem 0.8rem;background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;font-size:0.7rem;color:rgba(255,255,255,0.5);">' +
+          '<span>Page 1 of 4 · 24 rows</span>' +
+          '<div style="display:flex;gap:0.3rem;"><button style="padding:0.2rem 0.55rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:4px;color:#fff;cursor:pointer;">←</button><button style="padding:0.2rem 0.55rem;background:rgba(139,92,246,0.2);border:1px solid #a78bfa;border-radius:4px;color:#fff;cursor:pointer;">→</button></div>' +
+        '</div>' +
+      '</div>';
+  };
+
+  P['components/timer-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'pomodoro', html: '<div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;padding:0.8rem;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.25);border-radius:10px;width:160px;"><div style="font-family:ui-monospace,monospace;font-size:2.2rem;font-weight:800;color:#fff;">23:47</div><div style="display:flex;gap:0.3rem;">' + [true,true,true,false].map(function(on,i){return '<span style="width:8px;height:8px;border-radius:50%;background:' + (on?'#ef4444':'rgba(255,255,255,0.15)') + ';"></span>';}).join('') + '</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.6);">Pomodoro 4</div></div>' },
+      { label: 'focus ring', html: '<div style="position:relative;width:120px;height:120px;"><svg viewBox="0 0 120 120" style="transform:rotate(-90deg);"><circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8"/><circle cx="60" cy="60" r="52" fill="none" stroke="#8b5cf6" stroke-width="8" stroke-dasharray="' + (Math.PI*2*52*0.68) + ' ' + (Math.PI*2*52) + '" stroke-linecap="round"/></svg><div style="position:absolute;inset:0;display:grid;place-items:center;"><div style="font-family:monospace;font-size:1.4rem;font-weight:800;color:#fff;">17:32</div></div></div>' },
+      { label: 'stopwatch', html: '<div style="text-align:center;padding:0.7rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;width:180px;"><div style="font-family:monospace;font-size:1.8rem;font-weight:800;color:#fff;">01:42<span style="color:rgba(255,255,255,0.4);font-size:1.2rem;">.83</span></div><div style="display:flex;justify-content:center;gap:0.7rem;font-size:0.65rem;color:rgba(255,255,255,0.55);margin-top:0.3rem;"><span>BEST 00:42</span><span>AVG 01:18</span></div></div>' },
+      { label: 'race clock', html: '<div style="text-align:center;padding:0.6rem 1rem;background:#000;border:2px solid #fcd34d;border-radius:6px;box-shadow:0 0 24px rgba(252,211,77,0.4);"><div style="font-family:\'Digital\',monospace;font-size:2rem;font-weight:800;color:#fcd34d;text-shadow:0 0 12px #fcd34d;">2:31.42</div></div>' }
+    ], null, 200);
+  };
+
+  P['components/widget-cards-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'weather', html: '<div style="width:180px;padding:0.95rem;background:linear-gradient(135deg,#3b82f6,#1e40af);border-radius:14px;color:#fff;"><div style="font-size:0.78rem;opacity:0.85;">San Francisco</div><div style="font-size:2.2rem;font-weight:300;line-height:1.1;">68°</div><div style="font-size:0.72rem;opacity:0.85;margin-top:0.2rem;">☁ Partly cloudy</div></div>' },
+      { label: 'activity', html: '<div style="width:180px;padding:0.95rem;background:linear-gradient(135deg,#000,#1a1a2e);border-radius:14px;color:#fff;"><div style="font-size:0.65rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.06em;">Move</div><div style="font-size:1.6rem;font-weight:800;">420<span style="font-size:0.8rem;color:rgba(255,255,255,0.5);">/500</span></div><div style="height:5px;background:rgba(255,255,255,0.08);border-radius:3px;margin-top:0.3rem;"><div style="width:84%;height:100%;background:linear-gradient(90deg,#ef4444,#f97316);border-radius:3px;"></div></div></div>' },
+      { label: 'meeting', html: '<div style="width:180px;padding:0.85rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;"><div style="font-size:0.65rem;color:#86efac;text-transform:uppercase;letter-spacing:0.05em;font-weight:700;">Next · 15m</div><div style="font-size:0.95rem;color:#fff;font-weight:700;margin-top:0.3rem;">Design review</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.55);">3 attendees · Zoom</div></div>' }
+    ], null, 200);
+  };
+
+  P['data-viz/charts-pro.css'] = function (target) {
+    packGrid(target, [
+      { label: 'heatmap', html: '<div style="display:grid;grid-template-columns:repeat(12,12px);grid-auto-rows:12px;gap:2px;">' + Array.from({length:84},function(){var v=Math.random();var op=v<0.25?0.08:v<0.5?0.3:v<0.75?0.6:1;return '<div style="background:rgba(34,197,94,' + op + ');border-radius:2px;"></div>';}).join('') + '</div>' },
+      { label: 'donut', html: '<svg width="120" height="120" viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#8b5cf6" stroke-width="6" stroke-dasharray="40 100" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#ec4899" stroke-width="6" stroke-dasharray="25 100" stroke-dashoffset="-40" transform="rotate(-90 21 21)"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#22c55e" stroke-width="6" stroke-dasharray="20 100" stroke-dashoffset="-65" transform="rotate(-90 21 21)"/></svg>' },
+      { label: 'gauge', html: '<svg width="160" height="100" viewBox="0 0 160 100"><path d="M 20 90 A 60 60 0 0 1 140 90" stroke="rgba(255,255,255,0.08)" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M 20 90 A 60 60 0 0 1 110 30" stroke="url(#gg1)" stroke-width="14" fill="none" stroke-linecap="round"/><defs><linearGradient id="gg1"><stop offset="0" stop-color="#22c55e"/><stop offset="1" stop-color="#facc15"/></linearGradient></defs><text x="80" y="80" text-anchor="middle" fill="#fff" font-size="18" font-weight="800">72%</text></svg>' },
+      { label: 'candlestick', html: '<svg width="200" height="80" viewBox="0 0 200 80">' + Array.from({length:14},function(_,i){var x=10+i*14;var h=20+Math.random()*40;var y=20+Math.random()*20;var bull=Math.random()>0.5;var c=bull?'#22c55e':'#ef4444';return '<line x1="' + (x+3) + '" y1="' + (y-6) + '" x2="' + (x+3) + '" y2="' + (y+h+6) + '" stroke="' + c + '" stroke-width="1"/><rect x="' + x + '" y="' + y + '" width="6" height="' + h + '" fill="' + c + '"/>';}).join('') + '</svg>' }
+    ], null, 220);
+  };
+
+  P['effects/hover-effects.css'] = function (target) {
+    packGrid(target, [
+      { label: 'lift', html: '<div style="padding:1rem 1.4rem;background:linear-gradient(135deg,#1a1a2e,#15152a);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-weight:700;transition:transform 0.25s ease,box-shadow 0.25s ease;cursor:pointer;" onmouseenter="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 10px 30px rgba(139,92,246,0.3)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">Hover lift</div>' },
+      { label: 'glow', html: '<div style="padding:1rem 1.4rem;background:#1a1a2e;border:1px solid rgba(139,92,246,0.3);border-radius:10px;color:#fff;font-weight:700;transition:box-shadow 0.3s ease;cursor:pointer;" onmouseenter="this.style.boxShadow=\'0 0 30px rgba(139,92,246,0.6)\'" onmouseleave="this.style.boxShadow=\'\'">Hover glow</div>' },
+      { label: 'shine', html: '<div style="position:relative;overflow:hidden;padding:1rem 1.4rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);border-radius:10px;color:#fff;font-weight:700;cursor:pointer;">Hover shine<span style="position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,0.4) 50%,transparent 70%);transform:translateX(-100%);transition:transform 0.6s ease;" onmouseenter="this.style.transform=\'translateX(100%)\'"></span></div>' },
+      { label: 'tilt-3d', html: '<div style="padding:1rem 1.4rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;font-weight:700;transition:transform 0.3s cubic-bezier(0.2,1,0.3,1);cursor:pointer;transform-style:preserve-3d;perspective:600px;" onmouseenter="this.style.transform=\'perspective(600px) rotateX(8deg) rotateY(-8deg)\'" onmouseleave="this.style.transform=\'\'">Hover tilt</div>' },
+      { label: 'underline grow', html: '<a style="position:relative;color:#fff;font-weight:700;font-size:1rem;text-decoration:none;cursor:pointer;display:inline-block;padding-bottom:2px;" onmouseenter="this.querySelector(\'span\').style.width=\'100%\'" onmouseleave="this.querySelector(\'span\').style.width=\'0\'">Hover underline<span style="position:absolute;bottom:0;left:0;width:0;height:2px;background:#a78bfa;transition:width 0.25s ease;"></span></a>' }
+    ], null, 220);
+  };
+
+  P['layout/dashboard-grids.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:60px;gap:0.4rem;width:100%;max-width:500px;">' +
+        ['#8b5cf6','#ec4899','#22c55e','#fcd34d','#60a5fa','#f97316'].map(function(c,i){
+          var spans=[['1/3','1/2'],['3/5','1/2'],['1/2','2/3'],['2/3','2/3'],['3/4','2/3'],['1/5','3/4']];
+          return '<div style="grid-column:' + spans[i][0] + ';grid-row:' + spans[i][1] + ';background:linear-gradient(135deg,' + c + ',rgba(0,0,0,0.3));border-radius:7px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:0.78rem;">Tile ' + (i+1) + '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['layout/landing-sections.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:0.5rem;width:100%;max-width:520px;">' +
+        '<div style="height:80px;background:linear-gradient(135deg,#1a1a2e,#0a0a14);border-radius:8px;border:1px solid rgba(255,255,255,0.06);display:grid;place-items:center;color:#fff;font-weight:700;">Hero — full-width</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;"><div style="height:60px;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);border-radius:7px;display:grid;place-items:center;color:#c4b5fd;font-size:0.78rem;">Feature</div><div style="height:60px;background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.3);border-radius:7px;display:grid;place-items:center;color:#fbcfe8;font-size:0.78rem;">Feature</div></div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;"><div style="height:50px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:7px;display:grid;place-items:center;color:#86efac;font-size:0.72rem;">Pricing</div><div style="height:50px;background:rgba(34,197,94,0.15);border:1px solid #22c55e;border-radius:7px;display:grid;place-items:center;color:#86efac;font-size:0.72rem;">Pro ★</div><div style="height:50px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:7px;display:grid;place-items:center;color:#86efac;font-size:0.72rem;">Team</div></div>' +
+        '<div style="height:60px;background:linear-gradient(135deg,#0a0a14,#1a1a2e);border-radius:7px;display:grid;place-items:center;color:rgba(255,255,255,0.6);font-size:0.72rem;">Footer · social · legal</div>' +
+      '</div>';
+  };
+
+  P['media/image-tools.css'] = function (target) {
+    packGrid(target, [
+      { label: 'compare', html: '<div style="position:relative;width:220px;height:120px;border-radius:8px;overflow:hidden;background:linear-gradient(90deg,#1a1a2e 0%,#1a1a2e 60%,#8b5cf6 60%,#ec4899 100%);"><div style="position:absolute;top:0;bottom:0;left:60%;width:2px;background:#fff;box-shadow:0 0 12px rgba(255,255,255,0.5);"></div><div style="position:absolute;top:50%;left:60%;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:#fff;display:grid;place-items:center;color:#000;font-size:0.7rem;font-weight:700;">⇄</div></div>' },
+      { label: 'crop', html: '<div style="position:relative;width:200px;height:120px;background:linear-gradient(135deg,#8b5cf6,#ec4899);border-radius:6px;"><div style="position:absolute;inset:15% 20% 15% 12%;border:2px dashed #fff;background:rgba(0,0,0,0.2);"><div style="position:absolute;top:-5px;left:-5px;width:10px;height:10px;background:#fff;"></div><div style="position:absolute;top:-5px;right:-5px;width:10px;height:10px;background:#fff;"></div><div style="position:absolute;bottom:-5px;left:-5px;width:10px;height:10px;background:#fff;"></div><div style="position:absolute;bottom:-5px;right:-5px;width:10px;height:10px;background:#fff;"></div></div></div>' },
+      { label: 'gallery shimmer', html: '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.3rem;width:200px;">' + [1,2,3,4,5,6].map(function(i){return '<div style="height:50px;background:linear-gradient(110deg,rgba(255,255,255,0.04) 30%,rgba(255,255,255,0.12) 50%,rgba(255,255,255,0.04) 70%);background-size:200% 100%;border-radius:5px;animation:dapp-shim 1.5s linear infinite;"></div>';}).join('') + '<style>@keyframes dapp-shim{0%{background-position:200% 0;}100%{background-position:-200% 0;}}</style></div>' }
+    ], null, 240);
+  };
+
+  P['micro/micro-interactions-pack.css'] = function (target) {
+    packGrid(target, [
+      { label: 'like burst', html: '<button style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 0.85rem;background:rgba(239,68,68,0.1);border:1px solid #ef4444;border-radius:7px;color:#fca5a5;font-size:0.85rem;cursor:pointer;font-weight:600;">❤ 1.2k</button>' },
+      { label: 'copy tick', html: '<button style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 0.85rem;background:rgba(34,197,94,0.1);border:1px solid #22c55e;border-radius:7px;color:#86efac;font-size:0.85rem;cursor:pointer;font-weight:600;">✓ Copied!</button>' },
+      { label: 'notification ping', html: '<button style="position:relative;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:1.05rem;cursor:pointer;">🔔<span style="position:absolute;top:6px;right:7px;width:8px;height:8px;border-radius:50%;background:#ef4444;border:1.5px solid #0a0a14;animation:dapp-pulse 1.6s ease-in-out infinite;"></span></button>' },
+      { label: 'status dot', html: '<div style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.78rem;color:#86efac;"><span style="width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,0.6);animation:dapp-radar 1.8s ease-out infinite;"></span>Live<style>@keyframes dapp-radar{0%{box-shadow:0 0 0 0 rgba(34,197,94,0.6);}100%{box-shadow:0 0 0 8px rgba(34,197,94,0);}}</style></div>' },
+      { label: 'draft saved', html: '<div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.7rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:5px;color:rgba(255,255,255,0.6);font-size:0.72rem;font-family:monospace;"><span style="color:#86efac;">●</span>Draft saved · 2s ago</div>' },
+      { label: 'kbd combo', html: '<div style="display:inline-flex;gap:0.2rem;align-items:center;font-size:0.78rem;color:rgba(255,255,255,0.7);"><kbd style="padding:0.2rem 0.45rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:4px;font-family:monospace;font-size:0.7rem;box-shadow:0 1.5px 0 rgba(255,255,255,0.1);">⌘</kbd>+<kbd style="padding:0.2rem 0.45rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:4px;font-family:monospace;font-size:0.7rem;box-shadow:0 1.5px 0 rgba(255,255,255,0.1);">K</kbd></div>' }
+    ], null, 220);
+  };
+
+  // ============================================
+  // Interactive small modules
+  // ============================================
+  P['effects/text-wave.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;">' +
+        '<h2 class="dapp-tw-target" style="font-size:2.4rem;font-weight:800;color:#fff;margin:0;letter-spacing:-0.02em;">FRONTENDMAXXING</h2>' +
+        '<button class="dapp-tw-go" style="padding:0.4rem 0.95rem;background:rgba(139,92,246,0.18);border:1px solid #a78bfa;border-radius:6px;color:#c4b5fd;font-size:0.78rem;cursor:pointer;font-weight:600;">▶ Wave</button>' +
+      '</div>';
+    var run = function () {
+      if (window.TextWave) try { window.TextWave.init(target.querySelector('.dapp-tw-target'), { speed: 'normal', blur: 1.5 }); } catch (e) {}
+    };
+    target.querySelector('.dapp-tw-go').addEventListener('click', run);
+    setTimeout(run, 300);
+  };
+
+  P['feedback/sparkle-click.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;">' +
+        '<button class="dapp-spark-btn" style="padding:0.7rem 1.4rem;background:linear-gradient(135deg,#ec4899,#8b5cf6);border:none;border-radius:9px;color:#fff;font-weight:700;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(236,72,153,0.4);">Click me ✨</button>' +
+        '<div style="font-size:0.7rem;color:rgba(255,255,255,0.45);">Click for a sparkle burst</div>' +
+      '</div>';
+    if (window.SparkleClick) {
+      try { window.SparkleClick.attach(target.querySelector('.dapp-spark-btn'), { count: 14, colors: ['#fcd34d','#f472b6','#22d3ee','#a78bfa'] }); } catch (e) {}
+    }
+  };
+
+  P['utils/palette-generator.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;width:100%;max-width:480px;">' +
+        '<div style="display:flex;align-items:center;gap:0.5rem;"><span style="font-size:0.78rem;color:rgba(255,255,255,0.65);">Seed:</span><div style="width:24px;height:24px;border-radius:6px;background:#ec4899;border:1.5px solid #fff;"></div><code style="font-family:monospace;font-size:0.8rem;color:#fff;">#ec4899</code></div>' +
+        '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;width:100%;">' +
+          [
+            { name: 'complementary', colors: ['#ec4899','#48ecae'] },
+            { name: 'triadic',       colors: ['#ec4899','#99ec48','#4899ec'] },
+            { name: 'analogous',     colors: ['#ec48b1','#ec4899','#ec5a48','#ec8748'] },
+            { name: 'tints',         colors: ['#ec4899','#f06bad','#f48dc1','#f8afd5','#fcd1e9'] }
+          ].map(function (p) {
+            return '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:0.5rem 0.6rem;">' +
+              '<div style="font-size:0.65rem;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.05em;font-weight:700;margin-bottom:0.3rem;">' + p.name + '</div>' +
+              '<div style="display:flex;height:24px;border-radius:5px;overflow:hidden;">' + p.colors.map(function (c) { return '<div style="flex:1;background:' + c + ';" title="' + c + '"></div>'; }).join('') + '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+      '</div>';
+  };
+
+  P['interactions/swipe.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;">' +
+        '<div class="dapp-swipe-area" style="width:240px;height:160px;background:linear-gradient(135deg,#1a1a2e,#0a0a14);border:2px dashed rgba(139,92,246,0.4);border-radius:12px;display:grid;place-items:center;text-align:center;cursor:grab;touch-action:none;user-select:none;color:rgba(255,255,255,0.6);font-size:0.85rem;">Swipe / drag here<br><span style="font-size:0.7rem;color:rgba(255,255,255,0.4);">← ↑ ↓ →</span></div>' +
+        '<div class="dapp-swipe-log" style="font-family:monospace;font-size:0.78rem;color:#86efac;min-height:1.2em;">awaiting…</div>' +
+      '</div>';
+    var area = target.querySelector('.dapp-swipe-area');
+    var log = target.querySelector('.dapp-swipe-log');
+    var sx = 0, sy = 0, active = false;
+    area.addEventListener('pointerdown', function (e) { sx = e.clientX; sy = e.clientY; active = true; area.setPointerCapture(e.pointerId); });
+    area.addEventListener('pointerup', function (e) {
+      if (!active) return; active = false;
+      var dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.hypot(dx, dy) < 24) return;
+      var dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? '→ right' : '← left') : (dy > 0 ? '↓ down' : '↑ up');
+      log.textContent = 'swipe ' + dir + ' · ' + Math.round(Math.hypot(dx, dy)) + 'px';
+    });
+  };
+
+  P['scroll/scroll-fx-pack.css'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:480px;height:280px;overflow-y:auto;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1rem;">' +
+        '<div style="height:60px;background:linear-gradient(135deg,#8b5cf6,#ec4899);border-radius:8px;margin-bottom:0.5rem;display:grid;place-items:center;color:#fff;font-weight:700;">Parallax bg layer 1</div>' +
+        '<div style="height:80px;background:linear-gradient(135deg,rgba(139,92,246,0.15),transparent);border:1px solid rgba(139,92,246,0.3);border-radius:8px;margin-bottom:0.5rem;display:grid;place-items:center;color:#c4b5fd;">Sticky stagger row 1</div>' +
+        '<div style="height:80px;background:linear-gradient(135deg,rgba(236,72,153,0.15),transparent);border:1px solid rgba(236,72,153,0.3);border-radius:8px;margin-bottom:0.5rem;display:grid;place-items:center;color:#fbcfe8;">Reveal-on-view ↓</div>' +
+        '<div style="height:80px;background:linear-gradient(135deg,rgba(34,197,94,0.15),transparent);border:1px solid rgba(34,197,94,0.3);border-radius:8px;margin-bottom:0.5rem;display:grid;place-items:center;color:#86efac;">Scroll text zoom</div>' +
+        '<div style="height:60px;background:linear-gradient(135deg,#1a1a2e,#0a0a14);border:1px solid rgba(255,255,255,0.06);border-radius:8px;display:grid;place-items:center;color:rgba(255,255,255,0.5);font-size:0.78rem;">↑ Scroll to see effects</div>' +
+      '</div>';
+  };
+
 })();

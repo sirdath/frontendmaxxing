@@ -1526,8 +1526,8 @@ These cover components and gradient utilities that had only intent-table rows ab
 **achievement-popup.css** `feedback/achievement-popup.css` (CSS) — tags: achievement popup steam unlock badge xbox playstation toast trophy reward gamification slide-in
   Steam-style achievement popup styles. Slide-in animation, icon slot, title + meta.
 
-**achievement-popup.js** `feedback/achievement-popup.js` (JS, global: `AchievementPopup`) — tags: achievement popup steam show queue auto-dismiss reward gamification
-  `AchievementPopup.show({title, meta, icon, sound, duration})` — queue + auto-dismiss.
+**achievement-popup.js** `feedback/achievement-popup.js` (JS, global: `Achievement`) — tags: achievement popup steam show queue auto-dismiss reward gamification
+  `Achievement.show({title, text, icon, duration, onClick})` — Steam-style slide-in popup.
 
 **announcement-bar.css** `components/announcement-bar.css` (CSS) — tags: announcement bar top banner news header marketing promo strip site-wide dismissible link cta countdown ticker
   Top-of-page announcement bars with optional close + CTA. Variants: minimal, gradient, ticker, countdown, segmented.

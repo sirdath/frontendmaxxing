@@ -505,7 +505,7 @@
     var lines = source.split('\n');
     var start = -1;
     for (var i = 0; i < Math.min(lines.length, 200); i++) {
-      if (/^\s*(?:\*\s+)?Usage\s*:\s*$/i.test(lines[i])) { start = i + 1; break; }
+      if (/^\s*(?:\*\s+)?Usage(?:\s*\([^)]*\))?\s*:\s*$/i.test(lines[i])) { start = i + 1; break; }
     }
     if (start === -1) return null;
     var out = [];
@@ -643,21 +643,27 @@
     var sourceTarget = cssComp ? cssComp.path : entry.path;
 
     loadSource(entry.path).then(function (ownSrc) {
-      // Always also load CSS companion source if it exists and isn't the same file.
+      // Always also load CSS + JS companion sources if they exist and aren't the same file.
       var cssPromise = (cssComp && cssComp.path !== entry.path)
         ? loadSource(cssComp.path)
-        : Promise.resolve(ownSrc);
+        : Promise.resolve(entry.kind === 'CSS' ? ownSrc : null);
+      var jsPromise = (jsComp && jsComp.path !== entry.path)
+        ? loadSource(jsComp.path)
+        : Promise.resolve(entry.kind === 'JS' ? ownSrc : null);
 
-      return cssPromise.then(function (cssSrc) {
-        var primarySrc = ownSrc;
+      return Promise.all([cssPromise, jsPromise]).then(function (results) {
+        var cssSrc = results[0];
+        var jsSrc  = results[1];
         var usage = extractUsageBlock(ownSrc);
-        // For a JS entry: if there's no usage in the JS, try the CSS partner's usage
+        // For a JS entry: if there's no usage HTML in the JS, try the CSS partner's usage
         if (entry.kind === 'JS' && (!usage || !extractHtmlBlock(usage)) && cssSrc) {
-          var altUsage = extractUsageBlock(cssSrc);
-          if (altUsage) {
-            usage = altUsage;
-            primarySrc = cssSrc;
-          }
+          var altCssUsage = extractUsageBlock(cssSrc);
+          if (altCssUsage) usage = altCssUsage;
+        }
+        // For a CSS entry: if there's no usage HTML in the CSS, try the JS partner's usage
+        if (entry.kind === 'CSS' && (!usage || !extractHtmlBlock(usage)) && jsSrc) {
+          var altJsUsage = extractUsageBlock(jsSrc);
+          if (altJsUsage) usage = altJsUsage;
         }
         if (!ownSrc && !cssSrc) {
           return renderFallback(target, entry, null, null);
