@@ -2306,64 +2306,152 @@
     });
   };
 
+  // Loads an extra `three/examples/js/...` script and resolves when ready.
+  var addonLoads = {};
+  function loadThreeAddon(path) {
+    if (addonLoads[path]) return addonLoads[path];
+    addonLoads[path] = new Promise(function (resolve) {
+      var s = document.createElement('script');
+      s.src = 'https://unpkg.com/three@0.160.0/examples/js/' + path;
+      s.onload = s.onerror = function () { resolve(); };
+      document.head.appendChild(s);
+    });
+    return addonLoads[path];
+  }
+
+  function showThreeError(target, msg) {
+    var host = target.querySelector('#dapp-three-host');
+    if (!host) return;
+    host.innerHTML =
+      '<div style="height:100%;display:grid;place-items:center;color:rgba(255,255,255,0.55);font-size:0.78rem;padding:1rem;text-align:center;">' +
+        '⚠ ' + msg +
+      '</div>';
+  }
+
   P['3d/particles-galaxy.js'] = function (target) {
-    var host = threeStage(target, { height: 320 });
+    var host = threeStage(target, { height: 320, note: '8000 points forming a spiral galaxy. Branches + spin + randomness.' });
     waitForThree(function () {
-      if (window.ParticlesGalaxy) window.ParticlesGalaxy.init(host, { count: 8000 });
+      if (!window.ParticlesGalaxy) return showThreeError(target, 'ParticlesGalaxy module not loaded');
+      try {
+        window.ParticlesGalaxy.init(host, {
+          count: 12000,
+          size: 0.06,
+          radius: 4,
+          branches: 5,
+          insideColor: '#ffd166',
+          outsideColor: '#3a3aff'
+        });
+      } catch (e) { showThreeError(target, 'init failed: ' + e.message); }
     });
   };
 
   P['3d/wave-plane.js'] = function (target) {
-    var host = threeStage(target, { height: 300 });
+    var host = threeStage(target, { height: 300, note: 'Vertex-displaced plane animated by simplex noise.' });
     waitForThree(function () {
-      if (window.WavePlane) window.WavePlane.init(host);
+      if (!window.WavePlane) return showThreeError(target, 'WavePlane module not loaded');
+      try { window.WavePlane.init(host); }
+      catch (e) { showThreeError(target, 'init failed: ' + e.message); }
     });
   };
 
   P['3d/cube-morph.js'] = function (target) {
-    var host = threeStage(target, { height: 300 });
+    var host = threeStage(target, { height: 300, note: 'Geometry morph between box / sphere / torus.' });
     waitForThree(function () {
-      if (window.CubeMorph) window.CubeMorph.init(host);
+      if (!window.CubeMorph) return showThreeError(target, 'CubeMorph module not loaded');
+      try { window.CubeMorph.init(host, { color: '#ec4899' }); }
+      catch (e) { showThreeError(target, 'init failed: ' + e.message); }
     });
   };
 
   P['3d/instanced-grid.js'] = function (target) {
-    var host = threeStage(target, { height: 320 });
+    var host = threeStage(target, { height: 320, note: 'Wave function across an InstancedMesh of 1296 cubes.' });
     waitForThree(function () {
-      if (window.InstancedGrid) window.InstancedGrid.init(host);
+      if (!window.InstancedGrid) return showThreeError(target, 'InstancedGrid module not loaded');
+      try { window.InstancedGrid.init(host, { cols: 30, rows: 30 }); }
+      catch (e) { showThreeError(target, 'init failed: ' + e.message); }
     });
   };
 
   P['3d/floating-text.js'] = function (target) {
-    var host = threeStage(target, { height: 300 });
-    waitForThree(function () {
-      if (window.FloatingText) window.FloatingText.init(host, { text: 'frontendmax' });
+    var host = threeStage(target, { height: 300, note: 'Extruded 3D text with hover tilt + bobbing.' });
+    Promise.all([
+      // TextGeometry depends on font loader + text geometry addon
+      loadThreeAddon('loaders/FontLoader.js'),
+      loadThreeAddon('geometries/TextGeometry.js')
+    ]).then(function () {
+      waitForThree(function () {
+        if (!window.FloatingText) return showThreeError(target, 'FloatingText module not loaded');
+        try { window.FloatingText.init(host, { text: 'HELLO', size: 0.7 }); }
+        catch (e) { showThreeError(target, 'init failed: ' + e.message); }
+      });
     });
   };
 
   P['3d/postprocessing-bloom.js'] = function (target) {
     var host = threeStage(target, { height: 320, note: 'EffectComposer + UnrealBloom — emissive orbs glow.' });
-    waitForThree(function () {
-      if (window.PostprocessingBloom) window.PostprocessingBloom.init(host);
+    Promise.all([
+      loadThreeAddon('shaders/CopyShader.js'),
+      loadThreeAddon('shaders/LuminosityHighPassShader.js'),
+      loadThreeAddon('postprocessing/EffectComposer.js'),
+      loadThreeAddon('postprocessing/RenderPass.js'),
+      loadThreeAddon('postprocessing/ShaderPass.js'),
+      loadThreeAddon('postprocessing/UnrealBloomPass.js')
+    ]).then(function () {
+      waitForThree(function () {
+        if (!window.PostBloom) return showThreeError(target, 'PostBloom module not loaded (global is `PostBloom`)');
+        try { window.PostBloom.init(host); }
+        catch (e) { showThreeError(target, 'init failed: ' + e.message); }
+      });
     });
   };
 
   P['3d/raycast-hover.js'] = function (target) {
-    var host = threeStage(target, { height: 300, note: 'Hover over the cubes — raycaster highlights the one under the cursor.' });
+    var host = threeStage(target, { height: 300, note: 'Hover the cubes — raycaster highlights the one under the cursor.' });
     waitForThree(function () {
-      if (window.RaycastHover) window.RaycastHover.init(host);
+      if (!window.RaycastHover) return showThreeError(target, 'RaycastHover module not loaded');
+      try { window.RaycastHover.init(host); }
+      catch (e) { showThreeError(target, 'init failed: ' + e.message); }
     });
   };
 
   P['3d/scenes-pack.js'] = function (target) {
-    var host = threeStage(target, { height: 340, note: 'Pack of 6 ready scenes — defaults to the first one.' });
-    waitForThree(function () {
-      if (window.ScenesPack) {
-        var keys = window.ScenesPack.list && window.ScenesPack.list();
-        var first = (keys && keys[0]) || 'crystals';
-        window.ScenesPack.init(host, { scene: first });
+    // Render six tabs that swap between the pack's 6 scenes.
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;width:100%;">' +
+        '<div style="display:flex;flex-wrap:wrap;gap:0.3rem;justify-content:center;">' +
+          ['shaderBall','gltfCards','ascii','hologram','gradientCubeArray','ribbonTrail'].map(function (name, i) {
+            return '<button class="dapp-sp-tab" data-scene="' + name + '" style="padding:0.3rem 0.7rem;background:' + (i === 0 ? 'rgba(139,92,246,0.25)' : 'rgba(255,255,255,0.04)') + ';border:1px solid ' + (i === 0 ? '#a78bfa' : 'rgba(255,255,255,0.1)') + ';border-radius:5px;color:#fff;font-size:0.7rem;cursor:pointer;font-family:monospace;">' + name + '</button>';
+          }).join('') +
+        '</div>' +
+        '<div id="dapp-three-host" style="width:100%;max-width:560px;height:320px;background:#050510;border-radius:10px;overflow:hidden;position:relative;"></div>' +
+        '<div style="font-size:0.68rem;color:rgba(255,255,255,0.45);text-align:center;">6 self-contained Three.js scenes — click a tab to switch.</div>' +
+      '</div>';
+    var host = target.querySelector('#dapp-three-host');
+    var current = null;
+    function activate(name) {
+      if (current && current.destroy) try { current.destroy(); } catch (e) {}
+      host.innerHTML = '';
+      if (!window.ScenesPack || typeof window.ScenesPack[name] !== 'function') {
+        host.innerHTML = '<div style="height:100%;display:grid;place-items:center;color:rgba(255,255,255,0.5);font-size:0.78rem;">scene `' + name + '` not available</div>';
+        return;
       }
+      try { current = window.ScenesPack[name](host); }
+      catch (e) {
+        host.innerHTML = '<div style="height:100%;display:grid;place-items:center;color:rgba(255,255,255,0.5);font-size:0.78rem;padding:1rem;text-align:center;">⚠ ' + e.message + '</div>';
+      }
+    }
+    target.querySelectorAll('.dapp-sp-tab').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        target.querySelectorAll('.dapp-sp-tab').forEach(function (b) {
+          b.style.background = 'rgba(255,255,255,0.04)';
+          b.style.borderColor = 'rgba(255,255,255,0.1)';
+        });
+        btn.style.background = 'rgba(139,92,246,0.25)';
+        btn.style.borderColor = '#a78bfa';
+        activate(btn.getAttribute('data-scene'));
+      });
     });
+    waitForThree(function () { activate('shaderBall'); });
   };
 
   // ============================================
