@@ -1,0 +1,130 @@
+/* ============================================
+   iOS ALERT — Centered modal alert with title + buttons
+   Inspired by UIAlertController .alert style
+   ============================================
+   Usage:
+     <div class="ios-alert-overlay">
+       <div class="ios-alert">
+         <div class="ios-alert-body">
+           <div class="ios-alert-title">Delete this photo?</div>
+           <div class="ios-alert-message">This photo will be deleted from your library.</div>
+         </div>
+         <div class="ios-alert-buttons">
+           <button class="ios-alert-btn">Cancel</button>
+           <button class="ios-alert-btn is-destructive is-bold">Delete</button>
+         </div>
+       </div>
+     </div>
+
+   Variants on buttons:
+     .is-bold         — Default action (bolder weight)
+     .is-destructive  — Red text
+   ============================================ */
+
+.ios-alert-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 200;
+  padding: 24px;
+  animation: ios-alert-bg 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+.ios-alert-overlay.is-leaving { animation: ios-alert-bg-out 0.18s ease forwards; }
+
+@keyframes ios-alert-bg {
+  from { background: rgba(0, 0, 0, 0); }
+  to   { background: rgba(0, 0, 0, 0.5); }
+}
+@keyframes ios-alert-bg-out {
+  to { background: rgba(0, 0, 0, 0); }
+}
+
+.ios-alert {
+  width: 270px;
+  max-width: 100%;
+  background: rgba(40, 40, 45, 0.92);
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+  border-radius: 14px;
+  overflow: hidden;
+  text-align: center;
+  color: #fff;
+  animation: ios-alert-pop 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.ios-alert-overlay.is-leaving .ios-alert {
+  animation: ios-alert-pop-out 0.15s ease-in forwards;
+}
+
+@keyframes ios-alert-pop {
+  from { transform: scale(1.1); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+@keyframes ios-alert-pop-out {
+  to { transform: scale(0.96); opacity: 0; }
+}
+
+.ios-alert-body {
+  padding: 19px 16px 17px;
+}
+.ios-alert-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.ios-alert-message {
+  font-size: 13px;
+  color: rgba(235, 235, 245, 0.85);
+  line-height: 1.35;
+}
+
+.ios-alert-buttons {
+  display: flex;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.18);
+}
+.ios-alert-buttons.is-vertical { flex-direction: column; }
+
+.ios-alert-btn {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  border-left: 0.5px solid rgba(255, 255, 255, 0.18);
+  padding: 11px;
+  font-size: 17px;
+  color: #0a84ff;
+  font-weight: 400;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.05);
+  transition: background 0.1s ease;
+}
+.ios-alert-btn:first-child { border-left: 0; }
+.ios-alert-btn:active { background: rgba(255, 255, 255, 0.06); }
+.ios-alert-btn.is-bold { font-weight: 600; }
+.ios-alert-btn.is-destructive { color: #ff3b30; }
+
+.ios-alert-buttons.is-vertical .ios-alert-btn {
+  border-left: 0;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.18);
+}
+.ios-alert-buttons.is-vertical .ios-alert-btn:first-child { border-top: 0; }
+
+/* Light mode */
+.iph-light .ios-alert,
+.ios-alert.ios-alert-light {
+  background: rgba(255, 255, 255, 0.78);
+  color: #000;
+}
+.iph-light .ios-alert-message,
+.ios-alert.ios-alert-light .ios-alert-message {
+  color: rgba(60, 60, 67, 0.85);
+}
+.iph-light .ios-alert-buttons,
+.iph-light .ios-alert-btn,
+.ios-alert.ios-alert-light .ios-alert-buttons,
+.ios-alert.ios-alert-light .ios-alert-btn {
+  border-color: rgba(60, 60, 67, 0.2);
+}

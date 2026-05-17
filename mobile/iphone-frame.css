@@ -1,0 +1,181 @@
+/* ============================================
+   IPHONE FRAME — Reusable iPhone 14/15 Pro shell for showcasing iOS UI
+   Inspired by Apple HIG / Tailwind's Apple-device mockups
+   ============================================
+   Usage:
+     <div class="iph">
+       <div class="iph-island"></div>
+       <div class="iph-screen">
+         <!-- your iOS content -->
+       </div>
+       <div class="iph-home"></div>
+     </div>
+
+   Variants:
+     .iph-pro          — Dynamic Island (default)
+     .iph-notch        — Older notch style
+     .iph-bezel-light  — Silver bezel
+     .iph-bezel-titan  — Titanium bezel
+     .iph-sm           — Smaller (260px) for demos
+     .iph-lg           — Larger (340px)
+
+   Sizing tokens (override via inline style or wrapping class):
+     --iph-w, --iph-h, --iph-radius, --iph-bezel, --iph-bg
+   ============================================ */
+
+.iph {
+  --iph-w: 280px;
+  --iph-h: 600px;
+  --iph-radius: 44px;
+  --iph-bezel: 9px;
+  --iph-bg: #0a0a0f;
+  --iph-frame: linear-gradient(145deg, #2a2a32 0%, #15151a 45%, #1f1f25 100%);
+
+  position: relative;
+  width: var(--iph-w);
+  height: var(--iph-h);
+  border-radius: var(--iph-radius);
+  background: var(--iph-frame);
+  padding: var(--iph-bezel);
+  box-shadow:
+    0 30px 60px -20px rgba(0, 0, 0, 0.55),
+    0 0 0 1.5px rgba(255, 255, 255, 0.08) inset,
+    0 0 0 2.5px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(139, 92, 246, 0.05);
+  isolation: isolate;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #fff;
+  user-select: none;
+}
+
+/* Side buttons (volume + power) */
+.iph::before,
+.iph::after {
+  content: "";
+  position: absolute;
+  background: #1c1c20;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Left side buttons (silent + volume up/down) */
+.iph::before {
+  left: -2px;
+  top: 100px;
+  width: 3px;
+  height: 30px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 50px 0 -1px #1c1c20,
+    0 50px 0 0 transparent,
+    0 96px 0 0 #1c1c20;
+  height: 30px;
+}
+
+/* Right side button (power) */
+.iph::after {
+  right: -2px;
+  top: 130px;
+  width: 3px;
+  height: 60px;
+}
+
+.iph-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--iph-radius) - var(--iph-bezel));
+  background: var(--iph-bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dynamic island (Pro models) */
+.iph-island {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 96px;
+  height: 30px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 100;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+/* Notch (older style) */
+.iph-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 28px;
+  background: #000;
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Home indicator */
+.iph-home {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Safe-area paddings on the screen */
+.iph-safe {
+  position: absolute;
+  inset: 0;
+  padding-top: 50px;     /* status bar + island */
+  padding-bottom: 28px;  /* home indicator */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Bezel variants */
+.iph.iph-bezel-light {
+  --iph-frame: linear-gradient(145deg, #d4d4d8 0%, #a1a1aa 45%, #d4d4d8 100%);
+}
+.iph.iph-bezel-titan {
+  --iph-frame: linear-gradient(145deg, #6b7280 0%, #374151 45%, #4b5563 100%);
+}
+
+/* Size variants */
+.iph.iph-sm {
+  --iph-w: 240px;
+  --iph-h: 520px;
+  --iph-radius: 38px;
+  --iph-bezel: 8px;
+}
+.iph.iph-lg {
+  --iph-w: 340px;
+  --iph-h: 720px;
+  --iph-radius: 54px;
+  --iph-bezel: 11px;
+}
+
+/* Light screen variant (for white-bg apps) */
+.iph.iph-light .iph-screen {
+  background: #f2f2f7;
+  color: #000;
+}
+
+/* Wallpaper presets (apply on .iph-screen) */
+.iph-wp-sunset { background: linear-gradient(180deg, #ff7e5f 0%, #feb47b 100%); }
+.iph-wp-night  { background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%); }
+.iph-wp-aurora { background: linear-gradient(180deg, #4ade80 0%, #06b6d4 50%, #8b5cf6 100%); }
+.iph-wp-ocean  { background: linear-gradient(180deg, #1e3a8a 0%, #06b6d4 100%); }

@@ -1,0 +1,87 @@
+/* ============================================
+   iOS SEGMENTED CONTROL — Pill selector with sliding background
+   Inspired by UISegmentedControl
+   ============================================
+   Usage:
+     <div class="ios-seg" data-ios-seg>
+       <span class="ios-seg-thumb"></span>
+       <button class="ios-seg-item is-active">Today</button>
+       <button class="ios-seg-item">Week</button>
+       <button class="ios-seg-item">Month</button>
+       <button class="ios-seg-item">Year</button>
+     </div>
+     IosSegmented.init('[data-ios-seg]'); // animates the sliding thumb
+
+   Variants:
+     .ios-seg-light    — Light bg (default for white screens)
+     .ios-seg-inline   — Smaller / inline
+   ============================================ */
+
+.ios-seg {
+  position: relative;
+  display: inline-flex;
+  padding: 2px;
+  background: rgba(118, 118, 128, 0.24);
+  border-radius: 9px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  user-select: none;
+  font-size: 13px;
+  font-weight: 500;
+  width: 100%;
+  max-width: 100%;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ios-seg-thumb {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc((100% - 4px) / var(--ios-seg-count, 4));
+  background: rgba(118, 118, 128, 0.36);
+  border-radius: 7px;
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  z-index: -1;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.04);
+  transform: translateX(0);
+}
+
+.ios-seg-item {
+  flex: 1;
+  padding: 6px 10px;
+  background: transparent;
+  border: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  color: #fff;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ios-seg-item.is-active { font-weight: 600; }
+
+/* Vertical separators between items (except next to thumb) */
+.ios-seg-item + .ios-seg-item {
+  border-left: 0.5px solid rgba(235, 235, 245, 0.15);
+}
+
+/* Light variant */
+.ios-seg.ios-seg-light,
+.iph-light .ios-seg {
+  background: rgba(118, 118, 128, 0.12);
+}
+.ios-seg.ios-seg-light .ios-seg-item,
+.iph-light .ios-seg .ios-seg-item {
+  color: #000;
+}
+.ios-seg.ios-seg-light .ios-seg-thumb,
+.iph-light .ios-seg .ios-seg-thumb {
+  background: #fff;
+}
+
+.ios-seg.ios-seg-inline { font-size: 12px; padding: 1.5px; }

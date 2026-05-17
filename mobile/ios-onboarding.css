@@ -1,0 +1,133 @@
+/* ============================================
+   iOS ONBOARDING — Multi-page swipe intro with page dots
+   Inspired by Apple Watch / Health setup, Cupertino onboarding
+   ============================================
+   Usage:
+     <div class="ios-onb">
+       <div class="ios-onb-pages" data-ios-onb-pages>
+         <section class="ios-onb-page">
+           <div class="ios-onb-icon">🎉</div>
+           <h2 class="ios-onb-title">Welcome</h2>
+           <p class="ios-onb-text">Get started in three quick steps.</p>
+         </section>
+         <section class="ios-onb-page">
+           <div class="ios-onb-icon">⚡</div>
+           <h2 class="ios-onb-title">Fast</h2>
+           <p class="ios-onb-text">Sync across all your devices.</p>
+         </section>
+         <section class="ios-onb-page">
+           <div class="ios-onb-icon">✓</div>
+           <h2 class="ios-onb-title">You're ready</h2>
+           <p class="ios-onb-text">Let's go.</p>
+         </section>
+       </div>
+       <div class="ios-onb-dots" data-ios-onb-dots>
+         <span class="is-active"></span><span></span><span></span>
+       </div>
+       <button class="ios-onb-cta">Continue</button>
+     </div>
+     IosOnboarding.init('.ios-onb');
+   ============================================ */
+
+.ios-onb {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  position: relative;
+}
+
+.ios-onb-pages {
+  flex: 1;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+.ios-onb-pages::-webkit-scrollbar { display: none; }
+
+.ios-onb-page {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  padding: 28px 28px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.ios-onb-icon {
+  font-size: 64px;
+  width: 100px;
+  height: 100px;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #0a84ff, #5e5ce6);
+  box-shadow: 0 16px 36px rgba(10, 132, 255, 0.4);
+}
+
+.ios-onb-title {
+  margin: 8px 0 4px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.ios-onb-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+  color: rgba(235, 235, 245, 0.7);
+  max-width: 280px;
+}
+
+.ios-onb-dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  padding: 6px 0 12px;
+}
+.ios-onb-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(235, 235, 245, 0.25);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.ios-onb-dots span.is-active {
+  background: #fff;
+  transform: scale(1.1);
+}
+
+.ios-onb-cta {
+  margin: 4px 24px 28px;
+  height: 50px;
+  border-radius: 14px;
+  background: #0a84ff;
+  color: #fff;
+  border: 0;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease;
+}
+.ios-onb-cta:active { background: #0974e8; }
+
+/* Light mode */
+.iph-light .ios-onb,
+.ios-onb.ios-onb-light { background: #fff; color: #000; }
+.iph-light .ios-onb-text,
+.ios-onb.ios-onb-light .ios-onb-text { color: rgba(60, 60, 67, 0.7); }
+.iph-light .ios-onb-dots span,
+.ios-onb.ios-onb-light .ios-onb-dots span { background: rgba(60, 60, 67, 0.25); }
+.iph-light .ios-onb-dots span.is-active,
+.ios-onb.ios-onb-light .ios-onb-dots span.is-active { background: #000; }

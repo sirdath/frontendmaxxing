@@ -1,0 +1,116 @@
+/* ============================================
+   iOS NAV BAR — Top navigation bar with collapsible large title
+   Inspired by iOS Mail / Settings nav bars
+   ============================================
+   Usage:
+     <div class="ios-nav" data-ios-nav>
+       <div class="ios-nav-top">
+         <button class="ios-nav-back">←</button>
+         <button class="ios-nav-action">Edit</button>
+       </div>
+       <div class="ios-nav-large">Mailboxes</div>
+       <div class="ios-nav-sub">23 unread</div>
+     </div>
+     <div class="ios-nav-content" data-ios-nav-scroll>
+       <!-- scrollable content -->
+     </div>
+     IosNav.init('[data-ios-nav]'); // pair with the [data-ios-nav-scroll]
+
+   Variants:
+     .ios-nav-blur     — Frosted backdrop on collapse
+     .ios-nav-compact  — Skip the large title, only inline
+   ============================================ */
+
+.ios-nav {
+  position: relative;
+  z-index: 5;
+  padding: 4px 16px 6px;
+  color: #fff;
+  background: transparent;
+  transition: background 0.25s ease, backdrop-filter 0.25s ease;
+}
+
+.ios-nav.ios-nav-blur.is-collapsed {
+  background: rgba(15, 15, 18, 0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.ios-nav-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 36px;
+  gap: 8px;
+  position: relative;
+}
+
+.ios-nav-back,
+.ios-nav-action {
+  background: none;
+  border: 0;
+  color: #0a84ff;
+  font-size: 17px;
+  font-weight: 400;
+  padding: 4px 6px;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.ios-nav-back { font-size: 22px; font-weight: 500; padding-left: 0; }
+.ios-nav-action { font-weight: 400; }
+.ios-nav-action.is-bold { font-weight: 600; }
+
+/* Collapsed inline title (centered) — hidden until scroll passes large title */
+.ios-nav-inline-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.ios-nav.is-collapsed .ios-nav-inline-title { opacity: 1; }
+
+.ios-nav-large {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  padding: 8px 0 4px;
+  transition: opacity 0.2s ease, transform 0.2s ease, max-height 0.25s ease;
+  transform-origin: 0 0;
+  overflow: hidden;
+  max-height: 60px;
+}
+.ios-nav.is-collapsed .ios-nav-large {
+  opacity: 0;
+  transform: scale(0.7);
+  max-height: 0;
+  padding: 0;
+}
+
+.ios-nav-sub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  padding-bottom: 6px;
+  transition: opacity 0.2s ease, max-height 0.25s ease;
+  overflow: hidden;
+  max-height: 24px;
+}
+.ios-nav.is-collapsed .ios-nav-sub { opacity: 0; max-height: 0; }
+
+.ios-nav.ios-nav-compact .ios-nav-large,
+.ios-nav.ios-nav-compact .ios-nav-sub { display: none; }
+.ios-nav.ios-nav-compact .ios-nav-inline-title { opacity: 1; }
+
+/* Light mode */
+.ios-light .ios-nav,
+.ios-nav.ios-nav-light { color: #000; }
+.ios-light .ios-nav.ios-nav-blur.is-collapsed,
+.ios-nav.ios-nav-light.is-collapsed { background: rgba(255, 255, 255, 0.78); }

@@ -1,0 +1,110 @@
+/* ============================================
+   iOS TAB BAR — Bottom tab navigation with blur backdrop
+   Inspired by iOS Settings / Music / App Store tab bars
+   ============================================
+   Usage:
+     <div class="ios-tabs">
+       <button class="ios-tab is-active">
+         <svg class="ios-tab-icon">…</svg>
+         <span class="ios-tab-label">Home</span>
+       </button>
+       <button class="ios-tab">
+         <svg class="ios-tab-icon">…</svg>
+         <span class="ios-tab-label">Search</span>
+       </button>
+       …
+     </div>
+
+   Variants:
+     .ios-tabs-blur     — Default frosted backdrop
+     .ios-tabs-solid    — Solid background
+     .ios-tabs-light    — Light mode
+
+   Active color via:
+     --ios-tab-active: #0a84ff;
+   ============================================ */
+
+.ios-tabs {
+  --ios-tab-active: #0a84ff;
+  --ios-tab-inactive: rgba(235, 235, 245, 0.55);
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: stretch;
+  padding: 6px 8px 24px;
+  background: rgba(15, 15, 18, 0.78);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+.ios-tabs.ios-tabs-solid {
+  background: #1c1c1e;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.ios-tabs.ios-tabs-light {
+  --ios-tab-inactive: rgba(60, 60, 67, 0.6);
+  background: rgba(255, 255, 255, 0.78);
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.ios-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  background: none;
+  border: 0;
+  padding: 6px 0 2px;
+  cursor: pointer;
+  color: var(--ios-tab-inactive);
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+  transition: color 0.15s ease;
+}
+
+.ios-tab.is-active { color: var(--ios-tab-active); }
+
+.ios-tab-icon {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.ios-tab-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+/* Badge bubble on top-right of tab icon */
+.ios-tab-badge {
+  position: relative;
+}
+.ios-tab-badge::after {
+  content: attr(data-badge);
+  position: absolute;
+  top: -2px;
+  right: 50%;
+  transform: translateX(80%);
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: #ff3b30;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+}

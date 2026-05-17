@@ -1,0 +1,130 @@
+/* ============================================
+   iOS STATUS BAR — Top bar with time, signal, wifi, battery
+   Inspired by iOS 17 status bar
+   ============================================
+   Usage:
+     <div class="ios-status">
+       <span class="ios-status-time">9:41</span>
+       <div class="ios-status-right">
+         <span class="ios-status-signal"></span>
+         <span class="ios-status-wifi"></span>
+         <span class="ios-status-battery"></span>
+       </div>
+     </div>
+
+   Variants:
+     .ios-status-dark  — Dark text (default white)
+     .ios-status-thin  — Compact (28px tall)
+   ============================================ */
+
+.ios-status {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.02em;
+}
+
+.ios-status.ios-status-dark { color: #000; }
+
+.ios-status-time {
+  min-width: 50px;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.ios-status-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Signal bars (4 ascending bars) */
+.ios-status-signal {
+  display: inline-flex;
+  align-items: end;
+  gap: 1.5px;
+  height: 11px;
+}
+.ios-status-signal::before,
+.ios-status-signal::after,
+.ios-status-signal {
+  --bar-color: currentColor;
+}
+.ios-status-signal::before {
+  content: "";
+  display: inline-flex;
+  gap: 1.5px;
+  align-items: end;
+  height: 11px;
+  background:
+    linear-gradient(to top, currentColor 100%, currentColor 100%) left  0   bottom / 3px 4px no-repeat,
+    linear-gradient(to top, currentColor 100%, currentColor 100%) left 4.5px bottom / 3px 6px no-repeat,
+    linear-gradient(to top, currentColor 100%, currentColor 100%) left 9px   bottom / 3px 8px no-repeat,
+    linear-gradient(to top, currentColor 100%, currentColor 100%) left 13.5px bottom / 3px 11px no-repeat;
+  width: 17px;
+}
+
+/* WiFi icon (curve fans) */
+.ios-status-wifi {
+  display: inline-block;
+  width: 16px;
+  height: 11px;
+  position: relative;
+}
+.ios-status-wifi::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 100%, currentColor 1.5px, transparent 1.5px),
+    radial-gradient(circle at 50% 100%, transparent 4.5px, currentColor 4.5px, currentColor 6px, transparent 6px),
+    radial-gradient(circle at 50% 100%, transparent 8px, currentColor 8px, currentColor 9.5px, transparent 9.5px);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 4px 4px, 12px 6px, 16px 9px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Battery shape: rounded rectangle + cap + fill */
+.ios-status-battery {
+  position: relative;
+  display: inline-block;
+  width: 26px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid currentColor;
+  padding: 1px;
+  box-sizing: border-box;
+}
+.ios-status-battery::before {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 5px;
+  background: currentColor;
+  border-radius: 0 1px 1px 0;
+  opacity: 0.5;
+}
+.ios-status-battery::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: var(--ios-batt, 78%);
+  background: currentColor;
+  border-radius: 1.5px;
+}
+.ios-status-battery.is-low::after { background: #ff3b30; }
+.ios-status-battery.is-charging::after { background: #34c759; }
+
+.ios-status.ios-status-thin { padding: 8px 18px 2px; font-size: 13px; }

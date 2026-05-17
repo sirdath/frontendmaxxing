@@ -1,0 +1,120 @@
+/* ============================================
+   iOS HOME SCREEN — Wallpaper + app icon grid + dock
+   Inspired by iOS home screen layout
+   ============================================
+   Usage:
+     <div class="ios-home">
+       <div class="ios-home-grid">
+         <div class="ios-app">
+           <div class="ios-app-icon" style="background:#0a84ff;">✉</div>
+           <div class="ios-app-label">Mail</div>
+         </div>
+         …
+       </div>
+       <div class="ios-dock">
+         <div class="ios-app">
+           <div class="ios-app-icon" style="background:#34c759;">📞</div>
+         </div>
+         …
+       </div>
+     </div>
+
+   Variants:
+     .ios-home-blur — Blurred wallpaper behind dock
+   ============================================ */
+
+.ios-home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px 12px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  color: #fff;
+}
+
+.ios-home-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px 12px;
+  padding: 10px 8px 0;
+}
+
+.ios-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ios-app-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 13px;
+  background: #1c1c1e;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  color: #fff;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.ios-app-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.ios-app-label {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+/* Badge on top-right of icon */
+.ios-app-icon.has-badge::after {
+  content: attr(data-badge);
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  background: #ff3b30;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  font-family: -apple-system, sans-serif;
+  z-index: 2;
+  text-shadow: none;
+}
+
+.ios-dock {
+  margin: 16px 8px 12px;
+  padding: 10px 12px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+  backdrop-filter: blur(30px) saturate(160%);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.18);
+}
+.ios-dock .ios-app { gap: 0; }
+.ios-dock .ios-app-label { display: none; }

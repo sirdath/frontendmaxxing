@@ -1,0 +1,114 @@
+/* ============================================
+   iOS CONTEXT MENU — Long-press contextual menu with preview
+   Inspired by iOS UIContextMenu (peek + preview)
+   ============================================
+   Usage:
+     <div class="ios-cmenu-overlay">
+       <div class="ios-cmenu-preview">
+         <!-- the previewed item (zoomed) -->
+       </div>
+       <div class="ios-cmenu">
+         <button class="ios-cmenu-row">
+           <span class="ios-cmenu-row-label">Copy</span>
+           <span class="ios-cmenu-row-icon">⎘</span>
+         </button>
+         <button class="ios-cmenu-row">
+           <span class="ios-cmenu-row-label">Share</span>
+           <span class="ios-cmenu-row-icon">↗</span>
+         </button>
+         <button class="ios-cmenu-row is-destructive">
+           <span class="ios-cmenu-row-label">Delete</span>
+           <span class="ios-cmenu-row-icon">🗑</span>
+         </button>
+       </div>
+     </div>
+   ============================================ */
+
+.ios-cmenu-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 220;
+  background: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  animation: ios-cmenu-bg 0.25s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+.ios-cmenu-overlay.is-leaving { animation: ios-cmenu-bg-out 0.18s ease forwards; }
+
+@keyframes ios-cmenu-bg {
+  from { background: rgba(0, 0, 0, 0); backdrop-filter: blur(0); -webkit-backdrop-filter: blur(0); }
+}
+@keyframes ios-cmenu-bg-out {
+  to { background: rgba(0, 0, 0, 0); backdrop-filter: blur(0); -webkit-backdrop-filter: blur(0); }
+}
+
+.ios-cmenu-preview {
+  width: 80%;
+  border-radius: 16px;
+  background: #1c1c1e;
+  padding: 16px;
+  color: #fff;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  animation: ios-cmenu-pop 0.3s cubic-bezier(0.32, 1.3, 0.55, 1);
+  transform-origin: center bottom;
+}
+
+.ios-cmenu {
+  width: 250px;
+  max-width: 90%;
+  background: rgba(40, 40, 45, 0.92);
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+  border-radius: 13px;
+  overflow: hidden;
+  animation: ios-cmenu-pop 0.3s cubic-bezier(0.32, 1.3, 0.55, 1);
+  transform-origin: center top;
+}
+
+@keyframes ios-cmenu-pop {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+.ios-cmenu-overlay.is-leaving .ios-cmenu-preview,
+.ios-cmenu-overlay.is-leaving .ios-cmenu {
+  animation: ios-cmenu-pop-out 0.16s ease-in forwards;
+}
+@keyframes ios-cmenu-pop-out {
+  to { transform: scale(0.92); opacity: 0; }
+}
+
+.ios-cmenu-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 13px 16px;
+  background: transparent;
+  border: 0;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.15);
+  font-size: 17px;
+  color: #fff;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.05);
+  transition: background 0.1s ease;
+  text-align: left;
+}
+.ios-cmenu-row:last-child { border-bottom: 0; }
+.ios-cmenu-row:active { background: rgba(255, 255, 255, 0.06); }
+.ios-cmenu-row.is-destructive { color: #ff3b30; }
+
+.ios-cmenu-row-label { flex: 1; }
+.ios-cmenu-row-icon {
+  width: 22px;
+  text-align: center;
+  font-size: 18px;
+  opacity: 0.95;
+}

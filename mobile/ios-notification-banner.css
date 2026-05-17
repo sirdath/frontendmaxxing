@@ -1,0 +1,132 @@
+/* ============================================
+   iOS NOTIFICATION BANNER — Top slide-in banner notification
+   Inspired by iOS lock-screen + foreground banner notifications
+   ============================================
+   Usage (banner — top, auto-hides):
+     <div class="ios-banner">
+       <div class="ios-banner-icon" style="background:#34c759;">●</div>
+       <div class="ios-banner-body">
+         <div class="ios-banner-head">
+           <span class="ios-banner-title">Messages</span>
+           <span class="ios-banner-time">now</span>
+         </div>
+         <div class="ios-banner-from">Alice</div>
+         <div class="ios-banner-msg">Want to grab lunch?</div>
+       </div>
+     </div>
+
+   Usage (lock-screen stack — vertical):
+     <div class="ios-notif-stack">
+       <div class="ios-notif">…</div>
+       <div class="ios-notif">…</div>
+     </div>
+
+   Variants:
+     .ios-banner-compact — Single-line variant
+     .ios-banner-light   — Light style
+   ============================================ */
+
+.ios-banner {
+  position: absolute;
+  top: 12px;
+  left: 8px;
+  right: 8px;
+  z-index: 130;
+  background: rgba(40, 40, 45, 0.92);
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+  border-radius: 20px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  animation: ios-banner-in 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.ios-banner.is-leaving {
+  animation: ios-banner-out 0.32s ease-in forwards;
+}
+
+@keyframes ios-banner-in {
+  from { transform: translateY(-130%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+@keyframes ios-banner-out {
+  to { transform: translateY(-130%); opacity: 0; }
+}
+
+.ios-banner-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #0a84ff;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.ios-banner-body {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.ios-banner-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.ios-banner-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.ios-banner-time {
+  font-size: 12px;
+  color: rgba(235, 235, 245, 0.55);
+}
+.ios-banner-from {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.ios-banner-msg {
+  font-size: 15px;
+  color: rgba(235, 235, 245, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ios-banner.ios-banner-compact .ios-banner-from,
+.ios-banner.ios-banner-compact .ios-banner-msg {
+  display: inline;
+  font-size: 15px;
+}
+
+/* Stack on lock-screen */
+.ios-notif-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+}
+.ios-notif {
+  background: rgba(40, 40, 45, 0.85);
+  -webkit-backdrop-filter: blur(36px);
+  backdrop-filter: blur(36px);
+  border-radius: 20px;
+  padding: 10px 12px;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  display: flex;
+  gap: 10px;
+}

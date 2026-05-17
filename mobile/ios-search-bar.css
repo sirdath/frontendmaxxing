@@ -1,0 +1,117 @@
+/* ============================================
+   iOS SEARCH BAR — Search field with animated cancel button
+   Inspired by UISearchBar
+   ============================================
+   Usage:
+     <div class="ios-search">
+       <label class="ios-search-field">
+         <span class="ios-search-icon">🔍</span>
+         <input type="text" placeholder="Search">
+         <button class="ios-search-clear">×</button>
+       </label>
+       <button class="ios-search-cancel">Cancel</button>
+     </div>
+
+   JS:
+     IosSearch.init('.ios-search'); // expands cancel on focus, hides on blur
+
+   Variants:
+     .ios-search-prominent — Larger / Mail-app style (bigger placeholder)
+   ============================================ */
+
+.ios-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+.ios-search-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 10px;
+  background: rgba(118, 118, 128, 0.24);
+  color: #fff;
+  position: relative;
+}
+.ios-search-field input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  padding: 0;
+}
+.ios-search-field input::placeholder {
+  color: rgba(235, 235, 245, 0.45);
+}
+
+.ios-search-icon {
+  font-size: 15px;
+  opacity: 0.55;
+  pointer-events: none;
+  display: inline-grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+}
+
+.ios-search-clear {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(235, 235, 245, 0.6);
+  color: #000;
+  border: 0;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+.ios-search-field.has-text .ios-search-clear { display: inline-flex; }
+
+.ios-search-cancel {
+  display: none;
+  background: transparent;
+  border: 0;
+  color: #0a84ff;
+  font-size: 17px;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+  transform: translateX(8px);
+  opacity: 0;
+  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.25s ease;
+}
+.ios-search.is-active .ios-search-cancel {
+  display: inline-flex;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Light mode */
+.iph-light .ios-search-field,
+.ios-search.ios-search-light .ios-search-field {
+  background: rgba(118, 118, 128, 0.12);
+  color: #000;
+}
+.iph-light .ios-search-field input::placeholder,
+.ios-search.ios-search-light .ios-search-field input::placeholder {
+  color: rgba(60, 60, 67, 0.6);
+}

@@ -1,0 +1,129 @@
+/* ============================================
+   iOS PICKER — Scrolling wheel picker (date / option / time)
+   Inspired by UIPickerView / CupertinoPicker
+   ============================================
+   Usage:
+     <div class="ios-picker" data-ios-picker>
+       <div class="ios-picker-col" data-ios-picker-col data-loop="true">
+         <div class="ios-picker-row">Jan</div>
+         <div class="ios-picker-row">Feb</div>
+         …
+       </div>
+       <div class="ios-picker-col" data-ios-picker-col>
+         <div class="ios-picker-row">1</div>
+         <div class="ios-picker-row">2</div>
+         …
+       </div>
+       <div class="ios-picker-selection"></div>
+     </div>
+     IosPicker.init('[data-ios-picker]');
+
+   Variants:
+     .ios-picker-compact   — Smaller row height
+     .ios-picker-inline    — Inline (no panel background)
+   ============================================ */
+
+.ios-picker {
+  --picker-row-h: 36px;
+  --picker-visible: 5;
+  position: relative;
+  height: calc(var(--picker-row-h) * var(--picker-visible));
+  display: flex;
+  background: rgba(118, 118, 128, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  isolation: isolate;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  user-select: none;
+  color: #fff;
+}
+.ios-picker.ios-picker-compact { --picker-row-h: 28px; }
+
+.ios-picker-col {
+  flex: 1;
+  height: 100%;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  text-align: center;
+  position: relative;
+}
+.ios-picker-col::-webkit-scrollbar { display: none; }
+
+/* spacer rows top/bottom keep the middle "selected" line centered */
+.ios-picker-col::before,
+.ios-picker-col::after {
+  content: "";
+  display: block;
+  height: calc(var(--picker-row-h) * ((var(--picker-visible) - 1) / 2));
+}
+
+.ios-picker-row {
+  height: var(--picker-row-h);
+  line-height: var(--picker-row-h);
+  scroll-snap-align: center;
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  color: rgba(235, 235, 245, 0.85);
+  transition: color 0.15s ease;
+}
+.ios-picker-row.is-selected {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Fade overlay top/bottom */
+.ios-picker::before,
+.ios-picker::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: calc(var(--picker-row-h) * 2);
+  pointer-events: none;
+  z-index: 2;
+}
+.ios-picker::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(28, 28, 30, 0.95), transparent);
+}
+.ios-picker::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(28, 28, 30, 0.95), transparent);
+}
+
+/* Center selection lines */
+.ios-picker-selection {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 50%;
+  height: var(--picker-row-h);
+  transform: translateY(-50%);
+  background: rgba(118, 118, 128, 0.2);
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Light mode */
+.iph-light .ios-picker,
+.ios-picker.ios-picker-light {
+  background: #fff;
+  color: #000;
+}
+.iph-light .ios-picker::before,
+.ios-picker.ios-picker-light::before {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.96), transparent);
+}
+.iph-light .ios-picker::after,
+.ios-picker.ios-picker-light::after {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.96), transparent);
+}
+.iph-light .ios-picker-row,
+.ios-picker.ios-picker-light .ios-picker-row { color: rgba(60, 60, 67, 0.85); }
+.iph-light .ios-picker-row.is-selected,
+.ios-picker.ios-picker-light .ios-picker-row.is-selected { color: #000; }
+.iph-light .ios-picker-selection,
+.ios-picker.ios-picker-light .ios-picker-selection { background: rgba(118, 118, 128, 0.18); }

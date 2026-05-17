@@ -1,0 +1,175 @@
+/* ============================================
+   iOS GROUPED LIST — Settings-app style sections
+   Inspired by iOS Settings.app inset-grouped list
+   ============================================
+   Usage:
+     <div class="ios-list">
+       <div class="ios-list-section-header">PERSONAL</div>
+       <ul class="ios-group">
+         <li class="ios-row">
+           <span class="ios-row-icon" style="background:#ff9500;">★</span>
+           <span class="ios-row-label">Display & Brightness</span>
+           <span class="ios-row-value">Auto</span>
+           <span class="ios-row-chevron">›</span>
+         </li>
+         <li class="ios-row">
+           <span class="ios-row-label">Wi-Fi</span>
+           <span class="ios-row-toggle"><span class="ios-toggle is-on"></span></span>
+         </li>
+       </ul>
+       <div class="ios-list-section-footer">Wi-Fi calling improves call quality.</div>
+     </div>
+
+   Variants:
+     .ios-row-destructive — Red label (e.g. "Sign out")
+     .ios-row-link        — Centered blue link row
+     .ios-row-header      — Compact uppercase row label
+   ============================================ */
+
+.ios-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 0 32px;
+  background: #000;
+  -webkit-overflow-scrolling: touch;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  color: #fff;
+}
+
+.ios-list-section-header {
+  padding: 16px 32px 6px;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(235, 235, 245, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ios-list-section-footer {
+  padding: 6px 32px 16px;
+  font-size: 13px;
+  color: rgba(235, 235, 245, 0.6);
+  line-height: 1.35;
+}
+
+.ios-group {
+  list-style: none;
+  margin: 0 16px 16px;
+  padding: 0;
+  background: #1c1c1e;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ios-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  min-height: 44px;
+  position: relative;
+  font-size: 17px;
+  color: #fff;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+
+.ios-row + .ios-row::before {
+  content: "";
+  position: absolute;
+  left: 56px;
+  right: 0;
+  top: 0;
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.18);
+}
+.ios-row.ios-row-no-icon + .ios-row.ios-row-no-icon::before { left: 16px; }
+
+.ios-row-icon {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  color: #fff;
+  background: #8b5cf6;
+}
+
+.ios-row-label {
+  flex: 1;
+  min-width: 0;
+  letter-spacing: -0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ios-row-value {
+  color: rgba(235, 235, 245, 0.6);
+  font-size: 17px;
+}
+
+.ios-row-chevron {
+  color: rgba(235, 235, 245, 0.3);
+  font-size: 20px;
+  line-height: 0.9;
+  margin-left: -4px;
+  font-weight: 400;
+}
+
+.ios-row-destructive .ios-row-label,
+.ios-row.ios-row-link.is-destructive { color: #ff3b30; }
+.ios-row.ios-row-link {
+  color: #0a84ff;
+  justify-content: center;
+}
+
+.ios-row-header {
+  font-size: 13px;
+  color: rgba(235, 235, 245, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Bundled iOS-style toggle (use directly in .ios-row-toggle) */
+.ios-toggle {
+  width: 51px;
+  height: 31px;
+  background: #39393d;
+  border-radius: 999px;
+  position: relative;
+  display: inline-block;
+  transition: background 0.2s ease;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.ios-toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 3px 1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.ios-toggle.is-on { background: #34c759; }
+.ios-toggle.is-on::after { transform: translateX(20px); }
+
+/* Light mode (apply on .iph.iph-light) */
+.iph-light .ios-list,
+.ios-list.ios-list-light { background: #f2f2f7; color: #000; }
+.iph-light .ios-group,
+.ios-list-light .ios-group { background: #fff; }
+.iph-light .ios-row + .ios-row::before,
+.ios-list-light .ios-row + .ios-row::before { background: rgba(60, 60, 67, 0.18); }
+.iph-light .ios-row-value,
+.iph-light .ios-list-section-header,
+.iph-light .ios-list-section-footer,
+.ios-list-light .ios-row-value,
+.ios-list-light .ios-list-section-header,
+.ios-list-light .ios-list-section-footer { color: rgba(60, 60, 67, 0.6); }

@@ -1958,6 +1958,89 @@ These cover components and gradient utilities that had only intent-table rows ab
 **swipe-stack.js** `mobile/swipe-stack.js` (JS, global: `SwipeStack`) — tags: swipe-stack tinder threshold velocity drag rotation directions left right up down commit-swipe
   `SwipeStack.init('.swst', {threshold, velocityThreshold, rotationFactor, allowedDirections, onSwipe})`. Pointer-driven drag with rotation; commits when threshold/velocity hit.
 
+**iOS / Cupertino UI patterns (`mobile/ios-*` + `iphone-frame`)**
+
+**iphone-frame.css** `mobile/iphone-frame.css` (CSS) — tags: iphone frame mockup device shell bezel dynamic-island notch home-indicator ios pro cupertino wallpaper showcase portfolio safe-area
+  Reusable iPhone 14/15 Pro chrome for embedding iOS UI. `.iph > .iph-island + .iph-screen + .iph-home`. Variants: `.iph-sm/.iph-lg`, `.iph-light`, bezel `.iph-bezel-titan/-light`, wallpapers `.iph-wp-sunset/-night/-aurora/-ocean`.
+
+**ios-status-bar.css** `mobile/ios-status-bar.css` (CSS) — tags: ios status-bar time signal wifi battery cellular cupertino
+  iOS-style top status bar with time, signal bars, wifi icon, battery. `.ios-status > .ios-status-time + .ios-status-right`. Dark + light variants.
+
+**ios-nav-bar.css** `mobile/ios-nav-bar.css` (CSS) — tags: ios nav-bar large-title collapsing inline-title back action cupertino settings mail
+  iOS large-title navigation bar that collapses on scroll. `.ios-nav` (with `.ios-nav-top` + `.ios-nav-large` + `.ios-nav-sub`). Pair with `.ios-nav-blur` for frosted backdrop on collapse.
+
+**ios-nav-bar.js** `mobile/ios-nav-bar.js` (JS, global: `IosNav`) — tags: ios nav-bar collapse scroll observer large-title
+  `IosNav.init('[data-ios-nav]')`. Listens to the paired `[data-ios-nav-scroll]` and toggles `.is-collapsed` past threshold.
+
+**ios-tab-bar.css** `mobile/ios-tab-bar.css` (CSS) — tags: ios tab-bar bottom-nav cupertino blur active-color badge
+  iOS bottom tab bar with frosted backdrop. `.ios-tabs > .ios-tab`. Variants: `.ios-tabs-solid`, `.ios-tabs-light`, badge via `.ios-tab-badge[data-badge]`.
+
+**ios-list-grouped.css** `mobile/ios-list-grouped.css` (CSS) — tags: ios list grouped settings inset-grouped section-header chevron toggle row destructive cupertino
+  iOS Settings-app inset-grouped list. `.ios-list > .ios-group > .ios-row`. Bundled `.ios-toggle` switch. Row variants: chevron, value, toggle, destructive, link, header.
+
+**ios-home-screen.css** `mobile/ios-home-screen.css` (CSS) — tags: ios home-screen springboard app-icon dock wallpaper grid badge
+  iOS home screen: app-icon grid + frosted dock. `.ios-home > .ios-home-grid + .ios-dock`. Each `.ios-app` has `.ios-app-icon` (13px radius) + `.ios-app-label`. Badge via `.has-badge[data-badge]`.
+
+**ios-action-sheet.css** `mobile/ios-action-sheet.css` (CSS) — tags: ios action-sheet bottom-slide modal options destructive cancel cupertino UIActionSheet
+  Bottom-slide action sheet with options + separated cancel. `.ios-action-overlay > .ios-action-sheet + .ios-action-cancel`. Row variants: `.is-destructive`, `.is-bold`.
+
+**ios-action-sheet.js** `mobile/ios-action-sheet.js` (JS, global: `IosActionSheet`) — tags: ios action-sheet show dismiss callback
+  `IosActionSheet.show(container, {title, subtitle, actions:[{label,destructive,bold,onTap}], cancelLabel, onCancel})`. Returns `{dismiss, el}`.
+
+**ios-alert.css** `mobile/ios-alert.css` (CSS) — tags: ios alert modal dialog centered title message button destructive UIAlertController
+  Centered iOS alert modal. `.ios-alert-overlay > .ios-alert > .ios-alert-body + .ios-alert-buttons`. Vertical button stack via `.is-vertical`. Buttons: `.is-bold`, `.is-destructive`.
+
+**ios-alert.js** `mobile/ios-alert.js` (JS, global: `IosAlert`) — tags: ios alert show dismiss buttons
+  `IosAlert.show(container, {title, message, buttons:[{label,destructive,bold,onTap}]})`. Auto-vertical when >2 buttons.
+
+**ios-modal-sheet.css** `mobile/ios-modal-sheet.css` (CSS) — tags: ios modal-sheet bottom partial drag handle snap-points detents medium large cupertino
+  Partial iOS sheet with drag handle + snap detents. `.ios-sheet-overlay > .ios-sheet > .ios-sheet-handle + .ios-sheet-content`. Snap classes: `.is-small/.is-medium/.is-large`.
+
+**ios-modal-sheet.js** `mobile/ios-modal-sheet.js` (JS, global: `IosModalSheet`) — tags: ios modal-sheet drag pointer snap detent close ios16
+  `IosModalSheet.init('[data-ios-sheet]')` + `.open(container, {initial, snaps, content, onClose})`. Pointer-drag snap-to-detent + drag-down-to-close.
+
+**ios-activity-sheet.css** `mobile/ios-activity-sheet.css` (CSS) — tags: ios activity-sheet share-sheet apps row actions UIActivityViewController airdrop messages
+  iOS share sheet with horizontal app row + actions list. `.ios-share-overlay > .ios-share > .ios-share-apps + .ios-share-actions`. Preview header for shared content.
+
+**ios-context-menu.css** `mobile/ios-context-menu.css` (CSS) — tags: ios context-menu long-press preview actions blur backdrop UIContextMenu peek
+  iOS long-press context menu with preview card + actions menu. `.ios-cmenu-overlay > .ios-cmenu-preview + .ios-cmenu > .ios-cmenu-row`. Backdrop blur.
+
+**ios-context-menu.js** `mobile/ios-context-menu.js` (JS, global: `IosContextMenu`) — tags: ios context-menu long-press detect 500ms preview actions show dismiss
+  `IosContextMenu.attach('.target', {preview, actions, host})`. 500ms long-press detection; supports preview render function + action callbacks.
+
+**ios-segmented-control.css** `mobile/ios-segmented-control.css` (CSS) — tags: ios segmented-control pill thumb sliding indicator UISegmentedControl cupertino
+  iOS segmented selector with sliding background thumb. `.ios-seg > .ios-seg-thumb + .ios-seg-item`. Variants: light, inline.
+
+**ios-segmented-control.js** `mobile/ios-segmented-control.js` (JS, global: `IosSegmented`) — tags: ios segmented animate slide index onChange
+  `IosSegmented.init('[data-ios-seg]', {onChange})`. Animates thumb to active item; setIndex/getIndex API.
+
+**ios-search-bar.css** `mobile/ios-search-bar.css` (CSS) — tags: ios search-bar field cancel-button clear-x focus animated UISearchBar
+  iOS search field with animated cancel button reveal on focus. `.ios-search > .ios-search-field > input + .ios-search-clear + .ios-search-cancel`.
+
+**ios-search-bar.js** `mobile/ios-search-bar.js` (JS, global: `IosSearch`) — tags: ios search focus reveal cancel clear input
+  `IosSearch.init('.ios-search')`. Toggles `.is-active` on focus, manages clear-X visibility, focuses/blurs input on cancel.
+
+**ios-picker.css** `mobile/ios-picker.css` (CSS) — tags: ios picker wheel scroll snap UIPickerView CupertinoPicker date time options column tabular fade-overlay
+  iOS scrolling wheel picker. `.ios-picker > .ios-picker-col > .ios-picker-row + .ios-picker-selection`. Fade overlays + center selection band. Light/compact variants.
+
+**ios-picker.js** `mobile/ios-picker.js` (JS, global: `IosPicker`) — tags: ios picker scroll snap onChange index value
+  `IosPicker.init('[data-ios-picker]', {onChange})`. Snap-to-row scroll listener; `.setValue(col,row)` and `.getValue()` API.
+
+**ios-dynamic-island.css** `mobile/ios-dynamic-island.css` (CSS) — tags: ios dynamic-island morph pill notification call music compact expanded iphone-pro
+  Dynamic Island morphing pill. `.ios-di[data-state="idle|dot|compact|expanded|call"]`. Pre-built layouts: avatar, info, time, action buttons, music bars.
+
+**ios-dynamic-island.js** `mobile/ios-dynamic-island.js` (JS, global: `IosDynamicIsland`) — tags: ios dynamic-island morph state idle compact music call expand dot
+  `IosDynamicIsland.init(el)` returns object with `.compact({icon,title,sub,time})`, `.music({title,artist})`, `.call({name,sub})`, `.expand({html})`, `.dot(color)`, `.idle()`.
+
+**ios-onboarding.css** `mobile/ios-onboarding.css` (CSS) — tags: ios onboarding intro pages swipe dots cta continue cupertino welcome health setup
+  iOS swipe-page onboarding. `.ios-onb > .ios-onb-pages > .ios-onb-page` + `.ios-onb-dots` + `.ios-onb-cta`. Each page: icon + title + text + Continue button.
+
+**ios-onboarding.js** `mobile/ios-onboarding.js` (JS, global: `IosOnboarding`) — tags: ios onboarding swipe pages dots cta continue done
+  `IosOnboarding.init('.ios-onb', {finalLabel, onDone})`. Listens to page scroll, syncs dots, advances Continue → Get Started on last page.
+
+**ios-notification-banner.css** `mobile/ios-notification-banner.css` (CSS) — tags: ios notification banner slide-in lock-screen stack glass blur from-top push-notif
+  iOS top-slide notification banner + lock-screen stack. `.ios-banner > .ios-banner-icon + .ios-banner-body`. Stack variant via `.ios-notif-stack > .ios-notif`.
+
 **Specialty / effects / game UI**
 
 **perspective-tunnel.css** `effects/perspective-tunnel.css` (CSS) — tags: perspective tunnel synthwave vaporwave cyber 80s 90s retro grid floor sun stars matrix blueprint fire mono

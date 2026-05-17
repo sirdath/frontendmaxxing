@@ -14,6 +14,44 @@
   function html(target, str) { target.innerHTML = str; target.classList.add('is-dark'); }
   function grid(target, str) { target.innerHTML = str; target.classList.add('is-grid'); }
 
+  // iPhone-frame helper for iOS previews: returns a screen element to fill.
+  function iphoneFrame(target, opts) {
+    opts = opts || {};
+    var size = opts.size || 'sm'; // sm | normal | lg
+    var iphClass = 'iph' + (size === 'sm' ? ' iph-sm' : size === 'lg' ? ' iph-lg' : '') + (opts.light ? ' iph-light' : '');
+    var wp = opts.wallpaper ? (' iph-wp-' + opts.wallpaper) : '';
+    var statusBar = opts.statusBar !== false;
+    var homeIndicator = opts.homeIndicator !== false;
+    var notch = opts.notch === 'notch'
+      ? '<div class="iph-notch"></div>'
+      : (opts.notch === 'none' ? '' : '<div class="iph-island"></div>');
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;width:100%;">' +
+        '<div class="' + iphClass + '">' +
+          notch +
+          '<div class="iph-screen' + wp + '" data-iph-screen>' +
+            (statusBar ? defaultStatusBar(opts.statusBarDark, opts.statusBarColor) : '') +
+            '<div data-iph-content style="flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;"></div>' +
+          '</div>' +
+          (homeIndicator ? '<div class="iph-home" style="background:' + (opts.light ? '#000' : 'rgba(255,255,255,0.85)') + ';"></div>' : '') +
+        '</div>' +
+        (opts.caption ? '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-align:center;max-width:300px;">' + opts.caption + '</div>' : '') +
+      '</div>';
+    return target.querySelector('[data-iph-content]');
+  }
+  function defaultStatusBar(dark, color) {
+    var c = dark ? 'ios-status-dark' : '';
+    var inline = color ? 'color:' + color + ';' : '';
+    return '<div class="ios-status ' + c + '" style="' + inline + '">' +
+      '<span class="ios-status-time">9:41</span>' +
+      '<div class="ios-status-right">' +
+        '<span class="ios-status-signal"></span>' +
+        '<span class="ios-status-wifi"></span>' +
+        '<span class="ios-status-battery"></span>' +
+      '</div>' +
+    '</div>';
+  }
+
   // ===== Gradient text =====
   P['effects/gradient-text.css'] = function (target) {
     html(target,
@@ -3243,6 +3281,370 @@
         '<div style="height:80px;background:linear-gradient(135deg,rgba(236,72,153,0.15),transparent);border:1px solid rgba(236,72,153,0.3);border-radius:8px;margin-bottom:0.5rem;display:grid;place-items:center;color:#fbcfe8;">Reveal-on-view ↓</div>' +
         '<div style="height:80px;background:linear-gradient(135deg,rgba(34,197,94,0.15),transparent);border:1px solid rgba(34,197,94,0.3);border-radius:8px;margin-bottom:0.5rem;display:grid;place-items:center;color:#86efac;">Scroll text zoom</div>' +
         '<div style="height:60px;background:linear-gradient(135deg,#1a1a2e,#0a0a14);border:1px solid rgba(255,255,255,0.06);border-radius:8px;display:grid;place-items:center;color:rgba(255,255,255,0.5);font-size:0.78rem;">↑ Scroll to see effects</div>' +
+      '</div>';
+  };
+
+  // ============================================
+  // iOS / iPhone-frame previews
+  // ============================================
+
+  // Empty frame for the iphone-frame.css preview
+  P['mobile/iphone-frame.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;align-items:flex-start;">' +
+        '<div class="iph iph-sm"><div class="iph-island"></div><div class="iph-screen iph-wp-aurora"></div><div class="iph-home"></div></div>' +
+        '<div class="iph iph-sm iph-light"><div class="iph-island"></div><div class="iph-screen"></div><div class="iph-home" style="background:#000;"></div></div>' +
+        '<div class="iph iph-sm"><div class="iph-island"></div><div class="iph-screen iph-wp-sunset"></div><div class="iph-home"></div></div>' +
+      '</div>';
+  };
+
+  P['mobile/ios-status-bar.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: '14px tall, time + signal + wifi + battery. Auto white/dark text.' });
+    screen.innerHTML =
+      '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.7rem;padding:1rem;">' +
+        '<div style="color:rgba(255,255,255,0.5);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;">Battery levels</div>' +
+        '<div class="ios-status-battery" style="--ios-batt:78%;color:#fff;"></div>' +
+        '<div class="ios-status-battery is-low" style="--ios-batt:18%;color:#fff;"></div>' +
+        '<div class="ios-status-battery is-charging" style="--ios-batt:64%;color:#fff;"></div>' +
+      '</div>';
+  };
+
+  P['mobile/ios-nav-bar.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Large title that collapses on scroll. Scroll the list below.' });
+    screen.innerHTML =
+      '<div class="ios-nav ios-nav-blur" data-ios-nav>' +
+        '<div class="ios-nav-top">' +
+          '<button class="ios-nav-back">←</button>' +
+          '<button class="ios-nav-action is-bold">Edit</button>' +
+        '</div>' +
+        '<div class="ios-nav-large">Mailboxes</div>' +
+        '<div class="ios-nav-sub">23 unread</div>' +
+      '</div>' +
+      '<div class="ios-list" data-ios-nav-scroll style="flex:1;">' +
+        '<ul class="ios-group">' +
+          [['Inbox','24','#0a84ff','✉'],['VIP','3','#ff9500','⭐'],['Flagged','','#ff3b30','🚩'],['Drafts','12','#8e8e93','📝'],['Sent','','#34c759','↗'],['Junk','','#ffcc00','🛑'],['Trash','','#ff3b30','🗑']].map(function(r){
+            return '<li class="ios-row"><span class="ios-row-icon" style="background:' + r[2] + ';">' + r[3] + '</span><span class="ios-row-label">' + r[0] + '</span>' + (r[1]?'<span class="ios-row-value">' + r[1] + '</span>':'') + '<span class="ios-row-chevron">›</span></li>';
+          }).join('') +
+        '</ul>' +
+      '</div>';
+    setTimeout(function () { if (window.IosNav) try { window.IosNav.init(screen.querySelector('[data-ios-nav]')); } catch (e) {} }, 100);
+  };
+
+  P['mobile/ios-tab-bar.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Bottom tab bar with frosted backdrop + active accent.' });
+    screen.innerHTML =
+      '<div style="flex:1;background:linear-gradient(180deg,#1a1a2e,#0f0f1e);padding:1rem;color:#fff;">' +
+        '<h3 style="font-size:18px;font-weight:700;margin:0 0 0.5rem;">For You</h3>' +
+        '<p style="font-size:14px;color:rgba(255,255,255,0.65);">Featured content above the tab bar.</p>' +
+      '</div>' +
+      '<div class="ios-tabs">' +
+        [
+          {icon:'🏠',label:'Home',active:true},
+          {icon:'🔍',label:'Search'},
+          {icon:'📚',label:'Library',badge:'3'},
+          {icon:'👤',label:'Profile'}
+        ].map(function(t){
+          return '<button class="ios-tab' + (t.active?' is-active':'') + (t.badge?' ios-tab-badge" data-badge="' + t.badge:'') + '">' +
+            '<span class="ios-tab-icon" style="font-size:22px;">' + t.icon + '</span>' +
+            '<span class="ios-tab-label">' + t.label + '</span>' +
+          '</button>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['mobile/ios-list-grouped.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Settings-app inset-grouped list with icons, toggles, chevrons.' });
+    screen.innerHTML =
+      '<div class="ios-list" style="flex:1;">' +
+        '<div class="ios-list-section-header">PERSONAL</div>' +
+        '<ul class="ios-group">' +
+          '<li class="ios-row"><span class="ios-row-icon" style="background:#0a84ff;">✈</span><span class="ios-row-label">Airplane Mode</span><span class="ios-row-toggle"><span class="ios-toggle"></span></span></li>' +
+          '<li class="ios-row"><span class="ios-row-icon" style="background:#34c759;">📶</span><span class="ios-row-label">Wi-Fi</span><span class="ios-row-value">FastNet 5G</span><span class="ios-row-chevron">›</span></li>' +
+          '<li class="ios-row"><span class="ios-row-icon" style="background:#007aff;">🔵</span><span class="ios-row-label">Bluetooth</span><span class="ios-row-value">On</span><span class="ios-row-chevron">›</span></li>' +
+        '</ul>' +
+        '<div class="ios-list-section-header">DISPLAY & SOUND</div>' +
+        '<ul class="ios-group">' +
+          '<li class="ios-row"><span class="ios-row-icon" style="background:#ff9500;">🔔</span><span class="ios-row-label">Notifications</span><span class="ios-row-chevron">›</span></li>' +
+          '<li class="ios-row"><span class="ios-row-icon" style="background:#5e5ce6;">🌙</span><span class="ios-row-label">Focus</span><span class="ios-row-toggle"><span class="ios-toggle is-on"></span></span></li>' +
+        '</ul>' +
+        '<div class="ios-list-section-header">ACCOUNT</div>' +
+        '<ul class="ios-group">' +
+          '<li class="ios-row ios-row-link is-destructive"><span class="ios-row-label" style="text-align:center;">Sign Out</span></li>' +
+        '</ul>' +
+        '<div class="ios-list-section-footer">Some features may be limited when offline.</div>' +
+      '</div>';
+  };
+
+  P['mobile/ios-home-screen.css'] = function (target) {
+    var screen = iphoneFrame(target, { wallpaper: 'aurora', caption: 'Home screen with app icon grid + frosted dock.' });
+    var apps = [
+      ['#0a84ff','✉','Mail','5'],['#34c759','💬','Messages','2'],['#ff9500','☎','Phone'],['#ff3b30','♥','Health'],
+      ['#5e5ce6','🎵','Music'],['#8b5cf6','📷','Photos'],['#facc15','🗓','Calendar'],['#22c55e','🧭','Maps'],
+      ['#000','📺','TV'],['#1a1a2e','🌐','Safari'],['#ec4899','🛍','Wallet'],['#06b6d4','⛅','Weather']
+    ];
+    var dockApps = [['#34c759','☎','Phone'],['#0a84ff','✉','Mail'],['#1a1a2e','🌐','Safari'],['#8b5cf6','📷','Photos']];
+    screen.innerHTML =
+      '<div class="ios-home">' +
+        '<div class="ios-home-grid">' +
+          apps.map(function(a){return '<div class="ios-app"><div class="ios-app-icon' + (a[3]?' has-badge" data-badge="' + a[3]:'') + '" style="background:' + a[0] + ';">' + a[1] + '</div><div class="ios-app-label">' + a[2] + '</div></div>';}).join('') +
+        '</div>' +
+        '<div class="ios-dock">' +
+          dockApps.map(function(a){return '<div class="ios-app"><div class="ios-app-icon" style="background:' + a[0] + ';">' + a[1] + '</div></div>';}).join('') +
+        '</div>' +
+      '</div>';
+  };
+
+  P['mobile/ios-action-sheet.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Bottom-slide action sheet — tap "Show" to re-open.' });
+    screen.innerHTML =
+      '<div style="flex:1;background:#1a1a2e;padding:1rem;display:flex;align-items:flex-start;">' +
+        '<button class="dapp-ios-as-open" style="padding:0.5rem 1rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:7px;color:#fff;cursor:pointer;font-size:13px;">▶ Show sheet</button>' +
+      '</div>';
+    function showSheet() {
+      if (!window.IosActionSheet) return;
+      window.IosActionSheet.show(screen, {
+        title: 'Delete photo?',
+        subtitle: 'This action cannot be undone.',
+        actions: [
+          { label: 'Delete', destructive: true },
+          { label: 'Save to Files' },
+          { label: 'Duplicate' }
+        ],
+        cancelLabel: 'Cancel'
+      });
+    }
+    screen.querySelector('.dapp-ios-as-open').addEventListener('click', showSheet);
+    setTimeout(showSheet, 350);
+  };
+
+  P['mobile/ios-alert.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Centered alert dialog. Tap "Show" to re-open.' });
+    screen.innerHTML =
+      '<div style="flex:1;background:#1a1a2e;padding:1rem;display:flex;align-items:flex-start;">' +
+        '<button class="dapp-ios-al-open" style="padding:0.5rem 1rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:7px;color:#fff;cursor:pointer;font-size:13px;">▶ Show alert</button>' +
+      '</div>';
+    function showAlert() {
+      if (!window.IosAlert) return;
+      window.IosAlert.show(screen, {
+        title: 'Discard changes?',
+        message: 'Your edits won\'t be saved.',
+        buttons: [{ label: 'Cancel' }, { label: 'Discard', destructive: true, bold: true }]
+      });
+    }
+    screen.querySelector('.dapp-ios-al-open').addEventListener('click', showAlert);
+    setTimeout(showAlert, 350);
+  };
+
+  P['mobile/ios-modal-sheet.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Drag the handle up/down to snap small/medium/large.' });
+    screen.innerHTML =
+      '<div style="flex:1;background:linear-gradient(180deg,#1a1a2e,#0f0f1e);padding:1rem;color:#fff;">' +
+        '<button class="dapp-ios-ms-open" style="padding:0.5rem 1rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:7px;color:#fff;cursor:pointer;font-size:13px;">▶ Open sheet</button>' +
+      '</div>';
+    function openSheet() {
+      if (!window.IosModalSheet) return;
+      window.IosModalSheet.open(screen, {
+        initial: 'medium',
+        content:
+          '<div class="ios-sheet-title">Edit Place</div>' +
+          '<p style="font-size:14px;color:rgba(235,235,245,0.65);margin:0 0 1rem;">Drag the handle to resize this sheet.</p>' +
+          '<div style="display:flex;flex-direction:column;gap:0.4rem;">' +
+            ['Add note','Change pin color','Share location','Remove from favorites'].map(function(t,i){
+              var c = i===3?'#ff3b30':'#fff';
+              return '<button style="padding:0.7rem 0.9rem;background:rgba(255,255,255,0.05);border:0;border-radius:8px;color:' + c + ';font-size:15px;text-align:left;cursor:pointer;">' + t + '</button>';
+            }).join('') +
+          '</div>'
+      });
+    }
+    screen.querySelector('.dapp-ios-ms-open').addEventListener('click', openSheet);
+    setTimeout(openSheet, 400);
+  };
+
+  P['mobile/ios-activity-sheet.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Share sheet with app row + actions.' });
+    screen.innerHTML =
+      '<div style="flex:1;background:#1a1a2e;"></div>' +
+      '<div class="ios-share-overlay">' +
+        '<div class="ios-share">' +
+          '<div class="ios-share-handle"></div>' +
+          '<div class="ios-share-header"><div class="ios-share-preview">' +
+            '<div class="ios-share-thumb"></div>' +
+            '<div><div class="ios-share-title">design-doc.pdf</div><div class="ios-share-meta">4.2 MB · PDF Document</div></div>' +
+          '</div></div>' +
+          '<div class="ios-share-apps">' +
+            [['#34c759','💬','Messages'],['#0a84ff','✉','Mail'],['#5e5ce6','✈','Telegram'],['#000','𝕏','X'],['#25d366','💚','WhatsApp']].map(function(a){return '<button class="ios-share-app"><span class="ios-share-app-icon" style="background:' + a[0] + ';">' + a[1] + '</span><span class="ios-share-app-label">' + a[2] + '</span></button>';}).join('') +
+          '</div>' +
+          '<div class="ios-share-actions">' +
+            '<button class="ios-share-action"><span>Copy</span><span class="ios-share-action-icon">⎘</span></button>' +
+            '<button class="ios-share-action"><span>Save to Files</span><span class="ios-share-action-icon">📁</span></button>' +
+            '<button class="ios-share-action"><span>Print</span><span class="ios-share-action-icon">🖨</span></button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  };
+
+  P['mobile/ios-context-menu.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Long-press the photo → blurred menu with preview + actions.' });
+    screen.innerHTML =
+      '<div style="flex:1;background:#1a1a2e;padding:1rem;display:grid;place-items:center;">' +
+        '<div class="dapp-ios-cm-target" style="width:140px;height:180px;background:linear-gradient(135deg,#ff7e5f,#feb47b);border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:700;cursor:pointer;-webkit-touch-callout:none;">Long press</div>' +
+      '</div>';
+    var tgt = screen.querySelector('.dapp-ios-cm-target');
+    function showMenu() {
+      if (!window.IosContextMenu) return;
+      window.IosContextMenu.open(tgt, {
+        host: screen,
+        preview: function () { return tgt.cloneNode(true); },
+        actions: [
+          { label: 'Copy', icon: '⎘' },
+          { label: 'Duplicate', icon: '⧉' },
+          { label: 'Share…', icon: '↗' },
+          { label: 'Delete', icon: '🗑', destructive: true }
+        ]
+      });
+    }
+    tgt.addEventListener('click', showMenu);
+    if (window.IosContextMenu) try { window.IosContextMenu.attach(tgt, { host: screen, preview: function () { return tgt.cloneNode(true); }, actions: [ { label: 'Copy', icon: '⎘' }, { label: 'Duplicate', icon: '⧉' }, { label: 'Share…', icon: '↗' }, { label: 'Delete', icon: '🗑', destructive: true } ] }); } catch (e) {}
+    setTimeout(showMenu, 500);
+  };
+
+  P['mobile/ios-segmented-control.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Tap segments — the pill slides to the active option.' });
+    screen.innerHTML =
+      '<div style="flex:1;background:#1a1a2e;padding:1.5rem 1rem;display:flex;flex-direction:column;gap:1rem;color:#fff;">' +
+        '<div class="ios-seg" data-ios-seg>' +
+          '<span class="ios-seg-thumb"></span>' +
+          '<button class="ios-seg-item is-active">Today</button>' +
+          '<button class="ios-seg-item">Week</button>' +
+          '<button class="ios-seg-item">Month</button>' +
+          '<button class="ios-seg-item">Year</button>' +
+        '</div>' +
+        '<div class="ios-seg" data-ios-seg>' +
+          '<span class="ios-seg-thumb"></span>' +
+          '<button class="ios-seg-item is-active">Light</button>' +
+          '<button class="ios-seg-item">Dark</button>' +
+          '<button class="ios-seg-item">Auto</button>' +
+        '</div>' +
+        '<div style="font-size:0.7rem;color:rgba(255,255,255,0.45);">Auto-counts items via --ios-seg-count.</div>' +
+      '</div>';
+    setTimeout(function () { if (window.IosSegmented) try { window.IosSegmented.init(screen.querySelectorAll('[data-ios-seg]')); } catch (e) {} }, 100);
+  };
+
+  P['mobile/ios-search-bar.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Tap the field — Cancel button slides in from the right.' });
+    screen.innerHTML =
+      '<div style="flex:1;background:#1a1a2e;padding-top:0.5rem;color:#fff;">' +
+        '<div class="ios-search" data-ios-search>' +
+          '<label class="ios-search-field">' +
+            '<span class="ios-search-icon">🔍</span>' +
+            '<input type="text" placeholder="Search">' +
+            '<button class="ios-search-clear">×</button>' +
+          '</label>' +
+          '<button class="ios-search-cancel">Cancel</button>' +
+        '</div>' +
+        '<div style="padding:1rem;font-size:14px;color:rgba(235,235,245,0.55);">Recent searches</div>' +
+        '<ul style="list-style:none;padding:0;margin:0 0 0 1rem;font-size:15px;">' +
+          ['Pizza near me','Pharmacy','Coffee shop'].map(function(r){return '<li style="padding:0.5rem 0;border-bottom:0.5px solid rgba(255,255,255,0.08);"><span style="opacity:0.5;margin-right:0.5rem;">🕒</span>' + r + '</li>';}).join('') +
+        '</ul>' +
+      '</div>';
+    setTimeout(function () { if (window.IosSearch) try { window.IosSearch.init(screen.querySelector('[data-ios-search]')); } catch (e) {} }, 100);
+  };
+
+  P['mobile/ios-picker.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Three-column wheel picker — scroll each column.' });
+    var hours = []; for (var h = 1; h <= 12; h++) hours.push(h);
+    var mins = []; for (var m = 0; m < 60; m += 5) mins.push(m < 10 ? '0' + m : String(m));
+    var ampm = ['AM','PM'];
+    function colHtml(items, selectedIdx) {
+      return '<div class="ios-picker-col" data-ios-picker-col>' +
+        items.map(function (v, i) { return '<div class="ios-picker-row' + (i === selectedIdx ? ' is-selected' : '') + '">' + v + '</div>'; }).join('') +
+      '</div>';
+    }
+    screen.innerHTML =
+      '<div style="flex:1;background:#1a1a2e;padding:1.5rem 1rem;color:#fff;display:flex;flex-direction:column;gap:0.8rem;">' +
+        '<div style="font-size:15px;color:rgba(255,255,255,0.65);">Choose a time</div>' +
+        '<div class="ios-picker" data-ios-picker style="height:180px;">' +
+          colHtml(hours, 8) +
+          colHtml(mins, 5) +
+          colHtml(ampm, 0) +
+          '<div class="ios-picker-selection"></div>' +
+        '</div>' +
+      '</div>';
+    setTimeout(function () {
+      if (window.IosPicker) try { window.IosPicker.init(screen.querySelector('[data-ios-picker]')); } catch (e) {}
+      // pre-scroll to selected
+      var cols = screen.querySelectorAll('.ios-picker-col');
+      [8, 5, 0].forEach(function (idx, i) {
+        if (cols[i]) cols[i].scrollTop = idx * 36;
+      });
+    }, 150);
+  };
+
+  P['mobile/ios-dynamic-island.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;">' +
+        '<div class="iph iph-sm">' +
+          '<div class="ios-di" data-ios-di></div>' +
+          '<div class="iph-screen iph-wp-night">' +
+            '<div class="ios-status" style="margin-top:14px;color:#fff;">' +
+              '<span class="ios-status-time">9:41</span>' +
+              '<div class="ios-status-right"><span class="ios-status-signal"></span><span class="ios-status-wifi"></span><span class="ios-status-battery"></span></div>' +
+            '</div>' +
+            '<div style="flex:1;padding:1rem;color:#fff;font-size:14px;opacity:0.85;text-align:center;">Tap a button to morph →</div>' +
+          '</div>' +
+          '<div class="iph-home"></div>' +
+        '</div>' +
+        '<div style="display:flex;gap:0.3rem;flex-wrap:wrap;justify-content:center;max-width:340px;">' +
+          ['idle','dot','compact','music','call','expand'].map(function (s) {
+            return '<button class="dapp-di-' + s + '" style="padding:0.3rem 0.7rem;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.4);border-radius:5px;color:#c4b5fd;font-size:0.72rem;cursor:pointer;">' + s + '</button>';
+          }).join('') +
+        '</div>' +
+      '</div>';
+    setTimeout(function () {
+      if (!window.IosDynamicIsland) return;
+      var di = window.IosDynamicIsland.init(target.querySelector('[data-ios-di]'));
+      target.querySelector('.dapp-di-idle').addEventListener('click', function () { di.idle(); });
+      target.querySelector('.dapp-di-dot').addEventListener('click', function () { di.dot('green'); });
+      target.querySelector('.dapp-di-compact').addEventListener('click', function () { di.compact({ icon: '✓', title: 'Saved', sub: 'iCloud', time: '0:12' }); });
+      target.querySelector('.dapp-di-music').addEventListener('click', function () { di.music({ title: 'Coffee Shop', artist: 'Lana Del Rey' }); });
+      target.querySelector('.dapp-di-call').addEventListener('click', function () { di.call({ name: 'Alice Sterling', sub: 'mobile · 0:14' }); });
+      target.querySelector('.dapp-di-expand').addEventListener('click', function () { di.expand({ html: '<div style="font-size:13px;font-weight:600;text-align:center;">⌛ Timer · 24:13 remaining</div>' }); });
+      di.dot('green');
+    }, 200);
+  };
+
+  P['mobile/ios-onboarding.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Swipe pages or tap Continue to advance.' });
+    screen.innerHTML =
+      '<div class="ios-onb">' +
+        '<div class="ios-onb-pages" data-ios-onb-pages>' +
+          [
+            { i: '👋', t: 'Welcome', x: 'Get started in three quick steps.', g: 'linear-gradient(135deg,#0a84ff,#5e5ce6)' },
+            { i: '⚡', t: 'Lightning Fast', x: 'Sync instantly across all your devices.', g: 'linear-gradient(135deg,#f59e0b,#ef4444)' },
+            { i: '🔐', t: 'Private', x: 'Your data is encrypted end-to-end.', g: 'linear-gradient(135deg,#10b981,#06b6d4)' }
+          ].map(function (p) {
+            return '<section class="ios-onb-page">' +
+              '<div class="ios-onb-icon" style="background:' + p.g + ';">' + p.i + '</div>' +
+              '<h2 class="ios-onb-title">' + p.t + '</h2>' +
+              '<p class="ios-onb-text">' + p.x + '</p>' +
+            '</section>';
+          }).join('') +
+        '</div>' +
+        '<div class="ios-onb-dots"><span class="is-active"></span><span></span><span></span></div>' +
+        '<button class="ios-onb-cta">Continue</button>' +
+      '</div>';
+    setTimeout(function () { if (window.IosOnboarding) try { window.IosOnboarding.init(screen.querySelector('.ios-onb')); } catch (e) {} }, 100);
+  };
+
+  P['mobile/ios-notification-banner.css'] = function (target) {
+    var screen = iphoneFrame(target, { wallpaper: 'night', caption: 'Lock-screen notification stack + top-slide banner.' });
+    screen.innerHTML =
+      '<div style="flex:1;padding-top:1rem;display:flex;flex-direction:column;">' +
+        '<div class="ios-notif-stack" style="padding:0 8px;">' +
+          '<div class="ios-notif"><div class="ios-banner-icon" style="background:#34c759;">💬</div><div class="ios-banner-body"><div class="ios-banner-head"><span class="ios-banner-title">Messages</span><span class="ios-banner-time">9:38 AM</span></div><div class="ios-banner-from">Alice Sterling</div><div class="ios-banner-msg">Sounds great! Let\'s meet at 11.</div></div></div>' +
+          '<div class="ios-notif"><div class="ios-banner-icon" style="background:#0a84ff;">✉</div><div class="ios-banner-body"><div class="ios-banner-head"><span class="ios-banner-title">Mail</span><span class="ios-banner-time">9:32 AM</span></div><div class="ios-banner-from">Linear</div><div class="ios-banner-msg">5 new comments on BUG-481</div></div></div>' +
+          '<div class="ios-notif"><div class="ios-banner-icon" style="background:#ff3b30;">▶</div><div class="ios-banner-body"><div class="ios-banner-head"><span class="ios-banner-title">YouTube</span><span class="ios-banner-time">8:12 AM</span></div><div class="ios-banner-from">Fireship uploaded</div><div class="ios-banner-msg">React 19 in 100 seconds</div></div></div>' +
+        '</div>' +
       '</div>';
   };
 
