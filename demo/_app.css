@@ -215,6 +215,12 @@ a { color: inherit; text-decoration: none; }
   border-radius: 3px;
   color: var(--muted-2);
   text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-left: auto;
+}
+.dapp-item-tag.is-pair {
+  background: rgba(139, 92, 246, 0.18);
+  color: #c4b5fd;
 }
 
 /* Sidebar footer */

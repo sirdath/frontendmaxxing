@@ -250,11 +250,26 @@
         '<span class="dapp-group-chev"></span>' +
       '</div>';
       html += '<div class="dapp-group-body">';
+      // Detect siblings (CSS+JS pairs) to mark them with a "+pair" tag.
+      var byBase = {};
       list.forEach(function (e) {
+        var b = e.file.replace(/\.(css|js|glsl\.js)$/, '');
+        if (!byBase[b]) byBase[b] = [];
+        byBase[b].push(e);
+      });
+      list.forEach(function (e) {
+        var b = e.file.replace(/\.(css|js|glsl\.js)$/, '');
+        var hasPair = byBase[b].length > 1;
+        var tag = '';
+        if (hasPair) {
+          tag = '<span class="dapp-item-tag is-pair" title="Has a CSS+JS partner — clicks render the same paired preview">' + (e.kind === 'JS' ? 'JS+CSS' : 'CSS+JS') + '</span>';
+        } else if (e.kind === 'JS') {
+          tag = '<span class="dapp-item-tag">JS</span>';
+        }
         html += '<div class="dapp-item" data-key="' + esc(e.key) + '" onclick="location.hash=\'#/' + esc(e.folder) + '/' + esc(e.file) + '\'">' +
           '<span class="dapp-item-dot"></span>' +
           '<span class="dapp-item-name">' + esc(e.file) + '</span>' +
-          (e.kind === 'JS' ? '<span class="dapp-item-tag">JS</span>' : '') +
+          tag +
         '</div>';
       });
       html += '</div>';
@@ -569,36 +584,62 @@
         '<span>Building preview from ' + esc(entry.path) + '…</span>' +
       '</div>';
 
-    loadSource(entry.path).then(function (source) {
-      if (!source) {
-        return renderFallback(target, entry, null, null);
-      }
-      var usage = extractUsageBlock(source);
-      var html = extractHtmlBlock(usage);
+    // For visual fidelity, find any CSS companion in the same folder.
+    // If the user clicked a JS file, we still want to render the CSS-driven
+    // markup AND auto-init the JS — same view either way.
+    var comps = (opts && opts.comps) || companions(entry);
+    var cssComp = comps.filter(function (c) { return c.kind === 'CSS'; })[0];
+    var jsComp  = comps.filter(function (c) { return c.kind === 'JS';  })[0];
+    var sourceTarget = cssComp ? cssComp.path : entry.path;
 
-      if (!html) {
-        // No HTML found — try class-variant preview tiles fallback
-        return renderFallback(target, entry, usage, source);
-      }
+    loadSource(entry.path).then(function (ownSrc) {
+      // Always also load CSS companion source if it exists and isn't the same file.
+      var cssPromise = (cssComp && cssComp.path !== entry.path)
+        ? loadSource(cssComp.path)
+        : Promise.resolve(ownSrc);
 
-      // Render the HTML
-      target.innerHTML =
-        '<div class="dapp-auto-preview" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:0.85rem;">' +
-          '<div class="dapp-auto-stage" style="width:100%;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0.6rem;min-height:60px;">' +
-            html +
-          '</div>' +
-          '<details style="width:100%;max-width:540px;font-size:0.7rem;color:rgba(255,255,255,0.45);">' +
-            '<summary style="cursor:pointer;user-select:none;padding:0.25rem 0;">Show usage source</summary>' +
-            '<pre style="margin:0.3rem 0 0;padding:0.6rem 0.75rem;background:rgba(0,0,0,0.4);border-radius:6px;font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.7rem;line-height:1.5;overflow-x:auto;color:#d4d4dc;">' + esc(usage || html) + '</pre>' +
-          '</details>' +
-        '</div>';
+      return cssPromise.then(function (cssSrc) {
+        var primarySrc = ownSrc;
+        var usage = extractUsageBlock(ownSrc);
+        // For a JS entry: if there's no usage in the JS, try the CSS partner's usage
+        if (entry.kind === 'JS' && (!usage || !extractHtmlBlock(usage)) && cssSrc) {
+          var altUsage = extractUsageBlock(cssSrc);
+          if (altUsage) {
+            usage = altUsage;
+            primarySrc = cssSrc;
+          }
+        }
+        if (!ownSrc && !cssSrc) {
+          return renderFallback(target, entry, null, null);
+        }
+        var html = extractHtmlBlock(usage);
+        if (!html) {
+          // No HTML found anywhere — fall back to class-variant tiles.
+          // Use the CSS source (own or partner) for variant detection.
+          var fbSource = (entry.kind === 'CSS' ? ownSrc : cssSrc) || ownSrc;
+          return renderFallback(target, entry, usage, fbSource);
+        }
 
-      // Try to auto-initialize the component on the rendered markup
-      var stage = target.querySelector('.dapp-auto-stage');
-      if (stage && entry.kind === 'JS') {
-        // Brief delay to let CSS apply
-        setTimeout(function () { tryAutoInit(stage, entry, usage); }, 30);
-      }
+        // Render the HTML
+        target.innerHTML =
+          '<div class="dapp-auto-preview" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:0.85rem;">' +
+            '<div class="dapp-auto-stage" style="width:100%;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0.6rem;min-height:60px;">' +
+              html +
+            '</div>' +
+            '<details style="width:100%;max-width:540px;font-size:0.7rem;color:rgba(255,255,255,0.45);">' +
+              '<summary style="cursor:pointer;user-select:none;padding:0.25rem 0;">Show usage source</summary>' +
+              '<pre style="margin:0.3rem 0 0;padding:0.6rem 0.75rem;background:rgba(0,0,0,0.4);border-radius:6px;font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.7rem;line-height:1.5;overflow-x:auto;color:#d4d4dc;">' + esc(usage || html) + '</pre>' +
+            '</details>' +
+          '</div>';
+
+        // Try to auto-initialize the component on the rendered markup.
+        // For JS entries, prefer the JS partner's global; for CSS entries with a JS sibling, do the same.
+        var stage = target.querySelector('.dapp-auto-stage');
+        var initEntry = entry.kind === 'JS' ? entry : (jsComp || entry);
+        if (stage && initEntry && initEntry.global) {
+          setTimeout(function () { tryAutoInit(stage, initEntry, usage); }, 30);
+        }
+      });
     }).catch(function () {
       renderFallback(target, entry, null, null);
     });
@@ -608,10 +649,21 @@
     var icon = (FOLDER_DESCRIPTIONS[entry.folder] && FOLDER_DESCRIPTIONS[entry.folder].icon) || '•';
     var hasUsage = usage && usage.trim().length;
 
-    // If this is a CSS entry and we have the source, try class-variant preview tiles
+    // If we have ANY CSS source (own or partner), try the variant-tile fallback.
     var variantPreview = '';
-    if (entry.kind === 'CSS' && source) {
+    if (source) {
       variantPreview = buildVariantPreview(source);
+    }
+
+    // For JS entries with no Usage HTML, also render a global/method hint card.
+    var jsHint = '';
+    if (entry.kind === 'JS' && entry.global) {
+      jsHint =
+        '<div style="margin-top:0.4rem;padding:0.7rem 0.95rem;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.25);border-radius:8px;color:#c4b5fd;font-size:0.82rem;max-width:540px;width:100%;text-align:left;">' +
+          '<div style="font-size:0.66rem;letter-spacing:0.08em;text-transform:uppercase;color:#a78bfa;font-weight:700;margin-bottom:0.3rem;">JS module</div>' +
+          '<code style="font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.85rem;color:#fff;">' + esc(entry.global) + '</code>' +
+          '<div style="margin-top:0.3rem;font-size:0.72rem;color:rgba(255,255,255,0.55);">Loaded on this page. Open dev-tools console and try <code style="font-family:ui-monospace,monospace;">' + esc(entry.global) + '</code>.</div>' +
+        '</div>';
     }
 
     target.innerHTML =
@@ -620,9 +672,10 @@
         '<div style="font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.85rem;font-weight:600;color:#fff;">' + esc(entry.file) + '</div>' +
         '<div style="font-size:0.78rem;color:rgba(255,255,255,0.65);max-width:580px;line-height:1.5;">' + esc(entry.desc) + '</div>' +
         variantPreview +
+        jsHint +
         (hasUsage
           ? '<details style="width:100%;max-width:580px;font-size:0.7rem;color:rgba(255,255,255,0.45);"><summary style="cursor:pointer;user-select:none;padding:0.25rem 0;">Show usage source</summary><pre style="margin:0.3rem 0 0;padding:0.6rem 0.75rem;background:rgba(0,0,0,0.4);border-radius:6px;font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.7rem;line-height:1.5;overflow-x:auto;color:#d4d4dc;white-space:pre-wrap;">' + esc(usage) + '</pre></details>'
-          : '<div style="font-size:0.72rem;color:rgba(255,255,255,0.4);">Open the <b>Source</b> tab for the full file.</div>'
+          : ''
         ) +
       '</div>';
   }
@@ -630,23 +683,30 @@
   // Extract top-level class names from CSS source and group by prefix.
   // Then render a preview "wall" with one tile per variant.
   function buildVariantPreview(source) {
+    if (!source) return '';
     // Strip /* … */ comments to avoid matching example markup inside header
     var clean = source.replace(/\/\*[\s\S]*?\*\//g, '');
 
-    // Find class selectors used in rule heads (left-side, before {).
-    // Capture all .name-foo style class identifiers across the file.
+    // Find class names used as rule-head selectors. Match every `.foo` token
+    // across the file, but only inside rule heads (before {).
     var classes = {};
-    var ruleHeads = clean.match(/^[^{}\n][^{}]*\{/gm) || [];
+    var ruleHeads = clean.match(/[^{};]+\{/g) || [];
     ruleHeads.forEach(function (head) {
-      // Skip @-rules and :where/:is/:has wrappers
-      head = head.replace(/:where\([^)]*\)|:is\([^)]*\)|:has\([^)]*\)/g, '');
-      var rx = /\.([a-z][a-z0-9_-]*)/gi;
+      // Drop the trailing { and any @-rule wrapper
+      head = head.replace(/\{$/, '');
+      // Unwrap :where(...), :is(...), :has(...) so we count classes inside them too
+      head = head.replace(/:where\(([^)]*)\)|:is\(([^)]*)\)|:has\(([^)]*)\)/g, function (_, a, b, c) {
+        return a || b || c || '';
+      });
+      // Skip @-rules
+      if (/^\s*@/.test(head)) return;
+      var rx = /\.([a-zA-Z][a-zA-Z0-9_-]*)/g;
       var m;
       while ((m = rx.exec(head)) !== null) {
         var n = m[1];
-        // Skip overly long names, pseudo-state classes, modifier flags
         if (n.length < 2 || n.length > 50) continue;
-        if (/^is-|^has-/.test(n)) continue;
+        // Skip state classes which need JS to be toggled
+        if (/^(is-|has-|js-|data-)/.test(n)) continue;
         classes[n] = (classes[n] || 0) + 1;
       }
     });
@@ -654,48 +714,81 @@
     var names = Object.keys(classes);
     if (names.length < 2) return '';
 
-    // Find common prefix(es). Group classes by their first hyphen-segment.
+    // Group classes by their FIRST hyphen-segment (or the whole name if no hyphen).
+    // E.g. {kp, kp-fade, kp-zoom} → all share prefix "kp".
+    // E.g. {wc-weather, wc-todo, wc-sport} → all share prefix "wc".
     var groups = {};
     names.forEach(function (n) {
-      var parts = n.split('-');
-      // Use 2-segment prefix for namespace-rich variants, else 1.
-      var prefix = parts.length >= 2 ? parts[0] + '-' + parts[1] : parts[0];
-      // If the single-segment prefix is a known root class (matches a standalone classname), use that instead.
-      if (classes[parts[0]] && parts.length > 1) prefix = parts[0];
+      var prefix = n.split('-')[0];
       if (!groups[prefix]) groups[prefix] = [];
       groups[prefix].push(n);
     });
 
-    // Pick the largest variant group
+    // Pick the largest group
     var bestKey = null, bestCount = 0;
     Object.keys(groups).forEach(function (k) {
+      // Skip groups that are too short or made of one-off names
       if (groups[k].length > bestCount) { bestCount = groups[k].length; bestKey = k; }
     });
     if (!bestKey || bestCount < 2) return '';
     var variants = groups[bestKey].slice(0, 24); // cap at 24 tiles
 
-    // Determine if we have a "base" class (the root one without variant suffix)
-    var baseGuess = bestKey;
-    var hasBase = classes[baseGuess] && variants.indexOf(baseGuess) !== -1;
-    var withoutBase = hasBase ? variants.filter(function (n) { return n !== baseGuess; }) : variants;
+    // Sort so the base class (if any) comes first, then alpha
+    variants.sort(function (a, b) {
+      if (a === bestKey) return -1;
+      if (b === bestKey) return 1;
+      return a.localeCompare(b);
+    });
 
-    if (withoutBase.length === 0) return '';
+    // Determine if we have a "base" class (the prefix used standalone)
+    var hasBase = !!classes[bestKey] && variants.indexOf(bestKey) !== -1;
+    // Tiles to render (skip rendering the base alone — it would be empty/contextless)
+    var renderList = hasBase
+      ? variants.filter(function (n) { return n !== bestKey; })
+      : variants;
+
+    if (renderList.length === 0) return '';
 
     // Render tiles
-    var tiles = withoutBase.map(function (v) {
-      var classes = hasBase ? baseGuess + ' ' + v : v;
-      var label = v.replace(baseGuess + '-', '').replace(baseGuess, '') || v;
-      return '<div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;">' +
-                '<div class="' + classes + '" style="min-width:64px;min-height:32px;display:grid;place-items:center;padding:0.4rem 0.7rem;">' +
-                  '<span style="font-size:0.72rem;font-family:ui-monospace,monospace;opacity:0.85;">' + esc(label || '·') + '</span>' +
-                '</div>' +
-              '</div>';
+    var tiles = renderList.map(function (v) {
+      var appliedCls = hasBase ? bestKey + ' ' + v : v;
+      // Label: strip the prefix to keep it readable
+      var label = v;
+      if (v.indexOf(bestKey + '-') === 0) label = v.slice(bestKey.length + 1);
+      else if (v === bestKey) label = v;
+      return '<div class="dapp-vtile" style="display:flex;flex-direction:column;align-items:center;gap:0.35rem;">' +
+        '<div class="' + appliedCls + '" data-orig-cls="' + esc(appliedCls) + '" style="min-width:96px;min-height:48px;display:grid;place-items:center;padding:0.6rem 0.9rem;color:#fff;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.78rem;">' +
+          esc(label || v) +
+        '</div>' +
+        '<div style="font-size:0.62rem;color:rgba(255,255,255,0.4);font-family:ui-monospace,monospace;">' + esc(v) + '</div>' +
+      '</div>';
     }).join('');
 
-    return '<div style="margin:0.6rem 0 0.2rem;font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:0.06em;text-transform:uppercase;">' + esc(bestCount) + ' variant' + (bestCount > 1 ? 's' : '') + ' detected · prefix <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:3px;">' + esc(bestKey) + '</code></div>' +
-           '<div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;justify-content:center;max-width:720px;width:100%;padding:0.8rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:10px;">' +
-             tiles +
-           '</div>';
+    var replayBtn = '<button class="dapp-vfb-replay" type="button" style="padding:0.4rem 0.95rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#fff;font-weight:600;cursor:pointer;font-size:0.78rem;display:inline-flex;align-items:center;gap:0.4rem;"><span style="font-size:0.9rem;">↻</span> Replay</button>';
+
+    var preview =
+      '<div style="display:flex;align-items:center;gap:0.6rem;margin:0.6rem 0 0.3rem;">' +
+        '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);letter-spacing:0.06em;text-transform:uppercase;">' + esc(bestCount) + ' variant' + (bestCount > 1 ? 's' : '') + ' · prefix <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:3px;color:rgba(255,255,255,0.7);">.' + esc(bestKey) + '</code></div>' +
+        replayBtn +
+      '</div>' +
+      '<div class="dapp-vfb-grid" style="display:flex;flex-wrap:wrap;gap:0.5rem 0.7rem;align-items:center;justify-content:center;max-width:760px;width:100%;padding:0.9rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:10px;">' +
+        tiles +
+      '</div>';
+
+    // Bind replay after insert via MutationObserver-free approach: defer to setTimeout 0
+    setTimeout(function () {
+      var btn = document.querySelector('.dapp-vfb-replay');
+      if (btn) btn.addEventListener('click', function () {
+        document.querySelectorAll('.dapp-vfb-grid .dapp-vtile > div[data-orig-cls]').forEach(function (el) {
+          var orig = el.getAttribute('data-orig-cls');
+          el.className = '';
+          el.offsetHeight; // reflow
+          el.className = orig;
+        });
+      });
+    }, 0);
+
+    return preview;
   }
 
   // ===== Utility =====
