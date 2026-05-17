@@ -3636,6 +3636,231 @@
     setTimeout(function () { if (window.IosOnboarding) try { window.IosOnboarding.init(screen.querySelector('.ios-onb')); } catch (e) {} }, 100);
   };
 
+  // ============================================
+  // Fixes for previously-broken effects/ entries
+  // ============================================
+
+  P['effects/animated-beam.css'] = function (target) {
+    target.innerHTML =
+      '<div class="animated-beam-container" style="position:relative;width:100%;max-width:420px;height:200px;display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;background:radial-gradient(circle at center,rgba(139,92,246,0.08),transparent 70%);border-radius:12px;">' +
+        '<div id="dapp-beam-from" style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#8b5cf6,#6366f1);display:grid;place-items:center;color:#fff;font-size:1.4rem;box-shadow:0 8px 20px rgba(139,92,246,0.4);">🅰</div>' +
+        '<svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" preserveAspectRatio="none"><defs><linearGradient id="dapp-beam-grad" x1="0" x2="1"><stop offset="0" stop-color="transparent"/><stop offset="0.5" stop-color="#a78bfa" stop-opacity="0.9"/><stop offset="1" stop-color="transparent"/></linearGradient></defs><line x1="60" y1="100" x2="360" y2="100" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" stroke-dasharray="3 4"/><line x1="60" y1="100" x2="360" y2="100" stroke="url(#dapp-beam-grad)" stroke-width="2.5"><animate attributeName="stroke-dashoffset" values="-300;300" dur="2s" repeatCount="indefinite"/></line></svg>' +
+        '<div id="dapp-beam-to" style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#ec4899,#f43f5e);display:grid;place-items:center;color:#fff;font-size:1.4rem;box-shadow:0 8px 20px rgba(236,72,153,0.4);">🅱</div>' +
+      '</div>';
+  };
+  P['effects/animated-beam.js'] = P['effects/animated-beam.css'];
+  P['effects/backlight-halo.js'] = P['effects/backlight-halo.css'];
+
+  P['effects/backlight-halo.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;align-items:center;padding:2rem;">' +
+        '<div class="bhalo bhalo-md bhalo-rounded" style="--bh-color:#ec4899;width:160px;height:200px;"><div class="bhalo-media" style="background:linear-gradient(135deg,#ec4899,#f97316);"></div></div>' +
+        '<div class="bhalo bhalo-md bhalo-circle bhalo-anim" style="--bh-color:#8b5cf6;width:140px;height:140px;"><div class="bhalo-media" style="background:radial-gradient(circle at 30% 30%,#a78bfa,#5b21b6);border-radius:50%;"></div></div>' +
+        '<div class="bhalo bhalo-md bhalo-rounded" style="--bh-color:#22d3ee;width:160px;height:200px;"><div class="bhalo-media" style="background:linear-gradient(135deg,#06b6d4,#3b82f6);"></div></div>' +
+      '</div>';
+  };
+
+  P['effects/cursor-effects.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:1rem;width:100%;">' +
+        '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;">' +
+          '<button class="dapp-cfx-magnetic" style="padding:0.6rem 1.2rem;background:rgba(139,92,246,0.18);border:1px solid #a78bfa;border-radius:8px;color:#c4b5fd;font-weight:600;cursor:pointer;transition:transform 0.18s ease;">🧲 Magnetic</button>' +
+          '<button class="dapp-cfx-trail" style="padding:0.6rem 1.2rem;background:rgba(236,72,153,0.18);border:1px solid #f472b6;border-radius:8px;color:#fbcfe8;font-weight:600;cursor:pointer;">✨ Trail area</button>' +
+        '</div>' +
+        '<div id="dapp-cfx-trail-area" style="position:relative;width:100%;max-width:420px;height:160px;background:radial-gradient(circle at center,rgba(236,72,153,0.12),transparent 65%);border:1px dashed rgba(255,255,255,0.1);border-radius:10px;cursor:crosshair;overflow:hidden;display:grid;place-items:center;color:rgba(255,255,255,0.45);font-size:0.78rem;">Move your cursor inside this area</div>' +
+      '</div>';
+    var mag = target.querySelector('.dapp-cfx-magnetic');
+    mag.addEventListener('mousemove', function (e) {
+      var r = mag.getBoundingClientRect();
+      var dx = (e.clientX - r.left - r.width / 2) * 0.3;
+      var dy = (e.clientY - r.top - r.height / 2) * 0.3;
+      mag.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+    });
+    mag.addEventListener('mouseleave', function () { mag.style.transform = ''; });
+    var trailArea = target.querySelector('#dapp-cfx-trail-area');
+    trailArea.addEventListener('mousemove', function (e) {
+      var r = trailArea.getBoundingClientRect();
+      var d = document.createElement('div');
+      d.style.cssText = 'position:absolute;left:' + (e.clientX - r.left - 6) + 'px;top:' + (e.clientY - r.top - 6) + 'px;width:12px;height:12px;border-radius:50%;background:#f472b6;opacity:0.9;pointer-events:none;animation:dapp-cfx 0.7s ease-out forwards;';
+      trailArea.appendChild(d);
+      setTimeout(function () { d.remove(); }, 700);
+    });
+    var s = document.createElement('style');
+    s.textContent = '@keyframes dapp-cfx{0%{transform:scale(0.5);}100%{transform:scale(2);opacity:0;}}';
+    target.appendChild(s);
+  };
+
+  P['effects/duotone.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;width:100%;max-width:500px;">' +
+        [
+          ['classic-blue', 'linear-gradient(135deg,#1e3a8a,#facc15)'],
+          ['coral',        'linear-gradient(135deg,#831843,#fde68a)'],
+          ['cyber',        'linear-gradient(135deg,#0891b2,#ec4899)'],
+          ['cosmic',       'linear-gradient(135deg,#3b0764,#f0abfc)'],
+          ['deep-purple',  'linear-gradient(135deg,#1e1b4b,#a5b4fc)'],
+          ['blueprint',    'linear-gradient(135deg,#0c4a6e,#bae6fd)']
+        ].map(function (d) {
+          return '<div style="position:relative;">' +
+            '<div class="dt dt-' + d[0] + '" style="height:120px;border-radius:8px;background:' + d[1] + ';"></div>' +
+            '<div style="font-size:0.65rem;color:rgba(255,255,255,0.55);text-align:center;margin-top:0.2rem;font-family:monospace;">' + d[0] + '</div>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['effects/duotone.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;">' +
+        '<svg width="200" height="200" viewBox="0 0 200 200" style="border-radius:12px;background:#0a0a14;">' +
+          '<defs><filter id="dapp-dt"><feColorMatrix type="matrix" values="0.6 0.2 0.0 0 0  0.0 0.1 0.6 0 0  0.2 0.4 0.5 0 0  0 0 0 1 0"/></filter></defs>' +
+          '<g filter="url(#dapp-dt)">' +
+            '<rect width="200" height="200" fill="#fff"/>' +
+            '<circle cx="60" cy="80" r="44" fill="#ffd700"/>' +
+            '<rect x="100" y="110" width="80" height="80" fill="#94a3b8"/>' +
+            '<path d="M 20 200 L 100 80 L 180 200 Z" fill="#475569"/>' +
+          '</g>' +
+        '</svg>' +
+        '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">SVG-filter true duotone (cyan + magenta)</div>' +
+      '</div>';
+  };
+
+  P['effects/encrypted-text.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:1rem;align-items:center;padding:1rem;">' +
+        ['enctxt-classified', 'enctxt-cyber', 'enctxt-acid'].map(function (v) {
+          return '<div class="enctxt ' + v + '" style="font-family:ui-monospace,monospace;font-size:1.2rem;letter-spacing:0.1em;color:#86efac;font-weight:700;text-transform:uppercase;">' +
+            (v === 'enctxt-classified' ? '<span style="color:#ef4444;">█ CLASSIFIED █</span>' :
+             v === 'enctxt-cyber' ? '<span style="color:#22d3ee;text-shadow:0 0 8px #22d3ee;">ACCESS_GRANTED</span>' :
+             '<span style="color:#86efac;text-shadow:0 0 8px #86efac;">UNLOCKED ✓</span>') +
+          '</div>';
+        }).join('') +
+        '<div style="font-size:0.7rem;color:rgba(255,255,255,0.45);text-align:center;">Three preset styles. Pair with encrypted-text.js for the scramble-in reveal animation.</div>' +
+      '</div>';
+  };
+
+  P['effects/glitch.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:1.2rem;align-items:center;padding:1.4rem;">' +
+        '<h2 class="glitch" data-text="GLITCHED" style="font-family:ui-monospace,monospace;font-size:2.5rem;font-weight:800;color:#fff;letter-spacing:0.04em;margin:0;">GLITCHED</h2>' +
+        '<div class="glitch glitch-block" data-text="ERROR_404" style="font-family:ui-monospace,monospace;font-size:1.4rem;font-weight:700;color:#fff;letter-spacing:0.08em;">ERROR_404</div>' +
+        '<div style="display:flex;gap:0.6rem;">' +
+          '<div class="glitch-image" style="width:90px;height:90px;background:linear-gradient(135deg,#ec4899,#8b5cf6);border-radius:6px;position:relative;"></div>' +
+          '<div class="glitch-image glitch-scanlines" style="width:90px;height:90px;background:linear-gradient(135deg,#22d3ee,#8b5cf6);border-radius:6px;position:relative;"></div>' +
+        '</div>' +
+      '</div>';
+  };
+
+  P['effects/gradient-animations.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;width:100%;max-width:520px;">' +
+        ['aurora','drift','sunset','ocean','breathe','conic-spin'].map(function (n) {
+          return '<div style="position:relative;height:90px;border-radius:8px;overflow:hidden;">' +
+            '<div class="ganm ganm-' + n + '" style="width:100%;height:100%;"></div>' +
+            '<span style="position:absolute;bottom:6px;left:8px;font-size:0.65rem;color:rgba(255,255,255,0.85);font-family:monospace;text-shadow:0 1px 4px rgba(0,0,0,0.5);">ganm-' + n + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['effects/gradient-borders.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.7rem;width:100%;max-width:520px;">' +
+        [
+          ['aurora','Aurora ring'],
+          ['cosmic','Cosmic'],
+          ['cyber','Cyber'],
+          ['beam','Beam (anim)'],
+          ['breathing','Breathing'],
+          ['rainbow','Rainbow']
+        ].map(function (b) {
+          return '<div class="gbord gbord-' + b[0] + '" style="padding:2px;border-radius:10px;">' +
+            '<div class="gbord-content" style="padding:0.9rem 1rem;background:#0a0a14;border-radius:8px;color:#fff;font-weight:600;font-size:0.85rem;">' + b[1] + '</div>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['effects/gradient-mask.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;width:100%;max-width:520px;">' +
+        ['bottom','vignette','radial','iris','soft-edges','spotlight'].map(function (m) {
+          return '<div style="position:relative;height:120px;border-radius:8px;overflow:hidden;">' +
+            '<div class="gmask gmask-' + m + '" style="height:100%;background:linear-gradient(135deg,#8b5cf6,#ec4899,#f97316);"></div>' +
+            '<span style="position:absolute;bottom:6px;left:8px;font-size:0.65rem;color:rgba(255,255,255,0.95);font-family:monospace;text-shadow:0 1px 4px rgba(0,0,0,0.6);">gmask-' + m + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['effects/gradient-mesh.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem;width:100%;max-width:520px;">' +
+        ['stripe','linear','vercel','aurora','cosmic','sunrise','ocean','cyberpunk'].map(function (m) {
+          return '<div style="position:relative;height:100px;border-radius:8px;overflow:hidden;">' +
+            '<div class="gmesh gmesh-' + m + '" style="width:100%;height:100%;"></div>' +
+            '<span style="position:absolute;bottom:6px;left:8px;font-size:0.65rem;color:rgba(255,255,255,0.95);font-family:monospace;text-shadow:0 1px 4px rgba(0,0,0,0.6);font-weight:600;">gmesh-' + m + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['effects/image-distortion-hover.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center;padding:0.5rem;">' +
+        ['idh-soft','idh-strong','idh-rgb'].map(function (v) {
+          return '<div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;">' +
+            '<div class="idh ' + v + '" style="width:120px;height:140px;background:linear-gradient(135deg,#06b6d4,#8b5cf6,#ec4899);border-radius:10px;cursor:pointer;"></div>' +
+            '<span style="font-size:0.65rem;color:rgba(255,255,255,0.55);font-family:monospace;">' + v + '</span>' +
+          '</div>';
+        }).join('') +
+        '<div style="width:100%;text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.45);">Hover the tiles to see SVG-filter warp.</div>' +
+      '</div>';
+  };
+
+  P['effects/image-gradient.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;width:100%;max-width:520px;">' +
+        [
+          ['aurora','Aurora'],
+          ['cosmic','Cosmic'],
+          ['sunset','Sunset'],
+          ['instagram','Instagram'],
+          ['vercel','Vercel'],
+          ['holo','Holo']
+        ].map(function (g) {
+          return '<div style="display:flex;flex-direction:column;align-items:center;gap:0.3rem;">' +
+            '<div class="imggrad imggrad-' + g[0] + '" style="width:90px;height:90px;border-radius:18px;display:grid;place-items:center;font-size:2.4rem;color:#fff;font-weight:900;text-shadow:0 2px 8px rgba(0,0,0,0.3);">★</div>' +
+            '<span style="font-size:0.65rem;color:rgba(255,255,255,0.55);font-family:monospace;">' + g[1] + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['effects/image-gradient.js'] = P['effects/image-gradient.css'];
+
+  P['effects/image-reveal-mask.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:0.7rem;align-items:center;">' +
+        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;width:100%;max-width:380px;">' +
+          ['up','down','left','right','iris','diamond'].map(function (v) {
+            return '<div style="position:relative;height:90px;border-radius:8px;overflow:hidden;">' +
+              '<div class="irm irm-' + v + ' dapp-irm-tile" style="width:100%;height:100%;background:linear-gradient(135deg,#8b5cf6,#ec4899,#06b6d4);"></div>' +
+              '<span style="position:absolute;bottom:4px;left:6px;font-size:0.62rem;color:rgba(255,255,255,0.95);font-family:monospace;text-shadow:0 1px 4px rgba(0,0,0,0.5);">irm-' + v + '</span>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+        '<button class="dapp-irm-replay" style="padding:0.4rem 1rem;background:rgba(139,92,246,0.18);border:1px solid #a78bfa;border-radius:6px;color:#c4b5fd;font-size:0.78rem;cursor:pointer;font-weight:600;">↻ Replay reveals</button>' +
+      '</div>';
+    target.querySelector('.dapp-irm-replay').addEventListener('click', function () {
+      target.querySelectorAll('.dapp-irm-tile').forEach(function (t) {
+        t.style.animation = 'none';
+        t.offsetHeight;
+        t.style.animation = '';
+      });
+    });
+  };
+
   P['mobile/ios-notification-banner.css'] = function (target) {
     var screen = iphoneFrame(target, { wallpaper: 'night', caption: 'Lock-screen notification stack + top-slide banner.' });
     screen.innerHTML =
