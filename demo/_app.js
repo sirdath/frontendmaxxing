@@ -645,6 +645,72 @@
     });
   }
 
+  // Try to run a JS module's Usage block live, substituting the selector arg
+  // with a fresh target element inside the preview area.
+  // Handles `…` placeholders by stripping lines that contain them.
+  function tryRunJsUsage(target, entry, usage) {
+    if (!entry.global || !window[entry.global] || !usage) return false;
+    // Build runnable code: strip lines with `…` (invalid JS placeholders) and comment markers.
+    var lines = usage.split('\n').filter(function (l) {
+      if (/[…]/.test(l)) return false;             // ellipsis lines
+      if (/^\s*\/\//.test(l)) return false;        // pure comment lines (keep inline)
+      return true;
+    });
+    var code = lines.join('\n').trim();
+    if (!code) return false;
+
+    // Find first occurrence of `entry.global.` to locate the call.
+    var gIdx = code.indexOf(entry.global + '.');
+    if (gIdx === -1) return false;
+
+    // Walk to find the matching closing paren of the call, respecting strings + nesting.
+    var openIdx = code.indexOf('(', gIdx);
+    if (openIdx === -1) return false;
+    var depth = 1, j = openIdx + 1, inStr = null, esc2 = false;
+    while (j < code.length && depth > 0) {
+      var ch = code[j];
+      if (esc2) { esc2 = false; }
+      else if (inStr) {
+        if (ch === '\\') esc2 = true;
+        else if (ch === inStr) inStr = null;
+      } else {
+        if (ch === '"' || ch === "'" || ch === '`') inStr = ch;
+        else if (ch === '(' || ch === '{' || ch === '[') depth++;
+        else if (ch === ')' || ch === '}' || ch === ']') depth--;
+      }
+      j++;
+    }
+    if (depth !== 0) return false;
+    var callCode = code.slice(gIdx, j);
+
+    // Find the first string-literal argument (the selector). Replace with a placeholder ref.
+    var argMatch = callCode.match(/(['"`])([^'"`]+?)\1/);
+    if (!argMatch) return false;
+
+    // Create the host element inside target.
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;width:100%;">' +
+        '<div class="__dapp_js_host__" id="__dapp_js_host__" style="width:100%;min-height:60px;display:flex;align-items:center;justify-content:center;padding:0.4rem;"></div>' +
+      '</div>';
+    var host = target.querySelector('#__dapp_js_host__');
+
+    // Swap selector arg → '#__dapp_js_host__'
+    var swapped = callCode.replace(argMatch[0], "'#__dapp_js_host__'");
+
+    try {
+      // Wrap in try/catch to defend against runtime errors during init.
+      new Function('"use strict";' + swapped + ';')();
+      // If the call rendered nothing into the host (some inits no-op without proper args), bail.
+      if (host.children.length === 0 && host.textContent.trim() === '' && !host.firstElementChild) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      console.warn('JS auto-run failed for', entry.path, e.message);
+      return false;
+    }
+  }
+
   function renderFallback(target, entry, usage, source) {
     var icon = (FOLDER_DESCRIPTIONS[entry.folder] && FOLDER_DESCRIPTIONS[entry.folder].icon) || '•';
     var hasUsage = usage && usage.trim().length;
@@ -653,6 +719,14 @@
     var variantPreview = '';
     if (source) {
       variantPreview = buildVariantPreview(source);
+    }
+
+    // For JS entries with no Usage HTML, try to EXECUTE the Usage code with a target element substituted.
+    // Many JS files follow GLOBAL.method('selector', { ... }) pattern.
+    if (entry.kind === 'JS' && entry.global && window[entry.global] && usage) {
+      if (tryRunJsUsage(target, entry, usage)) {
+        return; // success — tryRunJsUsage owns the target rendering
+      }
     }
 
     // For JS entries with no Usage HTML, also render a global/method hint card.

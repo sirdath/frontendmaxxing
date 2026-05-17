@@ -657,6 +657,278 @@
   };
 
   // ====================================================
+  // DATA-VIZ CHARTS — every chart JS gets a working preview with sample data
+  // ====================================================
+
+  function chartStage(target, w, h) {
+    target.innerHTML = '<div class="dapp-chart-stage" style="width:100%;display:flex;align-items:center;justify-content:center;padding:0.5rem;"></div>';
+    var stage = target.querySelector('.dapp-chart-stage');
+    if (w) stage.style.maxWidth = w + 'px';
+    return stage;
+  }
+
+  P['data-viz/chart-bar.js'] = function (target) {
+    var stage = chartStage(target, 540);
+    if (window.ChartBar) ChartBar.create(stage, {
+      data: [
+        { label: 'Jan', value: 30 }, { label: 'Feb', value: 45 },
+        { label: 'Mar', value: 28 }, { label: 'Apr', value: 62 },
+        { label: 'May', value: 51 }, { label: 'Jun', value: 78 },
+        { label: 'Jul', value: 66 }, { label: 'Aug', value: 89 }
+      ],
+      color: '#8b5cf6', width: 520, height: 240, showAxis: true, showGrid: true
+    });
+  };
+
+  P['data-viz/chart-line.js'] = function (target) {
+    var stage = chartStage(target, 540);
+    if (window.ChartLine) ChartLine.create(stage, {
+      data: [
+        { label: 'Mon', value: 12 }, { label: 'Tue', value: 18 },
+        { label: 'Wed', value: 14 }, { label: 'Thu', value: 22 },
+        { label: 'Fri', value: 28 }, { label: 'Sat', value: 24 },
+        { label: 'Sun', value: 32 }
+      ],
+      color: '#8b5cf6', fill: 'rgba(139,92,246,0.2)', smooth: true,
+      width: 520, height: 240, dots: true, showAxis: true, showGrid: true
+    });
+  };
+
+  P['data-viz/chart-area.js'] = function (target) {
+    var stage = chartStage(target, 540);
+    if (window.ChartArea) ChartArea.create(stage, {
+      data: [
+        { label: 'Mon', values: [4, 6, 3] }, { label: 'Tue', values: [8, 4, 6] },
+        { label: 'Wed', values: [6, 8, 5] }, { label: 'Thu', values: [10, 6, 4] },
+        { label: 'Fri', values: [12, 8, 7] }, { label: 'Sat', values: [9, 11, 6] },
+        { label: 'Sun', values: [14, 10, 8] }
+      ],
+      colors: ['#8b5cf6', '#22d3ee', '#ec4899'], stacked: true,
+      width: 520, height: 240, showAxis: true, showGrid: true
+    });
+  };
+
+  P['data-viz/chart-pie.js'] = function (target) {
+    var stage = chartStage(target, 360);
+    if (window.ChartPie) ChartPie.create(stage, {
+      data: [
+        { label: 'Direct', value: 40, color: '#8b5cf6' },
+        { label: 'Search', value: 25, color: '#22d3ee' },
+        { label: 'Social', value: 20, color: '#ec4899' },
+        { label: 'Other',  value: 15, color: '#fbbf24' }
+      ],
+      width: 300, donut: true, donutThickness: 28, showLegend: true,
+      centerLabel: '100%', centerMeta: 'visits'
+    });
+  };
+
+  P['data-viz/chart-gauge.js'] = function (target) {
+    var stage = chartStage(target, 300);
+    if (window.ChartGauge) ChartGauge.create(stage, {
+      value: 72, max: 100, size: 200, label: '72%',
+      color: '#8b5cf6', thickness: 18, arc: 270, startAngle: -135
+    });
+  };
+
+  P['data-viz/chart-radar.js'] = function (target) {
+    var stage = chartStage(target, 380);
+    if (window.ChartRadar) ChartRadar.create(stage, {
+      axes: ['Speed', 'Power', 'Range', 'Agility', 'Cost', 'Style'],
+      series: [
+        { name: 'Model A', values: [80, 60, 90, 70, 50, 85], color: '#8b5cf6' },
+        { name: 'Model B', values: [60, 90, 50, 80, 70, 65], color: '#ec4899' }
+      ],
+      max: 100, size: 320, rings: 4
+    });
+  };
+
+  P['data-viz/chart-funnel.js'] = function (target) {
+    var stage = chartStage(target, 400);
+    if (window.ChartFunnel) ChartFunnel.create(stage, {
+      data: [
+        { label: 'Visits',  value: 1000 },
+        { label: 'Signups', value: 320 },
+        { label: 'Active',  value: 110 },
+        { label: 'Paying',  value: 32 }
+      ],
+      color: '#8b5cf6', showPercent: true, showAbs: true
+    });
+  };
+
+  P['data-viz/chart-sankey.js'] = function (target) {
+    var stage = chartStage(target, 640);
+    if (window.ChartSankey) ChartSankey.create(stage, {
+      nodes: ['Start', 'Visit', 'Signup', 'Active', 'Churned', 'Paying'],
+      links: [
+        { from: 0, to: 1, value: 1000 },
+        { from: 1, to: 2, value: 320 },
+        { from: 1, to: 4, value: 680 },
+        { from: 2, to: 3, value: 220 },
+        { from: 2, to: 4, value: 100 },
+        { from: 3, to: 5, value: 90 }
+      ],
+      width: 620, height: 320
+    });
+  };
+
+  P['data-viz/chart-treemap.js'] = function (target) {
+    var stage = chartStage(target, 540);
+    if (window.ChartTreemap) ChartTreemap.create(stage, {
+      data: [
+        { label: 'Engineering', value: 40, color: '#8b5cf6' },
+        { label: 'Design',      value: 25, color: '#22d3ee' },
+        { label: 'Product',     value: 20, color: '#ec4899' },
+        { label: 'Marketing',   value: 10, color: '#fbbf24' },
+        { label: 'Other',       value: 5,  color: '#4ade80' }
+      ],
+      width: 520, height: 300
+    });
+  };
+
+  P['data-viz/chart-network.js'] = function (target) {
+    var stage = chartStage(target, 620);
+    if (!window.ChartNetwork) return;
+    var nodes = [];
+    var groups = [1, 2, 3, 4];
+    for (var i = 0; i < 14; i++) {
+      nodes.push({ id: 'n' + i, label: 'N' + i, group: groups[i % groups.length] });
+    }
+    var links = [
+      { source: 'n0', target: 'n1' }, { source: 'n0', target: 'n2' },
+      { source: 'n0', target: 'n3' }, { source: 'n1', target: 'n4' },
+      { source: 'n1', target: 'n5' }, { source: 'n2', target: 'n6' },
+      { source: 'n2', target: 'n7' }, { source: 'n3', target: 'n8' },
+      { source: 'n4', target: 'n9' }, { source: 'n5', target: 'n10' },
+      { source: 'n6', target: 'n11' }, { source: 'n7', target: 'n12' },
+      { source: 'n8', target: 'n13' }, { source: 'n9', target: 'n10' },
+      { source: 'n11', target: 'n12' }
+    ];
+    ChartNetwork.create(stage, { nodes: nodes, links: links, width: 600, height: 320 });
+  };
+
+  P['data-viz/count-up.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.9rem;">' +
+        '<button class="dapp-cu-replay" style="padding:0.45rem 1rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:#fff;font-weight:600;cursor:pointer;font-size:0.82rem;">↻ Replay</button>' +
+        '<div style="display:flex;gap:2.4rem;flex-wrap:wrap;justify-content:center;">' +
+          '<div style="text-align:center;"><div data-cu="1248" style="font-size:3rem;font-weight:800;letter-spacing:-0.03em;background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">0</div><div style="font-size:0.74rem;color:rgba(255,255,255,0.55);letter-spacing:0.04em;text-transform:uppercase;">Users</div></div>' +
+          '<div style="text-align:center;"><div data-cu="89" data-cu-suffix="%" style="font-size:3rem;font-weight:800;letter-spacing:-0.03em;background:linear-gradient(135deg,#22d3ee,#8b5cf6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">0</div><div style="font-size:0.74rem;color:rgba(255,255,255,0.55);letter-spacing:0.04em;text-transform:uppercase;">Uptime</div></div>' +
+          '<div style="text-align:center;"><div data-cu="42500" data-cu-prefix="$" style="font-size:3rem;font-weight:800;letter-spacing:-0.03em;background:linear-gradient(135deg,#f59e0b,#ef4444);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">$0</div><div style="font-size:0.74rem;color:rgba(255,255,255,0.55);letter-spacing:0.04em;text-transform:uppercase;">Revenue</div></div>' +
+        '</div>' +
+      '</div>';
+    function run() {
+      target.querySelectorAll('[data-cu]').forEach(function (el) {
+        var target_v = parseInt(el.dataset.cu, 10);
+        var pre = el.dataset.cuPrefix || '';
+        var suf = el.dataset.cuSuffix || '';
+        var dur = 1400, t0 = performance.now();
+        (function tick(now) {
+          var p = Math.min(1, (now - t0) / dur);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = pre + Math.floor(target_v * eased).toLocaleString() + suf;
+          if (p < 1) requestAnimationFrame(tick);
+        })(performance.now());
+      });
+    }
+    run();
+    target.querySelector('.dapp-cu-replay').addEventListener('click', run);
+  };
+
+  P['data-viz/heatmap-calendar.js'] = function (target) {
+    var stage = chartStage(target, 720);
+    stage.style.justifyContent = 'flex-start';
+    if (!window.HeatmapCalendar) return;
+    var today = new Date();
+    var data = [];
+    for (var i = 0; i < 365; i++) {
+      var d = new Date(today); d.setDate(d.getDate() - i);
+      var iso = d.toISOString().split('T')[0];
+      var v = Math.random() < 0.35 ? Math.floor(Math.random() * 10) : 0;
+      if (v) data.push({ date: iso, value: v });
+    }
+    HeatmapCalendar.create(stage, { data: data, weeks: 52 });
+  };
+
+  P['data-viz/progress-ring.js'] = function (target) {
+    target.innerHTML = '<div style="display:flex;gap:1.4rem;flex-wrap:wrap;justify-content:center;" id="dapp-rings"></div>';
+    var host = target.querySelector('#dapp-rings');
+    [25, 50, 75, 90].forEach(function (v) {
+      var d = document.createElement('div');
+      d.style.cssText = 'text-align:center;';
+      d.innerHTML = '<div class="pring" data-progress="' + v + '" data-size="100"></div><div style="font-size:0.75rem;color:rgba(255,255,255,0.55);margin-top:0.4rem;">' + v + '%</div>';
+      host.appendChild(d);
+    });
+    if (window.ProgressRing) ProgressRing.init('.pring');
+  };
+
+  P['data-viz/sparkline.js'] = function (target) {
+    target.innerHTML = '<div style="display:flex;flex-direction:column;gap:1rem;width:100%;max-width:480px;"></div>';
+    var host = target.firstChild;
+    [
+      [4, 6, 3, 8, 5, 9, 6, 10, 7, 11, 8, 12, 9, 14],
+      [12, 10, 11, 9, 8, 9, 7, 8, 6, 7, 5, 6, 4, 5],
+      [3, 5, 4, 7, 6, 9, 8, 6, 9, 11, 8, 12, 10, 13]
+    ].forEach(function (data, i) {
+      var label = ['Revenue', 'Churn', 'Sessions'][i];
+      var trend = ['↑ +24%', '↓ -12%', '↑ +18%'][i];
+      var color = ['#10b981', '#ef4444', '#8b5cf6'][i];
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:1rem;padding:0.7rem 1rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;';
+      row.innerHTML =
+        '<div style="flex:1;"><div style="font-size:0.78rem;color:rgba(255,255,255,0.5);">' + label + '</div><div style="font-size:1.1rem;font-weight:700;color:' + color + ';">' + trend + '</div></div>' +
+        '<div class="dapp-spark-' + i + '" style="width:120px;height:40px;"></div>';
+      host.appendChild(row);
+      if (window.Sparkline) Sparkline.create(row.querySelector('.dapp-spark-' + i), {
+        data: data, color: color, width: 120, height: 40, smooth: true, fill: true
+      });
+    });
+  };
+
+  P['data-viz/table.js'] = function (target) {
+    target.innerHTML =
+      '<table class="data-table" style="width:100%;max-width:640px;border-collapse:collapse;font-size:0.85rem;">' +
+        '<thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead>' +
+        '<tbody>' +
+          [
+            ['Alice Chen','alice@acme.io','Admin','Active'],
+            ['Ben Romero','ben@acme.io','Member','Active'],
+            ['Cara Wu','cara@acme.io','Viewer','Invited'],
+            ['Dan Park','dan@acme.io','Member','Active'],
+            ['Eve Singh','eve@acme.io','Admin','Inactive']
+          ].map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + c + '</td>'; }).join('') + '</tr>'; }).join('') +
+        '</tbody>' +
+      '</table>';
+    if (window.Table) Table.init('.data-table', { sortable: true, hoverable: true });
+  };
+
+  P['data-viz/charts-pro.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;width:100%;max-width:760px;">' +
+        '<div class="cp-heat" data-cp-heat style="width:100%;"></div>' +
+        '<div class="cp-donut" data-cp-donut style="margin:0 auto;"></div>' +
+        '<div class="cp-sgrid" data-cp-sgrid style="grid-column:span 2;"></div>' +
+      '</div>';
+    if (window.ChartsPro) {
+      ChartsPro.heatmap('[data-cp-heat]', { cols: 30, rows: 7 });
+      ChartsPro.donut('[data-cp-donut]', {
+        segments: [
+          { value: 40, color: '#8b5cf6' },
+          { value: 30, color: '#ec4899' },
+          { value: 30, color: '#06b6d4' }
+        ],
+        centerLabel: '100', centerSub: 'total'
+      });
+      ChartsPro.sparkGrid('[data-cp-sgrid]', {
+        cards: [
+          { name: 'Visits',  value: '12.4k', dir: 'up',   bars: [0.4,0.6,0.5,0.7,0.6,0.8,0.7,0.9] },
+          { name: 'Signups', value: '2.1k',  dir: 'up',   bars: [0.3,0.5,0.6,0.4,0.7,0.6,0.8,0.9] },
+          { name: 'Churn',   value: '1.2%',  dir: 'down', bars: [0.9,0.7,0.8,0.6,0.5,0.6,0.4,0.3] }
+        ]
+      });
+    }
+  };
+
+  // ====================================================
   // ANIMATIONS — replayable previews for every motion file
   // ====================================================
 
