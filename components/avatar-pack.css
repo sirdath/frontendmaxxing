@@ -1,0 +1,157 @@
+/* ============================================
+   AVATAR PACK — 14 avatar variants (extends blocks/avatars.css)
+   sizes (xs/sm/md/lg/xl), squircle/square, status-dot, presence,
+   initials, gradient-bg-by-hash, group-overflow, image-with-fallback,
+   bordered-ring, gradient-ring, animated-online-ring, role-badge,
+   stacked-list
+   ============================================ */
+
+.av {
+  --av-size: 40px;
+  --av-radius: 50%;
+  --av-bg: linear-gradient(135deg, #8b5cf6, #ec4899);
+  --av-fg: #fff;
+  position: relative;
+  display: inline-grid; place-items: center;
+  width: var(--av-size); height: var(--av-size);
+  border-radius: var(--av-radius);
+  background: var(--av-bg);
+  color: var(--av-fg);
+  font-weight: 700;
+  font-family: inherit;
+  font-size: calc(var(--av-size) * 0.4);
+  overflow: hidden;
+  flex: 0 0 var(--av-size);
+}
+.av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Sizes */
+.av-xs { --av-size: 24px; }
+.av-sm { --av-size: 32px; }
+.av-md { --av-size: 40px; }
+.av-lg { --av-size: 52px; }
+.av-xl { --av-size: 80px; }
+.av-2xl { --av-size: 120px; }
+
+/* Shape */
+.av-square    { --av-radius: 6px; }
+.av-squircle  { --av-radius: 28%; }
+
+/* Color presets (gradient by name hash) */
+.av-c1 { --av-bg: linear-gradient(135deg, #8b5cf6, #ec4899); }
+.av-c2 { --av-bg: linear-gradient(135deg, #06b6d4, #8b5cf6); }
+.av-c3 { --av-bg: linear-gradient(135deg, #f59e0b, #ef4444); }
+.av-c4 { --av-bg: linear-gradient(135deg, #10b981, #06b6d4); }
+.av-c5 { --av-bg: linear-gradient(135deg, #ec4899, #f59e0b); }
+.av-c6 { --av-bg: linear-gradient(135deg, #6366f1, #06b6d4); }
+.av-c7 { --av-bg: linear-gradient(135deg, #fbbf24, #84cc16); }
+.av-c8 { --av-bg: linear-gradient(135deg, #94a3b8, #475569); }
+
+/* Status dot */
+.av-status::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 28%; height: 28%;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid #14141e;
+}
+.av-status-away::after { background: #f59e0b; }
+.av-status-busy::after { background: #ef4444; }
+.av-status-off::after  { background: #64748b; }
+
+/* Animated online ring */
+.av-ring-online {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+.av-ring-online::after {
+  content: ''; position: absolute; inset: -8px;
+  border-radius: 50%;
+  border: 2px solid #10b981;
+  animation: av-pulse 1.6s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes av-pulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.2); opacity: 0; }
+}
+
+/* Bordered ring */
+.av-bordered { box-shadow: 0 0 0 3px #14141e, 0 0 0 4px var(--av-ring, #8b5cf6); }
+
+/* Gradient ring (rainbow) */
+.av-gradient-ring {
+  padding: 3px;
+  background: conic-gradient(#ec4899, #8b5cf6, #06b6d4, #10b981, #f59e0b, #ec4899);
+  --av-bg: linear-gradient(135deg, #14141e, #14141e);
+}
+.av-gradient-ring img,
+.av-gradient-ring > .av-inner {
+  border-radius: 50%;
+  background: var(--av-bg);
+}
+
+/* Role badge corner */
+.av-role::before {
+  content: attr(data-role);
+  position: absolute;
+  bottom: -2px; right: -2px;
+  background: var(--av-role-bg, #8b5cf6);
+  color: #fff;
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 0.1rem 0.3rem;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 2px solid #14141e;
+  line-height: 1.2;
+}
+
+/* Group stack — overflow */
+.av-stack {
+  display: inline-flex;
+}
+.av-stack > .av {
+  border: 2px solid #14141e;
+  margin-left: -10px;
+  transition: transform 0.2s ease;
+}
+.av-stack > .av:first-child { margin-left: 0; }
+.av-stack > .av:hover { transform: translateY(-3px); z-index: 2; }
+.av-stack > .av.is-more {
+  --av-bg: rgba(255, 255, 255, 0.08);
+  --av-fg: rgba(245, 245, 250, 0.6);
+  font-size: calc(var(--av-size) * 0.3);
+}
+
+/* Initials fallback (no image) — use --av-bg color presets */
+.av-initials { /* relies on default styles */ }
+
+/* Image with fallback — JS sets src; we show initials behind */
+.av-img-fallback img {
+  position: absolute; inset: 0; z-index: 2;
+}
+
+/* Identicon-style — multiple gradient triangles */
+.av-identicon {
+  background:
+    conic-gradient(from 0deg at 50% 50%,
+      var(--id-c1, #8b5cf6) 0deg 90deg,
+      var(--id-c2, #ec4899) 90deg 180deg,
+      var(--id-c3, #06b6d4) 180deg 270deg,
+      var(--id-c4, #10b981) 270deg 360deg);
+}
+
+/* Pulse animation when added */
+.av-bump { animation: av-bump 0.4s ease; }
+@keyframes av-bump {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .av-ring-online::after, .av-bump { animation: none; }
+}

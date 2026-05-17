@@ -2423,3 +2423,35 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **image-tools.css** `media/image-tools.css` (CSS) — tags: image-tools crop-overlay rule-of-thirds rotate-controls flip filter-strip presets brightness-contrast saturation exposure undo-redo
   5 image-editor patterns: crop-overlay (dim mask + adjustable rect + 3x3 grid + corner handles), rotate-controls (90° steps + freeform slider), filter-strip (8 CSS filter presets: warm/cool/bw/fade/vintage/vivid/matte/noir), brightness-contrast sliders, undo-redo bar.
+
+**Phase 24 — UI primitives expansion: modal / tabs / sidebar / badge / avatar / list / menu / heading / page-transitions / loading (10 files, ~80 patterns)**
+
+**modal-pack.css** `components/modal-pack.css` (CSS) — tags: modal-pack confirm-modal alert success error warn drawer-side full-screen slide-over image-modal video-modal multi-step backdrop blur
+  8 modal variants: confirm-modal (with danger), alert-modal (success/error/warn), drawer-side (left/right slide), full-screen, slide-over-right, image-modal, video-modal, multi-step (progress bar + back/next).
+
+**tabs-pack-2.css** `components/tabs-pack-2.css` (CSS) — tags: tabs-pack-2 vertical stacked icon-tabs browser-tabs chrome animated-underline pill-grow scrollable-tabs segmented-tab-card overflow
+  8 tab variants: vertical-tabs (side rail), stacked-tabs (browser-style staircase), icon-tabs (big icon + label), browser-tabs (Chrome curves), animated-underline (line slides between), pill-grow (active expands wider), scrollable-tabs w/ fade edges, segmented-tab-card.
+
+**sidebar-pack.css** `components/sidebar-pack.css` (CSS) — tags: sidebar-pack discord-rail server-icons notion-sidebar workspace pages file-tree-vscode settings docs-scroll-spy two-rail
+  6 sidebar variants: discord-rail (icon rail w/ active marker), notion-sidebar (workspace + collapsible pages w/ hover actions), file-tree-vscode (file icons + diff status), settings (search + grouped links + badge), docs (heading hierarchy w/ scroll-spy line), two-rail (discord + notion combined).
+
+**badge-pack.css** `components/badge-pack.css` (CSS) — tags: badge-pack pill solid soft outline dot pulse count gradient beta new pro soon icon star check bolt fire spark lock removable loading shimmer
+  20+ badge variants: solids (8 colors), soft tinted, outlined, dot/pulse status, count (sm/lg), gradients (4), tag presets (beta/new/pro/soon), icon-leading (★/✓/⚡/🔥/✦/🔒), removable w/ ×, loading shimmer, square, only-dot.
+
+**avatar-pack.css** `components/avatar-pack.css` (CSS) — tags: avatar-pack sizes xs sm md lg xl 2xl square squircle status-dot online away busy offline animated-ring bordered gradient-ring role-badge stack identicon bump
+  14 avatar variants: sizes (xs-2xl), shapes (round/squircle/square), 8 color presets, status-dot (online/away/busy/off), animated-online pulse ring, bordered, gradient conic ring, role-badge corner, group-stack w/ overflow, identicon (4-color conic), bump animation.
+
+**list-pack.css** `components/list-pack.css` (CSS) — tags: list-pack settings-list action-list contact-list todo-list key-value-list transaction-list-2 command-list picker-list radio
+  8 list patterns: settings-list (label + control rows + section dividers), action-list (icon + label + chevron, danger variant), contact-list (avatar + presence + unread count), todo-list (tickable items + add row), key-value-list (copy on click), transaction-list-2 (grouped by date), command-list (cmd-palette rows w/ kbd), picker-list (radio-like).
+
+**menu-pack.css** `components/menu-pack.css` (CSS) — tags: menu-pack context-menu right-click submenu segment-menu link-mega-menu cards profile-menu avatar kebab-menu shortcut kbd
+  6 menu patterns: context-menu (with submenu/section/danger/disabled), right-click body menu, segment-menu (Linear command segment), link-mega-menu (600px panel w/ cards + featured), profile-menu (avatar header + items + kbd), kebab-menu (3-dot trigger).
+
+**heading-pack.css** `typography/heading-pack.css` (CSS) — tags: heading-pack editorial-serif italic mono-tech gradient-fill outlined kicker-top eyebrow-bar balanced oversized-hero paragraph-style number-prefix two-tone label-stack
+  12 heading styles: editorial-serif (italic Playfair), mono-tech (with `$ ` prefix), gradient-fill, outlined (hollow stroke + colored em), kicker-top (small label above), eyebrow-bar (— bar above), text-wrap balanced, oversized-hero (11rem clamp), paragraph-style (reads like sentence), number-prefix (01.), two-tone (colored em), label-stack (label chips above).
+
+**page-transitions-2.css** `animations/page-transitions-2.css` (CSS) — tags: page-transitions-2 slide-up slide-stack fade-cross curtain-up iris morph-clip perspective-flip ribbon-wipe is-in is-out @property
+  8 page transitions (extending transitions/page-transition-* set): slide-up, slide-stack (outgoing scales + new slides in), fade-cross, curtain-up, iris (clip from center), morph-clip, perspective-flip, ribbon-wipe diagonal.
+
+**loading-pages.css** `components/loading-pages.css` (CSS) — tags: loading-pages center-spinner skeleton-page progress-bar brand-splash logo pulse percent-bar multi-step-loader pomodoro
+  6 full-page loading states: center-spinner (ring + msg), skeleton-page (head + sub + lines + grid of cards shimmer), progress-page (fixed top bar at --p%), brand-splash (logo pulse + 3 dots), percent-bar-page (huge gradient % + bar), multi-step-loader (steps with active spinner + done check).

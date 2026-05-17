@@ -1,0 +1,288 @@
+/* ============================================
+   MODAL PACK — 8 modal/dialog variants (distinct from components/modals.css)
+   confirm-modal, alert-modal, drawer-side, full-screen, slide-over-right,
+   image-modal, video-modal, multi-step-modal
+   ============================================ */
+
+:where(.md-confirm, .md-alert, .md-drawer, .md-full, .md-slide, .md-img, .md-vid, .md-multi) {
+  --m-bg: #14141e;
+  --m-bg-2: #1f1f2e;
+  --m-fg: #f5f5fa;
+  --m-muted: rgba(245, 245, 250, 0.55);
+  --m-line: rgba(255, 255, 255, 0.08);
+  --m-accent: #8b5cf6;
+  --m-good: #10b981;
+  --m-bad: #ef4444;
+  --m-warn: #f59e0b;
+  color: var(--m-fg);
+  font-family: inherit;
+}
+
+/* Generic backdrop */
+.md-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+  display: grid; place-items: center;
+}
+.md-backdrop.is-open { opacity: 1; pointer-events: auto; }
+
+/* 1. CONFIRM MODAL — Question + Cancel/Confirm */
+.md-confirm {
+  width: 100%; max-width: 360px;
+  padding: 1.4rem;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 14px;
+  text-align: center;
+  transform: scale(0.94) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.32, 1.4, 0.5, 1);
+}
+.md-backdrop.is-open .md-confirm { transform: none; }
+.md-confirm-icon {
+  width: 56px; height: 56px;
+  margin: 0 auto 0.8rem;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--m-accent);
+  display: grid; place-items: center;
+  font-size: 1.6rem;
+}
+.md-confirm h3 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+.md-confirm p { margin: 0 0 1.2rem; color: var(--m-muted); font-size: 0.88rem; line-height: 1.55; }
+.md-confirm-actions { display: flex; gap: 0.4rem; }
+.md-confirm-actions button {
+  flex: 1;
+  appearance: none; border: 0;
+  padding: 0.6rem;
+  border-radius: 8px;
+  font: inherit; font-weight: 600; font-size: 0.88rem;
+  cursor: pointer;
+}
+.md-confirm-actions .cancel { background: var(--m-bg-2); color: var(--m-fg); }
+.md-confirm-actions .confirm { background: var(--m-accent); color: #fff; }
+.md-confirm.danger .md-confirm-icon { background: rgba(239,68,68,0.15); color: var(--m-bad); }
+.md-confirm.danger .md-confirm-actions .confirm { background: var(--m-bad); }
+
+/* 2. ALERT MODAL — Success / error / warn */
+.md-alert {
+  width: 100%; max-width: 380px;
+  padding: 1.8rem 1.4rem 1.4rem;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 16px;
+  text-align: center;
+  position: relative;
+  transform: scale(0.94) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.32, 1.4, 0.5, 1);
+}
+.md-backdrop.is-open .md-alert { transform: none; }
+.md-alert-icon {
+  width: 72px; height: 72px;
+  margin: 0 auto 0.8rem;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 2rem; color: #fff;
+  background: var(--m-good);
+}
+.md-alert-icon::before { content: '✓'; font-weight: 800; }
+.md-alert.error .md-alert-icon { background: var(--m-bad); }
+.md-alert.error .md-alert-icon::before { content: '×'; }
+.md-alert.warn .md-alert-icon { background: var(--m-warn); }
+.md-alert.warn .md-alert-icon::before { content: '!'; }
+.md-alert h3 { margin: 0 0 0.4rem; font-size: 1.2rem; }
+.md-alert p { color: var(--m-muted); margin: 0 0 1.2rem; line-height: 1.55; }
+.md-alert button {
+  width: 100%; appearance: none; border: 0;
+  padding: 0.7rem;
+  background: var(--m-fg); color: #14141e;
+  border-radius: 10px;
+  font: inherit; font-weight: 700;
+  cursor: pointer;
+}
+
+/* 3. DRAWER SIDE — Right-side slide drawer */
+.md-drawer {
+  position: fixed;
+  top: 0; bottom: 0; right: 0;
+  width: 100%; max-width: 420px;
+  background: var(--m-bg);
+  border-left: 1px solid var(--m-line);
+  z-index: 201;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  display: flex; flex-direction: column;
+}
+.md-drawer.is-open { transform: none; }
+.md-drawer-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--m-line);
+}
+.md-drawer-head h3 { margin: 0; font-size: 1.05rem; }
+.md-drawer-x {
+  appearance: none; border: 0;
+  width: 30px; height: 30px;
+  background: transparent; color: var(--m-fg);
+  border-radius: 6px; cursor: pointer;
+}
+.md-drawer-x:hover { background: var(--m-bg-2); }
+.md-drawer-body {
+  flex: 1; padding: 1.2rem;
+  overflow-y: auto;
+}
+.md-drawer-foot {
+  padding: 0.9rem 1.2rem;
+  border-top: 1px solid var(--m-line);
+  display: flex; justify-content: flex-end; gap: 0.4rem;
+}
+.md-drawer-left {
+  left: 0; right: auto;
+  border-left: 0;
+  border-right: 1px solid var(--m-line);
+  transform: translateX(-100%);
+}
+.md-drawer-left.is-open { transform: none; }
+
+/* 4. FULL SCREEN MODAL */
+.md-full {
+  position: fixed; inset: 0;
+  background: var(--m-bg);
+  z-index: 201;
+  transform: scale(1.04);
+  opacity: 0; pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.25s ease;
+  display: flex; flex-direction: column;
+}
+.md-full.is-open { transform: none; opacity: 1; pointer-events: auto; }
+.md-full-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid var(--m-line);
+}
+.md-full-body {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  display: grid; place-items: center;
+}
+
+/* 5. SLIDE OVER — Right-side narrow modal */
+.md-slide {
+  position: fixed;
+  top: 0; bottom: 0; right: 0;
+  width: 100%; max-width: 540px;
+  background: var(--m-bg);
+  border-left: 1px solid var(--m-line);
+  box-shadow: -16px 0 40px -10px rgba(0,0,0,0.4);
+  z-index: 201;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  display: flex; flex-direction: column;
+}
+.md-slide.is-open { transform: none; }
+.md-slide-head {
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid var(--m-line);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.md-slide-body { flex: 1; padding: 1.2rem 1.4rem; overflow-y: auto; }
+
+/* 6. IMAGE MODAL — Full-bleed image with caption */
+.md-img {
+  position: relative;
+  max-width: 90vw; max-height: 90vh;
+  display: grid; gap: 0.6rem;
+  transform: scale(0.94); opacity: 0;
+  transition: transform 0.3s ease, opacity 0.25s ease;
+}
+.md-backdrop.is-open .md-img { transform: none; opacity: 1; }
+.md-img img {
+  max-width: 100%; max-height: 80vh;
+  display: block;
+  border-radius: 8px;
+}
+.md-img-cap {
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.85);
+}
+.md-img-x {
+  position: absolute;
+  top: -16px; right: -16px;
+  width: 36px; height: 36px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  border: 0; border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+
+/* 7. VIDEO MODAL */
+.md-vid {
+  width: 100%; max-width: 900px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  transform: scale(0.94); opacity: 0;
+  transition: transform 0.3s ease, opacity 0.25s ease;
+}
+.md-backdrop.is-open .md-vid { transform: none; opacity: 1; }
+.md-vid video, .md-vid iframe { width: 100%; height: 100%; display: block; border: 0; }
+.md-vid-x {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff; border: 0;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  z-index: 2;
+}
+
+/* 8. MULTI-STEP MODAL — Steps progress + nav */
+.md-multi {
+  width: 100%; max-width: 520px;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 14px;
+  padding: 1.4rem 1.6rem;
+  transform: scale(0.94) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.32, 1.4, 0.5, 1);
+}
+.md-backdrop.is-open .md-multi { transform: none; }
+.md-multi-bar {
+  height: 4px; background: rgba(255,255,255,0.08);
+  border-radius: 2px; overflow: hidden;
+  margin-bottom: 1rem;
+}
+.md-multi-bar > i {
+  display: block; height: 100%;
+  width: var(--p, 33%);
+  background: var(--m-accent);
+  transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.md-multi-step { font-size: 0.78rem; color: var(--m-muted); margin-bottom: 0.4rem; }
+.md-multi h3 { margin: 0 0 0.4rem; font-size: 1.2rem; }
+.md-multi-body { margin-bottom: 1.4rem; min-height: 120px; }
+.md-multi-foot { display: flex; justify-content: space-between; }
+.md-multi-foot button {
+  appearance: none; border: 0;
+  padding: 0.55rem 1.2rem;
+  border-radius: 8px;
+  font: inherit; font-weight: 600; font-size: 0.85rem;
+  cursor: pointer;
+}
+.md-multi-foot .back { background: transparent; color: var(--m-muted); }
+.md-multi-foot .next { background: var(--m-accent); color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .md-backdrop, .md-confirm, .md-alert, .md-drawer, .md-full, .md-slide,
+  .md-img, .md-vid, .md-multi, .md-multi-bar > i { transition: none !important; }
+}

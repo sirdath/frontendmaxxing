@@ -1,0 +1,240 @@
+/* ============================================
+   LOADING PAGES — 6 full-page loading state patterns
+   center-spinner, skeleton-page, progress-page, brand-splash,
+   percent-bar-page, multi-step-loader
+   ============================================ */
+
+:where(.lp-spin, .lp-skel, .lp-prog, .lp-brand, .lp-pct, .lp-multi) {
+  --l-bg: #0a0a14;
+  --l-fg: #f5f5fa;
+  --l-muted: rgba(245, 245, 250, 0.55);
+  --l-accent: #8b5cf6;
+  width: 100%;
+  min-height: 480px;
+  background: var(--l-bg);
+  color: var(--l-fg);
+  display: grid; place-items: center;
+  padding: 2rem 1.4rem;
+  font-family: inherit;
+}
+
+/* 1. CENTER SPINNER */
+.lp-spin {
+  text-align: center;
+}
+.lp-spin-ring {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.08);
+  border-top-color: var(--l-accent);
+  margin: 0 auto 1rem;
+  animation: lp-spin 0.8s linear infinite;
+}
+@keyframes lp-spin { to { transform: rotate(360deg); } }
+.lp-spin-msg {
+  font-size: 0.92rem;
+  color: var(--l-muted);
+}
+.lp-spin-msg b { color: var(--l-fg); font-weight: 600; }
+
+/* 2. SKELETON PAGE */
+.lp-skel {
+  display: block;
+  padding: 4rem 2rem;
+  min-height: 480px;
+}
+.lp-skel-row {
+  height: 12px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+  background-size: 200% 100%;
+  border-radius: 6px;
+  margin-bottom: 0.8rem;
+  animation: lp-shimmer 1.4s linear infinite;
+}
+.lp-skel-row.head { height: 32px; width: 60%; margin-bottom: 1.4rem; }
+.lp-skel-row.sub  { height: 16px; width: 40%; margin-bottom: 1rem; }
+.lp-skel-row.line { width: var(--w, 100%); }
+.lp-skel-row.short { width: 70%; }
+.lp-skel-row.med   { width: 90%; }
+.lp-skel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.lp-skel-card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  padding: 1rem;
+  aspect-ratio: 4/3;
+  animation: lp-shimmer 1.4s linear infinite;
+  background: linear-gradient(110deg, rgba(255,255,255,0.04), rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+  background-size: 200% 100%;
+}
+@keyframes lp-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 3. PROGRESS PAGE — Top progress bar */
+.lp-prog {
+  display: block;
+  padding: 6rem 2rem 2rem;
+  min-height: 480px;
+  text-align: center;
+}
+.lp-prog::before {
+  content: '';
+  position: fixed; top: 0; left: 0;
+  height: 3px;
+  width: var(--p, 30%);
+  background: linear-gradient(90deg, var(--l-accent), #ec4899);
+  z-index: 100;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+  transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.lp-prog-msg {
+  font-size: 1.05rem; font-weight: 600;
+}
+.lp-prog-sub { color: var(--l-muted); margin-top: 0.4rem; font-size: 0.85rem; }
+
+/* 4. BRAND SPLASH — Logo + animated loader */
+.lp-brand {
+  text-align: center;
+}
+.lp-brand-logo {
+  width: 80px; height: 80px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  margin: 0 auto 1.4rem;
+  display: grid; place-items: center;
+  color: #fff;
+  font-weight: 900;
+  font-size: 1.8rem;
+  letter-spacing: -0.04em;
+  animation: lp-brand-pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 16px 36px rgba(139,92,246,0.4));
+}
+@keyframes lp-brand-pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 16px 36px rgba(139,92,246,0.4)); }
+  50%      { transform: scale(1.08); filter: drop-shadow(0 22px 48px rgba(236,72,153,0.55)); }
+}
+.lp-brand-name {
+  font-size: 1.4rem; font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.4rem;
+}
+.lp-brand-dots {
+  display: inline-flex; gap: 6px;
+}
+.lp-brand-dots > i {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--l-accent);
+  animation: lp-brand-dot 1.2s ease-in-out infinite;
+}
+.lp-brand-dots > i:nth-child(2) { animation-delay: 0.18s; }
+.lp-brand-dots > i:nth-child(3) { animation-delay: 0.36s; }
+@keyframes lp-brand-dot {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50%      { transform: scale(1.4); opacity: 1; }
+}
+
+/* 5. PERCENT BAR PAGE — Big % counter */
+.lp-pct {
+  text-align: center;
+}
+.lp-pct-num {
+  font-size: clamp(4rem, 12vw, 8rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(135deg, #fff, #c4b5fd);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 1.4rem;
+}
+.lp-pct-bar {
+  width: min(400px, 80vw);
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+}
+.lp-pct-bar > i {
+  display: block; height: 100%;
+  width: var(--p, 30%);
+  background: linear-gradient(90deg, var(--l-accent), #ec4899);
+  border-radius: inherit;
+  transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.lp-pct-label {
+  font-size: 0.85rem;
+  color: var(--l-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 6. MULTI-STEP LOADER — Step-by-step progress */
+.lp-multi {
+  align-content: center;
+}
+.lp-multi-list {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: 0.6rem;
+  max-width: 360px;
+}
+.lp-multi-step {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.55rem 0.9rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  font-size: 0.92rem;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+.lp-multi-step.is-active {
+  opacity: 1;
+  background: rgba(139, 92, 246, 0.1);
+}
+.lp-multi-step.is-done { opacity: 1; color: var(--l-muted); }
+.lp-multi-tick {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  display: grid; place-items: center;
+  color: transparent;
+}
+.lp-multi-step.is-active .lp-multi-tick {
+  border-color: var(--l-accent);
+  background: transparent;
+  position: relative;
+}
+.lp-multi-step.is-active .lp-multi-tick::before {
+  content: '';
+  position: absolute; inset: 2px;
+  border-radius: 50%;
+  border: 2px solid rgba(139, 92, 246, 0.4);
+  border-top-color: var(--l-accent);
+  animation: lp-multi-spin 0.7s linear infinite;
+}
+@keyframes lp-multi-spin { to { transform: rotate(360deg); } }
+.lp-multi-step.is-done .lp-multi-tick {
+  background: #10b981; border-color: #10b981; color: #fff;
+}
+.lp-multi-step.is-done .lp-multi-tick::after {
+  content: '✓'; font-weight: 800; font-size: 0.72rem;
+}
+.lp-multi-dur {
+  font-size: 0.74rem; color: var(--l-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-spin-ring, .lp-skel-row, .lp-skel-card, .lp-brand-logo,
+  .lp-brand-dots > i, .lp-multi-step.is-active .lp-multi-tick::before { animation: none !important; }
+}

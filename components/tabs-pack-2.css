@@ -1,0 +1,307 @@
+/* ============================================
+   TABS PACK 2 — 8 tab variants (extends components/tabs.css + animated-tabs.css)
+   vertical-tabs, stacked-tabs, icon-tabs, browser-tabs, animated-underline,
+   pill-grow, scrollable-tabs, segmented-tab-card
+   ============================================ */
+
+:where(.tp2-v, .tp2-stk, .tp2-ic, .tp2-brw, .tp2-und, .tp2-grow, .tp2-scr, .tp2-card) {
+  --t-bg: #14141e;
+  --t-bg-2: #1f1f2e;
+  --t-fg: #f5f5fa;
+  --t-muted: rgba(245, 245, 250, 0.55);
+  --t-line: rgba(255, 255, 255, 0.08);
+  --t-accent: #8b5cf6;
+  color: var(--t-fg);
+  font-family: inherit;
+}
+
+/* 1. VERTICAL TABS — Side rail */
+.tp2-v {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1rem;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.tp2-v-list {
+  display: grid; gap: 0.2rem;
+  padding: 0.6rem;
+  border-right: 1px solid var(--t-line);
+  background: var(--t-bg-2);
+}
+.tp2-v-tab {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--t-fg);
+  padding: 0.55rem 0.8rem;
+  border-radius: 6px;
+  text-align: left;
+  font: inherit; font-size: 0.88rem;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.tp2-v-tab:hover { background: rgba(255,255,255,0.04); }
+.tp2-v-tab.is-active {
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--t-accent);
+  font-weight: 600;
+}
+.tp2-v-body { padding: 1.2rem; }
+
+/* 2. STACKED TABS — Browser-style staircase */
+.tp2-stk {
+  display: flex; align-items: end;
+  border-bottom: 2px solid var(--t-accent);
+}
+.tp2-stk-tab {
+  appearance: none; border: 1px solid var(--t-line);
+  border-bottom: 0;
+  background: var(--t-bg);
+  color: var(--t-muted);
+  padding: 0.55rem 1rem;
+  margin-right: -1px;
+  border-radius: 8px 8px 0 0;
+  font: inherit; font-size: 0.85rem;
+  cursor: pointer;
+  position: relative;
+}
+.tp2-stk-tab:hover { color: var(--t-fg); }
+.tp2-stk-tab.is-active {
+  background: var(--t-accent); color: #fff;
+  z-index: 2;
+}
+
+/* 3. ICON TABS — Big icon + label below */
+.tp2-ic {
+  display: inline-flex; gap: 0.4rem;
+  padding: 0.4rem;
+  background: var(--t-bg-2);
+  border-radius: 14px;
+}
+.tp2-ic-tab {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--t-muted);
+  display: grid; place-items: center; gap: 0.2rem;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit; font-size: 0.72rem;
+  min-width: 76px;
+}
+.tp2-ic-tab:hover { color: var(--t-fg); background: rgba(255,255,255,0.04); }
+.tp2-ic-tab.is-active {
+  background: var(--t-bg); color: var(--t-fg);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.tp2-ic-tab-icon {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: rgba(139,92,246,0.18);
+  color: var(--t-accent);
+  display: grid; place-items: center;
+  font-size: 0.95rem;
+}
+.tp2-ic-tab.is-active .tp2-ic-tab-icon { background: var(--t-accent); color: #fff; }
+
+/* 4. BROWSER TABS — Chrome-style with curves */
+.tp2-brw {
+  display: flex; align-items: end;
+  padding: 0 0.4rem;
+  background: var(--t-bg-2);
+  border-bottom: 1px solid var(--t-line);
+}
+.tp2-brw-tab {
+  position: relative;
+  padding: 0.55rem 1.4rem 0.55rem 1rem;
+  margin-right: -8px;
+  font-size: 0.82rem;
+  color: var(--t-muted);
+  background: var(--t-bg-2);
+  cursor: pointer;
+  display: flex; align-items: center; gap: 0.4rem;
+  border: 0;
+  border-radius: 8px 8px 0 0;
+  max-width: 200px;
+}
+.tp2-brw-tab.is-active {
+  background: var(--t-bg);
+  color: var(--t-fg);
+  z-index: 2;
+}
+.tp2-brw-tab.is-active::before, .tp2-brw-tab.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 12px; height: 12px;
+  background: var(--t-bg);
+}
+.tp2-brw-tab.is-active::before {
+  left: -12px;
+  border-radius: 0 0 8px 0;
+  box-shadow: 4px 4px 0 var(--t-bg);
+}
+.tp2-brw-tab.is-active::after {
+  right: -12px;
+  border-radius: 0 0 0 8px;
+  box-shadow: -4px 4px 0 var(--t-bg);
+}
+.tp2-brw-fav {
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  flex: 0 0 14px;
+}
+.tp2-brw-x {
+  appearance: none; border: 0;
+  width: 16px; height: 16px;
+  background: transparent;
+  color: var(--t-muted);
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.85rem; padding: 0;
+  margin-left: auto;
+}
+.tp2-brw-x:hover { background: rgba(255,255,255,0.1); }
+
+/* 5. ANIMATED UNDERLINE — Underline slides between tabs */
+.tp2-und {
+  position: relative;
+  display: inline-flex; gap: 0.5rem;
+  border-bottom: 1px solid var(--t-line);
+}
+.tp2-und-tab {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--t-muted);
+  padding: 0.7rem 0.4rem;
+  font: inherit; font-size: 0.88rem; font-weight: 500;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+.tp2-und-tab:hover { color: var(--t-fg); }
+.tp2-und-tab.is-active { color: var(--t-accent); }
+.tp2-und-line {
+  position: absolute;
+  bottom: -1px;
+  left: var(--lx, 0);
+  width: var(--lw, 60px);
+  height: 2px;
+  background: var(--t-accent);
+  border-radius: 2px;
+  transition: left 0.3s cubic-bezier(0.32, 0.72, 0, 1), width 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* 6. PILL GROW — Active tab expands wider */
+.tp2-grow {
+  display: inline-flex; gap: 0.2rem;
+  padding: 0.3rem;
+  background: var(--t-bg-2);
+  border-radius: 12px;
+}
+.tp2-grow-tab {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--t-muted);
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  font: inherit; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: padding 0.32s cubic-bezier(0.32, 0.72, 0, 1), background 0.18s ease, color 0.18s ease, gap 0.32s ease;
+}
+.tp2-grow-tab > span {
+  max-width: 0; opacity: 0;
+  transition: max-width 0.32s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.2s ease;
+}
+.tp2-grow-tab.is-active {
+  background: var(--t-accent); color: #fff;
+  padding: 0.5rem 1rem;
+  gap: 0.4rem;
+}
+.tp2-grow-tab.is-active > span { max-width: 120px; opacity: 1; }
+.tp2-grow-tab:hover { color: var(--t-fg); }
+
+/* 7. SCROLLABLE TABS — Overflow scroll with fade edges */
+.tp2-scr {
+  display: flex; overflow-x: auto;
+  border-bottom: 1px solid var(--t-line);
+  scrollbar-width: none;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+          mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.tp2-scr::-webkit-scrollbar { display: none; }
+.tp2-scr-tab {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--t-muted);
+  padding: 0.7rem 1rem;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  cursor: pointer;
+  font: inherit; font-size: 0.88rem;
+  position: relative;
+}
+.tp2-scr-tab:hover { color: var(--t-fg); }
+.tp2-scr-tab.is-active {
+  color: var(--t-fg); font-weight: 600;
+}
+.tp2-scr-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 1rem; right: 1rem; bottom: -1px;
+  height: 2px;
+  background: var(--t-accent);
+}
+.tp2-scr-badge {
+  margin-left: 0.3rem;
+  padding: 0.1rem 0.4rem;
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  font-size: 0.7rem;
+}
+.tp2-scr-tab.is-active .tp2-scr-badge { background: var(--t-accent); color: #fff; }
+
+/* 8. SEGMENTED TAB CARD — Card with header tabs */
+.tp2-card {
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.tp2-card-tabs {
+  display: flex;
+  background: var(--t-bg-2);
+  border-bottom: 1px solid var(--t-line);
+}
+.tp2-card-tab {
+  flex: 1;
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--t-muted);
+  padding: 0.8rem 1rem;
+  font: inherit; font-size: 0.88rem; font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+.tp2-card-tab:hover { color: var(--t-fg); }
+.tp2-card-tab.is-active {
+  color: var(--t-fg);
+  background: var(--t-bg);
+}
+.tp2-card-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: var(--t-accent);
+}
+.tp2-card-body { padding: 1.2rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tp2-und-line, .tp2-grow-tab, .tp2-grow-tab > span { transition: none; }
+}

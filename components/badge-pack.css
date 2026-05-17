@@ -1,0 +1,177 @@
+/* ============================================
+   BADGE PACK — 20+ badge / pill variants (extends blocks/badges.css)
+   ============================================
+   Usage: <span class="bp bp-{variant}">Label</span>
+   ============================================ */
+
+.bp {
+  --b-fg: #fff;
+  --b-bg: #8b5cf6;
+  --b-bd: transparent;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.18rem 0.55rem;
+  background: var(--b-bg);
+  color: var(--b-fg);
+  border: 1px solid var(--b-bd);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: inherit;
+  line-height: 1.3;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Solids */
+.bp-solid-violet  { --b-bg: #8b5cf6; }
+.bp-solid-pink    { --b-bg: #ec4899; }
+.bp-solid-cyan    { --b-bg: #06b6d4; }
+.bp-solid-mint    { --b-bg: #10b981; }
+.bp-solid-amber   { --b-bg: #f59e0b; }
+.bp-solid-red     { --b-bg: #ef4444; }
+.bp-solid-slate   { --b-bg: #64748b; }
+.bp-solid-black   { --b-bg: #000; }
+
+/* Soft (tinted) */
+.bp-soft-violet  { --b-bg: rgba(139, 92, 246, 0.15); --b-fg: #c4b5fd; }
+.bp-soft-pink    { --b-bg: rgba(236, 72, 153, 0.15); --b-fg: #f9a8d4; }
+.bp-soft-cyan    { --b-bg: rgba(6, 182, 212, 0.15); --b-fg: #67e8f9; }
+.bp-soft-mint    { --b-bg: rgba(16, 185, 129, 0.15); --b-fg: #6ee7b7; }
+.bp-soft-amber   { --b-bg: rgba(245, 158, 11, 0.15); --b-fg: #fcd34d; }
+.bp-soft-red     { --b-bg: rgba(239, 68, 68, 0.15); --b-fg: #fca5a5; }
+.bp-soft-slate   { --b-bg: rgba(100, 116, 139, 0.15); --b-fg: #cbd5e1; }
+
+/* Outline */
+.bp-outline {
+  --b-bg: transparent;
+  --b-bd: rgba(255, 255, 255, 0.15);
+  --b-fg: rgba(245, 245, 250, 0.85);
+}
+.bp-outline-violet  { --b-bd: #8b5cf6; --b-fg: #c4b5fd; --b-bg: transparent; }
+.bp-outline-pink    { --b-bd: #ec4899; --b-fg: #f9a8d4; --b-bg: transparent; }
+.bp-outline-cyan    { --b-bd: #06b6d4; --b-fg: #67e8f9; --b-bg: transparent; }
+.bp-outline-mint    { --b-bd: #10b981; --b-fg: #6ee7b7; --b-bg: transparent; }
+.bp-outline-amber   { --b-bd: #f59e0b; --b-fg: #fcd34d; --b-bg: transparent; }
+.bp-outline-red     { --b-bd: #ef4444; --b-fg: #fca5a5; --b-bg: transparent; }
+
+/* Status (dot + color) */
+.bp-dot::before {
+  content: ''; width: 6px; height: 6px;
+  border-radius: 50%; background: currentColor;
+}
+.bp-pulse::before {
+  content: ''; width: 8px; height: 8px;
+  border-radius: 50%; background: currentColor;
+  animation: bp-pulse 1.6s ease-out infinite;
+}
+@keyframes bp-pulse {
+  0%   { box-shadow: 0 0 0 0 currentColor; }
+  100% { box-shadow: 0 0 0 6px transparent; }
+}
+
+/* Count badge — small */
+.bp-count {
+  --b-bg: #ef4444;
+  font-size: 0.62rem;
+  min-width: 16px; height: 16px;
+  padding: 0 4px;
+  border-radius: 99px;
+  display: inline-grid; place-items: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+.bp-count-lg {
+  font-size: 0.7rem;
+  min-width: 22px; height: 22px;
+  padding: 0 6px;
+}
+
+/* Gradient */
+.bp-gradient-1 {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  --b-fg: #fff;
+}
+.bp-gradient-2 {
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+  --b-fg: #fff;
+}
+.bp-gradient-3 {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  --b-fg: #fff;
+}
+.bp-gradient-4 {
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  --b-fg: #fff;
+}
+
+/* Beta / new / pro tags */
+.bp-beta { --b-bg: rgba(245, 158, 11, 0.15); --b-fg: #fcd34d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.6rem; }
+.bp-new  { --b-bg: #10b981; --b-fg: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.6rem; }
+.bp-pro  { background: linear-gradient(135deg, #fbbf24, #f59e0b); --b-fg: #422006; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.6rem; }
+.bp-soon { --b-bg: rgba(6, 182, 212, 0.15); --b-fg: #67e8f9; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.6rem; }
+
+/* Icon-leading */
+.bp-ic-star::before  { content: '★'; }
+.bp-ic-check::before { content: '✓'; font-weight: 800; }
+.bp-ic-bolt::before  { content: '⚡'; }
+.bp-ic-fire::before  { content: '🔥'; }
+.bp-ic-spark::before { content: '✦'; }
+.bp-ic-lock::before  { content: '🔒'; }
+
+/* Sizes */
+.bp-sm { font-size: 0.62rem; padding: 0.1rem 0.4rem; }
+.bp-lg { font-size: 0.85rem; padding: 0.3rem 0.85rem; }
+
+/* Removable */
+.bp-x {
+  margin-left: 0.2rem;
+  width: 14px; height: 14px;
+  border: 0; background: rgba(0,0,0,0.2);
+  color: inherit;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.7rem; line-height: 1; padding: 0;
+  display: inline-grid; place-items: center;
+}
+.bp-x:hover { background: rgba(0,0,0,0.35); }
+
+/* Loading shimmer */
+.bp-loading {
+  --b-bg: rgba(255,255,255,0.08);
+  --b-fg: rgba(255,255,255,0.5);
+  position: relative;
+  overflow: hidden;
+}
+.bp-loading::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: bp-shimmer 1.4s linear infinite;
+}
+@keyframes bp-shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+/* Square badge */
+.bp-sq {
+  border-radius: 4px;
+  font-family: ui-monospace, monospace;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+}
+
+/* Notification numeric dot (no text) */
+.bp-only-dot {
+  width: 8px; height: 8px;
+  background: #ef4444;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 0;
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-pulse::before, .bp-loading::after { animation: none; }
+}

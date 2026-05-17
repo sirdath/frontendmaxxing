@@ -1,0 +1,142 @@
+/* ============================================
+   PAGE TRANSITIONS 2 — 8 page-level transitions
+   (extends existing transitions/page-transition-* set)
+   slide-up, slide-stack, fade-cross, curtain-up, iris,
+   morph-clip, perspective-flip, ribbon-wipe
+   ============================================
+   Usage:
+     <div class="pt2 pt2-slide-up">…page content…</div>
+     // toggle .is-out for exit, .is-in for entrance
+   ============================================ */
+
+.pt2 {
+  --pt-dur: 0.6s;
+  --pt-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+}
+
+/* 1. SLIDE UP — Slide in from below */
+.pt2-slide-up.is-in {
+  animation: pt2-slide-up var(--pt-dur) var(--pt-ease);
+}
+.pt2-slide-up.is-out {
+  animation: pt2-slide-up-out var(--pt-dur) var(--pt-ease) forwards;
+}
+@keyframes pt2-slide-up {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+@keyframes pt2-slide-up-out {
+  to   { transform: translateY(-40px); opacity: 0; }
+}
+
+/* 2. SLIDE STACK — Outgoing scales down + new slides in */
+.pt2-slide-stack { display: grid; }
+.pt2-slide-stack > * { grid-area: 1 / 1; }
+.pt2-slide-stack .is-out {
+  animation: pt2-stack-out 0.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.pt2-slide-stack .is-in {
+  animation: pt2-stack-in 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both;
+}
+@keyframes pt2-stack-out {
+  from { transform: none; opacity: 1; filter: blur(0); }
+  to   { transform: scale(0.92); opacity: 0; filter: blur(8px); }
+}
+@keyframes pt2-stack-in {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+/* 3. FADE CROSS — Smooth crossfade */
+.pt2-fade-cross { display: grid; }
+.pt2-fade-cross > * { grid-area: 1 / 1; }
+.pt2-fade-cross .is-out { animation: pt2-fade-out 0.4s ease forwards; }
+.pt2-fade-cross .is-in { animation: pt2-fade-in 0.4s ease 0.1s both; }
+@keyframes pt2-fade-out { to { opacity: 0; } }
+@keyframes pt2-fade-in { from { opacity: 0; } }
+
+/* 4. CURTAIN UP — Vertical bar wipes up */
+.pt2-curtain-up::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--pt-curtain, linear-gradient(180deg, #14141e, #1f1f2e));
+  z-index: 10;
+  transform: translateY(0);
+  animation: pt2-curtain-up var(--pt-dur) cubic-bezier(0.83, 0, 0.17, 1) forwards;
+}
+@keyframes pt2-curtain-up {
+  0%   { transform: translateY(100%); }
+  50%  { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+/* 5. IRIS — Circle expands from center */
+.pt2-iris {
+  -webkit-mask: radial-gradient(circle at center, #000 var(--iris-r, 0%), transparent var(--iris-r2, 0%));
+          mask: radial-gradient(circle at center, #000 var(--iris-r, 0%), transparent var(--iris-r2, 0%));
+  animation: pt2-iris var(--pt-dur) ease-out forwards;
+}
+@keyframes pt2-iris {
+  0%   { --iris-r: 0%; --iris-r2: 0%; }
+  100% { --iris-r: 100%; --iris-r2: 150%; }
+}
+@property --iris-r  { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
+@property --iris-r2 { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
+
+/* 6. MORPH CLIP — Clip-path morph */
+.pt2-morph-clip.is-in {
+  animation: pt2-morph var(--pt-dur) cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+@keyframes pt2-morph {
+  0%   { clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); }
+  100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+}
+
+/* 7. PERSPECTIVE FLIP */
+.pt2-perspective-flip {
+  perspective: 1000px;
+}
+.pt2-perspective-flip > * {
+  transform-style: preserve-3d;
+}
+.pt2-perspective-flip .is-out {
+  animation: pt2-flip-out 0.5s ease forwards;
+}
+.pt2-perspective-flip .is-in {
+  animation: pt2-flip-in 0.5s ease 0.2s both;
+}
+@keyframes pt2-flip-out {
+  to { transform: rotateY(-180deg); opacity: 0; }
+}
+@keyframes pt2-flip-in {
+  from { transform: rotateY(180deg); opacity: 0; }
+  to   { transform: rotateY(0); opacity: 1; }
+}
+
+/* 8. RIBBON WIPE — Diagonal ribbon sweeps */
+.pt2-ribbon-wipe::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 0%, transparent 50%, var(--pt-accent, #8b5cf6) 50%, var(--pt-accent, #8b5cf6) 100%);
+  background-size: 200% 200%;
+  background-position: 100% 100%;
+  z-index: 10;
+  animation: pt2-ribbon var(--pt-dur) cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  pointer-events: none;
+}
+@keyframes pt2-ribbon {
+  0%   { background-position: 100% 100%; }
+  50%  { background-position: 50% 50%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* Speed modifiers */
+.pt2-fast { --pt-dur: 0.32s; }
+.pt2-slow { --pt-dur: 1.1s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pt2, .pt2 * { animation: none !important; transition: none !important; }
+}

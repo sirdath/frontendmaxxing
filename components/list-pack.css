@@ -1,0 +1,320 @@
+/* ============================================
+   LIST PACK — 8 list patterns
+   settings-list, action-list, contact-list, todo-list,
+   key-value-list, transaction-list-2, command-list, picker-list
+   ============================================ */
+
+:where(.lp-set, .lp-act, .lp-contact, .lp-todo, .lp-kv, .lp-tx, .lp-cmd, .lp-pick) {
+  --l-bg: #14141e;
+  --l-bg-2: #1f1f2e;
+  --l-fg: #f5f5fa;
+  --l-muted: rgba(245, 245, 250, 0.55);
+  --l-line: rgba(255, 255, 255, 0.08);
+  --l-accent: #8b5cf6;
+  color: var(--l-fg);
+  font-family: inherit;
+}
+
+/* 1. SETTINGS LIST — Label + control rows */
+.lp-set {
+  background: var(--l-bg);
+  border: 1px solid var(--l-line);
+  border-radius: 14px;
+  overflow: hidden;
+  width: 100%; max-width: 540px;
+}
+.lp-set-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.85rem 1.2rem;
+  border-bottom: 1px solid var(--l-line);
+}
+.lp-set-row:last-child { border-bottom: 0; }
+.lp-set-row:hover { background: rgba(255,255,255,0.02); }
+.lp-set-label { font-weight: 500; font-size: 0.92rem; }
+.lp-set-help { font-size: 0.78rem; color: var(--l-muted); margin-top: 0.15rem; }
+.lp-set-control { display: flex; align-items: center; gap: 0.5rem; }
+.lp-set-section {
+  background: var(--l-bg-2);
+  padding: 0.4rem 1.2rem;
+  font-size: 0.7rem; color: var(--l-muted);
+  letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;
+}
+
+/* 2. ACTION LIST — Big icon + label + chevron */
+.lp-act {
+  background: var(--l-bg);
+  border: 1px solid var(--l-line);
+  border-radius: 14px;
+  overflow: hidden;
+  width: 100%; max-width: 460px;
+}
+.lp-act-item {
+  display: grid;
+  grid-template-columns: 40px 1fr 18px;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--l-line);
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--l-fg);
+}
+.lp-act-item:last-child { border-bottom: 0; }
+.lp-act-item:hover { background: var(--l-bg-2); }
+.lp-act-ic {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--l-accent);
+  display: grid; place-items: center;
+  font-size: 1.05rem;
+}
+.lp-act-body b { display: block; font-weight: 600; font-size: 0.92rem; }
+.lp-act-body small { font-size: 0.78rem; color: var(--l-muted); }
+.lp-act-chev { color: var(--l-muted); font-size: 1.2rem; }
+.lp-act-item.danger .lp-act-ic { background: rgba(239,68,68,0.15); color: #ef4444; }
+.lp-act-item.danger { color: #ef4444; }
+
+/* 3. CONTACT LIST — Avatar + name + last + time */
+.lp-contact {
+  background: var(--l-bg);
+  border: 1px solid var(--l-line);
+  border-radius: 14px;
+  overflow: hidden;
+  width: 100%; max-width: 480px;
+}
+.lp-contact-row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--l-line);
+  cursor: pointer;
+}
+.lp-contact-row:last-child { border-bottom: 0; }
+.lp-contact-row:hover { background: var(--l-bg-2); }
+.lp-contact-row.is-active { background: rgba(139,92,246,0.08); }
+.lp-contact-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  position: relative;
+}
+.lp-contact-avatar::after {
+  content: ''; position: absolute;
+  bottom: -1px; right: -1px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid var(--l-bg);
+}
+.lp-contact-avatar.off::after { background: var(--l-muted); }
+.lp-contact-name { font-weight: 600; font-size: 0.92rem; display: flex; align-items: center; gap: 0.3rem; }
+.lp-contact-last { font-size: 0.78rem; color: var(--l-muted); margin-top: 0.15rem; overflow: hidden; text-overflow: ellipsis; }
+.lp-contact-meta {
+  display: grid; gap: 0.2rem;
+  text-align: right;
+}
+.lp-contact-time { font-size: 0.7rem; color: var(--l-muted); }
+.lp-contact-unread {
+  display: inline-grid; place-items: center;
+  min-width: 18px; height: 18px;
+  padding: 0 5px;
+  background: var(--l-accent); color: #fff;
+  border-radius: 99px;
+  font-size: 0.62rem; font-weight: 800;
+  justify-self: end;
+}
+
+/* 4. TODO LIST */
+.lp-todo {
+  background: var(--l-bg);
+  border: 1px solid var(--l-line);
+  border-radius: 12px;
+  padding: 0.4rem;
+}
+.lp-todo-item {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+}
+.lp-todo-item:hover { background: var(--l-bg-2); }
+.lp-todo-tick {
+  appearance: none; border: 1.5px solid rgba(255,255,255,0.2);
+  background: transparent;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid; place-items: center;
+  color: transparent;
+}
+.lp-todo-item.is-done .lp-todo-tick {
+  background: var(--l-accent); border-color: var(--l-accent); color: #fff;
+}
+.lp-todo-item.is-done .lp-todo-tick::after { content: '✓'; font-size: 0.7rem; font-weight: 800; }
+.lp-todo-text { font-size: 0.92rem; }
+.lp-todo-item.is-done .lp-todo-text { color: var(--l-muted); text-decoration: line-through; }
+.lp-todo-tag {
+  padding: 0.1rem 0.4rem;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--l-muted);
+}
+.lp-todo-tag.urgent { background: rgba(239,68,68,0.15); color: #ef4444; }
+.lp-todo-add {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+  color: var(--l-muted);
+  font-size: 0.85rem;
+}
+.lp-todo-add::before {
+  content: '+';
+  width: 22px; height: 22px;
+  border: 1.5px dashed rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: grid; place-items: center;
+}
+
+/* 5. KEY VALUE LIST — Detail / metadata pairs */
+.lp-kv {
+  display: grid;
+  gap: 0;
+  background: var(--l-bg);
+  border: 1px solid var(--l-line);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 0.85rem;
+  width: 100%; max-width: 480px;
+}
+.lp-kv-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0.6rem;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--l-line);
+}
+.lp-kv-row:last-child { border-bottom: 0; }
+.lp-kv-row > b { font-weight: 500; color: var(--l-muted); }
+.lp-kv-row > span { font-family: ui-monospace, monospace; font-size: 0.82rem; }
+.lp-kv-row.copy { cursor: pointer; }
+.lp-kv-row.copy:hover { background: var(--l-bg-2); }
+
+/* 6. TRANSACTION LIST 2 — Sub-grouped by date */
+.lp-tx { display: grid; gap: 0.5rem; }
+.lp-tx-group { display: grid; gap: 0.3rem; }
+.lp-tx-date {
+  font-size: 0.72rem; color: var(--l-muted);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding-left: 0.4rem;
+}
+.lp-tx-item {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.6rem 0.9rem;
+  background: var(--l-bg);
+  border: 1px solid var(--l-line);
+  border-radius: 10px;
+}
+.lp-tx-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--l-accent);
+  display: grid; place-items: center;
+  font-weight: 700;
+}
+.lp-tx-name { font-weight: 600; font-size: 0.9rem; }
+.lp-tx-sub  { font-size: 0.74rem; color: var(--l-muted); }
+.lp-tx-amt  { font-weight: 700; font-variant-numeric: tabular-nums; }
+.lp-tx-amt.up   { color: #10b981; }
+.lp-tx-amt.down { color: #ef4444; }
+
+/* 7. COMMAND LIST — Cmd palette result list */
+.lp-cmd {
+  background: var(--l-bg);
+  border: 1px solid var(--l-line);
+  border-radius: 12px;
+  padding: 0.3rem;
+  width: 100%; max-width: 480px;
+}
+.lp-cmd-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 0.6rem; align-items: center;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.88rem;
+}
+.lp-cmd-row:hover, .lp-cmd-row.is-active {
+  background: rgba(139, 92, 246, 0.15);
+}
+.lp-cmd-icon {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: var(--l-bg-2);
+  display: grid; place-items: center;
+  font-size: 0.85rem;
+  color: var(--l-muted);
+}
+.lp-cmd-name { font-weight: 500; }
+.lp-cmd-meta { font-size: 0.74rem; color: var(--l-muted); }
+.lp-cmd-kbd {
+  display: inline-flex; gap: 0.15rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.7rem;
+}
+.lp-cmd-kbd kbd {
+  padding: 0.05rem 0.35rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--l-line);
+  border-radius: 4px;
+}
+
+/* 8. PICKER LIST — Selectable list (radio-like) */
+.lp-pick {
+  background: var(--l-bg);
+  border: 1px solid var(--l-line);
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100%; max-width: 380px;
+}
+.lp-pick-row {
+  display: grid;
+  grid-template-columns: 1fr 22px;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--l-line);
+  cursor: pointer;
+}
+.lp-pick-row:last-child { border-bottom: 0; }
+.lp-pick-row:hover { background: var(--l-bg-2); }
+.lp-pick-row.is-picked { background: rgba(139, 92, 246, 0.08); }
+.lp-pick-label { font-weight: 500; }
+.lp-pick-desc { font-size: 0.78rem; color: var(--l-muted); margin-top: 0.1rem; }
+.lp-pick-tick {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  display: grid; place-items: center;
+}
+.lp-pick-row.is-picked .lp-pick-tick {
+  background: var(--l-accent); border-color: var(--l-accent);
+}
+.lp-pick-row.is-picked .lp-pick-tick::after { content: '✓'; color: #fff; font-size: 0.72rem; font-weight: 800; }

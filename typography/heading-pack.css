@@ -1,0 +1,203 @@
+/* ============================================
+   HEADING PACK — 12 heading style variants
+   editorial-serif, mono-tech, gradient-fill, outlined, kicker-top,
+   eyebrow-with-bar, balanced, oversized-hero, paragraph-style,
+   number-prefix, two-tone, label-stack
+   ============================================ */
+
+:where(.hp-edit, .hp-mono, .hp-grad, .hp-out, .hp-kick, .hp-eye,
+       .hp-bal, .hp-overs, .hp-para, .hp-num, .hp-two, .hp-stack) {
+  --hp-fg: #f5f5fa;
+  --hp-muted: rgba(245, 245, 250, 0.6);
+  --hp-accent: #8b5cf6;
+  color: var(--hp-fg);
+  font-family: inherit;
+}
+
+/* 1. EDITORIAL SERIF — Big serif headline */
+.hp-edit {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-style: italic;
+}
+.hp-edit em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--hp-accent), #ec4899);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 2. MONO TECH — Code-monospace headline */
+.hp-mono {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: clamp(1.8rem, 4.5vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+.hp-mono::before {
+  content: '$ ';
+  color: var(--hp-accent);
+  opacity: 0.5;
+}
+
+/* 3. GRADIENT FILL */
+.hp-grad {
+  font-size: clamp(2.4rem, 7vw, 5.6rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  background: linear-gradient(135deg, #fff 0%, #c4b5fd 60%, #ec4899 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 4. OUTLINED — Hollow outline */
+.hp-out {
+  font-size: clamp(2.8rem, 8vw, 6.4rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--hp-fg);
+  text-stroke: 1px var(--hp-fg);
+}
+.hp-out em {
+  font-style: normal;
+  color: var(--hp-fg);
+  -webkit-text-stroke: 0;
+}
+
+/* 5. KICKER TOP — Small label above */
+.hp-kick {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.hp-kick::before {
+  content: attr(data-kicker);
+  display: block;
+  font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--hp-accent);
+  margin-bottom: 0.6rem;
+}
+
+/* 6. EYEBROW WITH BAR — "— FEATURED —" style */
+.hp-eye {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.hp-eye::before {
+  content: '';
+  display: block;
+  width: 40px; height: 3px;
+  background: var(--hp-accent);
+  margin-bottom: 0.7rem;
+  border-radius: 2px;
+}
+
+/* 7. BALANCED — text-wrap balance for clean wraps */
+.hp-bal {
+  font-size: clamp(1.6rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-wrap: balance;
+  max-width: 720px;
+}
+
+/* 8. OVERSIZED HERO */
+.hp-overs {
+  font-size: clamp(3rem, 14vw, 11rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  text-wrap: balance;
+}
+
+/* 9. PARAGRAPH STYLE — Heading reads like a sentence */
+.hp-para {
+  font-size: clamp(1.2rem, 2.6vw, 1.8rem);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--hp-muted);
+  max-width: 720px;
+}
+.hp-para strong {
+  color: var(--hp-fg); font-weight: 700;
+}
+
+/* 10. NUMBER PREFIX — "01. Title" */
+.hp-num {
+  display: flex; align-items: baseline; gap: 1rem;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.hp-num::before {
+  content: attr(data-num);
+  font-size: 0.65em;
+  color: var(--hp-accent);
+  font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, monospace;
+  font-weight: 600;
+}
+
+/* 11. TWO TONE — First word colored differently */
+.hp-two {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.hp-two em {
+  font-style: normal;
+  color: var(--hp-accent);
+}
+
+/* 12. LABEL STACK — Multiple labels stacked above heading */
+.hp-stack {
+  display: grid; gap: 0.3rem;
+}
+.hp-stack > h2 {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.1;
+}
+.hp-stack-labels {
+  display: flex; gap: 0.4rem; flex-wrap: wrap;
+  margin-bottom: 0.3rem;
+}
+.hp-stack-labels span {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  font-size: 0.7rem; font-weight: 600;
+  color: var(--hp-muted);
+  letter-spacing: 0.04em;
+}
+.hp-stack-labels span.accent {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: var(--hp-accent);
+}
+.hp-stack-sub {
+  color: var(--hp-muted);
+  font-size: 0.95rem;
+  max-width: 680px;
+  line-height: 1.5;
+}

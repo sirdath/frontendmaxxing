@@ -1,0 +1,262 @@
+/* ============================================
+   MENU PACK — 6 menu/dropdown patterns
+   context-menu, right-click-menu, segment-menu, link-mega-menu,
+   profile-menu, kebab-menu
+   ============================================ */
+
+:where(.mn-ctx, .mn-rclick, .mn-seg, .mn-link, .mn-prof, .mn-keb) {
+  --m-bg: #14141e;
+  --m-bg-2: #1f1f2e;
+  --m-fg: #f5f5fa;
+  --m-muted: rgba(245, 245, 250, 0.55);
+  --m-line: rgba(255, 255, 255, 0.08);
+  --m-accent: #8b5cf6;
+  --m-bad: #ef4444;
+  color: var(--m-fg);
+  font-family: inherit;
+}
+
+/* 1. CONTEXT MENU — Right-click dropdown */
+.mn-ctx {
+  position: absolute;
+  min-width: 220px;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 8px;
+  padding: 0.3rem;
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  opacity: 0; transform: translateY(-4px) scale(0.96);
+  transform-origin: top left;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.mn-ctx.is-open { opacity: 1; transform: none; pointer-events: auto; }
+.mn-ctx-item {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: 0.5rem; align-items: center;
+  padding: 0.4rem 0.6rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.mn-ctx-item:hover { background: rgba(139,92,246,0.15); }
+.mn-ctx-item.is-active { background: rgba(139,92,246,0.18); }
+.mn-ctx-item.danger:hover { background: rgba(239,68,68,0.15); color: var(--m-bad); }
+.mn-ctx-item.disabled { opacity: 0.4; cursor: not-allowed; }
+.mn-ctx-ic { width: 18px; height: 18px; color: var(--m-muted); display: grid; place-items: center; font-size: 0.78rem; }
+.mn-ctx-shortcut {
+  font-family: ui-monospace, monospace;
+  font-size: 0.7rem;
+  color: var(--m-muted);
+}
+.mn-ctx-divider {
+  height: 1px;
+  background: var(--m-line);
+  margin: 0.2rem 0.3rem;
+}
+.mn-ctx-section {
+  padding: 0.4rem 0.7rem 0.2rem;
+  font-size: 0.66rem;
+  color: var(--m-muted);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* Submenu */
+.mn-ctx-sub { position: relative; }
+.mn-ctx-sub::after { content: '›'; color: var(--m-muted); }
+.mn-ctx-sub-panel {
+  position: absolute;
+  top: 0; left: 100%;
+  margin-left: 4px;
+  min-width: 200px;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 8px;
+  padding: 0.3rem;
+  display: none;
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.5);
+}
+.mn-ctx-sub:hover > .mn-ctx-sub-panel { display: block; }
+
+/* 2. RIGHT-CLICK STYLE — Same as ctx but for body */
+.mn-rclick { user-select: none; }
+
+/* 3. SEGMENT MENU — Linear-style command segment */
+.mn-seg {
+  display: inline-flex;
+  background: var(--m-bg-2);
+  border: 1px solid var(--m-line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.mn-seg button {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--m-fg);
+  padding: 0.45rem 0.7rem;
+  font: inherit; font-size: 0.82rem; font-weight: 500;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+}
+.mn-seg button:hover { background: rgba(255, 255, 255, 0.06); }
+.mn-seg button.is-active { background: var(--m-accent); color: #fff; }
+.mn-seg-divider {
+  width: 1px; align-self: stretch;
+  background: var(--m-line);
+}
+
+/* 4. LINK MEGA MENU — Big dropdown panel with cards */
+.mn-link {
+  position: absolute;
+  top: 100%; left: 0;
+  margin-top: 8px;
+  width: 600px; max-width: calc(100vw - 32px);
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1rem;
+  z-index: 100;
+}
+.mn-link-cols {
+  display: grid;
+  gap: 0.2rem;
+}
+.mn-link-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 0.6rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+.mn-link-item:hover { background: rgba(255,255,255,0.04); }
+.mn-link-ic {
+  width: 32px; height: 32px;
+  background: rgba(139,92,246,0.15);
+  color: var(--m-accent);
+  border-radius: 8px;
+  display: grid; place-items: center;
+  font-size: 0.95rem;
+}
+.mn-link-name { font-weight: 600; font-size: 0.88rem; }
+.mn-link-desc { font-size: 0.74rem; color: var(--m-muted); }
+.mn-link-feat {
+  background: linear-gradient(160deg, rgba(139,92,246,0.1), rgba(236,72,153,0.05));
+  border: 1px solid var(--m-line);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.mn-link-feat h4 { margin: 0 0 0.4rem; font-size: 0.92rem; }
+.mn-link-feat p { font-size: 0.78rem; color: var(--m-muted); line-height: 1.5; margin: 0 0 0.7rem; }
+.mn-link-feat-cta {
+  display: inline-block;
+  color: var(--m-accent);
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+.mn-link-feat-cta::after { content: ' →'; }
+
+/* 5. PROFILE MENU — Avatar dropdown */
+.mn-prof {
+  width: 240px;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 10px;
+  padding: 0.4rem;
+  box-shadow: 0 16px 36px -10px rgba(0,0,0,0.5);
+}
+.mn-prof-head {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid var(--m-line);
+  margin-bottom: 0.3rem;
+}
+.mn-prof-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.mn-prof-name { font-weight: 700; font-size: 0.92rem; }
+.mn-prof-email { font-size: 0.76rem; color: var(--m-muted); }
+.mn-prof-item {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  gap: 0.5rem; align-items: center;
+  padding: 0.45rem 0.55rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  color: var(--m-fg);
+  text-decoration: none;
+  cursor: pointer;
+}
+.mn-prof-item:hover { background: rgba(255,255,255,0.05); }
+.mn-prof-kbd {
+  font-family: ui-monospace, monospace;
+  font-size: 0.7rem;
+  color: var(--m-muted);
+}
+.mn-prof-divider {
+  height: 1px;
+  background: var(--m-line);
+  margin: 0.3rem 0.4rem;
+}
+.mn-prof-item.danger:hover { background: rgba(239,68,68,0.1); color: var(--m-bad); }
+
+/* 6. KEBAB MENU — 3-dot icon trigger menu */
+.mn-keb {
+  position: relative;
+  display: inline-block;
+}
+.mn-keb-trig {
+  appearance: none; border: 0;
+  width: 30px; height: 30px;
+  background: transparent;
+  color: var(--m-fg);
+  border-radius: 5px;
+  cursor: pointer;
+  display: grid; place-items: center;
+  font-size: 1rem;
+}
+.mn-keb-trig:hover { background: rgba(255,255,255,0.06); }
+.mn-keb-trig.is-open { background: rgba(139,92,246,0.18); color: var(--m-accent); }
+.mn-keb-menu {
+  position: absolute;
+  top: 100%; right: 0;
+  margin-top: 4px;
+  min-width: 180px;
+  background: var(--m-bg);
+  border: 1px solid var(--m-line);
+  border-radius: 8px;
+  padding: 0.3rem;
+  box-shadow: 0 12px 30px -8px rgba(0,0,0,0.5);
+  opacity: 0; transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 100;
+}
+.mn-keb.is-open .mn-keb-menu {
+  opacity: 1; transform: none; pointer-events: auto;
+}
+.mn-keb-item {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  color: var(--m-fg);
+  text-decoration: none;
+  cursor: pointer;
+}
+.mn-keb-item:hover { background: rgba(255,255,255,0.05); }
+.mn-keb-item.danger:hover { background: rgba(239,68,68,0.1); color: var(--m-bad); }
