@@ -1,0 +1,264 @@
+/* ============================================
+   SPINNER PACK — 16 loading spinner variants (extends blocks/loaders.css)
+   ring, dual-ring, dots-3, dots-orbit, bars-3, bars-5, pulse-circle,
+   ellipsis-grow, ripple, spinner-grow, gradient-ring, square-flip,
+   wave-bars, infinity, atom, hourglass
+   ============================================ */
+
+.sp {
+  --s-c: #8b5cf6;
+  --s-c2: #ec4899;
+  --s-s: 36px;
+  --s-w: 4px;
+  display: inline-block;
+  width: var(--s-s); height: var(--s-s);
+  position: relative;
+  vertical-align: middle;
+}
+.sp-sm { --s-s: 24px; --s-w: 3px; }
+.sp-lg { --s-s: 56px; --s-w: 5px; }
+.sp-xl { --s-s: 80px; --s-w: 6px; }
+
+/* 1. RING */
+.sp-ring {
+  border: var(--s-w) solid rgba(255, 255, 255, 0.08);
+  border-top-color: var(--s-c);
+  border-radius: 50%;
+  animation: sp-spin 0.7s linear infinite;
+}
+@keyframes sp-spin { to { transform: rotate(360deg); } }
+
+/* 2. DUAL RING */
+.sp-dual-ring {
+  border: var(--s-w) solid transparent;
+  border-top-color: var(--s-c);
+  border-bottom-color: var(--s-c2);
+  border-radius: 50%;
+  animation: sp-spin 1.1s linear infinite;
+}
+
+/* 3. DOTS-3 */
+.sp-dots-3 {
+  display: inline-flex; align-items: center; gap: 4px;
+  width: auto;
+}
+.sp-dots-3::before, .sp-dots-3::after,
+.sp-dots-3 > i {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--s-c);
+  animation: sp-bounce 1.2s ease-in-out infinite;
+}
+.sp-dots-3::after { animation-delay: 0.2s; }
+.sp-dots-3 > i    { animation-delay: 0.4s; }
+@keyframes sp-bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30%           { transform: translateY(-8px); }
+}
+
+/* 4. DOTS ORBIT */
+.sp-dots-orbit::before, .sp-dots-orbit::after {
+  content: '';
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--s-c);
+  top: 50%; left: 50%;
+  margin: -4px;
+  animation: sp-orbit 1.5s linear infinite;
+}
+.sp-dots-orbit::after { animation-delay: -0.75s; background: var(--s-c2); }
+@keyframes sp-orbit {
+  0%   { transform: rotate(0) translateX(calc(var(--s-s) / 2 - 4px)); }
+  100% { transform: rotate(360deg) translateX(calc(var(--s-s) / 2 - 4px)); }
+}
+
+/* 5. BARS-3 */
+.sp-bars-3 {
+  display: inline-flex; align-items: center; gap: 3px;
+  width: auto;
+}
+.sp-bars-3 > i {
+  width: 4px; height: var(--s-s);
+  background: var(--s-c);
+  animation: sp-bar 1s ease-in-out infinite;
+}
+.sp-bars-3 > i:nth-child(1) { animation-delay: 0s; }
+.sp-bars-3 > i:nth-child(2) { animation-delay: 0.15s; }
+.sp-bars-3 > i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes sp-bar {
+  0%, 100% { transform: scaleY(0.5); }
+  50%      { transform: scaleY(1); }
+}
+
+/* 6. BARS-5 */
+.sp-bars-5 {
+  display: inline-flex; align-items: center; gap: 3px;
+  width: auto;
+}
+.sp-bars-5 > i {
+  width: 3px; height: var(--s-s);
+  background: var(--s-c);
+  animation: sp-bar 1s ease-in-out infinite;
+}
+.sp-bars-5 > i:nth-child(1) { animation-delay: 0s; }
+.sp-bars-5 > i:nth-child(2) { animation-delay: 0.1s; }
+.sp-bars-5 > i:nth-child(3) { animation-delay: 0.2s; }
+.sp-bars-5 > i:nth-child(4) { animation-delay: 0.3s; }
+.sp-bars-5 > i:nth-child(5) { animation-delay: 0.4s; }
+
+/* 7. PULSE CIRCLE */
+.sp-pulse {
+  background: var(--s-c);
+  border-radius: 50%;
+  animation: sp-pulse 1.4s ease-in-out infinite;
+}
+@keyframes sp-pulse {
+  0%, 100% { transform: scale(0.5); opacity: 0.6; }
+  50%      { transform: scale(1); opacity: 1; }
+}
+
+/* 8. ELLIPSIS GROW (dot grows then shrinks) */
+.sp-ell {
+  display: inline-flex; align-items: center; gap: 6px;
+  width: auto;
+}
+.sp-ell > i {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--s-c);
+  animation: sp-ell 1.4s ease-in-out infinite;
+}
+.sp-ell > i:nth-child(2) { animation-delay: 0.15s; }
+.sp-ell > i:nth-child(3) { animation-delay: 0.3s; }
+.sp-ell > i:nth-child(4) { animation-delay: 0.45s; }
+@keyframes sp-ell {
+  0%, 60%, 100% { transform: scale(0.5); opacity: 0.5; }
+  30%           { transform: scale(1.4); opacity: 1; }
+}
+
+/* 9. RIPPLE — Concentric rings */
+.sp-ripple {
+  position: relative;
+}
+.sp-ripple::before, .sp-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: var(--s-w) solid var(--s-c);
+  animation: sp-ripple 1.8s ease-out infinite;
+}
+.sp-ripple::after { animation-delay: -0.9s; border-color: var(--s-c2); }
+@keyframes sp-ripple {
+  0%   { transform: scale(0.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* 10. SPINNER GROW */
+.sp-grow {
+  background: var(--s-c);
+  border-radius: 50%;
+  animation: sp-grow 1s ease-in-out infinite;
+}
+@keyframes sp-grow {
+  0%   { transform: scale(0); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* 11. GRADIENT RING */
+.sp-grad {
+  border-radius: 50%;
+  background:
+    conic-gradient(from 0deg, transparent, var(--s-c), var(--s-c2), transparent);
+  -webkit-mask: radial-gradient(transparent calc(50% - var(--s-w)), #000 calc(50% - var(--s-w) + 1px));
+          mask: radial-gradient(transparent calc(50% - var(--s-w)), #000 calc(50% - var(--s-w) + 1px));
+  animation: sp-spin 1s linear infinite;
+}
+
+/* 12. SQUARE FLIP */
+.sp-sq-flip {
+  background: var(--s-c);
+  animation: sp-sq 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes sp-sq {
+  0%   { transform: rotate(0) scale(1); }
+  25%  { transform: rotate(180deg) scale(0.5); }
+  50%  { transform: rotate(180deg) scale(1); }
+  75%  { transform: rotate(360deg) scale(0.5); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* 13. WAVE BARS — Sine wave */
+.sp-wave {
+  display: inline-flex; align-items: center; gap: 2px;
+  width: auto;
+}
+.sp-wave > i {
+  width: 3px; height: var(--s-s);
+  background: var(--s-c);
+  border-radius: 2px;
+  animation: sp-wave 1.1s ease-in-out infinite;
+}
+.sp-wave > i:nth-child(1) { animation-delay: 0s; }
+.sp-wave > i:nth-child(2) { animation-delay: 0.1s; }
+.sp-wave > i:nth-child(3) { animation-delay: 0.2s; }
+.sp-wave > i:nth-child(4) { animation-delay: 0.3s; }
+.sp-wave > i:nth-child(5) { animation-delay: 0.4s; }
+.sp-wave > i:nth-child(6) { animation-delay: 0.3s; }
+.sp-wave > i:nth-child(7) { animation-delay: 0.2s; }
+.sp-wave > i:nth-child(8) { animation-delay: 0.1s; }
+@keyframes sp-wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50%      { transform: scaleY(1); }
+}
+
+/* 14. INFINITY — Two intersecting orbits */
+.sp-infinity::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: var(--s-w) solid var(--s-c);
+  animation: sp-spin 1s linear infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+}
+.sp-infinity::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: var(--s-w) solid var(--s-c2);
+  animation: sp-spin 1s linear infinite reverse;
+  clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+}
+
+/* 15. ATOM */
+.sp-atom {
+  position: relative;
+}
+.sp-atom::before, .sp-atom::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: var(--s-w) solid transparent;
+  border-top-color: var(--s-c);
+  animation: sp-spin 1s linear infinite;
+}
+.sp-atom::before { transform: rotate(60deg); }
+.sp-atom::after { transform: rotate(120deg); border-top-color: var(--s-c2); animation-direction: reverse; }
+
+/* 16. HOURGLASS */
+.sp-hourglass {
+  border: var(--s-w) solid var(--s-c);
+  animation: sp-hourglass 1.2s ease-in-out infinite;
+  border-radius: 0;
+}
+@keyframes sp-hourglass {
+  0%   { transform: rotate(0); border-radius: 0; }
+  50%  { transform: rotate(900deg); border-radius: 50%; }
+  100% { transform: rotate(1800deg); border-radius: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp, .sp *, .sp::before, .sp::after { animation: none !important; }
+}

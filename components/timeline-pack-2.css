@@ -1,0 +1,237 @@
+/* ============================================
+   TIMELINE PACK 2 — 6 timeline variants (extends components/timeline.css)
+   alternating, horizontal-strip, year-grouped, activity-feed,
+   chunky-dots, with-avatars
+   ============================================ */
+
+:where(.tl, .tl-h, .tl-yr, .tl-act, .tl-chunk, .tl-av) {
+  --t-bg: #14141e;
+  --t-bg-2: #1f1f2e;
+  --t-fg: #f5f5fa;
+  --t-muted: rgba(245, 245, 250, 0.55);
+  --t-line: rgba(255, 255, 255, 0.08);
+  --t-accent: #8b5cf6;
+  color: var(--t-fg);
+  font-family: inherit;
+}
+
+/* 1. ALTERNATING — Left/right items along a center line */
+.tl-alt {
+  position: relative;
+  padding: 1rem 0;
+  max-width: 720px;
+}
+.tl-alt::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--t-line);
+  transform: translateX(-50%);
+}
+.tl-alt-item {
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.tl-alt-item:nth-child(odd)  > .tl-alt-card { grid-column: 1; text-align: right; }
+.tl-alt-item:nth-child(even) > .tl-alt-card { grid-column: 3; text-align: left; }
+.tl-alt-dot {
+  grid-column: 2;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--t-accent);
+  border: 4px solid var(--t-bg);
+  box-shadow: 0 0 0 2px var(--t-line);
+  align-self: center;
+  justify-self: center;
+}
+.tl-alt-card {
+  padding: 0.8rem 1rem;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 8px;
+}
+.tl-alt-time {
+  font-size: 0.72rem;
+  color: var(--t-muted);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.tl-alt-title { font-weight: 700; font-size: 0.95rem; margin: 0.2rem 0; }
+.tl-alt-body { font-size: 0.85rem; color: var(--t-muted); line-height: 1.5; }
+@media (max-width: 768px) {
+  .tl-alt::before { left: 12px; }
+  .tl-alt-item { grid-template-columns: 24px 1fr; }
+  .tl-alt-item:nth-child(odd)  > .tl-alt-card,
+  .tl-alt-item:nth-child(even) > .tl-alt-card {
+    grid-column: 2; text-align: left;
+  }
+  .tl-alt-dot { grid-column: 1; }
+}
+
+/* 2. HORIZONTAL STRIP — Top progress line w/ markers */
+.tl-h {
+  position: relative;
+  padding: 2rem 0 1rem;
+  width: 100%;
+}
+.tl-h::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 1.7rem;
+  height: 2px;
+  background: var(--t-line);
+}
+.tl-h-track {
+  display: flex; justify-content: space-between; position: relative;
+}
+.tl-h-stop {
+  display: grid; place-items: center; gap: 0.4rem;
+  position: relative;
+  text-align: center;
+  width: 80px;
+}
+.tl-h-stop::before {
+  content: '';
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--t-bg);
+  border: 2px solid var(--t-line);
+  z-index: 2;
+}
+.tl-h-stop.is-done::before {
+  background: var(--t-accent); border-color: var(--t-accent);
+}
+.tl-h-stop.is-active::before {
+  background: var(--t-accent); border-color: var(--t-accent);
+  box-shadow: 0 0 0 6px rgba(139,92,246,0.15);
+}
+.tl-h-stop-label { font-size: 0.78rem; font-weight: 600; }
+.tl-h-stop.is-active .tl-h-stop-label { color: var(--t-accent); }
+.tl-h-stop.is-done .tl-h-stop-label { color: var(--t-fg); }
+.tl-h-stop-date { font-size: 0.7rem; color: var(--t-muted); font-variant-numeric: tabular-nums; }
+
+/* 3. YEAR GROUPED — Items grouped under year headings */
+.tl-yr {
+  display: grid; gap: 1.5rem;
+  max-width: 540px;
+}
+.tl-yr-group h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin: 0 0 0.7rem;
+  color: var(--t-accent);
+}
+.tl-yr-list {
+  list-style: none; padding: 0; margin: 0;
+  position: relative;
+}
+.tl-yr-list::before {
+  content: '';
+  position: absolute;
+  left: 9px; top: 8px; bottom: 8px;
+  width: 2px;
+  background: var(--t-line);
+}
+.tl-yr-list > li {
+  position: relative;
+  padding: 0.4rem 0 0.4rem 1.7rem;
+}
+.tl-yr-list > li::before {
+  content: '';
+  position: absolute;
+  left: 4px; top: 0.65rem;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--t-bg);
+  border: 2px solid var(--t-line);
+}
+.tl-yr-list > li.is-key::before { background: var(--t-accent); border-color: var(--t-accent); }
+.tl-yr-list > li b { display: block; font-weight: 600; }
+.tl-yr-list > li span { font-size: 0.78rem; color: var(--t-muted); }
+
+/* 4. ACTIVITY FEED — User actions */
+.tl-act {
+  display: grid; gap: 0.5rem;
+  max-width: 540px;
+}
+.tl-act-item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 0.7rem;
+  align-items: start;
+}
+.tl-act-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.tl-act-body { font-size: 0.85rem; line-height: 1.5; }
+.tl-act-body b { font-weight: 700; }
+.tl-act-body a { color: var(--t-accent); text-decoration: none; font-weight: 500; }
+.tl-act-time { font-size: 0.72rem; color: var(--t-muted); display: block; margin-top: 0.15rem; }
+
+/* 5. CHUNKY DOTS — Big colorful dots on vertical line */
+.tl-chunk {
+  position: relative;
+  padding-left: 32px;
+  max-width: 540px;
+}
+.tl-chunk::before {
+  content: '';
+  position: absolute;
+  left: 11px; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--t-line);
+}
+.tl-chunk-item {
+  position: relative;
+  padding: 0.5rem 0 1rem;
+}
+.tl-chunk-item::before {
+  content: '';
+  position: absolute;
+  left: -28px; top: 0.6rem;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--dot-c, var(--t-accent));
+  border: 4px solid var(--t-bg);
+}
+.tl-chunk-item.violet::before { --dot-c: #8b5cf6; }
+.tl-chunk-item.pink::before   { --dot-c: #ec4899; }
+.tl-chunk-item.cyan::before   { --dot-c: #06b6d4; }
+.tl-chunk-item.mint::before   { --dot-c: #10b981; }
+.tl-chunk-item.amber::before  { --dot-c: #f59e0b; }
+.tl-chunk-title { font-weight: 700; font-size: 0.95rem; margin: 0 0 0.2rem; }
+.tl-chunk-body { font-size: 0.85rem; color: var(--t-muted); line-height: 1.5; }
+
+/* 6. WITH AVATARS — Profile pic + event */
+.tl-av {
+  display: grid; gap: 0.6rem;
+  max-width: 540px;
+}
+.tl-av-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 0.7rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 10px;
+}
+.tl-av-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+}
+.tl-av-body { font-size: 0.85rem; line-height: 1.5; }
+.tl-av-body b { font-weight: 700; }
+.tl-av-meta { font-size: 0.72rem; color: var(--t-muted); margin-top: 0.15rem; }
+.tl-av-emoji {
+  margin-right: 0.3rem;
+  font-size: 0.95rem;
+  vertical-align: middle;
+}

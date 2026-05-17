@@ -1,0 +1,163 @@
+/* ============================================
+   ACCORDION PACK — 8 accordion / disclosure patterns (extends components/faq)
+   classic-plus, chevron-right, card-stack, side-bar, numbered-row,
+   featured-icon, nested, compact-list
+   ============================================ */
+
+:where(.ac, .ac-card, .ac-side, .ac-num, .ac-feat, .ac-nest, .ac-compact) {
+  --a-bg: #14141e;
+  --a-bg-2: #1f1f2e;
+  --a-fg: #f5f5fa;
+  --a-muted: rgba(245, 245, 250, 0.55);
+  --a-line: rgba(255, 255, 255, 0.08);
+  --a-accent: #8b5cf6;
+  color: var(--a-fg);
+  font-family: inherit;
+}
+
+/* 1. CLASSIC PLUS — Simple list, plus rotates */
+.ac {
+  border: 1px solid var(--a-line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--a-bg);
+  width: 100%; max-width: 540px;
+}
+.ac-item {
+  border-bottom: 1px solid var(--a-line);
+}
+.ac-item:last-child { border-bottom: 0; }
+.ac-q {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.95rem 1.2rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.ac-q::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--a-muted);
+  font-size: 1.4rem;
+  font-weight: 300;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+.ac-item.is-open .ac-q { color: var(--a-accent); }
+.ac-item.is-open .ac-q::after { transform: rotate(45deg); }
+.ac-a {
+  max-height: 0; overflow: hidden;
+  padding: 0 1.2rem;
+  color: var(--a-muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  transition: max-height 0.35s cubic-bezier(0.32, 0.72, 0, 1), padding 0.35s ease;
+}
+.ac-item.is-open .ac-a { max-height: 400px; padding: 0 1.2rem 1rem; }
+
+/* 2. CHEVRON RIGHT — Arrow rotates */
+.ac-chev .ac-q::after {
+  content: '';
+  width: 8px; height: 8px;
+  border-right: 2px solid var(--a-muted);
+  border-bottom: 2px solid var(--a-muted);
+  transform: rotate(-45deg);
+}
+.ac-chev .ac-item.is-open .ac-q::after { transform: rotate(45deg); }
+
+/* 3. CARD STACK — Each item is a separate card */
+.ac-card {
+  display: grid; gap: 0.5rem;
+  width: 100%; max-width: 540px;
+}
+.ac-card > details {
+  background: var(--a-bg);
+  border: 1px solid var(--a-line);
+  border-radius: 10px;
+  padding: 0.4rem 0;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+.ac-card > details[open] {
+  border-color: var(--a-accent);
+}
+.ac-card > details > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  display: flex; align-items: center;
+}
+.ac-card > details > summary::-webkit-details-marker { display: none; }
+.ac-card > details > summary::after {
+  content: '›';
+  margin-left: auto;
+  font-size: 1.4rem;
+  color: var(--a-muted);
+  transition: transform 0.25s ease;
+}
+.ac-card > details[open] > summary::after { transform: rotate(90deg); color: var(--a-accent); }
+.ac-card > details > div {
+  padding: 0 1rem 0.7rem;
+  color: var(--a-muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+/* 4. SIDE BAR — Vertical bar appears on open */
+.ac-side .ac-item {
+  border: 0;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 3px solid transparent;
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  margin-bottom: 0.3rem;
+  transition: border-color 0.2s ease;
+}
+.ac-side .ac-item.is-open {
+  border-left-color: var(--a-accent);
+  background: rgba(139, 92, 246, 0.06);
+}
+.ac-side { background: transparent; border: 0; max-width: 540px; }
+
+/* 5. NUMBERED ROW — Counter number leads */
+.ac-num { counter-reset: ac-num; }
+.ac-num .ac-q::before {
+  counter-increment: ac-num;
+  content: counter(ac-num, decimal-leading-zero);
+  font-family: ui-monospace, monospace;
+  color: var(--a-accent);
+  font-size: 0.85rem;
+  margin-right: 0.7rem;
+  font-weight: 500;
+}
+
+/* 6. FEATURED ICON — Icon leading + colored on open */
+.ac-feat .ac-q { padding: 1rem 1.2rem; }
+.ac-feat-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  display: grid; place-items: center;
+  font-size: 0.92rem;
+  color: var(--a-muted);
+  margin-right: 0.4rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.ac-feat .ac-item.is-open .ac-feat-icon {
+  background: rgba(139,92,246,0.18);
+  color: var(--a-accent);
+}
+
+/* 7. NESTED — Nested items */
+.ac-nest .ac-a .ac { margin: 0.5rem 0; border-radius: 8px; }
+.ac-nest .ac-a .ac .ac-q { padding: 0.6rem 0.9rem; font-size: 0.85rem; }
+
+/* 8. COMPACT LIST — Short toggle rows */
+.ac-compact .ac-item { background: transparent; border: 0; border-bottom: 1px solid var(--a-line); }
+.ac-compact .ac-q { padding: 0.55rem 0; font-size: 0.88rem; font-weight: 500; }
+.ac-compact .ac-a { padding: 0 0; font-size: 0.82rem; }
+.ac-compact .ac-item.is-open .ac-a { padding: 0 0 0.5rem; }
+.ac-compact { border: 0; border-radius: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-q::after, .ac-a, .ac-card > details > summary::after { transition: none; }
+}

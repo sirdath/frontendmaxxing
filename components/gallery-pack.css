@@ -1,0 +1,138 @@
+/* ============================================
+   GALLERY PACK — 6 image gallery layouts
+   masonry, equal-grid, mosaic-feature, polaroid-scatter,
+   horizontal-strip, justified-rows
+   ============================================ */
+
+:where(.gal-mas, .gal-eq, .gal-mos, .gal-pol, .gal-strip, .gal-just) {
+  --g-bg: #14141e;
+  --g-line: rgba(255, 255, 255, 0.08);
+  font-family: inherit;
+}
+
+/* 1. MASONRY — CSS columns */
+.gal-mas {
+  column-count: 3;
+  column-gap: 0.6rem;
+}
+@media (max-width: 768px) { .gal-mas { column-count: 2; } }
+@media (max-width: 480px) { .gal-mas { column-count: 1; } }
+.gal-mas > * {
+  display: block;
+  margin: 0 0 0.6rem;
+  border-radius: 10px;
+  overflow: hidden;
+  break-inside: avoid;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.gal-mas > *:nth-child(2n)  { background: linear-gradient(135deg, #06b6d4, #8b5cf6); aspect-ratio: 1.3; }
+.gal-mas > *:nth-child(3n)  { background: linear-gradient(135deg, #f59e0b, #ef4444); aspect-ratio: 0.7; }
+.gal-mas > *:nth-child(5n)  { background: linear-gradient(135deg, #10b981, #06b6d4); aspect-ratio: 1; }
+.gal-mas > *:nth-child(7n)  { background: linear-gradient(135deg, #fbbf24, #f59e0b); aspect-ratio: 1.6; }
+.gal-mas > *                 { aspect-ratio: 1.2; }
+
+/* 2. EQUAL GRID */
+.gal-eq {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.5rem;
+}
+.gal-eq > * {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+.gal-eq > *:hover { transform: scale(1.04); }
+.gal-eq > *:nth-child(3n) { background: linear-gradient(135deg, #06b6d4, #8b5cf6); }
+.gal-eq > *:nth-child(5n) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.gal-eq > *:nth-child(7n) { background: linear-gradient(135deg, #10b981, #06b6d4); }
+
+/* 3. MOSAIC FEATURED — Big first image + grid */
+.gal-mos {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.5rem;
+  aspect-ratio: 2.4;
+  max-width: 720px;
+}
+.gal-mos > * {
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.gal-mos > *:first-child {
+  grid-row: span 2;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+}
+.gal-mos > *:nth-child(3) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.gal-mos > *:nth-child(4) { background: linear-gradient(135deg, #10b981, #06b6d4); }
+.gal-mos > *:nth-child(5) { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+
+/* 4. POLAROID SCATTER — Pinterest-style scattered cards */
+.gal-pol {
+  display: flex; flex-wrap: wrap; gap: 1.4rem;
+  justify-content: center;
+  padding: 1.4rem;
+}
+.gal-pol > * {
+  width: 200px;
+  padding: 12px 12px 36px;
+  background: #fff;
+  box-shadow: 0 10px 20px -6px rgba(0,0,0,0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+.gal-pol > *:nth-child(1) { transform: rotate(-3deg); }
+.gal-pol > *:nth-child(2) { transform: rotate(2deg); }
+.gal-pol > *:nth-child(3) { transform: rotate(-1deg); }
+.gal-pol > *:nth-child(4) { transform: rotate(4deg); }
+.gal-pol > *:nth-child(5) { transform: rotate(-2deg); }
+.gal-pol > *:hover { transform: rotate(0) scale(1.05); z-index: 2; }
+.gal-pol-img {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.gal-pol-caption {
+  position: absolute;
+  bottom: 8px; left: 12px; right: 12px;
+  color: #0f172a;
+  font-family: 'Caveat', cursive, serif;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* 5. HORIZONTAL STRIP — Scroll-snap horizontal row */
+.gal-strip {
+  display: flex; gap: 0.6rem;
+  overflow-x: auto;
+  padding: 0.5rem 0 1rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+.gal-strip > * {
+  flex: 0 0 220px;
+  height: 280px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  scroll-snap-align: start;
+}
+.gal-strip > *:nth-child(3n) { background: linear-gradient(135deg, #06b6d4, #8b5cf6); }
+.gal-strip > *:nth-child(5n) { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+
+/* 6. JUSTIFIED ROWS — Flickr/Google Photos style */
+.gal-just {
+  display: flex; flex-wrap: wrap; gap: 0.4rem;
+}
+.gal-just > * {
+  height: 180px;
+  flex: 1 1 auto;
+  min-width: 140px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.gal-just > *:nth-child(2n) { background: linear-gradient(135deg, #06b6d4, #8b5cf6); flex-basis: 220px; }
+.gal-just > *:nth-child(3n) { background: linear-gradient(135deg, #f59e0b, #ef4444); flex-basis: 160px; }
+.gal-just > *:nth-child(5n) { background: linear-gradient(135deg, #10b981, #06b6d4); flex-basis: 280px; }

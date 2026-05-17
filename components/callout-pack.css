@@ -1,0 +1,163 @@
+/* ============================================
+   CALLOUT PACK — 10 callout / admonition box variants
+   note, tip, info, warning, danger, success, quote, important,
+   spoiler, code-callout
+   ============================================ */
+
+:where(.co) {
+  --c-fg: #f5f5fa;
+  --c-bg: rgba(139, 92, 246, 0.08);
+  --c-bd: rgba(139, 92, 246, 0.3);
+  --c-c: #c4b5fd;
+  --c-ic: '✦';
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 0.7rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--c-bg);
+  border: 1px solid var(--c-bd);
+  border-left: 3px solid var(--c-c);
+  border-radius: 8px;
+  color: var(--c-fg);
+  max-width: 720px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+.co::before {
+  content: var(--c-ic);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--c-c);
+  color: #14141e;
+  display: grid; place-items: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex: 0 0 32px;
+}
+.co h4 { margin: 0 0 0.2rem; font-size: 0.92rem; font-weight: 700; color: var(--c-c); }
+.co p { margin: 0; }
+.co a { color: var(--c-c); font-weight: 600; }
+
+/* 1. NOTE — default purple */
+.co-note { /* default */ }
+
+/* 2. TIP — cyan */
+.co-tip {
+  --c-bg: rgba(6, 182, 212, 0.08);
+  --c-bd: rgba(6, 182, 212, 0.3);
+  --c-c: #67e8f9;
+  --c-ic: '💡';
+}
+
+/* 3. INFO — blue */
+.co-info {
+  --c-bg: rgba(59, 130, 246, 0.08);
+  --c-bd: rgba(59, 130, 246, 0.3);
+  --c-c: #93c5fd;
+  --c-ic: 'i';
+}
+
+/* 4. WARNING — amber */
+.co-warn {
+  --c-bg: rgba(245, 158, 11, 0.08);
+  --c-bd: rgba(245, 158, 11, 0.3);
+  --c-c: #fcd34d;
+  --c-ic: '⚠';
+}
+
+/* 5. DANGER — red */
+.co-danger {
+  --c-bg: rgba(239, 68, 68, 0.08);
+  --c-bd: rgba(239, 68, 68, 0.3);
+  --c-c: #fca5a5;
+  --c-ic: '!';
+}
+
+/* 6. SUCCESS — mint */
+.co-success {
+  --c-bg: rgba(16, 185, 129, 0.08);
+  --c-bd: rgba(16, 185, 129, 0.3);
+  --c-c: #6ee7b7;
+  --c-ic: '✓';
+}
+
+/* 7. QUOTE — Big quote style */
+.co-quote {
+  grid-template-columns: 1fr;
+  font-style: italic;
+  font-size: 1rem;
+  padding: 1rem 1.4rem 1rem 2rem;
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  border-left-color: var(--c-c);
+}
+.co-quote::before {
+  content: '"';
+  position: absolute;
+  left: 0.5rem; top: -0.4rem;
+  font-size: 3rem;
+  line-height: 1;
+  font-family: Georgia, serif;
+  background: transparent;
+  color: var(--c-c);
+  width: auto; height: auto;
+  border-radius: 0;
+  opacity: 0.5;
+}
+.co-quote-author {
+  display: block;
+  margin-top: 0.5rem;
+  font-style: normal;
+  font-size: 0.78rem;
+  color: var(--c-muted, rgba(245,245,250,0.55));
+}
+.co-quote-author::before { content: '— '; }
+
+/* 8. IMPORTANT — Bold + large */
+.co-imp {
+  background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(236,72,153,0.1));
+  border: 1.5px solid var(--c-c);
+  border-left-width: 4px;
+  padding: 1rem 1.2rem;
+  font-weight: 500;
+}
+
+/* 9. SPOILER — Hidden until clicked */
+.co-spoiler {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.co-spoiler:not(.is-revealed) p {
+  filter: blur(5px);
+  user-select: none;
+}
+.co-spoiler:not(.is-revealed)::before { content: '👀'; }
+.co-spoiler::after {
+  content: 'Click to reveal';
+  position: absolute;
+  inset: 0;
+  display: grid; place-items: center;
+  color: var(--c-c);
+  font-weight: 600;
+  pointer-events: none;
+}
+.co-spoiler.is-revealed::after { display: none; }
+.co-spoiler { position: relative; }
+
+/* 10. CODE CALLOUT — Inline code block + label */
+.co-code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.82rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--c-c);
+  --c-ic: '$';
+  --c-c: #8b949e;
+}
+.co-code p { white-space: pre; line-height: 1.6; }
+
+/* Compact variant */
+.co-sm { padding: 0.5rem 0.8rem; grid-template-columns: 22px 1fr; font-size: 0.82rem; }
+.co-sm::before { width: 22px; height: 22px; font-size: 0.7rem; flex: 0 0 22px; }

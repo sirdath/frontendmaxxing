@@ -1,0 +1,213 @@
+/* ============================================
+   CODE BLOCK PACK — 8 code-block themes / variants
+   github-dark, monokai, dracula, solarized, nord, one-dark, light-vs-code, terminal-ribbon
+   ============================================
+   Usage: <pre class="cb-blk cb-blk-dracula"><code>…</code></pre>
+
+   Inside code: wrap tokens in spans with .kw .str .num .com .fn .var .op .ty
+   Plus chrome: .cb-blk-head with .cb-blk-lang + .cb-blk-copy + .cb-blk-lines
+   ============================================ */
+
+.cb-blk {
+  --c-bg: #0d1117;
+  --c-fg: #c9d1d9;
+  --c-line: rgba(255, 255, 255, 0.06);
+  --c-muted: rgba(201, 209, 217, 0.55);
+  --c-kw: #ff7b72;
+  --c-str: #a5d6ff;
+  --c-num: #79c0ff;
+  --c-com: #8b949e;
+  --c-fn: #d2a8ff;
+  --c-var: #ffa657;
+  --c-op: #c9d1d9;
+  --c-ty: #ffa657;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  border-radius: 10px;
+  border: 1px solid var(--c-line);
+  overflow: hidden;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  width: 100%; max-width: 720px;
+}
+.cb-blk pre, .cb-blk code {
+  background: transparent; color: inherit;
+  font: inherit; line-height: inherit;
+  margin: 0; padding: 1rem 1.2rem;
+  display: block;
+  white-space: pre;
+  overflow-x: auto;
+}
+.cb-blk .kw  { color: var(--c-kw); }
+.cb-blk .str { color: var(--c-str); }
+.cb-blk .num { color: var(--c-num); }
+.cb-blk .com { color: var(--c-com); font-style: italic; }
+.cb-blk .fn  { color: var(--c-fn); }
+.cb-blk .var { color: var(--c-var); }
+.cb-blk .op  { color: var(--c-op); }
+.cb-blk .ty  { color: var(--c-ty); }
+
+/* Chrome head */
+.cb-blk-head {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid var(--c-line);
+  font-size: 0.75rem;
+}
+.cb-blk-lang {
+  color: var(--c-muted);
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+.cb-blk-copy {
+  margin-left: auto;
+  appearance: none; border: 0;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--c-fg);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  font: inherit; font-size: 0.72rem;
+  cursor: pointer;
+}
+.cb-blk-copy:hover { background: rgba(255, 255, 255, 0.12); }
+.cb-blk-copy.is-copied { color: #10b981; }
+
+/* Line numbers gutter */
+.cb-blk-lines {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+}
+.cb-blk-gutter {
+  background: rgba(0, 0, 0, 0.15);
+  border-right: 1px solid var(--c-line);
+  padding: 1rem 0.4rem;
+  font-size: 0.78rem;
+  color: var(--c-muted);
+  text-align: right;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+.cb-blk-gutter > div { padding: 0 0.3rem; }
+.cb-blk-gutter > div.is-highlighted { background: rgba(139, 92, 246, 0.18); color: var(--c-fg); }
+
+/* THEMES */
+
+/* 1. GITHUB DARK — default */
+
+/* 2. MONOKAI */
+.cb-blk-monokai {
+  --c-bg: #272822;
+  --c-fg: #f8f8f2;
+  --c-kw: #f92672;
+  --c-str: #e6db74;
+  --c-num: #ae81ff;
+  --c-com: #75715e;
+  --c-fn: #a6e22e;
+  --c-var: #fd971f;
+  --c-ty: #66d9ef;
+}
+
+/* 3. DRACULA */
+.cb-blk-dracula {
+  --c-bg: #282a36;
+  --c-fg: #f8f8f2;
+  --c-kw: #ff79c6;
+  --c-str: #f1fa8c;
+  --c-num: #bd93f9;
+  --c-com: #6272a4;
+  --c-fn: #50fa7b;
+  --c-var: #ffb86c;
+  --c-ty: #8be9fd;
+}
+
+/* 4. SOLARIZED DARK */
+.cb-blk-solarized {
+  --c-bg: #002b36;
+  --c-fg: #839496;
+  --c-kw: #859900;
+  --c-str: #2aa198;
+  --c-num: #d33682;
+  --c-com: #586e75;
+  --c-fn: #268bd2;
+  --c-var: #cb4b16;
+  --c-ty: #b58900;
+}
+
+/* 5. NORD */
+.cb-blk-nord {
+  --c-bg: #2e3440;
+  --c-fg: #d8dee9;
+  --c-kw: #81a1c1;
+  --c-str: #a3be8c;
+  --c-num: #b48ead;
+  --c-com: #4c566a;
+  --c-fn: #88c0d0;
+  --c-var: #d08770;
+  --c-ty: #8fbcbb;
+}
+
+/* 6. ONE DARK */
+.cb-blk-one-dark {
+  --c-bg: #282c34;
+  --c-fg: #abb2bf;
+  --c-kw: #c678dd;
+  --c-str: #98c379;
+  --c-num: #d19a66;
+  --c-com: #5c6370;
+  --c-fn: #61afef;
+  --c-var: #e06c75;
+  --c-ty: #e5c07b;
+}
+
+/* 7. LIGHT VS CODE */
+.cb-blk-light {
+  --c-bg: #fafafa;
+  --c-fg: #24292e;
+  --c-line: rgba(31, 41, 55, 0.08);
+  --c-muted: rgba(36, 41, 46, 0.55);
+  --c-kw: #d73a49;
+  --c-str: #032f62;
+  --c-num: #005cc5;
+  --c-com: #6a737d;
+  --c-fn: #6f42c1;
+  --c-var: #e36209;
+  --c-ty: #005cc5;
+}
+.cb-blk-light .cb-blk-head { background: #f0f0f0; }
+.cb-blk-light .cb-blk-copy { background: rgba(0, 0, 0, 0.05); color: #24292e; }
+.cb-blk-light .cb-blk-gutter { background: #f0f0f0; }
+
+/* 8. TERMINAL RIBBON — Mac-style top bar */
+.cb-blk-terminal { padding-top: 0; }
+.cb-blk-terminal .cb-blk-head {
+  background: linear-gradient(180deg, #2a2c30, #1f2126);
+  padding-left: 0.7rem;
+}
+.cb-blk-terminal .cb-blk-head::before {
+  content: '';
+  display: inline-flex;
+  width: 50px; height: 12px;
+  margin-right: 0.7rem;
+  background:
+    radial-gradient(circle 6px at 6px 6px, #ef4444 99%, transparent 100%),
+    radial-gradient(circle 6px at 24px 6px, #f59e0b 99%, transparent 100%),
+    radial-gradient(circle 6px at 42px 6px, #10b981 99%, transparent 100%);
+  background-repeat: no-repeat;
+}
+
+/* Inline pre w/ no chrome */
+.cb-blk-naked { border: 0; border-radius: 6px; }
+.cb-blk-naked .cb-blk-head { display: none; }
+
+/* Highlighted line band */
+.cb-blk-line-hl {
+  display: block;
+  background: rgba(139, 92, 246, 0.1);
+  margin: 0 -1.2rem;
+  padding: 0 1.2rem;
+  border-left: 2px solid var(--c-fn);
+}

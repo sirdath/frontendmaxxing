@@ -2484,3 +2484,32 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **feature-comparison.css** `components/feature-comparison.css` (CSS) — tags: feature-comparison comparison-table plans products frameworks featured recommended yes no premium star zebra compact mobile-stacked
   Full comparison table for plans/products. Featured column highlight, Yes (✓)/No (—)/Premium (★) cells, section dividers, recommended ribbon, compact + zebra variants, mobile collapses to stacked w/ data-label attrs.
+
+**Phase 26 — Atomic UI: icons / gallery / chat-bubble / spinner / accordion / popover / code-block / callout / timeline (9 files, ~108 patterns)**
+
+**icons-pack.css** `components/icons-pack.css` (CSS) — tags: icons-pack css-icons no-svg pure-css mask-image arrow plus minus x check star heart bell search menu grid list calendar clock user mail lock unlock eye trash edit download upload share link filter sort settings info warn error success loading dots three-bars sizes xs sm md lg xl
+  36 pure-CSS icons drawn with shapes, masks, and pseudo-elements (no SVG, no font). Sizes xs/sm/md/lg/xl. All inherit color via currentColor.
+
+**gallery-pack.css** `components/gallery-pack.css` (CSS) — tags: gallery-pack masonry equal-grid mosaic-featured polaroid-scatter horizontal-strip justified-rows flickr pinterest google-photos
+  6 image gallery layouts: masonry (CSS columns), equal-grid (auto-fill 160px), mosaic-featured (big first + grid), polaroid-scatter (rotated cards), horizontal-strip (scroll-snap), justified-rows (Flickr-style).
+
+**chat-bubble-pack.css** `components/chat-bubble-pack.css` (CSS) — tags: chat-bubble-pack imessage whatsapp slack telegram sms group-stacked reply-quoted voice-bubble image-bubble code-bubble
+  10 bubble styles: iMessage, WhatsApp (w/ ✓✓ read receipt), Slack, Telegram, SMS (light), group-stacked (avatar + grouped messages), reply-quoted (quote above), voice (waveform + play + duration), image (with caption), code-bubble (syntax-highlighted).
+
+**spinner-pack.css** `blocks/spinner-pack.css` (CSS) — tags: spinner-pack ring dual-ring dots-3 dots-orbit bars-3 bars-5 pulse ellipsis ripple grow gradient-ring square-flip wave infinity atom hourglass sizes
+  16 spinners: ring, dual-ring (two-color), dots-3, dots-orbit, bars-3/5, pulse-circle, ellipsis-grow, ripple (concentric rings), grow, gradient-ring (conic), square-flip, wave-bars, infinity, atom, hourglass. Sizes sm/lg/xl.
+
+**accordion-pack.css** `components/accordion-pack.css` (CSS) — tags: accordion-pack classic-plus chevron-right card-stack side-bar numbered-row featured-icon nested compact-list details summary
+  8 accordion patterns: classic w/ plus rotation, chevron-right rotate, card-stack (separate cards w/ details/summary), side-bar (left border), numbered-row (counter), featured-icon (colors on open), nested, compact-list (border-only).
+
+**popover-pack.css** `components/popover-pack.css` (CSS) — tags: popover-pack classic-arrow link-preview info-popup hover-card profile click-menu confirmation color-picker share-popover twitter facebook linkedin
+  8 popovers: classic-arrow (4 positions), link-preview (OG card), info-popup (small hint), hover-card (Twitter profile preview), click-menu, confirmation (Are you sure?), color-picker grid, share-popover w/ social colors.
+
+**code-block-pack.css** `components/code-block-pack.css` (CSS) — tags: code-block-pack github-dark monokai dracula solarized nord one-dark light terminal-ribbon mac-traffic-lights syntax-highlight tokens kw str num com fn var ty copy lang gutter line-numbers
+  8 code-block themes: github-dark (default), monokai, dracula, solarized, nord, one-dark, light-vs-code, terminal-ribbon (Mac traffic lights). Chrome: head w/ lang + copy + line-number gutter + highlighted line band.
+
+**callout-pack.css** `components/callout-pack.css` (CSS) — tags: callout-pack admonition note tip info warning danger success quote important spoiler code-callout
+  10 callout boxes: note (default), tip (cyan), info (blue), warn (amber), danger (red), success (mint), quote (italic w/ big "), important (gradient bg + bold border), spoiler (blur until click), code-callout (mono).
+
+**timeline-pack-2.css** `components/timeline-pack-2.css` (CSS) — tags: timeline-pack-2 alternating left-right horizontal-strip year-grouped activity-feed chunky-dots with-avatars
+  6 timeline variants: alternating (left/right with center line), horizontal-strip (top progress w/ stops), year-grouped (h3 sections + vertical line list), activity-feed (avatar + action text), chunky-dots (big colored dots), with-avatars (profile + event rows).
