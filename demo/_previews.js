@@ -656,4 +656,366 @@
     });
   };
 
+  // ====================================================
+  // ANIMATIONS — replayable previews for every motion file
+  // ====================================================
+
+  function escA(s) {
+    return String(s == null ? '' : s).replace(/[<>&"]/g, function (c) {
+      return ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]);
+    });
+  }
+
+  // Render a wall of animated tiles with a Replay button that re-triggers.
+  function animWall(target, opts) {
+    var items = opts.items || [];
+    var defaultStyle = 'display:grid;place-items:center;padding:0.75rem 1rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-weight:600;font-size:0.78rem;border-radius:8px;min-width:96px;min-height:48px;font-family:ui-monospace,monospace;';
+    var tilesHtml = items.map(function (it, i) {
+      var lbl = it.label != null ? it.label : it.cls.split(' ').pop();
+      var style = it.style || defaultStyle;
+      var caption = it.cls.split(' ').pop();
+      return '<div class="dapp-anim-tile" style="display:flex;flex-direction:column;align-items:center;gap:0.35rem;">' +
+        '<div class="' + escA(it.cls) + '" data-orig="' + escA(it.cls) + '" style="' + style + '">' + escA(lbl) + '</div>' +
+        '<div style="font-size:0.62rem;color:rgba(255,255,255,0.5);font-family:ui-monospace,monospace;">' + escA(caption) + '</div>' +
+      '</div>';
+    }).join('');
+
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.9rem;width:100%;">' +
+        '<button class="dapp-anim-replay" style="padding:0.5rem 1.1rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;font-weight:600;cursor:pointer;font-size:0.85rem;display:inline-flex;align-items:center;gap:0.4rem;">' +
+          '<span style="font-size:0.95rem;">↻</span> Replay animations' +
+        '</button>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:0.7rem 0.9rem;align-items:center;justify-content:center;max-width:760px;width:100%;padding:1rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:10px;">' +
+          tilesHtml +
+        '</div>' +
+      '</div>';
+
+    target.querySelector('.dapp-anim-replay').addEventListener('click', function () {
+      target.querySelectorAll('.dapp-anim-tile > div[data-orig]').forEach(function (el) {
+        var orig = el.dataset.orig;
+        el.className = '';
+        el.offsetHeight; // force reflow
+        el.className = orig;
+      });
+    });
+  }
+
+  // ===== keyframes-pack.css =====
+  P['animations/keyframes-pack.css'] = function (target) {
+    animWall(target, {
+      items: [
+        { cls: 'kp kp-rubber-band' },
+        { cls: 'kp kp-bounce-in' },
+        { cls: 'kp kp-zoom-in' },
+        { cls: 'kp kp-fade-in' },
+        { cls: 'kp kp-shake' },
+        { cls: 'kp kp-flip-in-x' },
+        { cls: 'kp kp-roll-in' },
+        { cls: 'kp kp-jello' }
+      ]
+    });
+  };
+
+  // ===== keyframes-pack-2.css =====
+  P['animations/keyframes-pack-2.css'] = function (target) {
+    animWall(target, {
+      items: [
+        { cls: 'kf2 kf2-jelly' },
+        { cls: 'kf2 kf2-rubber' },
+        { cls: 'kf2 kf2-jello' },
+        { cls: 'kf2 kf2-wobble' },
+        { cls: 'kf2 kf2-tada' },
+        { cls: 'kf2 kf2-heartbeat' },
+        { cls: 'kf2 kf2-pop-in' },
+        { cls: 'kf2 kf2-bounce-strong' },
+        { cls: 'kf2 kf2-zoom-in' },
+        { cls: 'kf2 kf2-flip-x' },
+        { cls: 'kf2 kf2-roll-in' },
+        { cls: 'kf2 kf2-light-in' },
+        { cls: 'kf2 kf2-blur-in' },
+        { cls: 'kf2 kf2-drop-in' },
+        { cls: 'kf2 kf2-swing' },
+        { cls: 'kf2 kf2-slide-in-up' }
+      ]
+    });
+  };
+
+  // ===== keyframes.css =====
+  P['animations/keyframes.css'] = function (target) {
+    animWall(target, {
+      items: [
+        { cls: 'animate-fadeIn' },
+        { cls: 'animate-fadeInUp' },
+        { cls: 'animate-fadeInDown' },
+        { cls: 'animate-fadeInLeft' },
+        { cls: 'animate-fadeInRight' },
+        { cls: 'animate-slideUp' },
+        { cls: 'animate-slideDown' },
+        { cls: 'animate-pulse' },
+        { cls: 'animate-bounce' },
+        { cls: 'animate-spin' }
+      ]
+    });
+  };
+
+  // ===== entry-exit-pack.css =====
+  P['animations/entry-exit-pack.css'] = function (target) {
+    animWall(target, {
+      items: [
+        { cls: 'ee ee-fade-in' },
+        { cls: 'ee ee-fade-up' },
+        { cls: 'ee ee-fade-down' },
+        { cls: 'ee ee-fade-left' },
+        { cls: 'ee ee-fade-right' },
+        { cls: 'ee ee-zoom-in' },
+        { cls: 'ee ee-scale-in' },
+        { cls: 'ee ee-blur-in' },
+        { cls: 'ee ee-slide-in-up' },
+        { cls: 'ee ee-slide-in-down' },
+        { cls: 'ee ee-rotate-in' },
+        { cls: 'ee ee-bounce-in' },
+        { cls: 'ee ee-flip-in-x' },
+        { cls: 'ee ee-flip-in-y' },
+        { cls: 'ee ee-wipe-in-right' },
+        { cls: 'ee ee-wipe-in-bottom' }
+      ]
+    });
+  };
+
+  // ===== lottie-look.css =====
+  P['animations/lottie-look.css'] = function (target) {
+    animWall(target, {
+      items: [
+        { cls: 'lot lot-check',         label: '' },
+        { cls: 'lot lot-cross',         label: '' },
+        { cls: 'lot lot-spinner-orb',   label: '' },
+        { cls: 'lot lot-heart-burst',   label: '' },
+        { cls: 'lot lot-confetti-burst',label: '' },
+        { cls: 'lot lot-rocket',        label: '' },
+        { cls: 'lot lot-bell-shake',    label: '' },
+        { cls: 'lot lot-thumbs-up-pop', label: '' },
+        { cls: 'lot lot-clock-spin',    label: '' },
+        { cls: 'lot lot-cloud-rain',    label: '' }
+      ].map(function (it) {
+        return Object.assign({}, it, { style: 'width:96px;height:96px;display:inline-block;background:rgba(255,255,255,0.04);border-radius:10px;padding:0;' });
+      })
+    });
+  };
+
+  // ===== page-transitions-2.css =====
+  P['animations/page-transitions-2.css'] = function (target) {
+    animWall(target, {
+      items: [
+        { cls: 'pt2 pt2-slide-up is-in' },
+        { cls: 'pt2 pt2-fade-cross is-in' },
+        { cls: 'pt2 pt2-curtain-up' },
+        { cls: 'pt2 pt2-iris' },
+        { cls: 'pt2 pt2-morph-clip is-in' },
+        { cls: 'pt2 pt2-perspective-flip is-in' },
+        { cls: 'pt2 pt2-ribbon-wipe' }
+      ].map(function (it) {
+        return Object.assign({}, it, { style: 'min-width:140px;min-height:80px;display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-weight:600;border-radius:8px;font-size:0.78rem;overflow:hidden;position:relative;' });
+      })
+    });
+  };
+
+  // ===== transitions.css — hover-triggered =====
+  P['animations/transitions.css'] = function (target) {
+    var names = ['lift', 'scale', 'scale-sm', 'press', 'rotate', 'rotate-3d', 'glow', 'shimmer', 'underline', 'border'];
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;">' +
+        '<div style="font-size:0.78rem;color:rgba(255,255,255,0.55);">Hover any tile to see its transition</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:0.7rem;align-items:center;justify-content:center;max-width:720px;padding:1.2rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:10px;">' +
+          names.map(function (n) {
+            return '<div class="tr-' + n + '" style="padding:0.75rem 1.1rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-weight:600;border-radius:8px;font-size:0.78rem;cursor:pointer;font-family:ui-monospace,monospace;">' + n + '</div>';
+          }).join('') +
+        '</div>' +
+      '</div>';
+  };
+
+  // ===== inview.css — IntersectionObserver entrance (apply is-inview to show) =====
+  P['animations/inview.css'] = function (target) {
+    animWall(target, {
+      items: [
+        { cls: 'inview-fade-up is-inview' },
+        { cls: 'inview-fade-down is-inview' },
+        { cls: 'inview-fade-left is-inview' },
+        { cls: 'inview-fade-right is-inview' },
+        { cls: 'inview-zoom is-inview' },
+        { cls: 'inview-flip is-inview' },
+        { cls: 'inview-blur is-inview' }
+      ]
+    });
+  };
+
+  // ===== aos-lite (CSS + JS) =====
+  P['animations/aos-lite.css'] = function (target) {
+    animWall(target, {
+      items: [
+        { cls: 'aos aos-fade is-aos-in' },
+        { cls: 'aos aos-fade-up is-aos-in' },
+        { cls: 'aos aos-fade-down is-aos-in' },
+        { cls: 'aos aos-zoom-in is-aos-in' },
+        { cls: 'aos aos-zoom-out is-aos-in' },
+        { cls: 'aos aos-flip-up is-aos-in' }
+      ]
+    });
+  };
+  P['animations/aos-lite.js'] = P['animations/aos-lite.css'];
+
+  // ===== scroll-animations.css — apply is-visible to trigger =====
+  P['animations/scroll-animations.css'] = function (target) {
+    animWall(target, {
+      items: [
+        { cls: 'scroll-fade-in is-visible' },
+        { cls: 'scroll-slide-up is-visible' },
+        { cls: 'scroll-slide-left is-visible' },
+        { cls: 'scroll-slide-right is-visible' },
+        { cls: 'scroll-scale-in is-visible' },
+        { cls: 'scroll-rotate-in is-visible' }
+      ]
+    });
+  };
+
+  // ===== scroll-animations.js =====
+  P['animations/scroll-animations.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;">' +
+        '<div style="font-size:0.85rem;color:rgba(255,255,255,0.75);max-width:480px;text-align:center;">' +
+          '<b>ScrollAnim</b> wires IntersectionObserver-based entrance, scroll-scrubbed progress, and parallax to your elements.' +
+        '</div>' +
+        '<pre style="margin:0.3rem 0;padding:0.7rem 0.9rem;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:8px;font-family:ui-monospace,monospace;font-size:0.78rem;line-height:1.55;color:#d4d4dc;max-width:540px;white-space:pre-wrap;">' +
+          'ScrollAnim.reveal(\'.fade-up\', { threshold: 0.2 });\nScrollAnim.scrub(\'.hero\', { onUpdate: p =&gt; { /* 0..1 */ } });\nScrollAnim.progress(\'.progress-bar\');' +
+        '</pre>' +
+      '</div>';
+  };
+
+  // ===== spring.js — interactive drag-spring =====
+  P['animations/spring.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.85rem;width:100%;max-width:520px;">' +
+        '<div style="font-size:0.78rem;color:rgba(255,255,255,0.55);">Drag the dot — release to spring back.</div>' +
+        '<div id="dapp-spring-stage" style="position:relative;width:100%;height:140px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;">' +
+          '<div id="dapp-spring-dot" style="position:absolute;top:50%;left:50%;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);transform:translate(-50%,-50%);cursor:grab;box-shadow:0 8px 20px -4px rgba(139,92,246,0.5);touch-action:none;"></div>' +
+        '</div>' +
+      '</div>';
+    var dot = document.getElementById('dapp-spring-dot');
+    var dragging = false, sx = 0, sy = 0, cx = 0, cy = 0, raf;
+    dot.addEventListener('pointerdown', function (e) {
+      dragging = true; sx = e.clientX; sy = e.clientY;
+      dot.style.cursor = 'grabbing';
+      try { dot.setPointerCapture(e.pointerId); } catch (_) {}
+      cancelAnimationFrame(raf);
+    });
+    dot.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      cx = e.clientX - sx; cy = e.clientY - sy;
+      dot.style.transform = 'translate(calc(-50% + ' + cx + 'px), calc(-50% + ' + cy + 'px))';
+    });
+    dot.addEventListener('pointerup', function () {
+      dragging = false; dot.style.cursor = 'grab';
+      var start = performance.now();
+      var sxn = cx, syn = cy;
+      (function tick(now) {
+        var t = (now - start) / 700;
+        if (t >= 1) { dot.style.transform = 'translate(-50%, -50%)'; return; }
+        var b = Math.exp(-5 * t) * Math.cos(11 * t);
+        dot.style.transform = 'translate(calc(-50% + ' + (sxn * b) + 'px), calc(-50% + ' + (syn * b) + 'px))';
+        raf = requestAnimationFrame(tick);
+      })(performance.now());
+    });
+  };
+
+  // ===== stagger.js — staggered fade-in =====
+  P['animations/stagger.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.85rem;">' +
+        '<button class="dapp-stagger-replay" style="padding:0.5rem 1.1rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;font-weight:600;cursor:pointer;font-size:0.85rem;">↻ Replay stagger</button>' +
+        '<div id="dapp-stagger-row" style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;">' +
+          [1,2,3,4,5,6,7,8,9,10].map(function (n, i) {
+            return '<div class="dapp-stagger-tile" style="width:48px;height:48px;background:linear-gradient(135deg,#8b5cf6,#ec4899);border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:700;animation:dapp-stagger-fade 0.6s cubic-bezier(0.32,0.72,0,1) both;animation-delay:' + (i * 0.08) + 's;">' + n + '</div>';
+          }).join('') +
+        '</div>' +
+        '<style>@keyframes dapp-stagger-fade {from{opacity:0;transform:translateY(20px) scale(0.8);}to{opacity:1;transform:none;}}</style>' +
+      '</div>';
+    target.querySelector('.dapp-stagger-replay').addEventListener('click', function () {
+      target.querySelectorAll('.dapp-stagger-tile').forEach(function (t) {
+        t.style.animation = 'none'; t.offsetHeight; t.style.animation = '';
+      });
+    });
+  };
+
+  // ===== timeline.js — sequenced animation demo =====
+  P['animations/timeline.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.85rem;">' +
+        '<button class="dapp-tl-replay" style="padding:0.5rem 1.1rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;font-weight:600;cursor:pointer;font-size:0.85rem;">↻ Replay timeline</button>' +
+        '<div style="display:flex;gap:1rem;align-items:center;padding:1rem;background:rgba(255,255,255,0.02);border-radius:10px;">' +
+          '<div class="dapp-tl-a" style="width:48px;height:48px;background:#8b5cf6;border-radius:8px;animation:dapp-tl-a 0.5s ease both;"></div>' +
+          '<div class="dapp-tl-b" style="width:48px;height:48px;background:#ec4899;border-radius:8px;animation:dapp-tl-b 0.5s ease 0.4s both;"></div>' +
+          '<div class="dapp-tl-c" style="width:48px;height:48px;background:#06b6d4;border-radius:8px;animation:dapp-tl-c 0.5s ease 0.8s both;"></div>' +
+        '</div>' +
+        '<style>' +
+          '@keyframes dapp-tl-a{from{transform:translateY(-30px);opacity:0;}to{transform:none;opacity:1;}}' +
+          '@keyframes dapp-tl-b{from{transform:scale(0);}to{transform:scale(1);}}' +
+          '@keyframes dapp-tl-c{from{transform:translateX(30px) rotate(90deg);opacity:0;}to{transform:none;opacity:1;}}' +
+        '</style>' +
+      '</div>';
+    target.querySelector('.dapp-tl-replay').addEventListener('click', function () {
+      ['.dapp-tl-a', '.dapp-tl-b', '.dapp-tl-c'].forEach(function (s) {
+        var el = target.querySelector(s); if (!el) return;
+        el.style.animation = 'none'; el.offsetHeight; el.style.animation = '';
+      });
+    });
+  };
+
+  // ===== physics.js — falling-ball demo =====
+  P['animations/physics.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;">' +
+        '<button class="dapp-phys-drop" style="padding:0.5rem 1.1rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;font-weight:600;cursor:pointer;font-size:0.85rem;">Drop ball</button>' +
+        '<div id="dapp-phys-stage" style="position:relative;width:100%;max-width:400px;height:220px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.2));border:1px solid rgba(255,255,255,0.06);border-radius:10px;overflow:hidden;">' +
+          '<div style="position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(255,255,255,0.18);"></div>' +
+        '</div>' +
+      '</div>';
+    var stage = target.querySelector('#dapp-phys-stage');
+    target.querySelector('.dapp-phys-drop').addEventListener('click', function () {
+      var ball = document.createElement('div');
+      ball.style.cssText = 'position:absolute;left:50%;top:0;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ec4899,#8b5cf6);transform:translate(-50%,0);box-shadow:0 4px 12px rgba(139,92,246,0.5);';
+      stage.appendChild(ball);
+      var y = 0, v = 0, bouncing = true, last = performance.now();
+      function tick(now) {
+        var dt = Math.min(40, now - last) / 1000;
+        last = now;
+        v += 900 * dt;
+        y += v * dt;
+        var floor = stage.clientHeight - 28;
+        if (y >= floor) { y = floor; v = -v * 0.55; if (Math.abs(v) < 30) bouncing = false; }
+        ball.style.transform = 'translate(-50%, ' + y + 'px)';
+        if (bouncing) requestAnimationFrame(tick);
+        else setTimeout(function () { ball.remove(); }, 200);
+      }
+      requestAnimationFrame(tick);
+    });
+  };
+
+  // ===== anime-recipes.js — colorful staggered pop =====
+  P['animations/anime-recipes.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.85rem;">' +
+        '<button class="dapp-rec-replay" style="padding:0.5rem 1.1rem;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;font-weight:600;cursor:pointer;font-size:0.85rem;">↻ Replay recipes</button>' +
+        '<div style="display:grid;grid-template-columns:repeat(5,44px);gap:0.45rem;padding:1.2rem;background:rgba(255,255,255,0.02);border-radius:10px;">' +
+          [0,1,2,3,4,5,6,7,8,9].map(function (i) {
+            return '<div class="dapp-rec-dot" style="width:44px;height:44px;background:hsl(' + (i*36) + ',80%,60%);border-radius:50%;animation:dapp-rec 1.4s cubic-bezier(0.32,1.5,0.5,1) both;animation-delay:' + (i * 0.08) + 's;"></div>';
+          }).join('') +
+        '</div>' +
+        '<style>@keyframes dapp-rec{0%{transform:scale(0) rotate(-180deg);opacity:0;}60%{transform:scale(1.15) rotate(0);opacity:1;}100%{transform:scale(1) rotate(0);}}</style>' +
+      '</div>';
+    target.querySelector('.dapp-rec-replay').addEventListener('click', function () {
+      target.querySelectorAll('.dapp-rec-dot').forEach(function (d) {
+        d.style.animation = 'none'; d.offsetHeight; d.style.animation = '';
+      });
+    });
+  };
+
 })();

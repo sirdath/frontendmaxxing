@@ -210,9 +210,28 @@
     $crumbs.innerHTML = html;
   }
 
+  // Persisted collapsed folder set
+  function getCollapsedFolders() {
+    try { return new Set(JSON.parse(localStorage.getItem('dapp:collapsed') || '[]')); }
+    catch (_) { return new Set(); }
+  }
+  function setCollapsedFolders(set) {
+    try { localStorage.setItem('dapp:collapsed', JSON.stringify(Array.from(set))); }
+    catch (_) {}
+  }
+  function toggleFolder(folder) {
+    var set = getCollapsedFolders();
+    if (set.has(folder)) set.delete(folder); else set.add(folder);
+    setCollapsedFolders(set);
+    renderSidebar();
+  }
+  // Expose for inline onclick
+  window.dappToggleFolder = toggleFolder;
+
   function renderSidebar() {
     if (!$nav) return;
     var query = (document.getElementById('dapp-search-input').value || '').trim().toLowerCase();
+    var collapsed = getCollapsedFolders();
     var folders = Object.keys(state.byFolder).sort();
     var html = '';
     folders.forEach(function (f) {
@@ -222,11 +241,15 @@
       });
       if (!list.length) return;
       var meta = FOLDER_DESCRIPTIONS[f] || { icon: '•' };
-      html += '<div class="dapp-group">' +
+      // While searching, force-expand groups so matches are visible
+      var isCollapsed = !query && collapsed.has(f);
+      html += '<div class="dapp-group' + (isCollapsed ? ' is-collapsed' : '') + '" onclick="dappToggleFolder(\'' + esc(f) + '\')">' +
         '<span>' + meta.icon + '</span>' +
         '<span>' + esc(f) + '</span>' +
         '<span class="dapp-group-count">' + list.length + '</span>' +
+        '<span class="dapp-group-chev"></span>' +
       '</div>';
+      html += '<div class="dapp-group-body">';
       list.forEach(function (e) {
         html += '<div class="dapp-item" data-key="' + esc(e.key) + '" onclick="location.hash=\'#/' + esc(e.folder) + '/' + esc(e.file) + '\'">' +
           '<span class="dapp-item-dot"></span>' +
@@ -234,6 +257,7 @@
           (e.kind === 'JS' ? '<span class="dapp-item-tag">JS</span>' : '') +
         '</div>';
       });
+      html += '</div>';
     });
     if (!html) html = '<div class="dapp-empty" style="padding: 1rem 0.85rem;">No matches</div>';
     $nav.innerHTML = html;
