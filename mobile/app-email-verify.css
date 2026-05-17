@@ -1,0 +1,149 @@
+/* ============================================
+   APP EMAIL VERIFY — 6-digit OTP code entry
+   Inspired by 2FA confirmation screens, Notion / Stripe magic codes
+   ============================================
+   Usage:
+     <div class="apverify">
+       <button class="apverify-back">←</button>
+       <h1 class="apverify-title">Enter verification code</h1>
+       <p class="apverify-sub">
+         We sent a 6-digit code to<br>
+         <b>alex@example.com</b>
+       </p>
+       <div class="apverify-otp" data-app-otp data-length="6">
+         <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+         <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+         <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+         <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+         <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+         <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+       </div>
+       <div class="apverify-error">Incorrect code. Try again.</div>
+       <button class="apverify-resend">Resend code <span>00:24</span></button>
+       <button class="apverify-cta" disabled>Verify</button>
+     </div>
+
+   States:
+     .apverify.is-error  on root — error styling on inputs + show .apverify-error
+   ============================================ */
+
+.apverify {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+  --app-error: #ef4444;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 14px 22px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.apverify-back {
+  align-self: flex-start;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  color: var(--app-fg);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+}
+.apverify-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 16px 0 8px;
+  max-width: 280px;
+}
+.apverify-sub {
+  margin: 0 0 26px;
+  font-size: 15px;
+  color: var(--app-muted);
+  line-height: 1.45;
+}
+.apverify-sub b { color: var(--app-fg); font-weight: 600; }
+
+.apverify-otp {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.apverify-otp input {
+  flex: 1;
+  min-width: 0;
+  height: 58px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  text-align: center;
+  font: inherit;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--app-fg);
+  outline: none;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+.apverify-otp input:focus {
+  border-color: var(--app-accent);
+  background: rgba(10, 132, 255, 0.08);
+}
+.apverify.is-error .apverify-otp input {
+  border-color: var(--app-error);
+  animation: apverify-shake 0.4s ease-out;
+}
+@keyframes apverify-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.apverify-error {
+  display: none;
+  font-size: 13px;
+  color: var(--app-error);
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+.apverify.is-error .apverify-error { display: block; }
+
+.apverify-resend {
+  align-self: flex-start;
+  background: transparent;
+  border: 0;
+  color: var(--app-accent);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 4px;
+  cursor: pointer;
+  margin-bottom: auto;
+}
+.apverify-resend span { color: var(--app-muted); font-weight: 400; margin-left: 4px; font-variant-numeric: tabular-nums; }
+
+.apverify-cta {
+  height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--app-fg);
+  color: var(--app-bg);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.06s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.apverify-cta:disabled { opacity: 0.35; cursor: not-allowed; }
+.apverify-cta:not(:disabled):active { transform: scale(0.985); }

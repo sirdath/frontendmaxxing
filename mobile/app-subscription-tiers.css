@@ -1,0 +1,210 @@
+/* ============================================
+   APP SUBSCRIPTION TIERS — Plan picker with monthly/yearly toggle
+   Inspired by Linear, Vercel, Stripe pricing flows
+   ============================================
+   Usage:
+     <div class="aptiers">
+       <button class="aptiers-back">←</button>
+       <h1 class="aptiers-title">Choose your plan</h1>
+       <div class="aptiers-toggle" data-aptiers-toggle>
+         <span class="aptiers-toggle-thumb"></span>
+         <button class="aptiers-toggle-opt is-active" data-period="monthly">Monthly</button>
+         <button class="aptiers-toggle-opt" data-period="yearly">Yearly · -20%</button>
+       </div>
+       <div class="aptiers-cards">
+         <button class="aptiers-card">
+           <div class="aptiers-card-name">Free</div>
+           <div class="aptiers-card-price">$0<span>/mo</span></div>
+           <ul class="aptiers-card-feats">
+             <li>10 projects</li>
+             <li>Community support</li>
+           </ul>
+         </button>
+         <button class="aptiers-card is-active">
+           <div class="aptiers-card-tag">POPULAR</div>
+           <div class="aptiers-card-name">Pro</div>
+           <div class="aptiers-card-price" data-monthly="$12" data-yearly="$9">$12<span>/mo</span></div>
+           <ul class="aptiers-card-feats">
+             <li>Unlimited projects</li>
+             <li>Priority support</li>
+             <li>Custom domains</li>
+           </ul>
+         </button>
+         <button class="aptiers-card">
+           <div class="aptiers-card-name">Team</div>
+           <div class="aptiers-card-price" data-monthly="$25" data-yearly="$20">$25<span>/mo</span></div>
+           <ul class="aptiers-card-feats">
+             <li>Everything in Pro</li>
+             <li>SSO + audit logs</li>
+             <li>Team seats</li>
+           </ul>
+         </button>
+       </div>
+       <button class="aptiers-cta">Continue with Pro</button>
+     </div>
+   ============================================ */
+
+.aptiers {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+  --app-radius: 14px;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 12px 22px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-y: auto;
+}
+
+.aptiers-back {
+  align-self: flex-start;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  color: var(--app-fg);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.aptiers-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 14px 0 18px;
+}
+
+.aptiers-toggle {
+  position: relative;
+  display: flex;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 18px;
+}
+.aptiers-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  background: var(--app-fg);
+  border-radius: 8px;
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  z-index: 0;
+}
+.aptiers-toggle[data-period="yearly"] .aptiers-toggle-thumb { transform: translateX(100%); }
+.aptiers-toggle-opt {
+  flex: 1;
+  padding: 9px 10px;
+  background: transparent;
+  border: 0;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.aptiers-toggle-opt.is-active { color: var(--app-bg); }
+
+.aptiers-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.aptiers-card {
+  text-align: left;
+  position: relative;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--app-radius);
+  color: var(--app-fg);
+  font: inherit;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.aptiers-card.is-active {
+  border-color: var(--app-accent);
+  background: rgba(10, 132, 255, 0.08);
+}
+
+.aptiers-card-tag {
+  position: absolute;
+  top: -8px;
+  right: 14px;
+  padding: 3px 8px;
+  background: var(--app-accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  border-radius: 4px;
+}
+
+.aptiers-card-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--app-muted);
+  margin-bottom: 2px;
+}
+.aptiers-card-price {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 10px;
+}
+.aptiers-card-price span {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--app-muted);
+  letter-spacing: 0;
+}
+
+.aptiers-card-feats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--app-muted);
+}
+.aptiers-card-feats li::before {
+  content: "✓ ";
+  color: var(--app-accent);
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.aptiers-cta {
+  height: 52px;
+  border: 0;
+  border-radius: var(--app-radius);
+  background: var(--app-fg);
+  color: var(--app-bg);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.06s ease;
+}
+.aptiers-cta:active { transform: scale(0.985); }

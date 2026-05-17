@@ -1,0 +1,156 @@
+/* ============================================
+   APP PIN CREATE — 4-digit PIN entry with numeric keypad
+   Inspired by banking app lock screens, Apple Pay PIN
+   ============================================
+   Usage:
+     <div class="appin">
+       <button class="appin-back">←</button>
+       <div class="appin-head">
+         <h1 class="appin-title">Create a PIN</h1>
+         <p class="appin-sub">You'll use this to unlock the app</p>
+       </div>
+       <div class="appin-dots" data-app-pin data-length="4">
+         <span class="appin-dot is-filled"></span>
+         <span class="appin-dot is-filled"></span>
+         <span class="appin-dot"></span>
+         <span class="appin-dot"></span>
+       </div>
+       <div class="appin-keys">
+         <button class="appin-key" data-key="1">1</button>
+         <button class="appin-key" data-key="2">2<span>ABC</span></button>
+         <button class="appin-key" data-key="3">3<span>DEF</span></button>
+         <button class="appin-key" data-key="4">4<span>GHI</span></button>
+         <button class="appin-key" data-key="5">5<span>JKL</span></button>
+         <button class="appin-key" data-key="6">6<span>MNO</span></button>
+         <button class="appin-key" data-key="7">7<span>PQRS</span></button>
+         <button class="appin-key" data-key="8">8<span>TUV</span></button>
+         <button class="appin-key" data-key="9">9<span>WXYZ</span></button>
+         <button class="appin-key appin-key-faceid">😊</button>
+         <button class="appin-key" data-key="0">0</button>
+         <button class="appin-key appin-key-back" data-key="back">⌫</button>
+       </div>
+     </div>
+
+   States:
+     .is-filled  on .appin-dot — shows filled state
+     .is-error   on .appin-dots — shake animation
+   ============================================ */
+
+.appin {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+  --app-error: #ef4444;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 14px 22px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  align-items: center;
+}
+
+.appin-back {
+  align-self: flex-start;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  color: var(--app-fg);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.appin-head { text-align: center; margin: 18px 0 26px; }
+.appin-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 6px;
+}
+.appin-sub {
+  margin: 0;
+  font-size: 14px;
+  color: var(--app-muted);
+}
+
+.appin-dots {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.appin-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+.appin-dot.is-filled {
+  background: var(--app-fg);
+  border-color: var(--app-fg);
+  transform: scale(1.05);
+}
+.appin-dots.is-error {
+  animation: appin-shake 0.4s ease-out;
+}
+.appin-dots.is-error .appin-dot.is-filled {
+  background: var(--app-error);
+  border-color: var(--app-error);
+}
+@keyframes appin-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.appin-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 24px;
+  width: 100%;
+  max-width: 260px;
+  margin-top: auto;
+}
+
+.appin-key {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 0;
+  font: inherit;
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--app-fg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.1s ease, transform 0.05s ease;
+}
+.appin-key:active { background: rgba(255, 255, 255, 0.15); transform: scale(0.95); }
+.appin-key span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--app-muted);
+}
+.appin-key-faceid {
+  background: transparent;
+  font-size: 24px;
+}
+.appin-key-back {
+  background: transparent;
+  font-size: 22px;
+}

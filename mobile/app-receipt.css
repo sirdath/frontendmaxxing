@@ -1,0 +1,121 @@
+/* ============================================
+   APP RECEIPT — Order success / confirmation screen
+   Inspired by Shopify, Stripe Checkout receipt screens
+   ============================================
+   Usage:
+     <div class="aprecpt">
+       <div class="aprecpt-tick">
+         <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" stroke-width="3"/><path d="M 20 32 L 28 40 L 44 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+       </div>
+       <h1 class="aprecpt-title">Payment successful</h1>
+       <p class="aprecpt-sub">Your subscription is now active.</p>
+       <div class="aprecpt-card">
+         <div class="aprecpt-row"><span>Order #</span><span class="aprecpt-row-mono">A1B2-C3D4</span></div>
+         <div class="aprecpt-row"><span>Plan</span><span>Pro Annual</span></div>
+         <div class="aprecpt-row"><span>Date</span><span>Mar 15, 2026</span></div>
+         <div class="aprecpt-row"><span>Payment</span><span>Visa •• 4242</span></div>
+         <div class="aprecpt-divider"></div>
+         <div class="aprecpt-row aprecpt-total"><span>Total</span><span>$59.88</span></div>
+       </div>
+       <button class="aprecpt-cta">Done</button>
+       <button class="aprecpt-receipt">Email receipt</button>
+     </div>
+   ============================================ */
+
+.aprecpt {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #22c55e;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 26px 22px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+}
+
+.aprecpt-tick {
+  width: 86px;
+  height: 86px;
+  margin: 18px auto 16px;
+  color: var(--app-accent);
+  animation: aprecpt-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+.aprecpt-tick svg { width: 100%; height: 100%; }
+.aprecpt-tick svg path { stroke-dasharray: 50; animation: aprecpt-draw 0.7s ease-out 0.2s backwards; }
+@keyframes aprecpt-pop {
+  from { transform: scale(0.4); opacity: 0; }
+}
+@keyframes aprecpt-draw {
+  from { stroke-dashoffset: 50; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.aprecpt-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 4px;
+}
+.aprecpt-sub {
+  margin: 0 0 22px;
+  font-size: 15px;
+  color: var(--app-muted);
+}
+
+.aprecpt-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  text-align: left;
+}
+.aprecpt-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  font-size: 14px;
+}
+.aprecpt-row > span:first-child { color: var(--app-muted); }
+.aprecpt-row > span:last-child { font-weight: 500; }
+.aprecpt-row-mono { font-family: ui-monospace, monospace; font-size: 13px; }
+.aprecpt-divider {
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 8px 0;
+}
+.aprecpt-total {
+  font-size: 18px;
+  font-weight: 700;
+}
+.aprecpt-total > span:first-child { color: var(--app-fg) !important; }
+
+.aprecpt-cta {
+  height: 54px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--app-fg);
+  color: var(--app-bg);
+  font: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 8px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.aprecpt-receipt {
+  height: 44px;
+  background: transparent;
+  border: 0;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}

@@ -1,0 +1,180 @@
+/* ============================================
+   APP AGE PICKER — Birthday wheel-picker screen
+   Inspired by Headspace, Calm, Health onboarding age screens
+   ============================================
+   Usage:
+     <div class="apage">
+       <button class="apage-back">←</button>
+       <div class="apage-step">Step 1 of 3</div>
+       <h1 class="apage-title">When were you born?</h1>
+       <p class="apage-sub">We'll use this to personalize your experience.</p>
+       <div class="apage-picker" data-app-age-picker>
+         <div class="apage-col" data-col="month">
+           <div class="apage-row">January</div>
+           <div class="apage-row">February</div>
+           …
+         </div>
+         <div class="apage-col" data-col="day">
+           <div class="apage-row">1</div>
+           …
+         </div>
+         <div class="apage-col" data-col="year">
+           <div class="apage-row">2000</div>
+           …
+         </div>
+         <div class="apage-selection"></div>
+       </div>
+       <div class="apage-summary">You'll be turning <b>25</b></div>
+       <button class="apage-cta">Continue</button>
+     </div>
+   ============================================ */
+
+.apage {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 14px 22px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.apage-back {
+  align-self: flex-start;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  color: var(--app-fg);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+}
+.apage-step {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--app-accent);
+  margin: 10px 0 6px;
+}
+.apage-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 6px;
+}
+.apage-sub {
+  margin: 0 0 22px;
+  font-size: 14px;
+  color: var(--app-muted);
+  line-height: 1.4;
+}
+
+.apage-picker {
+  --row-h: 40px;
+  --visible: 5;
+  position: relative;
+  height: calc(var(--row-h) * var(--visible));
+  display: flex;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.apage-col {
+  flex: 1;
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  text-align: center;
+}
+.apage-col::-webkit-scrollbar { display: none; }
+.apage-col::before,
+.apage-col::after {
+  content: "";
+  display: block;
+  height: calc(var(--row-h) * 2);
+}
+
+.apage-row {
+  height: var(--row-h);
+  line-height: var(--row-h);
+  scroll-snap-align: center;
+  font-size: 18px;
+  color: rgba(235, 235, 245, 0.55);
+  font-variant-numeric: tabular-nums;
+}
+.apage-row.is-selected {
+  color: var(--app-fg);
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.apage-picker::before,
+.apage-picker::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(var(--row-h) * 2);
+  pointer-events: none;
+  z-index: 2;
+}
+.apage-picker::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--app-bg), transparent);
+}
+.apage-picker::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--app-bg), transparent);
+}
+
+.apage-selection {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 50%;
+  height: var(--row-h);
+  transform: translateY(-50%);
+  background: rgba(10, 132, 255, 0.18);
+  border: 1px solid rgba(10, 132, 255, 0.5);
+  border-radius: 10px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.apage-summary {
+  margin: 18px 0 0;
+  text-align: center;
+  font-size: 15px;
+  color: var(--app-muted);
+}
+.apage-summary b { color: var(--app-fg); font-size: 18px; font-weight: 700; }
+
+.apage-cta {
+  margin-top: auto;
+  height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--app-fg);
+  color: var(--app-bg);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s ease, transform 0.06s ease;
+}
+.apage-cta:active { transform: scale(0.985); opacity: 0.9; }

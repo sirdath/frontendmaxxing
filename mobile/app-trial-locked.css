@@ -1,0 +1,135 @@
+/* ============================================
+   APP TRIAL LOCKED — Premium-locked feature screen with upgrade CTA
+   Inspired by Bear Pro, Streaks Pro, Duolingo Super lock screens
+   ============================================
+   Usage:
+     <div class="aplock">
+       <button class="aplock-close">×</button>
+       <div class="aplock-feature">
+         <div class="aplock-lock-icon">🔒</div>
+         <div class="aplock-feature-img"></div>
+       </div>
+       <h1 class="aplock-title">Unlock advanced analytics</h1>
+       <p class="aplock-text">See detailed insights, custom reports, and exportable charts with Pro.</p>
+       <ul class="aplock-list">
+         <li>📊 Advanced charts & exports</li>
+         <li>📈 Custom dashboards</li>
+         <li>📁 Bulk export</li>
+         <li>⚡ Priority support</li>
+       </ul>
+       <button class="aplock-cta">Upgrade to Pro</button>
+       <button class="aplock-later">Maybe later</button>
+     </div>
+   ============================================ */
+
+.aplock {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.65);
+  --app-accent: #fbbf24;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 14px 22px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  position: relative;
+}
+
+.aplock-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0;
+  color: var(--app-fg);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.aplock-feature {
+  position: relative;
+  margin: 16px auto 20px;
+  width: 100%;
+  max-width: 280px;
+  height: 130px;
+}
+.aplock-feature-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #1e1b4b, #4c1d95, #831843);
+  filter: blur(6px) brightness(0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.aplock-lock-icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 38px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+  z-index: 1;
+}
+
+.aplock-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 8px;
+}
+.aplock-text {
+  margin: 0 0 18px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--app-muted);
+  max-width: 280px;
+  margin-inline: auto;
+}
+
+.aplock-list {
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.aplock-cta {
+  height: 54px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--app-accent), #f97316);
+  color: #1a1a00;
+  font: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(251, 191, 36, 0.3);
+  margin-bottom: 8px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.aplock-later {
+  height: 44px;
+  background: transparent;
+  border: 0;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}

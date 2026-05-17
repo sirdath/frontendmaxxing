@@ -1,0 +1,149 @@
+/* ============================================
+   APP ONBOARDING PICK GOALS — Multi-select chips for personalization
+   Inspired by Headspace goal-picker, Duolingo "What do you want to learn?"
+   ============================================
+   Usage:
+     <div class="apgoals">
+       <div class="apgoals-head">
+         <p class="apgoals-step">Step 2 of 4</p>
+         <h1 class="apgoals-title">What brings you here?</h1>
+         <p class="apgoals-sub">Pick all that apply. We'll tailor your experience.</p>
+       </div>
+       <div class="apgoals-grid">
+         <button class="apgoals-chip is-selected">
+           <span class="apgoals-chip-icon">😴</span>
+           <span class="apgoals-chip-label">Sleep better</span>
+         </button>
+         <button class="apgoals-chip">
+           <span class="apgoals-chip-icon">🧘</span>
+           <span class="apgoals-chip-label">Reduce stress</span>
+         </button>
+         <button class="apgoals-chip is-selected">
+           <span class="apgoals-chip-icon">💪</span>
+           <span class="apgoals-chip-label">Build habits</span>
+         </button>
+         …
+       </div>
+       <button class="apgoals-cta">Continue</button>
+     </div>
+
+   States:
+     .is-selected — Selected chip
+   ============================================ */
+
+.apgoals {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #ec4899;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 22px 22px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.apgoals-head { margin-bottom: 20px; }
+.apgoals-step {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--app-accent);
+  margin: 0 0 6px;
+}
+.apgoals-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 6px;
+  line-height: 1.15;
+}
+.apgoals-sub {
+  margin: 0;
+  font-size: 14px;
+  color: var(--app-muted);
+  line-height: 1.4;
+}
+
+.apgoals-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  flex: 1;
+  align-content: start;
+}
+
+.apgoals-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 14px 14px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  color: var(--app-fg);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+.apgoals-chip:active { transform: scale(0.98); }
+
+.apgoals-chip.is-selected {
+  background: rgba(236, 72, 153, 0.12);
+  border-color: var(--app-accent);
+}
+
+.apgoals-chip.is-selected::after {
+  content: "✓";
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--app-accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+}
+
+.apgoals-chip-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.apgoals-chip-label {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.apgoals-cta {
+  height: 52px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--app-fg);
+  color: var(--app-bg);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: opacity 0.15s ease, transform 0.06s ease;
+}
+.apgoals-cta:active { transform: scale(0.985); opacity: 0.9; }
+.apgoals-cta:disabled { opacity: 0.4; }

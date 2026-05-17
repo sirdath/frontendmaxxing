@@ -1,0 +1,209 @@
+/* ============================================
+   APP PAYWALL — Hero subscription screen with features + plan + CTA
+   Inspired by Calm, Streaks, Bear, Things 3 paywalls
+   ============================================
+   Usage:
+     <div class="appaywall">
+       <button class="appaywall-close">×</button>
+       <div class="appaywall-hero">
+         <div class="appaywall-badge">PRO</div>
+         <h1 class="appaywall-title">Unlock everything</h1>
+         <p class="appaywall-sub">7 days free, then $9.99 / month</p>
+       </div>
+       <ul class="appaywall-features">
+         <li class="appaywall-feat"><span class="appaywall-feat-check">✓</span><span><b>Unlimited components</b> across all categories</span></li>
+         <li class="appaywall-feat"><span class="appaywall-feat-check">✓</span><span><b>Premium themes</b> and full source export</span></li>
+         <li class="appaywall-feat"><span class="appaywall-feat-check">✓</span><span><b>Priority updates</b> and team licensing</span></li>
+         <li class="appaywall-feat"><span class="appaywall-feat-check">✓</span><span><b>No watermarks</b>, ever</span></li>
+       </ul>
+       <div class="appaywall-plans">
+         <button class="appaywall-plan">
+           <div class="appaywall-plan-name">Monthly</div>
+           <div class="appaywall-plan-price">$9.99 / month</div>
+         </button>
+         <button class="appaywall-plan is-active">
+           <span class="appaywall-plan-deal">SAVE 50%</span>
+           <div class="appaywall-plan-name">Yearly</div>
+           <div class="appaywall-plan-price">$4.99 / month <span>($59.88 / yr)</span></div>
+         </button>
+       </div>
+       <button class="appaywall-cta">Start 7-day free trial</button>
+       <p class="appaywall-foot">Cancel anytime · <a>Restore</a> · <a>Terms</a></p>
+     </div>
+   ============================================ */
+
+.appaywall {
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.7);
+  --app-accent: #fbbf24;
+  --app-radius: 14px;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  color: var(--app-fg);
+  background: #0a0a14;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(251, 191, 36, 0.18), transparent 60%),
+    radial-gradient(circle at 80% 30%, rgba(251, 36, 159, 0.16), transparent 55%);
+  padding: 16px 22px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-y: auto;
+}
+
+.appaywall-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0;
+  color: var(--app-fg);
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.appaywall-hero { text-align: center; margin: 18px 0 22px; }
+.appaywall-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, var(--app-accent), #f97316);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #1a1a00;
+  margin-bottom: 14px;
+}
+.appaywall-title {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin: 0 0 8px;
+  background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0.6));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.appaywall-sub {
+  margin: 0;
+  font-size: 15px;
+  color: var(--app-muted);
+}
+
+.appaywall-features {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 14px 14px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--app-radius);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.appaywall-feat {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.appaywall-feat b { font-weight: 600; color: var(--app-fg); }
+.appaywall-feat-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--app-accent);
+  color: #1a1a00;
+  font-size: 13px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.appaywall-plans {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.appaywall-plan {
+  position: relative;
+  text-align: left;
+  padding: 14px 16px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--app-radius);
+  color: var(--app-fg);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.appaywall-plan.is-active {
+  border-color: var(--app-accent);
+  background: rgba(251, 191, 36, 0.08);
+}
+.appaywall-plan-deal {
+  position: absolute;
+  top: -8px;
+  right: 12px;
+  padding: 3px 8px;
+  background: var(--app-accent);
+  color: #1a1a00;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  border-radius: 4px;
+}
+.appaywall-plan-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.appaywall-plan-price {
+  font-size: 13px;
+  color: var(--app-muted);
+}
+.appaywall-plan-price span { opacity: 0.65; }
+
+.appaywall-cta {
+  height: 54px;
+  border: 0;
+  border-radius: var(--app-radius);
+  background: linear-gradient(135deg, var(--app-accent), #f97316);
+  color: #1a1a00;
+  font: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 12px;
+  box-shadow: 0 10px 28px rgba(251, 191, 36, 0.4);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.06s ease;
+}
+.appaywall-cta:active { transform: scale(0.985); }
+
+.appaywall-foot {
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--app-muted);
+}
+.appaywall-foot a {
+  color: var(--app-fg);
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 0 2px;
+}

@@ -1,0 +1,193 @@
+/* ============================================
+   APP LOGOUT / DELETE CONFIRM — Destructive-action confirmation screen
+   Inspired by Apple "Sign out of Apple ID", Discord "Delete account" flow
+   ============================================
+   Usage (logout):
+     <div class="apconfirm apconfirm-warn">
+       <div class="apconfirm-icon">⚠</div>
+       <h1 class="apconfirm-title">Sign out of Acme?</h1>
+       <p class="apconfirm-text">You'll need to sign in again to use the app. Drafts saved on this device will be kept.</p>
+       <div class="apconfirm-list">
+         <div class="apconfirm-row"><span>Account</span><span>alex@example.com</span></div>
+         <div class="apconfirm-row"><span>Drafts saved</span><span>4</span></div>
+         <div class="apconfirm-row"><span>Last sync</span><span>2 min ago</span></div>
+       </div>
+       <button class="apconfirm-destructive">Sign out</button>
+       <button class="apconfirm-cancel">Cancel</button>
+     </div>
+
+   Usage (delete account with checkbox + typed confirm):
+     <div class="apconfirm apconfirm-danger">
+       <div class="apconfirm-icon">🗑</div>
+       <h1 class="apconfirm-title">Delete account</h1>
+       <p class="apconfirm-text">This permanently deletes your data. <b>This cannot be undone.</b></p>
+       <label class="apconfirm-check">
+         <input type="checkbox">
+         <span>I understand my data will be permanently deleted</span>
+       </label>
+       <label class="apconfirm-field">
+         <span>Type <b>DELETE</b> to confirm</span>
+         <input placeholder="DELETE">
+       </label>
+       <button class="apconfirm-destructive" disabled>Delete account</button>
+       <button class="apconfirm-cancel">Cancel</button>
+     </div>
+   ============================================ */
+
+.apconfirm {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-warn: #fbbf24;
+  --app-danger: #ef4444;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 26px 22px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.apconfirm-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 22px;
+  margin: 8px auto 14px;
+  display: grid;
+  place-items: center;
+  font-size: 36px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.apconfirm-warn .apconfirm-icon {
+  background: rgba(251, 191, 36, 0.12);
+  border-color: rgba(251, 191, 36, 0.3);
+  color: var(--app-warn);
+}
+.apconfirm-danger .apconfirm-icon {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--app-danger);
+}
+
+.apconfirm-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 8px;
+  line-height: 1.15;
+}
+.apconfirm-text {
+  margin: 0 0 22px;
+  font-size: 15px;
+  color: var(--app-muted);
+  line-height: 1.45;
+  max-width: 280px;
+}
+.apconfirm-text b { color: var(--app-fg); font-weight: 600; }
+
+.apconfirm-list {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 4px 12px;
+  margin-bottom: 18px;
+  text-align: left;
+}
+.apconfirm-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 4px;
+  font-size: 14px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+.apconfirm-row:last-child { border-bottom: 0; }
+.apconfirm-row > span:first-child { color: var(--app-muted); }
+.apconfirm-row > span:last-child { font-weight: 500; }
+
+.apconfirm-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--app-muted);
+  line-height: 1.4;
+  margin-bottom: 14px;
+  text-align: left;
+  width: 100%;
+}
+.apconfirm-check input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--app-danger);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.apconfirm-field {
+  width: 100%;
+  margin-bottom: auto;
+}
+.apconfirm-field span {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--app-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: left;
+  padding-left: 4px;
+  margin-bottom: 6px;
+}
+.apconfirm-field span b { color: var(--app-danger); font-weight: 800; }
+.apconfirm-field input {
+  width: 100%;
+  height: 46px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(239, 68, 68, 0.3);
+  border-radius: 10px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--app-fg);
+  outline: none;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.apconfirm-destructive {
+  height: 52px;
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  background: var(--app-danger);
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s ease, transform 0.06s ease;
+}
+.apconfirm-destructive:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.apconfirm-cancel {
+  height: 44px;
+  background: transparent;
+  border: 0;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}

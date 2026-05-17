@@ -1,0 +1,113 @@
+/* ============================================
+   APP MAGIC LINK SENT — Check-your-email confirmation screen
+   Inspired by Notion, Vercel, Slack magic-link flows
+   ============================================
+   Usage:
+     <div class="apmlink">
+       <div class="apmlink-art">📧</div>
+       <h1 class="apmlink-title">Check your email</h1>
+       <p class="apmlink-text">We sent a sign-in link to<br><b>you@example.com</b></p>
+       <div class="apmlink-actions">
+         <button class="apmlink-primary">Open mail app</button>
+         <button class="apmlink-secondary">Resend link</button>
+       </div>
+       <p class="apmlink-help">Didn't get it? Check spam or <a>use a different email</a>.</p>
+     </div>
+   ============================================ */
+
+.apmlink {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 32px 28px 22px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.apmlink-art {
+  width: 110px;
+  height: 110px;
+  margin: auto auto 4px;
+  background: linear-gradient(135deg, #0a84ff, #5e5ce6);
+  border-radius: 28px;
+  display: grid;
+  place-items: center;
+  font-size: 52px;
+  box-shadow: 0 16px 40px rgba(10, 132, 255, 0.35);
+  animation: apmlink-float 3s ease-in-out infinite;
+}
+
+@keyframes apmlink-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.apmlink-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 18px 0 8px;
+}
+
+.apmlink-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--app-muted);
+  max-width: 300px;
+}
+.apmlink-text b { color: var(--app-fg); font-weight: 600; }
+
+.apmlink-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin: 28px auto auto;
+}
+
+.apmlink-primary {
+  height: 52px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--app-fg);
+  color: var(--app-bg);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.15s ease;
+}
+.apmlink-secondary {
+  height: 48px;
+  border: 0;
+  background: transparent;
+  color: var(--app-accent);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.apmlink-help {
+  font-size: 13px;
+  color: var(--app-muted);
+  margin: 14px 0 0;
+}
+.apmlink-help a { color: var(--app-fg); text-decoration: underline; cursor: pointer; }
+
+.apmlink.apmlink-light {
+  --app-bg: #fff;
+  --app-fg: #000;
+  --app-muted: rgba(60, 60, 67, 0.6);
+}

@@ -2041,6 +2041,83 @@ These cover components and gradient utilities that had only intent-table rows ab
 **ios-notification-banner.css** `mobile/ios-notification-banner.css` (CSS) — tags: ios notification banner slide-in lock-screen stack glass blur from-top push-notif
   iOS top-slide notification banner + lock-screen stack. `.ios-banner > .ios-banner-icon + .ios-banner-body`. Stack variant via `.ios-notif-stack > .ios-notif`.
 
+**Mobile app full-screens (`mobile/app-*` — designed to render inside `iphone-frame.css`)**
+
+**app-login.css** `mobile/app-login.css` (CSS) — tags: mobile app login signin email password social apple google flutter react-native cupertino material auth
+  Full-page mobile login: logo + email/pw + forgot + social (Apple/Google) + sign-up footer. Theming via `--app-bg/fg/accent`. Dark by default, `.applogin-light` for light mode. Drop-in for Flutter/RN translation.
+
+**app-signup.css** `mobile/app-signup.css` (CSS) — tags: mobile app signup register create-account password-meter terms checkbox flutter react-native
+  Full-page create-account screen with name/email/password + strength meter + terms. Pair with the password-meter dots logic in `form-pack.js`.
+
+**app-magic-link-sent.css** `mobile/app-magic-link-sent.css` (CSS) — tags: mobile app magic-link check-email confirmation animated-icon open-mail resend
+  Confirmation screen after sending sign-in email. Animated floating mail icon + "Open mail app" + "Resend" + help text.
+
+**app-onboarding-welcome.css** `mobile/app-onboarding-welcome.css` (CSS) — tags: mobile app welcome first-run hero orb conic gradient onboarding splash
+  Full-screen welcome screen: animated conic orb art + value-prop tagline + "Get started" / "I have an account" CTAs.
+
+**app-onboarding-value-props.css** `mobile/app-onboarding-value-props.css` (CSS) — tags: mobile app onboarding features list icons value-props benefits highlights
+  Full-screen value-props list: 3-5 icon rows with feature title + description + Continue CTA. Notion/Calm onboarding style.
+
+**app-onboarding-pick-goals.css** `mobile/app-onboarding-pick-goals.css` (CSS) — tags: mobile app onboarding goals interests multi-select chips personalization headspace duolingo
+  Multi-select chip grid for personalization ("What brings you here?"). 2-column emoji + label chips with `.is-selected` state.
+
+**app-paywall.css** `mobile/app-paywall.css` (CSS) — tags: mobile app paywall subscription pro trial features pricing yearly monthly checkout
+  Full-page paywall: badge + gradient title + feature list + monthly/yearly plan cards + trial CTA + restore/terms footer.
+
+**app-subscription-tiers.css** `mobile/app-subscription-tiers.css` (CSS) — tags: mobile app subscription pricing tiers plans monthly yearly toggle stripe linear vercel
+  Plan picker with monthly/yearly toggle + 3 plan cards (Free/Pro/Team) + popular tag + selected state.
+
+**app-subscription-tiers.js** `mobile/app-subscription-tiers.js` (JS, global: `AppSubTiers`) — tags: mobile app subscription toggle period plan change onChange
+  `AppSubTiers.init('.aptiers', {onChange})`. Handles period toggle (monthly↔yearly), updates prices from `data-monthly/-yearly`, plan selection.
+
+**app-payment-card.css** `mobile/app-payment-card.css` (CSS) — tags: mobile app payment checkout card visa applepay gpay stripe form expiry cvc
+  Card payment form with Apple Pay / Google Pay quick buttons + number/exp/CVC fields + brand badge + "Secured by Stripe" footer.
+
+**app-trial-locked.css** `mobile/app-trial-locked.css` (CSS) — tags: mobile app trial locked premium pro upgrade blurred feature gate gold cta paywall-soft
+  Locked-feature screen with blurred preview + lock icon + feature list + gold upgrade CTA + "maybe later".
+
+**app-receipt.css** `mobile/app-receipt.css` (CSS) — tags: mobile app receipt order success checkmark animated draw summary stripe shopify done
+  Order-confirmation screen with animated green checkmark draw + order details card (order#, plan, date, payment, total) + Done + Email receipt.
+
+**app-billing-history.css** `mobile/app-billing-history.css` (CSS) — tags: mobile app billing history charges invoices stripe linear vercel past plan manage
+  Past-charges screen with current-plan card + list of transactions with paid/failed/refunded pills + amount + card-last-4.
+
+**app-age-picker.css** `mobile/app-age-picker.css` (CSS) — tags: mobile app age birthday picker wheel month day year scroll-snap onboarding
+  Birthday wheel-picker screen (month/day/year) with fade overlay + selection band + auto age calculation summary.
+
+**app-age-picker.js** `mobile/app-age-picker.js` (JS, global: `AppAgePicker`) — tags: mobile app age picker scroll-snap birthday years months days calculate
+  `AppAgePicker.init('[data-app-age-picker]', {summarySel, onChange})`. Auto-fills columns, snaps to row, computes current age from birthday.
+
+**app-name-input.css** `mobile/app-name-input.css` (CSS) — tags: mobile app name input first-name large field underline onboarding duolingo headspace bottom-cta
+  "What's your name?" screen — large underlined input field + bottom Continue + Skip. Duolingo/Headspace onboarding style.
+
+**app-email-verify.css** `mobile/app-email-verify.css` (CSS) — tags: mobile app email verify otp 6-digit code 2fa magic-code shake-error resend countdown
+  6-digit OTP verification screen with auto-focus inputs + resend countdown + error shake state.
+
+**app-email-verify.js** `mobile/app-email-verify.js` (JS, global: `AppOtp`) — tags: mobile app otp auto-advance paste backspace arrow-keys complete change
+  `AppOtp.init('[data-app-otp]', {onComplete, onChange})`. Auto-advance on input, backspace-back, arrow nav, paste-multi-digit support.
+
+**app-pin-create.css** `mobile/app-pin-create.css` (CSS) — tags: mobile app pin 4-digit keypad numeric dots filled shake-error face-id biometric
+  4-digit PIN entry screen with dots indicator + numeric keypad with letter subtitles (ABC/DEF) + Face ID slot + backspace.
+
+**app-pin-create.js** `mobile/app-pin-create.js` (JS, global: `AppPin`) — tags: mobile app pin keypad input length complete change shake reset value
+  `AppPin.init('.appin', {length, onComplete, onChange})`. Handles keypad clicks, keyboard digits, backspace, shake-on-error, reset.
+
+**app-language-picker.css** `mobile/app-language-picker.css` (CSS) — tags: mobile app language picker flags search suggested list active check duolingo tandem
+  Searchable language list with flag emojis + native name + native-script line + selected check + Suggested section.
+
+**app-state-screens.css** `mobile/app-state-screens.css` (CSS) — tags: mobile app state error success empty offline 404 full-page art icon retry try-again notion stripe
+  Full-page state screens: `.apstate` + variant `.apstate-error/-success/-empty/-offline/-404`. Art icon + title + text + primary/secondary CTAs.
+
+**app-permission-prompt.css** `mobile/app-permission-prompt.css` (CSS) — tags: mobile app permission notifications location camera prompt pre-permission allow not-now ios-pre-prompt
+  Full-page permission ask (notifications/location/etc.) with pulsing icon + benefit list + allow/skip CTAs. Color presets blue/pink/green/violet.
+
+**app-rating-prompt.css** `mobile/app-rating-prompt.css` (CSS) — tags: mobile app rating review 5-star feedback chips appstore duolingo calm
+  "Rate this app" screen with 5 stars + reason chips ("Easy to use", "Fast", etc.) + Rate on App Store CTA.
+
+**app-logout-confirm.css** `mobile/app-logout-confirm.css` (CSS) — tags: mobile app logout sign-out delete-account confirm destructive warning danger typed-confirm checkbox
+  Destructive confirm screen. `.apconfirm-warn` for sign-out (lists drafts/email), `.apconfirm-danger` for delete (checkbox + typed "DELETE" + disabled CTA until satisfied).
+
 **Specialty / effects / game UI**
 
 **perspective-tunnel.css** `effects/perspective-tunnel.css` (CSS) — tags: perspective tunnel synthwave vaporwave cyber 80s 90s retro grid floor sun stars matrix blueprint fire mono

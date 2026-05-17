@@ -1,0 +1,128 @@
+/* ============================================
+   APP PERMISSION PROMPT — Full-screen permission ask (notifications, location, camera)
+   Inspired by iOS pre-permission patterns (Onboarding before the system dialog)
+   ============================================
+   Usage:
+     <div class="apperm">
+       <div class="apperm-icon">🔔</div>
+       <h1 class="apperm-title">Stay in the loop</h1>
+       <p class="apperm-text">Get notified when there's an update, important message, or new feature.</p>
+       <ul class="apperm-list">
+         <li>📨 Direct messages</li>
+         <li>🎉 New features & releases</li>
+         <li>📅 Reminders you set yourself</li>
+       </ul>
+       <p class="apperm-fine">You can change this anytime in Settings.</p>
+       <button class="apperm-allow">Enable notifications</button>
+       <button class="apperm-skip">Not now</button>
+     </div>
+
+   Theme presets:
+     .apperm-blue (default), .apperm-pink, .apperm-green, .apperm-violet
+   ============================================ */
+
+.apperm {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.65);
+  --app-accent: #0a84ff;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 28px 26px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.apperm-icon {
+  width: 100px;
+  height: 100px;
+  margin: 12px auto 18px;
+  border-radius: 26px;
+  background: linear-gradient(135deg, var(--app-accent), #5e5ce6);
+  display: grid;
+  place-items: center;
+  font-size: 48px;
+  box-shadow: 0 16px 40px rgba(10, 132, 255, 0.3);
+  animation: apperm-pulse 2.4s ease-in-out infinite;
+}
+@keyframes apperm-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+
+.apperm-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 8px;
+  line-height: 1.15;
+}
+.apperm-text {
+  margin: 0 0 22px;
+  font-size: 15px;
+  color: var(--app-muted);
+  line-height: 1.4;
+  max-width: 280px;
+}
+
+.apperm-list {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 280px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.apperm-fine {
+  font-size: 12px;
+  color: var(--app-muted);
+  margin: 0 0 auto;
+}
+
+.apperm-allow {
+  height: 52px;
+  width: 100%;
+  max-width: 300px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--app-accent);
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(10, 132, 255, 0.3);
+  margin-bottom: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+.apperm-skip {
+  height: 44px;
+  background: transparent;
+  border: 0;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Color presets */
+.apperm-pink   { --app-accent: #ec4899; }
+.apperm-pink .apperm-icon { background: linear-gradient(135deg, #ec4899, #db2777); box-shadow: 0 16px 40px rgba(236, 72, 153, 0.3); }
+.apperm-green  { --app-accent: #22c55e; }
+.apperm-green .apperm-icon { background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 16px 40px rgba(34, 197, 94, 0.3); }
+.apperm-violet { --app-accent: #8b5cf6; }
+.apperm-violet .apperm-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 16px 40px rgba(139, 92, 246, 0.3); }

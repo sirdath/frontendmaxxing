@@ -1,0 +1,211 @@
+/* ============================================
+   APP SIGNUP — Mobile-app create-account screen
+   Inspired by Duolingo, Notion, Spotify signup
+   ============================================
+   Usage:
+     <div class="appsignup">
+       <button class="appsignup-back">←</button>
+       <div class="appsignup-head">
+         <h1 class="appsignup-title">Create account</h1>
+         <p class="appsignup-sub">Free forever. No credit card required.</p>
+       </div>
+       <form class="appsignup-form">
+         <label class="appsignup-field">
+           <span class="appsignup-label">Full name</span>
+           <input type="text" placeholder="Alex Morgan">
+         </label>
+         <label class="appsignup-field">
+           <span class="appsignup-label">Email</span>
+           <input type="email" placeholder="alex@example.com">
+         </label>
+         <label class="appsignup-field">
+           <span class="appsignup-label">Password</span>
+           <div class="appsignup-pw">
+             <input type="password" placeholder="8+ characters">
+             <button type="button" class="appsignup-eye">👁</button>
+           </div>
+           <div class="appsignup-meter">
+             <span class="appsignup-meter-bar is-on" style="--c:#22c55e;"></span>
+             <span class="appsignup-meter-bar is-on" style="--c:#22c55e;"></span>
+             <span class="appsignup-meter-bar is-on" style="--c:#facc15;"></span>
+             <span class="appsignup-meter-bar"></span>
+           </div>
+           <span class="appsignup-meter-label">Strong password ✓</span>
+         </label>
+         <label class="appsignup-check">
+           <input type="checkbox" checked>
+           <span>I agree to the <a>Terms</a> and <a>Privacy Policy</a></span>
+         </label>
+       </form>
+       <div class="appsignup-foot">
+         <button class="appsignup-primary">Create account</button>
+         <p class="appsignup-already">Already have an account? <a>Sign in</a></p>
+       </div>
+     </div>
+   ============================================ */
+
+.appsignup {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+  --app-field-bg: rgba(255, 255, 255, 0.06);
+  --app-field-border: rgba(255, 255, 255, 0.1);
+  --app-radius: 12px;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 8px 22px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+  font-size: 15px;
+  position: relative;
+  overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.appsignup-back {
+  align-self: flex-start;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  color: var(--app-fg);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.appsignup-head { margin: 14px 0 22px; }
+.appsignup-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 6px;
+}
+.appsignup-sub {
+  margin: 0;
+  font-size: 15px;
+  color: var(--app-muted);
+  line-height: 1.35;
+}
+
+.appsignup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.appsignup-field { display: flex; flex-direction: column; gap: 6px; }
+.appsignup-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--app-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-left: 4px;
+}
+.appsignup-field input {
+  height: 50px;
+  width: 100%;
+  background: var(--app-field-bg);
+  border: 1px solid var(--app-field-border);
+  border-radius: var(--app-radius);
+  padding: 0 16px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--app-fg);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+.appsignup-field input::placeholder { color: rgba(235, 235, 245, 0.35); }
+.appsignup-field input:focus { border-color: var(--app-accent); }
+
+.appsignup-pw {
+  position: relative;
+}
+.appsignup-pw input { padding-right: 50px; }
+.appsignup-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 0;
+  color: var(--app-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px;
+  font-family: inherit;
+}
+
+.appsignup-meter {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+.appsignup-meter-bar {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--app-field-border);
+}
+.appsignup-meter-bar.is-on { background: var(--c, var(--app-accent)); }
+.appsignup-meter-label {
+  font-size: 12px;
+  color: #22c55e;
+  margin-top: 4px;
+  padding-left: 4px;
+}
+
+.appsignup-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--app-muted);
+  line-height: 1.45;
+  margin-top: 4px;
+}
+.appsignup-check input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--app-accent);
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+.appsignup-check a { color: var(--app-fg); text-decoration: underline; cursor: pointer; }
+
+.appsignup-foot { margin-top: 18px; display: flex; flex-direction: column; gap: 14px; }
+.appsignup-primary {
+  height: 52px;
+  border: 0;
+  border-radius: var(--app-radius);
+  background: var(--app-fg);
+  color: var(--app-bg);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.05s ease;
+}
+.appsignup-primary:active { transform: scale(0.985); opacity: 0.9; }
+.appsignup-already {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--app-muted);
+}
+.appsignup-already a { color: var(--app-accent); font-weight: 600; cursor: pointer; }
+
+.appsignup.appsignup-light {
+  --app-bg: #fff;
+  --app-fg: #000;
+  --app-muted: rgba(60, 60, 67, 0.6);
+  --app-field-bg: #f2f2f7;
+  --app-field-border: rgba(60, 60, 67, 0.1);
+}

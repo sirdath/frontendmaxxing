@@ -1,0 +1,219 @@
+/* ============================================
+   APP PAYMENT CARD — Card input form with Apple/Google Pay
+   Inspired by Stripe Checkout mobile, Apple Pay sheet
+   ============================================
+   Usage:
+     <div class="appay">
+       <button class="appay-back">←</button>
+       <h1 class="appay-title">Payment</h1>
+       <div class="appay-amount">
+         <span class="appay-amount-label">You'll be charged</span>
+         <span class="appay-amount-value">$59.88</span>
+         <span class="appay-amount-note">Annual · 7-day free trial</span>
+       </div>
+       <div class="appay-quick">
+         <button class="appay-quick-btn appay-applepay">  Pay</button>
+         <button class="appay-quick-btn appay-gpay">G Pay</button>
+       </div>
+       <div class="appay-or"><span>or pay with card</span></div>
+       <div class="appay-form">
+         <label class="appay-field">
+           <span class="appay-label">Card number</span>
+           <div class="appay-card-input">
+             <input value="4242 4242 4242 4242">
+             <span class="appay-brand">VISA</span>
+           </div>
+         </label>
+         <div class="appay-row">
+           <label class="appay-field">
+             <span class="appay-label">Expiry</span>
+             <input value="12 / 27">
+           </label>
+           <label class="appay-field">
+             <span class="appay-label">CVC</span>
+             <input value="•••">
+           </label>
+         </div>
+         <label class="appay-field">
+           <span class="appay-label">Name on card</span>
+           <input value="Alex Morgan">
+         </label>
+       </div>
+       <button class="appay-cta">Pay $59.88</button>
+       <p class="appay-foot">🔒 Secured by Stripe · 256-bit encryption</p>
+     </div>
+   ============================================ */
+
+.appay {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+  --app-radius: 12px;
+  --app-field-bg: rgba(255, 255, 255, 0.06);
+  --app-field-border: rgba(255, 255, 255, 0.1);
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 12px 22px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-y: auto;
+}
+
+.appay-back {
+  align-self: flex-start;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  color: var(--app-fg);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+}
+.appay-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 8px 0 18px;
+}
+
+.appay-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--app-radius);
+  margin-bottom: 16px;
+}
+.appay-amount-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--app-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.appay-amount-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.appay-amount-note {
+  font-size: 13px;
+  color: var(--app-muted);
+}
+
+.appay-quick {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.appay-quick-btn {
+  flex: 1;
+  height: 50px;
+  border: 0;
+  border-radius: var(--app-radius);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  -webkit-tap-highlight-color: transparent;
+}
+.appay-applepay { background: #fff; color: #000; }
+.appay-gpay     { background: #1f1f1f; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
+
+.appay-or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0 14px;
+  font-size: 12px;
+  color: var(--app-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.appay-or::before, .appay-or::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--app-field-border);
+}
+
+.appay-form { display: flex; flex-direction: column; gap: 12px; }
+
+.appay-field { display: flex; flex-direction: column; gap: 6px; }
+.appay-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--app-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-left: 4px;
+}
+.appay-field input {
+  height: 48px;
+  background: var(--app-field-bg);
+  border: 1px solid var(--app-field-border);
+  border-radius: var(--app-radius);
+  padding: 0 16px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--app-fg);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-variant-numeric: tabular-nums;
+}
+.appay-field input:focus { border-color: var(--app-accent); }
+
+.appay-card-input { position: relative; }
+.appay-card-input input { padding-right: 50px; }
+.appay-brand {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  font-weight: 800;
+  color: #1a3a93;
+  background: #fff;
+  padding: 3px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.appay-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.appay-cta {
+  height: 54px;
+  border: 0;
+  border-radius: var(--app-radius);
+  background: var(--app-accent);
+  color: #fff;
+  font: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 16px;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.06s ease, opacity 0.15s ease;
+}
+.appay-cta:active { transform: scale(0.985); opacity: 0.9; }
+
+.appay-foot {
+  margin: 12px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--app-muted);
+}

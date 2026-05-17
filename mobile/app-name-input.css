@@ -1,0 +1,122 @@
+/* ============================================
+   APP NAME INPUT — Single big input + bottom Next button
+   Inspired by Duolingo, Headspace, Calm "What's your name?" screens
+   ============================================
+   Usage:
+     <div class="apname">
+       <button class="apname-back">←</button>
+       <div class="apname-step">Step 1 of 4</div>
+       <h1 class="apname-title">What should we call you?</h1>
+       <p class="apname-sub">First name is fine. You can change this later.</p>
+       <input class="apname-input" type="text" placeholder="Your name" autofocus>
+       <div class="apname-foot">
+         <button class="apname-cta" disabled>Continue</button>
+         <button class="apname-skip">Skip</button>
+       </div>
+     </div>
+   ============================================ */
+
+.apname {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 14px 22px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.apname-back {
+  align-self: flex-start;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  color: var(--app-fg);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+}
+.apname-step {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--app-accent);
+  margin: 10px 0 6px;
+}
+.apname-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 0 0 8px;
+  max-width: 280px;
+}
+.apname-sub {
+  margin: 0 0 28px;
+  font-size: 15px;
+  color: var(--app-muted);
+  line-height: 1.4;
+}
+
+.apname-input {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 60px;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid var(--app-accent);
+  padding: 0 2px;
+  font: inherit;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--app-fg);
+  outline: none;
+  caret-color: var(--app-accent);
+  margin-bottom: auto;
+}
+.apname-input::placeholder {
+  color: rgba(235, 235, 245, 0.25);
+  font-weight: 600;
+}
+
+.apname-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.apname-cta {
+  height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--app-fg);
+  color: var(--app-bg);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.06s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.apname-cta:disabled { opacity: 0.35; cursor: not-allowed; }
+.apname-cta:not(:disabled):active { transform: scale(0.985); }
+
+.apname-skip {
+  height: 44px;
+  background: transparent;
+  border: 0;
+  color: var(--app-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}

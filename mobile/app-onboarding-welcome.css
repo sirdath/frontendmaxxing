@@ -1,0 +1,134 @@
+/* ============================================
+   APP ONBOARDING WELCOME — First-run welcome screen
+   Inspired by Calm, Headspace, Notion welcome screens
+   ============================================
+   Usage:
+     <div class="apwelcome">
+       <div class="apwelcome-bg"></div>
+       <div class="apwelcome-art">
+         <div class="apwelcome-art-orb"></div>
+       </div>
+       <div class="apwelcome-content">
+         <p class="apwelcome-eyebrow">FRONTENDMAXXING</p>
+         <h1 class="apwelcome-title">Build apps<br>users love.</h1>
+         <p class="apwelcome-sub">Beautiful components, native interactions, zero compromise.</p>
+         <div class="apwelcome-actions">
+           <button class="apwelcome-primary">Get started</button>
+           <button class="apwelcome-text">I already have an account</button>
+         </div>
+       </div>
+     </div>
+   ============================================ */
+
+.apwelcome {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.7);
+  --app-accent: #ec4899;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  position: relative;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.apwelcome-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 80% 10%, rgba(236, 72, 153, 0.4), transparent 50%),
+    radial-gradient(circle at 10% 60%, rgba(139, 92, 246, 0.35), transparent 55%),
+    radial-gradient(circle at 60% 90%, rgba(34, 211, 238, 0.3), transparent 60%);
+  pointer-events: none;
+}
+
+.apwelcome-art {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.apwelcome-art-orb {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #ec4899, #8b5cf6, #06b6d4, #ec4899);
+  filter: blur(2px);
+  box-shadow: 0 0 80px rgba(236, 72, 153, 0.5), inset 0 -16px 32px rgba(0, 0, 0, 0.3);
+  animation: apwelcome-spin 8s linear infinite;
+}
+
+@keyframes apwelcome-spin {
+  to { transform: rotate(360deg); }
+}
+
+.apwelcome-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 28px 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.apwelcome-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--app-accent);
+  margin: 0 0 6px;
+}
+
+.apwelcome-title {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0 0 14px;
+}
+
+.apwelcome-sub {
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--app-muted);
+  margin: 0 0 22px;
+  max-width: 280px;
+}
+
+.apwelcome-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.apwelcome-primary {
+  height: 54px;
+  border: 0;
+  border-radius: 14px;
+  background: #fff;
+  color: #000;
+  font: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.06s ease, opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.apwelcome-primary:active { transform: scale(0.985); opacity: 0.9; }
+
+.apwelcome-text {
+  height: 46px;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}

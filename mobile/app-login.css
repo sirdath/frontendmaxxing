@@ -1,0 +1,218 @@
+/* ============================================
+   APP LOGIN — Mobile-app sign-in screen
+   Inspired by Linear, Notion, Spotify, Headspace login screens
+   ============================================
+   Usage:
+     <div class="applogin">
+       <div class="applogin-head">
+         <div class="applogin-logo">●</div>
+         <h1 class="applogin-title">Welcome back</h1>
+         <p class="applogin-sub">Sign in to continue</p>
+       </div>
+       <form class="applogin-form">
+         <label class="applogin-field">
+           <span class="applogin-label">Email</span>
+           <input type="email" placeholder="you@example.com">
+         </label>
+         <label class="applogin-field">
+           <span class="applogin-label">Password</span>
+           <input type="password" placeholder="••••••••">
+         </label>
+         <a class="applogin-forgot">Forgot password?</a>
+         <button class="applogin-primary">Sign in</button>
+       </form>
+       <div class="applogin-divider"><span>or</span></div>
+       <div class="applogin-social">
+         <button class="applogin-social-btn">  Continue with Apple</button>
+         <button class="applogin-social-btn">G Continue with Google</button>
+       </div>
+       <p class="applogin-footer">Don't have an account? <a>Sign up</a></p>
+     </div>
+
+   Theming via CSS vars:
+     --app-bg, --app-fg, --app-muted, --app-accent, --app-field-bg, --app-radius
+   ============================================ */
+
+.applogin {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+  --app-field-bg: rgba(255, 255, 255, 0.06);
+  --app-field-border: rgba(255, 255, 255, 0.1);
+  --app-radius: 12px;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 28px 22px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+  font-size: 15px;
+  overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.applogin-head {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.applogin-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--app-accent), #5e5ce6);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 28px;
+  margin: 8px auto 18px;
+  box-shadow: 0 10px 24px rgba(10, 132, 255, 0.3);
+}
+
+.applogin-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 4px;
+}
+
+.applogin-sub {
+  margin: 0;
+  font-size: 15px;
+  color: var(--app-muted);
+}
+
+.applogin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.applogin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.applogin-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--app-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-left: 4px;
+}
+
+.applogin-field input {
+  height: 50px;
+  background: var(--app-field-bg);
+  border: 1px solid var(--app-field-border);
+  border-radius: var(--app-radius);
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 16px;
+  color: var(--app-fg);
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+.applogin-field input::placeholder { color: rgba(235, 235, 245, 0.35); }
+.applogin-field input:focus {
+  border-color: var(--app-accent);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.applogin-forgot {
+  align-self: flex-end;
+  font-size: 14px;
+  color: var(--app-accent);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.applogin-primary {
+  height: 52px;
+  border: 0;
+  border-radius: var(--app-radius);
+  background: var(--app-fg);
+  color: var(--app-bg);
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.15s ease, transform 0.05s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.applogin-primary:active { transform: scale(0.985); opacity: 0.9; }
+.applogin-primary.is-loading { opacity: 0.7; }
+
+.applogin-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0;
+  color: var(--app-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.applogin-divider::before,
+.applogin-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--app-field-border);
+}
+
+.applogin-social {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.applogin-social-btn {
+  height: 50px;
+  border: 1px solid var(--app-field-border);
+  border-radius: var(--app-radius);
+  background: transparent;
+  color: var(--app-fg);
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: background 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.applogin-social-btn:active { background: rgba(255, 255, 255, 0.06); }
+
+.applogin-footer {
+  margin: 22px 0 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--app-muted);
+}
+.applogin-footer a {
+  color: var(--app-accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Light theme */
+.applogin.applogin-light {
+  --app-bg: #fff;
+  --app-fg: #000;
+  --app-muted: rgba(60, 60, 67, 0.6);
+  --app-field-bg: #f2f2f7;
+  --app-field-border: rgba(60, 60, 67, 0.1);
+}

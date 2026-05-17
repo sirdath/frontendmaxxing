@@ -1,0 +1,156 @@
+/* ============================================
+   APP LANGUAGE PICKER — Searchable list of languages with flags
+   Inspired by Duolingo, Tandem language pickers
+   ============================================
+   Usage:
+     <div class="aplang">
+       <button class="aplang-back">←</button>
+       <h1 class="aplang-title">Choose your language</h1>
+       <div class="aplang-search">
+         <span class="aplang-search-icon">🔍</span>
+         <input placeholder="Search languages">
+       </div>
+       <div class="aplang-section">SUGGESTED</div>
+       <ul class="aplang-list">
+         <li class="aplang-row is-active">
+           <span class="aplang-flag">🇺🇸</span>
+           <span class="aplang-name">English</span>
+           <span class="aplang-check">✓</span>
+         </li>
+         <li class="aplang-row">
+           <span class="aplang-flag">🇪🇸</span>
+           <span class="aplang-name">Español <span class="aplang-native">Spanish</span></span>
+         </li>
+         …
+       </ul>
+       <button class="aplang-cta">Continue</button>
+     </div>
+   ============================================ */
+
+.aplang {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 12px 22px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-y: auto;
+}
+
+.aplang-back {
+  align-self: flex-start;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  color: var(--app-fg);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+}
+.aplang-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 6px 0 16px;
+}
+
+.aplang-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+.aplang-search-icon { font-size: 15px; opacity: 0.5; }
+.aplang-search input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  font-size: 15px;
+  color: var(--app-fg);
+}
+.aplang-search input::placeholder { color: var(--app-muted); }
+
+.aplang-section {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--app-muted);
+  margin: 0 0 8px;
+  padding-left: 4px;
+}
+
+.aplang-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.aplang-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  font-size: 15px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.06);
+}
+.aplang-row:last-child { border-bottom: 0; }
+.aplang-row.is-active { background: rgba(10, 132, 255, 0.12); }
+
+.aplang-flag {
+  font-size: 24px;
+  line-height: 1;
+  width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.aplang-name {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.aplang-native {
+  font-size: 12px;
+  color: var(--app-muted);
+}
+.aplang-check {
+  font-size: 18px;
+  color: var(--app-accent);
+  font-weight: 700;
+}
+
+.aplang-cta {
+  height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--app-fg);
+  color: var(--app-bg);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 18px;
+  -webkit-tap-highlight-color: transparent;
+}

@@ -3861,6 +3861,593 @@
     });
   };
 
+  // ============================================
+  // Mobile app screens — render inside iPhone frame
+  // ============================================
+
+  P['mobile/app-login.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Full-page mobile login — email + social + sign-up footer.' });
+    screen.innerHTML =
+      '<div class="applogin">' +
+        '<div class="applogin-head">' +
+          '<div class="applogin-logo">●</div>' +
+          '<h1 class="applogin-title">Welcome back</h1>' +
+          '<p class="applogin-sub">Sign in to continue</p>' +
+        '</div>' +
+        '<form class="applogin-form" onsubmit="event.preventDefault();">' +
+          '<label class="applogin-field"><span class="applogin-label">Email</span><input type="email" placeholder="you@example.com" value="alex@example.com"></label>' +
+          '<label class="applogin-field"><span class="applogin-label">Password</span><input type="password" placeholder="••••••••" value="password"></label>' +
+          '<a class="applogin-forgot">Forgot password?</a>' +
+          '<button type="button" class="applogin-primary">Sign in</button>' +
+        '</form>' +
+        '<div class="applogin-divider"><span>or</span></div>' +
+        '<div class="applogin-social">' +
+          '<button class="applogin-social-btn">  Continue with Apple</button>' +
+          '<button class="applogin-social-btn">G&nbsp;&nbsp;Continue with Google</button>' +
+        '</div>' +
+        '<p class="applogin-footer">Don\'t have an account? <a>Sign up</a></p>' +
+      '</div>';
+  };
+
+  P['mobile/app-signup.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Create-account: name/email/password + strength meter.' });
+    screen.innerHTML =
+      '<div class="appsignup">' +
+        '<button class="appsignup-back">←</button>' +
+        '<div class="appsignup-head">' +
+          '<h1 class="appsignup-title">Create account</h1>' +
+          '<p class="appsignup-sub">Free forever. No credit card required.</p>' +
+        '</div>' +
+        '<form class="appsignup-form" onsubmit="event.preventDefault();">' +
+          '<label class="appsignup-field"><span class="appsignup-label">Full name</span><input type="text" placeholder="Alex Morgan"></label>' +
+          '<label class="appsignup-field"><span class="appsignup-label">Email</span><input type="email" placeholder="alex@example.com"></label>' +
+          '<label class="appsignup-field">' +
+            '<span class="appsignup-label">Password</span>' +
+            '<div class="appsignup-pw"><input type="password" value="••••••••" placeholder="8+ characters"><button type="button" class="appsignup-eye">👁</button></div>' +
+            '<div class="appsignup-meter"><span class="appsignup-meter-bar is-on" style="--c:#22c55e;"></span><span class="appsignup-meter-bar is-on" style="--c:#22c55e;"></span><span class="appsignup-meter-bar is-on" style="--c:#facc15;"></span><span class="appsignup-meter-bar"></span></div>' +
+            '<span class="appsignup-meter-label">Strong password ✓</span>' +
+          '</label>' +
+          '<label class="appsignup-check"><input type="checkbox" checked><span>I agree to the <a>Terms</a> and <a>Privacy Policy</a></span></label>' +
+        '</form>' +
+        '<div class="appsignup-foot">' +
+          '<button class="appsignup-primary">Create account</button>' +
+          '<p class="appsignup-already">Already have an account? <a>Sign in</a></p>' +
+        '</div>' +
+      '</div>';
+  };
+
+  P['mobile/app-magic-link-sent.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Magic-link confirmation with floating envelope animation.' });
+    screen.innerHTML =
+      '<div class="apmlink">' +
+        '<div class="apmlink-art">📧</div>' +
+        '<h1 class="apmlink-title">Check your email</h1>' +
+        '<p class="apmlink-text">We sent a sign-in link to<br><b>alex@example.com</b></p>' +
+        '<div class="apmlink-actions">' +
+          '<button class="apmlink-primary">Open mail app</button>' +
+          '<button class="apmlink-secondary">Resend link</button>' +
+        '</div>' +
+        '<p class="apmlink-help">Didn\'t get it? Check spam or <a>use a different email</a>.</p>' +
+      '</div>';
+  };
+
+  P['mobile/app-onboarding-welcome.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Animated conic-gradient orb + welcome CTA.', statusBarColor: '#fff' });
+    screen.innerHTML =
+      '<div class="apwelcome">' +
+        '<div class="apwelcome-bg"></div>' +
+        '<div class="apwelcome-art"><div class="apwelcome-art-orb"></div></div>' +
+        '<div class="apwelcome-content">' +
+          '<p class="apwelcome-eyebrow">FRONTENDMAXXING</p>' +
+          '<h1 class="apwelcome-title">Build apps<br>users love.</h1>' +
+          '<p class="apwelcome-sub">Beautiful components, native interactions, zero compromise.</p>' +
+          '<div class="apwelcome-actions">' +
+            '<button class="apwelcome-primary">Get started</button>' +
+            '<button class="apwelcome-text">I already have an account</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  };
+
+  P['mobile/app-onboarding-value-props.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Feature highlight list (Notion/Calm style).' });
+    screen.innerHTML =
+      '<div class="apvprop">' +
+        '<div class="apvprop-head"><h1 class="apvprop-title">What you\'ll love about it</h1></div>' +
+        '<ul class="apvprop-list">' +
+          [
+            ['#0a84ff','⚡','Lightning fast','Optimized for instant interactions and offline use.'],
+            ['#ec4899','🎨','Beautiful by default','Every screen feels native and looks polished.'],
+            ['#22c55e','🔒','Private & secure','End-to-end encryption, zero tracking.'],
+            ['#fbbf24','🔄','Sync everywhere','Pick up where you left off on any device.']
+          ].map(function (r) {
+            return '<li class="apvprop-row">' +
+              '<span class="apvprop-icon" style="background:' + r[0] + ';">' + r[1] + '</span>' +
+              '<div><div class="apvprop-row-title">' + r[2] + '</div><div class="apvprop-row-text">' + r[3] + '</div></div>' +
+            '</li>';
+          }).join('') +
+        '</ul>' +
+        '<button class="apvprop-cta">Continue</button>' +
+      '</div>';
+  };
+
+  P['mobile/app-onboarding-pick-goals.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Multi-select chip grid for personalization.' });
+    var goals = [
+      ['😴','Sleep better',true],['🧘','Reduce stress',false],
+      ['💪','Build habits',true],['🧠','Stay focused',false],
+      ['⚡','Boost energy',false],['❤','Be happier',true],
+      ['🥗','Eat better',false],['📚','Learn more',false]
+    ];
+    screen.innerHTML =
+      '<div class="apgoals">' +
+        '<div class="apgoals-head">' +
+          '<p class="apgoals-step">Step 2 of 4</p>' +
+          '<h1 class="apgoals-title">What brings you here?</h1>' +
+          '<p class="apgoals-sub">Pick all that apply. We\'ll tailor your experience.</p>' +
+        '</div>' +
+        '<div class="apgoals-grid">' +
+          goals.map(function (g) {
+            return '<button class="apgoals-chip' + (g[2] ? ' is-selected' : '') + '">' +
+              '<span class="apgoals-chip-icon">' + g[0] + '</span>' +
+              '<span class="apgoals-chip-label">' + g[1] + '</span>' +
+            '</button>';
+          }).join('') +
+        '</div>' +
+        '<button class="apgoals-cta">Continue</button>' +
+      '</div>';
+    screen.querySelectorAll('.apgoals-chip').forEach(function (c) {
+      c.addEventListener('click', function () { c.classList.toggle('is-selected'); });
+    });
+  };
+
+  P['mobile/app-paywall.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Pro subscription paywall — gold hero + feature list + plan toggle.' });
+    screen.innerHTML =
+      '<div class="appaywall">' +
+        '<button class="appaywall-close">×</button>' +
+        '<div class="appaywall-hero">' +
+          '<div class="appaywall-badge">PRO</div>' +
+          '<h1 class="appaywall-title">Unlock<br>everything</h1>' +
+          '<p class="appaywall-sub">7 days free, then $9.99 / month</p>' +
+        '</div>' +
+        '<ul class="appaywall-features">' +
+          [
+            ['Unlimited components','across all categories'],
+            ['Premium themes','and full source export'],
+            ['Priority updates','and team licensing']
+          ].map(function (f) {
+            return '<li class="appaywall-feat"><span class="appaywall-feat-check">✓</span><span><b>' + f[0] + '</b> ' + f[1] + '</span></li>';
+          }).join('') +
+        '</ul>' +
+        '<div class="appaywall-plans">' +
+          '<button class="appaywall-plan"><div class="appaywall-plan-name">Monthly</div><div class="appaywall-plan-price">$9.99 / month</div></button>' +
+          '<button class="appaywall-plan is-active"><span class="appaywall-plan-deal">SAVE 50%</span><div class="appaywall-plan-name">Yearly</div><div class="appaywall-plan-price">$4.99 / month <span>($59.88 / yr)</span></div></button>' +
+        '</div>' +
+        '<button class="appaywall-cta">Start 7-day free trial</button>' +
+        '<p class="appaywall-foot">Cancel anytime · <a>Restore</a> · <a>Terms</a></p>' +
+      '</div>';
+    screen.querySelectorAll('.appaywall-plan').forEach(function (p) {
+      p.addEventListener('click', function () {
+        screen.querySelectorAll('.appaywall-plan').forEach(function (x) { x.classList.remove('is-active'); });
+        p.classList.add('is-active');
+      });
+    });
+  };
+
+  P['mobile/app-subscription-tiers.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Plan picker with monthly/yearly toggle.' });
+    screen.innerHTML =
+      '<div class="aptiers">' +
+        '<button class="aptiers-back">←</button>' +
+        '<h1 class="aptiers-title">Choose your plan</h1>' +
+        '<div class="aptiers-toggle" data-aptiers-toggle data-period="yearly">' +
+          '<span class="aptiers-toggle-thumb"></span>' +
+          '<button class="aptiers-toggle-opt" data-period="monthly">Monthly</button>' +
+          '<button class="aptiers-toggle-opt is-active" data-period="yearly">Yearly · -20%</button>' +
+        '</div>' +
+        '<div class="aptiers-cards">' +
+          '<button class="aptiers-card"><div class="aptiers-card-name">Free</div><div class="aptiers-card-price">$0<span>/mo</span></div><ul class="aptiers-card-feats"><li>10 projects</li><li>Community support</li></ul></button>' +
+          '<button class="aptiers-card is-active"><div class="aptiers-card-tag">POPULAR</div><div class="aptiers-card-name">Pro</div><div class="aptiers-card-price" data-monthly="$12" data-yearly="$9">$9<span>/mo</span></div><ul class="aptiers-card-feats"><li>Unlimited projects</li><li>Priority support</li><li>Custom domains</li></ul></button>' +
+          '<button class="aptiers-card"><div class="aptiers-card-name">Team</div><div class="aptiers-card-price" data-monthly="$25" data-yearly="$20">$20<span>/mo</span></div><ul class="aptiers-card-feats"><li>Everything in Pro</li><li>SSO + audit logs</li><li>Team seats</li></ul></button>' +
+        '</div>' +
+        '<button class="aptiers-cta">Continue with Pro</button>' +
+      '</div>';
+    setTimeout(function () { if (window.AppSubTiers) try { window.AppSubTiers.init(screen.querySelector('.aptiers')); } catch (e) {} }, 100);
+  };
+
+  P['mobile/app-payment-card.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Card payment form with Apple Pay + Google Pay quick buttons.' });
+    screen.innerHTML =
+      '<div class="appay">' +
+        '<button class="appay-back">←</button>' +
+        '<h1 class="appay-title">Payment</h1>' +
+        '<div class="appay-amount">' +
+          '<span class="appay-amount-label">You\'ll be charged</span>' +
+          '<span class="appay-amount-value">$59.88</span>' +
+          '<span class="appay-amount-note">Annual · 7-day free trial</span>' +
+        '</div>' +
+        '<div class="appay-quick">' +
+          '<button class="appay-quick-btn appay-applepay">&nbsp; Pay</button>' +
+          '<button class="appay-quick-btn appay-gpay">G&nbsp;Pay</button>' +
+        '</div>' +
+        '<div class="appay-or"><span>or pay with card</span></div>' +
+        '<div class="appay-form">' +
+          '<label class="appay-field"><span class="appay-label">Card number</span><div class="appay-card-input"><input value="4242 4242 4242 4242"><span class="appay-brand">VISA</span></div></label>' +
+          '<div class="appay-row"><label class="appay-field"><span class="appay-label">Expiry</span><input value="12 / 27"></label><label class="appay-field"><span class="appay-label">CVC</span><input value="•••"></label></div>' +
+          '<label class="appay-field"><span class="appay-label">Name on card</span><input value="Alex Morgan"></label>' +
+        '</div>' +
+        '<button class="appay-cta">Pay $59.88</button>' +
+        '<p class="appay-foot">🔒 Secured by Stripe · 256-bit encryption</p>' +
+      '</div>';
+  };
+
+  P['mobile/app-trial-locked.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Locked-feature upgrade screen with blurred preview.' });
+    screen.innerHTML =
+      '<div class="aplock">' +
+        '<button class="aplock-close">×</button>' +
+        '<div class="aplock-feature">' +
+          '<div class="aplock-feature-img"></div>' +
+          '<div class="aplock-lock-icon">🔒</div>' +
+        '</div>' +
+        '<h1 class="aplock-title">Unlock advanced analytics</h1>' +
+        '<p class="aplock-text">See detailed insights, custom reports, and exportable charts with Pro.</p>' +
+        '<ul class="aplock-list">' +
+          '<li>📊 Advanced charts & exports</li>' +
+          '<li>📈 Custom dashboards</li>' +
+          '<li>📁 Bulk export to CSV / PDF</li>' +
+          '<li>⚡ Priority support</li>' +
+        '</ul>' +
+        '<button class="aplock-cta">Upgrade to Pro</button>' +
+        '<button class="aplock-later">Maybe later</button>' +
+      '</div>';
+  };
+
+  P['mobile/app-receipt.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Order success — animated checkmark + summary card.' });
+    screen.innerHTML =
+      '<div class="aprecpt">' +
+        '<div class="aprecpt-tick"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="none" stroke="currentColor" stroke-width="3"/><path d="M 20 32 L 28 40 L 44 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+        '<h1 class="aprecpt-title">Payment successful</h1>' +
+        '<p class="aprecpt-sub">Your subscription is now active.</p>' +
+        '<div class="aprecpt-card">' +
+          '<div class="aprecpt-row"><span>Order #</span><span class="aprecpt-row-mono">A1B2-C3D4</span></div>' +
+          '<div class="aprecpt-row"><span>Plan</span><span>Pro Annual</span></div>' +
+          '<div class="aprecpt-row"><span>Date</span><span>May 17, 2026</span></div>' +
+          '<div class="aprecpt-row"><span>Payment</span><span>Visa •• 4242</span></div>' +
+          '<div class="aprecpt-divider"></div>' +
+          '<div class="aprecpt-row aprecpt-total"><span>Total</span><span>$59.88</span></div>' +
+        '</div>' +
+        '<button class="aprecpt-cta">Done</button>' +
+        '<button class="aprecpt-receipt">Email receipt</button>' +
+      '</div>';
+  };
+
+  P['mobile/app-billing-history.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Past charges + current-plan card + paid/failed pills.' });
+    screen.innerHTML =
+      '<div class="apbill">' +
+        '<div class="apbill-head"><button class="apbill-back">←</button><h1 class="apbill-title">Billing</h1></div>' +
+        '<div class="apbill-card">' +
+          '<div class="apbill-card-label">Current plan</div>' +
+          '<div class="apbill-card-plan">Pro Annual · $59.88/yr</div>' +
+          '<div class="apbill-card-next">Next charge Mar 15, 2027</div>' +
+          '<button class="apbill-card-link">Manage plan →</button>' +
+        '</div>' +
+        '<h2 class="apbill-section">Past charges</h2>' +
+        '<ul class="apbill-list">' +
+          [
+            ['Mar 15, 2026','Visa •• 4242','$59.88','paid'],
+            ['Mar 15, 2025','Visa •• 4242','$49.99','paid'],
+            ['Aug 02, 2024','Visa •• 1115','$9.99','failed'],
+            ['Mar 15, 2024','Visa •• 1115','$4.99','refunded']
+          ].map(function (r) {
+            return '<li class="apbill-row">' +
+              '<div class="apbill-row-meta"><div class="apbill-row-date">' + r[0] + '</div><div class="apbill-row-card">' + r[1] + '</div></div>' +
+              '<div class="apbill-row-right"><span class="apbill-row-amount">' + r[2] + '</span><span class="apbill-pill is-' + r[3] + '">' + r[3] + '</span></div>' +
+            '</li>';
+          }).join('') +
+        '</ul>' +
+      '</div>';
+  };
+
+  P['mobile/app-age-picker.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Birthday wheel picker — scroll each column.' });
+    screen.innerHTML =
+      '<div class="apage">' +
+        '<button class="apage-back">←</button>' +
+        '<div class="apage-step">Step 1 of 3</div>' +
+        '<h1 class="apage-title">When were you born?</h1>' +
+        '<p class="apage-sub">We\'ll use this to personalize your experience.</p>' +
+        '<div class="apage-picker" data-app-age-picker>' +
+          '<div class="apage-col" data-col="month"></div>' +
+          '<div class="apage-col" data-col="day"></div>' +
+          '<div class="apage-col" data-col="year"></div>' +
+          '<div class="apage-selection"></div>' +
+        '</div>' +
+        '<div class="apage-summary">You\'ll be turning <b>25</b></div>' +
+        '<button class="apage-cta">Continue</button>' +
+      '</div>';
+    setTimeout(function () { if (window.AppAgePicker) try { window.AppAgePicker.init(screen.querySelector('[data-app-age-picker]'), { summarySel: '.apage-summary' }); } catch (e) {} }, 150);
+  };
+
+  P['mobile/app-name-input.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Single large field + bottom Continue / Skip.' });
+    screen.innerHTML =
+      '<div class="apname">' +
+        '<button class="apname-back">←</button>' +
+        '<div class="apname-step">Step 1 of 4</div>' +
+        '<h1 class="apname-title">What should we call you?</h1>' +
+        '<p class="apname-sub">First name is fine. You can change this later.</p>' +
+        '<input class="apname-input" type="text" placeholder="Your name" value="Alex">' +
+        '<div class="apname-foot">' +
+          '<button class="apname-cta">Continue</button>' +
+          '<button class="apname-skip">Skip</button>' +
+        '</div>' +
+      '</div>';
+    var input = screen.querySelector('.apname-input');
+    var cta = screen.querySelector('.apname-cta');
+    var sync = function () { cta.disabled = !input.value.trim(); };
+    input.addEventListener('input', sync); sync();
+  };
+
+  P['mobile/app-email-verify.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: '6-digit OTP with auto-advance + paste. Try the inputs.' });
+    screen.innerHTML =
+      '<div class="apverify">' +
+        '<button class="apverify-back">←</button>' +
+        '<h1 class="apverify-title">Enter verification code</h1>' +
+        '<p class="apverify-sub">We sent a 6-digit code to<br><b>alex@example.com</b></p>' +
+        '<div class="apverify-otp" data-app-otp data-length="6">' +
+          '<input maxlength="1" inputmode="numeric" pattern="[0-9]*">' +
+          '<input maxlength="1" inputmode="numeric" pattern="[0-9]*">' +
+          '<input maxlength="1" inputmode="numeric" pattern="[0-9]*">' +
+          '<input maxlength="1" inputmode="numeric" pattern="[0-9]*">' +
+          '<input maxlength="1" inputmode="numeric" pattern="[0-9]*">' +
+          '<input maxlength="1" inputmode="numeric" pattern="[0-9]*">' +
+        '</div>' +
+        '<div class="apverify-error">Incorrect code. Try again.</div>' +
+        '<button class="apverify-resend">Resend code <span>00:24</span></button>' +
+        '<button class="apverify-cta" disabled>Verify</button>' +
+      '</div>';
+    setTimeout(function () {
+      if (window.AppOtp) try {
+        var verifyEl = screen.querySelector('.apverify');
+        var ctaEl = screen.querySelector('.apverify-cta');
+        window.AppOtp.init(screen.querySelector('[data-app-otp]'), {
+          onChange: function (code) { ctaEl.disabled = code.length !== 6; },
+          onComplete: function (code) {
+            if (code !== '123456') verifyEl.classList.add('is-error');
+            setTimeout(function () { verifyEl.classList.remove('is-error'); }, 600);
+          }
+        });
+      } catch (e) {}
+    }, 100);
+  };
+
+  P['mobile/app-pin-create.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: '4-digit PIN with keypad. Try typing or tapping.' });
+    screen.innerHTML =
+      '<div class="appin">' +
+        '<button class="appin-back">←</button>' +
+        '<div class="appin-head">' +
+          '<h1 class="appin-title">Create a PIN</h1>' +
+          '<p class="appin-sub">You\'ll use this to unlock the app</p>' +
+        '</div>' +
+        '<div class="appin-dots" data-app-pin data-length="4">' +
+          '<span class="appin-dot"></span>' +
+          '<span class="appin-dot"></span>' +
+          '<span class="appin-dot"></span>' +
+          '<span class="appin-dot"></span>' +
+        '</div>' +
+        '<div class="appin-keys">' +
+          '<button class="appin-key" data-key="1">1</button>' +
+          '<button class="appin-key" data-key="2">2<span>ABC</span></button>' +
+          '<button class="appin-key" data-key="3">3<span>DEF</span></button>' +
+          '<button class="appin-key" data-key="4">4<span>GHI</span></button>' +
+          '<button class="appin-key" data-key="5">5<span>JKL</span></button>' +
+          '<button class="appin-key" data-key="6">6<span>MNO</span></button>' +
+          '<button class="appin-key" data-key="7">7<span>PQRS</span></button>' +
+          '<button class="appin-key" data-key="8">8<span>TUV</span></button>' +
+          '<button class="appin-key" data-key="9">9<span>WXYZ</span></button>' +
+          '<button class="appin-key appin-key-faceid">😊</button>' +
+          '<button class="appin-key" data-key="0">0</button>' +
+          '<button class="appin-key appin-key-back" data-key="back">⌫</button>' +
+        '</div>' +
+      '</div>';
+    setTimeout(function () { if (window.AppPin) try { window.AppPin.init(screen.querySelector('.appin')); } catch (e) {} }, 100);
+  };
+
+  P['mobile/app-language-picker.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Searchable language list with flag emojis.' });
+    var langs = [
+      ['🇺🇸','English','',true],
+      ['🇪🇸','Español','Spanish'],
+      ['🇫🇷','Français','French'],
+      ['🇩🇪','Deutsch','German'],
+      ['🇯🇵','日本語','Japanese'],
+      ['🇰🇷','한국어','Korean'],
+      ['🇨🇳','中文','Chinese'],
+      ['🇮🇹','Italiano','Italian'],
+      ['🇵🇹','Português','Portuguese']
+    ];
+    screen.innerHTML =
+      '<div class="aplang">' +
+        '<button class="aplang-back">←</button>' +
+        '<h1 class="aplang-title">Choose your language</h1>' +
+        '<div class="aplang-search"><span class="aplang-search-icon">🔍</span><input placeholder="Search languages"></div>' +
+        '<div class="aplang-section">SUGGESTED</div>' +
+        '<ul class="aplang-list">' +
+          langs.map(function (l) {
+            return '<li class="aplang-row' + (l[3] ? ' is-active' : '') + '">' +
+              '<span class="aplang-flag">' + l[0] + '</span>' +
+              '<span class="aplang-name">' + l[1] + (l[2] ? '<span class="aplang-native">' + l[2] + '</span>' : '') + '</span>' +
+              (l[3] ? '<span class="aplang-check">✓</span>' : '') +
+            '</li>';
+          }).join('') +
+        '</ul>' +
+        '<button class="aplang-cta">Continue</button>' +
+      '</div>';
+    screen.querySelectorAll('.aplang-row').forEach(function (r) {
+      r.addEventListener('click', function () {
+        screen.querySelectorAll('.aplang-row').forEach(function (x) { x.classList.remove('is-active'); x.querySelector('.aplang-check') && x.querySelector('.aplang-check').remove(); });
+        r.classList.add('is-active');
+        if (!r.querySelector('.aplang-check')) { var s = document.createElement('span'); s.className = 'aplang-check'; s.textContent = '✓'; r.appendChild(s); }
+      });
+    });
+  };
+
+  P['mobile/app-state-screens.css'] = function (target) {
+    var variants = [
+      { cls: 'apstate-error',   art: '😵', title: 'Something went wrong', text: 'We couldn\'t load this content. Check your connection and try again.', primary: 'Try again' },
+      { cls: 'apstate-success', art: '🎉', title: 'You\'re all set!',       text: 'Your account has been created successfully. Welcome aboard.',            primary: 'Get started' },
+      { cls: 'apstate-empty',   art: '📭', title: 'Nothing here yet',       text: 'When you create your first project, it\'ll show up here.',               primary: 'Create project' },
+      { cls: 'apstate-offline', art: '☁',  title: 'You\'re offline',         text: 'Some features need a connection. We\'ll sync once you\'re back online.',  primary: 'Try again' },
+      { cls: 'apstate-404',     art: '404', title: 'Page not found',         text: 'The page you\'re looking for doesn\'t exist or was moved.',              primary: 'Go home' }
+    ];
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.8rem;width:100%;">' +
+        '<div style="display:flex;gap:0.3rem;flex-wrap:wrap;justify-content:center;">' +
+          variants.map(function (v, i) {
+            return '<button class="dapp-state-tab" data-idx="' + i + '" style="padding:0.3rem 0.7rem;background:' + (i === 0 ? 'rgba(139,92,246,0.25)' : 'rgba(255,255,255,0.04)') + ';border:1px solid ' + (i === 0 ? '#a78bfa' : 'rgba(255,255,255,0.1)') + ';border-radius:5px;color:#fff;font-size:0.7rem;cursor:pointer;font-family:monospace;">' + v.cls.replace('apstate-', '') + '</button>';
+          }).join('') +
+        '</div>' +
+        '<div data-state-host style="width:100%;display:flex;justify-content:center;"></div>' +
+      '</div>';
+    var host = target.querySelector('[data-state-host]');
+    function render(idx) {
+      var v = variants[idx];
+      host.innerHTML = '';
+      var screen = iphoneFrame(host, {});
+      screen.innerHTML =
+        '<div class="apstate ' + v.cls + '">' +
+          '<div class="apstate-art">' + v.art + '</div>' +
+          '<h1 class="apstate-title">' + v.title + '</h1>' +
+          '<p class="apstate-text">' + v.text + '</p>' +
+          '<button class="apstate-primary">' + v.primary + '</button>' +
+          '<button class="apstate-secondary">Go back</button>' +
+        '</div>';
+    }
+    target.querySelectorAll('.dapp-state-tab').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        target.querySelectorAll('.dapp-state-tab').forEach(function (b) {
+          b.style.background = 'rgba(255,255,255,0.04)';
+          b.style.borderColor = 'rgba(255,255,255,0.1)';
+        });
+        btn.style.background = 'rgba(139,92,246,0.25)';
+        btn.style.borderColor = '#a78bfa';
+        render(parseInt(btn.getAttribute('data-idx'), 10));
+      });
+    });
+    render(0);
+  };
+
+  P['mobile/app-permission-prompt.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Pre-permission screen (pulsing icon).' });
+    screen.innerHTML =
+      '<div class="apperm">' +
+        '<div class="apperm-icon">🔔</div>' +
+        '<h1 class="apperm-title">Stay in the loop</h1>' +
+        '<p class="apperm-text">Get notified when there\'s an update, important message, or new feature.</p>' +
+        '<ul class="apperm-list">' +
+          '<li>📨 Direct messages</li>' +
+          '<li>🎉 New features & releases</li>' +
+          '<li>📅 Reminders you set yourself</li>' +
+        '</ul>' +
+        '<p class="apperm-fine">You can change this anytime in Settings.</p>' +
+        '<button class="apperm-allow">Enable notifications</button>' +
+        '<button class="apperm-skip">Not now</button>' +
+      '</div>';
+  };
+
+  P['mobile/app-rating-prompt.css'] = function (target) {
+    var screen = iphoneFrame(target, { caption: 'Rate-this-app screen with stars + reason chips.' });
+    screen.innerHTML =
+      '<div class="aprate">' +
+        '<div class="aprate-art">🌟</div>' +
+        '<h1 class="aprate-title">Enjoying frontendmaxxing?</h1>' +
+        '<p class="aprate-text">Your rating helps others discover the app.</p>' +
+        '<div class="aprate-stars" data-app-rate>' +
+          [1,2,3,4,5].map(function (i) { return '<span class="aprate-star' + (i <= 4 ? ' is-on' : '') + '">★</span>'; }).join('') +
+        '</div>' +
+        '<div class="aprate-feedback">' +
+          '<p class="aprate-feedback-title">What did you love?</p>' +
+          '<div class="aprate-chips">' +
+            ['Easy to use','Fast','Looks great','Useful features','Customer support'].map(function (c, i) {
+              return '<button class="aprate-chip' + ((i === 0 || i === 2) ? ' is-selected' : '') + '">' + c + '</button>';
+            }).join('') +
+          '</div>' +
+        '</div>' +
+        '<button class="aprate-cta">Rate on App Store</button>' +
+        '<button class="aprate-skip">No thanks</button>' +
+      '</div>';
+    // Star interaction
+    var stars = screen.querySelectorAll('.aprate-star');
+    stars.forEach(function (s, i) {
+      s.addEventListener('click', function () {
+        stars.forEach(function (x, j) { x.classList.toggle('is-on', j <= i); });
+      });
+    });
+    screen.querySelectorAll('.aprate-chip').forEach(function (c) {
+      c.addEventListener('click', function () { c.classList.toggle('is-selected'); });
+    });
+  };
+
+  P['mobile/app-logout-confirm.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.8rem;width:100%;">' +
+        '<div style="display:flex;gap:0.3rem;justify-content:center;">' +
+          '<button class="dapp-confirm-warn" style="padding:0.3rem 0.7rem;background:rgba(251,191,36,0.18);border:1px solid #fbbf24;border-radius:5px;color:#fbbf24;font-size:0.7rem;cursor:pointer;font-family:monospace;">warn (sign out)</button>' +
+          '<button class="dapp-confirm-danger" style="padding:0.3rem 0.7rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:#fff;font-size:0.7rem;cursor:pointer;font-family:monospace;">danger (delete acct)</button>' +
+        '</div>' +
+        '<div data-confirm-host style="width:100%;display:flex;justify-content:center;"></div>' +
+      '</div>';
+    var host = target.querySelector('[data-confirm-host]');
+    function renderWarn() {
+      host.innerHTML = '';
+      var screen = iphoneFrame(host, {});
+      screen.innerHTML =
+        '<div class="apconfirm apconfirm-warn">' +
+          '<div class="apconfirm-icon">⚠</div>' +
+          '<h1 class="apconfirm-title">Sign out of Acme?</h1>' +
+          '<p class="apconfirm-text">You\'ll need to sign in again to use the app.</p>' +
+          '<div class="apconfirm-list">' +
+            '<div class="apconfirm-row"><span>Account</span><span>alex@example.com</span></div>' +
+            '<div class="apconfirm-row"><span>Drafts saved</span><span>4</span></div>' +
+            '<div class="apconfirm-row"><span>Last sync</span><span>2 min ago</span></div>' +
+          '</div>' +
+          '<button class="apconfirm-destructive">Sign out</button>' +
+          '<button class="apconfirm-cancel">Cancel</button>' +
+        '</div>';
+    }
+    function renderDanger() {
+      host.innerHTML = '';
+      var screen = iphoneFrame(host, {});
+      screen.innerHTML =
+        '<div class="apconfirm apconfirm-danger">' +
+          '<div class="apconfirm-icon">🗑</div>' +
+          '<h1 class="apconfirm-title">Delete account</h1>' +
+          '<p class="apconfirm-text">This permanently deletes your data. <b>This cannot be undone.</b></p>' +
+          '<label class="apconfirm-check"><input type="checkbox"><span>I understand my data will be permanently deleted</span></label>' +
+          '<label class="apconfirm-field"><span>Type <b>DELETE</b> to confirm</span><input placeholder="DELETE"></label>' +
+          '<button class="apconfirm-destructive" disabled>Delete account</button>' +
+          '<button class="apconfirm-cancel">Cancel</button>' +
+        '</div>';
+      // wire checkbox + typed confirm → enable button
+      var screenEl = host.querySelector('.apconfirm');
+      var checkbox = screenEl.querySelector('.apconfirm-check input');
+      var typeInput = screenEl.querySelector('.apconfirm-field input');
+      var btn = screenEl.querySelector('.apconfirm-destructive');
+      function sync() { btn.disabled = !(checkbox.checked && typeInput.value.trim().toUpperCase() === 'DELETE'); }
+      checkbox.addEventListener('change', sync);
+      typeInput.addEventListener('input', sync);
+    }
+    target.querySelector('.dapp-confirm-warn').addEventListener('click', renderWarn);
+    target.querySelector('.dapp-confirm-danger').addEventListener('click', renderDanger);
+    renderWarn();
+  };
+
   P['mobile/ios-notification-banner.css'] = function (target) {
     var screen = iphoneFrame(target, { wallpaper: 'night', caption: 'Lock-screen notification stack + top-slide banner.' });
     screen.innerHTML =

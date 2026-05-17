@@ -1,0 +1,167 @@
+/* ============================================
+   APP BILLING HISTORY — Past charges list with status pills
+   Inspired by Stripe, Linear, Vercel billing screens
+   ============================================
+   Usage:
+     <div class="apbill">
+       <div class="apbill-head">
+         <button class="apbill-back">←</button>
+         <h1 class="apbill-title">Billing history</h1>
+       </div>
+       <div class="apbill-card">
+         <div class="apbill-card-label">Current plan</div>
+         <div class="apbill-card-plan">Pro Annual · $59.88/yr</div>
+         <div class="apbill-card-next">Next charge Mar 15, 2027</div>
+         <button class="apbill-card-link">Manage plan →</button>
+       </div>
+       <h2 class="apbill-section">Past charges</h2>
+       <ul class="apbill-list">
+         <li class="apbill-row">
+           <div class="apbill-row-meta">
+             <div class="apbill-row-date">Mar 15, 2026</div>
+             <div class="apbill-row-card">Visa •• 4242</div>
+           </div>
+           <div class="apbill-row-right">
+             <span class="apbill-row-amount">$59.88</span>
+             <span class="apbill-pill is-paid">Paid</span>
+           </div>
+         </li>
+         …
+       </ul>
+     </div>
+
+   Status pill variants: .is-paid (green), .is-failed (red), .is-refunded (gray)
+   ============================================ */
+
+.apbill {
+  --app-bg: #000;
+  --app-fg: #fff;
+  --app-muted: rgba(235, 235, 245, 0.6);
+  --app-accent: #0a84ff;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  padding: 12px 22px 18px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-y: auto;
+}
+
+.apbill-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.apbill-back {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  color: var(--app-fg);
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0;
+}
+.apbill-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.apbill-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  background: rgba(10, 132, 255, 0.08);
+  border: 1px solid rgba(10, 132, 255, 0.3);
+  border-radius: 14px;
+  margin-bottom: 22px;
+}
+.apbill-card-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--app-accent);
+  font-weight: 700;
+}
+.apbill-card-plan {
+  font-size: 17px;
+  font-weight: 600;
+}
+.apbill-card-next {
+  font-size: 13px;
+  color: var(--app-muted);
+  margin-bottom: 8px;
+}
+.apbill-card-link {
+  align-self: flex-start;
+  background: transparent;
+  border: 0;
+  color: var(--app-accent);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.apbill-section {
+  margin: 0 0 8px;
+  padding-left: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--app-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.apbill-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.apbill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+.apbill-row:last-child { border-bottom: 0; }
+
+.apbill-row-date { font-size: 14px; font-weight: 600; }
+.apbill-row-card { font-size: 12px; color: var(--app-muted); margin-top: 2px; }
+
+.apbill-row-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+.apbill-row-amount {
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.apbill-pill {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.apbill-pill.is-paid     { background: rgba(34, 197, 94, 0.18); color: #4ade80; }
+.apbill-pill.is-failed   { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
+.apbill-pill.is-refunded { background: rgba(148, 163, 184, 0.18); color: #cbd5e1; }
