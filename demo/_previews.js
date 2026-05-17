@@ -2260,4 +2260,585 @@
     });
   };
 
+  // ============================================
+  // 3D scenes — common host helper
+  // ============================================
+  function threeStage(target, opts) {
+    opts = opts || {};
+    var h = opts.height || 320;
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;width:100%;">' +
+        '<div id="dapp-three-host" style="width:100%;max-width:560px;height:' + h + 'px;background:#050510;border-radius:10px;overflow:hidden;position:relative;"></div>' +
+        (opts.note ? '<div style="font-size:0.7rem;color:rgba(255,255,255,0.45);max-width:540px;text-align:center;">' + opts.note + '</div>' : '') +
+      '</div>';
+    return target.querySelector('#dapp-three-host');
+  }
+  function waitForThree(cb, tries) {
+    tries = tries || 0;
+    if (window.THREE) return cb();
+    if (tries > 50) return;
+    setTimeout(function () { waitForThree(cb, tries + 1); }, 80);
+  }
+
+  P['3d/scene-runner.js'] = function (target) {
+    var host = threeStage(target, { height: 280, note: 'Bootstrap helper — renders a spinning torus knot to prove the scene context works.' });
+    waitForThree(function () {
+      if (!window.SceneRunner) return;
+      var T = window.THREE;
+      var mesh;
+      window.SceneRunner.create(host, {
+        cameraPosition: [0, 0, 4],
+        background: '#0a0a18',
+        onTick: function (ctx, t) {
+          if (!mesh) {
+            mesh = new T.Mesh(
+              new T.TorusKnotGeometry(0.7, 0.22, 100, 16),
+              new T.MeshStandardMaterial({ color: 0x8b5cf6, metalness: 0.4, roughness: 0.25 })
+            );
+            ctx.scene.add(mesh);
+            var l1 = new T.DirectionalLight(0xffffff, 1.2); l1.position.set(2, 3, 4); ctx.scene.add(l1);
+            ctx.scene.add(new T.AmbientLight(0x8888ff, 0.4));
+          }
+          mesh.rotation.x = t * 0.6;
+          mesh.rotation.y = t * 0.8;
+        }
+      });
+    });
+  };
+
+  P['3d/particles-galaxy.js'] = function (target) {
+    var host = threeStage(target, { height: 320 });
+    waitForThree(function () {
+      if (window.ParticlesGalaxy) window.ParticlesGalaxy.init(host, { count: 8000 });
+    });
+  };
+
+  P['3d/wave-plane.js'] = function (target) {
+    var host = threeStage(target, { height: 300 });
+    waitForThree(function () {
+      if (window.WavePlane) window.WavePlane.init(host);
+    });
+  };
+
+  P['3d/cube-morph.js'] = function (target) {
+    var host = threeStage(target, { height: 300 });
+    waitForThree(function () {
+      if (window.CubeMorph) window.CubeMorph.init(host);
+    });
+  };
+
+  P['3d/instanced-grid.js'] = function (target) {
+    var host = threeStage(target, { height: 320 });
+    waitForThree(function () {
+      if (window.InstancedGrid) window.InstancedGrid.init(host);
+    });
+  };
+
+  P['3d/floating-text.js'] = function (target) {
+    var host = threeStage(target, { height: 300 });
+    waitForThree(function () {
+      if (window.FloatingText) window.FloatingText.init(host, { text: 'frontendmax' });
+    });
+  };
+
+  P['3d/postprocessing-bloom.js'] = function (target) {
+    var host = threeStage(target, { height: 320, note: 'EffectComposer + UnrealBloom — emissive orbs glow.' });
+    waitForThree(function () {
+      if (window.PostprocessingBloom) window.PostprocessingBloom.init(host);
+    });
+  };
+
+  P['3d/raycast-hover.js'] = function (target) {
+    var host = threeStage(target, { height: 300, note: 'Hover over the cubes — raycaster highlights the one under the cursor.' });
+    waitForThree(function () {
+      if (window.RaycastHover) window.RaycastHover.init(host);
+    });
+  };
+
+  P['3d/scenes-pack.js'] = function (target) {
+    var host = threeStage(target, { height: 340, note: 'Pack of 6 ready scenes — defaults to the first one.' });
+    waitForThree(function () {
+      if (window.ScenesPack) {
+        var keys = window.ScenesPack.list && window.ScenesPack.list();
+        var first = (keys && keys[0]) || 'crystals';
+        window.ScenesPack.init(host, { scene: first });
+      }
+    });
+  };
+
+  // ============================================
+  // AI components — chat / artifact / model picker
+  // ============================================
+  P['ai/streaming-text.js'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:520px;padding:1rem 1.2rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">' +
+        '<div id="dapp-stream-target" style="font-size:0.9rem;line-height:1.55;color:#e6e6f0;min-height:5em;"></div>' +
+        '<button id="dapp-stream-go" style="margin-top:0.8rem;padding:0.4rem 0.95rem;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);border-radius:6px;color:#c4b5fd;font-size:0.75rem;cursor:pointer;">▶ Stream</button>' +
+      '</div>';
+    var run = function () {
+      var el = target.querySelector('#dapp-stream-target');
+      if (!el || !window.StreamingText) return;
+      el.textContent = '';
+      var text = 'This is a token-by-token streaming response with **markdown-lite** support. Notice how the cursor blinks at the end and the panel auto-scrolls.';
+      var i = 0;
+      var id = setInterval(function () {
+        el.textContent += text[i++];
+        if (i >= text.length) clearInterval(id);
+      }, 25);
+    };
+    target.querySelector('#dapp-stream-go').addEventListener('click', run);
+    setTimeout(run, 200);
+  };
+
+  P['ai/reasoning-block.js'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:500px;padding:0.95rem 1.1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">' +
+        '<details open style="font-size:0.85rem;color:#e6e6f0;">' +
+          '<summary style="cursor:pointer;font-weight:600;color:#a78bfa;">💭 Thinking… <span style="font-weight:400;color:rgba(255,255,255,0.45);font-size:0.78rem;">3.2s</span></summary>' +
+          '<div style="margin-top:0.7rem;padding:0.7rem 0.9rem;background:rgba(0,0,0,0.3);border-radius:6px;line-height:1.55;color:rgba(255,255,255,0.7);font-family:ui-monospace,monospace;font-size:0.78rem;">First I need to parse the user\'s request, then plan the API calls, then draft a response that doesn\'t reveal the chain-of-thought.</div>' +
+        '</details>' +
+      '</div>';
+  };
+
+  P['ai/tool-call-card.js'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:0.5rem;">' +
+        ['search_docs', 'list_files', 'run_test'].map(function (name, i) {
+          var states = ['running', 'success', 'success'];
+          var icons = ['◐', '✓', '✓'];
+          var colors = ['#facc15', '#22c55e', '#22c55e'];
+          return '<div style="padding:0.7rem 0.95rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-left:3px solid ' + colors[i] + ';border-radius:8px;font-family:ui-monospace,monospace;font-size:0.78rem;color:#e6e6f0;">' +
+            '<span style="color:' + colors[i] + ';margin-right:0.5rem;">' + icons[i] + '</span>' +
+            '<span style="color:#a78bfa;font-weight:600;">' + name + '</span>' +
+            '<span style="color:rgba(255,255,255,0.5);"> · ' + states[i] + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['ai/agent-trace.js'] = function (target) {
+    var steps = [
+      { t: 'tool', n: 'search', d: 'searched 4 docs' },
+      { t: 'think', n: 'analyze', d: 'comparing context to query' },
+      { t: 'tool', n: 'fetch_url', d: 'fetched results.json' },
+      { t: 'speak', n: 'reply', d: 'final answer drafted' }
+    ];
+    target.innerHTML =
+      '<div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:0;">' +
+        steps.map(function (s, i) {
+          var icon = s.t === 'tool' ? '🔧' : s.t === 'think' ? '🧠' : '💬';
+          var color = s.t === 'tool' ? '#60a5fa' : s.t === 'think' ? '#a78bfa' : '#22c55e';
+          return '<div style="display:flex;gap:0.7rem;padding:0.55rem 0.2rem;position:relative;">' +
+            '<div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid ' + color + ';display:grid;place-items:center;font-size:0.85rem;flex-shrink:0;">' + icon + '</div>' +
+            (i < steps.length - 1 ? '<div style="position:absolute;left:14px;top:38px;width:1px;height:24px;background:rgba(255,255,255,0.12);"></div>' : '') +
+            '<div><div style="font-size:0.8rem;color:#fff;font-weight:600;">' + s.n + '</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.5);">' + s.d + '</div></div>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['ai/model-picker.js'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:380px;display:flex;flex-direction:column;gap:0.4rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.5rem;">' +
+        [
+          { n: 'Claude Opus 4.7', p: 'Anthropic', c: '#c4b5fd', sel: true, b: ['🧠 Smart','📷 Vision','⚡ 200k'] },
+          { n: 'GPT-4 Turbo', p: 'OpenAI', c: '#86efac', sel: false, b: ['🧠 Smart','📷 Vision'] },
+          { n: 'Gemini 1.5 Pro', p: 'Google', c: '#fcd34d', sel: false, b: ['📷 Vision','⚡ 1M'] }
+        ].map(function (m) {
+          return '<div style="padding:0.55rem 0.7rem;background:' + (m.sel ? 'rgba(139,92,246,0.18)' : 'transparent') + ';border-radius:6px;border:1px solid ' + (m.sel ? 'rgba(139,92,246,0.4)' : 'transparent') + ';cursor:pointer;">' +
+            '<div style="display:flex;align-items:center;gap:0.5rem;"><span style="color:' + m.c + ';font-size:0.78rem;font-weight:700;">' + m.p + '</span><span style="color:#fff;font-size:0.85rem;font-weight:600;">' + m.n + '</span></div>' +
+            '<div style="display:flex;gap:0.3rem;margin-top:0.25rem;flex-wrap:wrap;">' + m.b.map(function (x) { return '<span style="font-size:0.65rem;color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.06);padding:0.1rem 0.4rem;border-radius:4px;">' + x + '</span>'; }).join('') + '</div>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['ai/token-usage-pill.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:0.6rem;align-items:center;">' +
+        [
+          { l: '12.4k / 200k', c: '#22c55e', bg: 'rgba(34,197,94,0.15)' },
+          { l: '124.5k / 200k', c: '#facc15', bg: 'rgba(250,204,21,0.15)' },
+          { l: '189.2k / 200k', c: '#ef4444', bg: 'rgba(239,68,68,0.15)' }
+        ].map(function (u) {
+          return '<div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.3rem 0.7rem;background:' + u.bg + ';border:1px solid ' + u.c + ';border-radius:999px;color:' + u.c + ';font-family:ui-monospace,monospace;font-size:0.78rem;font-weight:600;">' +
+            '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + u.c + ';"></span>' + u.l + ' tokens' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['ai/artifact-split.js'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:620px;display:grid;grid-template-columns:1fr 1.2fr;gap:0.5rem;height:280px;">' +
+        '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:0.7rem;display:flex;flex-direction:column;gap:0.5rem;overflow:hidden;">' +
+          '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);font-family:monospace;">Chat</div>' +
+          '<div style="font-size:0.78rem;color:#e6e6f0;line-height:1.5;">Sure — here\'s a React button with a hover glow effect. Click the artifact on the right to preview or copy.</div>' +
+          '<div style="margin-top:auto;padding:0.5rem;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:6px;color:#c4b5fd;font-size:0.72rem;cursor:pointer;">📎 GlowButton.tsx · v3</div>' +
+        '</div>' +
+        '<div style="background:#0a0a14;border:1px solid rgba(255,255,255,0.08);border-radius:10px;display:flex;flex-direction:column;overflow:hidden;">' +
+          '<div style="display:flex;padding:0.4rem 0.5rem;gap:0.4rem;border-bottom:1px solid rgba(255,255,255,0.08);">' +
+            '<button style="padding:0.2rem 0.7rem;background:rgba(139,92,246,0.25);border:none;border-radius:4px;color:#c4b5fd;font-size:0.7rem;cursor:pointer;">Preview</button>' +
+            '<button style="padding:0.2rem 0.7rem;background:transparent;border:none;color:rgba(255,255,255,0.5);font-size:0.7rem;cursor:pointer;">Code</button>' +
+            '<span style="margin-left:auto;font-size:0.7rem;color:rgba(255,255,255,0.4);">v3/3 ◀ ▶</span>' +
+          '</div>' +
+          '<div style="flex:1;display:grid;place-items:center;background:radial-gradient(circle at center,rgba(139,92,246,0.15),transparent 60%);">' +
+            '<button style="padding:0.6rem 1.6rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);border:none;border-radius:8px;color:#fff;font-weight:700;font-size:0.95rem;box-shadow:0 0 30px rgba(139,92,246,0.5);cursor:pointer;">Click me ✨</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  };
+
+  P['ai/citation-popover.js'] = function (target) {
+    target.innerHTML =
+      '<div style="max-width:500px;font-size:0.9rem;line-height:1.7;color:#e6e6f0;padding:1rem 1.2rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">' +
+        'According to the latest research<sup style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:rgba(139,92,246,0.25);color:#c4b5fd;border-radius:4px;font-size:0.65rem;margin:0 0.15rem;cursor:pointer;font-weight:700;">1</sup>, retrieval-augmented generation produces 35% fewer hallucinations<sup style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:rgba(34,197,94,0.25);color:#86efac;border-radius:4px;font-size:0.65rem;margin:0 0.15rem;cursor:pointer;font-weight:700;">2</sup> than vanilla generation<sup style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:rgba(250,204,21,0.25);color:#fcd34d;border-radius:4px;font-size:0.65rem;margin:0 0.15rem;cursor:pointer;font-weight:700;">3</sup>.' +
+      '</div>';
+  };
+
+  P['ai/voice-input.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;">' +
+        '<button style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#f97316);border:none;display:grid;place-items:center;cursor:pointer;box-shadow:0 0 32px rgba(239,68,68,0.5);animation:dapp-pulse 1.6s ease-in-out infinite;">' +
+          '<svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>' +
+        '</button>' +
+        '<div style="display:flex;align-items:center;gap:2px;height:36px;">' +
+          [12,28,18,34,22,16,30,24,14,20,26,18,32,22].map(function (h) {
+            return '<div style="width:3px;height:' + h + 'px;background:#c4b5fd;border-radius:2px;animation:dapp-wave 0.9s ease-in-out infinite;animation-delay:' + (Math.random() * 0.9) + 's;"></div>';
+          }).join('') +
+        '</div>' +
+        '<div style="font-size:0.78rem;color:rgba(255,255,255,0.6);">Listening… speak now</div>' +
+        '<style>@keyframes dapp-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}@keyframes dapp-wave{0%,100%{transform:scaleY(0.5);}50%{transform:scaleY(1.2);}}</style>' +
+      '</div>';
+  };
+
+  P['ai/sources-panel.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;max-width:560px;">' +
+        [
+          { t: 'docs.anthropic.com', h: 'Tool use overview', s: 0.94, c: '#c4b5fd' },
+          { t: 'arxiv.org/2310.06770', h: 'SWE-bench: an evaluation', s: 0.87, c: '#86efac' },
+          { t: 'github.com/repo', h: 'README.md#installation', s: 0.81, c: '#fcd34d' },
+          { t: 'blog.example.com', h: 'Building agents in 2025', s: 0.73, c: '#fda4af' }
+        ].map(function (s) {
+          return '<div style="padding:0.65rem 0.8rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;">' +
+            '<div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.3rem;">' +
+              '<span style="width:6px;height:6px;border-radius:50%;background:' + s.c + ';"></span>' +
+              '<span style="font-size:0.65rem;color:rgba(255,255,255,0.5);font-family:monospace;">' + s.t + '</span>' +
+              '<span style="margin-left:auto;font-size:0.66rem;color:' + s.c + ';font-weight:700;">' + Math.round(s.s * 100) + '%</span>' +
+            '</div>' +
+            '<div style="font-size:0.78rem;color:#fff;font-weight:600;">' + s.h + '</div>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['ai/suggested-replies.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-wrap:wrap;gap:0.5rem;max-width:500px;justify-content:center;">' +
+        ['Tell me more', 'How does it work?', 'Show me an example', 'What\'s next?'].map(function (s, i) {
+          return '<button style="padding:0.45rem 0.95rem;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:999px;color:#c4b5fd;font-size:0.82rem;cursor:pointer;transition:all 0.18s ease;" onmouseenter="this.style.background=\'rgba(139,92,246,0.2)\'" onmouseleave="this.style.background=\'rgba(139,92,246,0.1)\'">' + s + '</button>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['ai/attachment-chips.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-wrap:wrap;gap:0.45rem;max-width:520px;justify-content:center;">' +
+        [
+          { i: '📄', n: 'design-spec.pdf', s: '4.2 MB' },
+          { i: '🖼', n: 'screenshot.png', s: '1.1 MB' },
+          { i: '📊', n: 'data.csv', s: '892 KB' },
+          { i: '🎬', n: 'demo.mp4', s: '12.4 MB' }
+        ].map(function (a) {
+          return '<div style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.7rem 0.35rem 0.45rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-size:0.75rem;">' +
+            '<span style="font-size:1rem;">' + a.i + '</span>' +
+            '<span style="font-weight:600;">' + a.n + '</span>' +
+            '<span style="font-size:0.65rem;color:rgba(255,255,255,0.45);">· ' + a.s + '</span>' +
+            '<span style="margin-left:0.2rem;color:rgba(255,255,255,0.4);cursor:pointer;">×</span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['ai/inline-controls.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;gap:0.35rem;flex-wrap:wrap;justify-content:center;">' +
+        [
+          { i: '⏹', l: 'Stop' },
+          { i: '↻', l: 'Regenerate' },
+          { i: '📋', l: 'Copy' },
+          { i: '👍', l: 'Good' },
+          { i: '👎', l: 'Bad' },
+          { i: '🌿', l: 'Branch' },
+          { i: '✎', l: 'Edit' },
+          { i: '🔊', l: 'TTS' }
+        ].map(function (b) {
+          return '<button style="display:inline-flex;align-items:center;gap:0.3rem;padding:0.3rem 0.7rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#e6e6f0;font-size:0.72rem;cursor:pointer;">' + b.i + ' ' + b.l + '</button>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['ai/ai-diff.js'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:520px;background:#0a0a14;border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;font-family:ui-monospace,monospace;font-size:0.78rem;">' +
+        '<div style="background:rgba(34,197,94,0.1);padding:0.4rem 0.7rem;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:0.4rem;">' +
+          '<span style="color:#86efac;">+ Hunk 1</span>' +
+          '<span style="margin-left:auto;display:flex;gap:0.3rem;">' +
+            '<button style="padding:0.15rem 0.5rem;background:#22c55e;border:none;border-radius:3px;color:#fff;font-size:0.7rem;cursor:pointer;font-weight:700;">✓ Accept</button>' +
+            '<button style="padding:0.15rem 0.5rem;background:rgba(239,68,68,0.15);border:1px solid #ef4444;border-radius:3px;color:#ef4444;font-size:0.7rem;cursor:pointer;font-weight:700;">✕ Reject</button>' +
+          '</span>' +
+        '</div>' +
+        '<div style="padding:0.5rem 0;">' +
+          '<div style="padding:0 0.7rem;color:rgba(239,68,68,0.85);background:rgba(239,68,68,0.06);">- function add(a, b) { return a + b }</div>' +
+          '<div style="padding:0 0.7rem;color:rgba(34,197,94,0.85);background:rgba(34,197,94,0.08);">+ function add(a, b) {</div>' +
+          '<div style="padding:0 0.7rem;color:rgba(34,197,94,0.85);background:rgba(34,197,94,0.08);">+   if (typeof a !== \'number\') throw new TypeError();</div>' +
+          '<div style="padding:0 0.7rem;color:rgba(34,197,94,0.85);background:rgba(34,197,94,0.08);">+   return a + b;</div>' +
+          '<div style="padding:0 0.7rem;color:rgba(34,197,94,0.85);background:rgba(34,197,94,0.08);">+ }</div>' +
+        '</div>' +
+      '</div>';
+  };
+
+  // ============================================
+  // Distinctive effects: text + visual
+  // ============================================
+  P['effects/text-flipping-board.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;">' +
+        '<div style="display:flex;gap:0.2rem;font-family:ui-monospace,monospace;font-size:1.6rem;font-weight:700;">' +
+          'DEPARTURES'.split('').map(function (ch, i) {
+            return '<span class="dapp-flip-char" style="display:inline-block;min-width:1.2em;padding:0.25rem 0.4rem;background:#1a1a2e;color:#fcd34d;border-radius:4px;text-align:center;box-shadow:inset 0 -1px 0 rgba(0,0,0,0.3);animation:dapp-flipchar 0.6s ease-out both;animation-delay:' + (i * 0.07) + 's;">' + ch + '</span>';
+          }).join('') +
+        '</div>' +
+        '<div style="font-size:0.7rem;color:rgba(255,255,255,0.45);">Airport split-flap board</div>' +
+        '<style>@keyframes dapp-flipchar{0%{transform:rotateX(90deg);}100%{transform:rotateX(0);}}</style>' +
+      '</div>';
+  };
+
+  P['effects/encrypted-text.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;">' +
+        '<div id="dapp-enc" style="font-family:ui-monospace,monospace;font-size:1.4rem;font-weight:700;color:#86efac;letter-spacing:0.05em;min-width:14em;text-align:center;">SCRAMBLING</div>' +
+        '<button id="dapp-enc-go" style="padding:0.4rem 0.95rem;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.4);border-radius:6px;color:#86efac;font-size:0.78rem;cursor:pointer;font-weight:600;">▶ Decode</button>' +
+      '</div>';
+    var go = function () {
+      var el = target.querySelector('#dapp-enc');
+      if (!el) return;
+      var target_str = 'UNLOCKED ✓';
+      var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*';
+      var locked = '';
+      var i = 0;
+      var id = setInterval(function () {
+        if (i >= target_str.length) {
+          clearInterval(id);
+          el.textContent = target_str;
+          return;
+        }
+        locked = target_str.slice(0, i);
+        var rest = '';
+        for (var j = i; j < target_str.length; j++) rest += chars[Math.floor(Math.random() * chars.length)];
+        el.textContent = locked + rest;
+        if (Math.random() > 0.6) i++;
+      }, 50);
+    };
+    target.querySelector('#dapp-enc-go').addEventListener('click', go);
+    setTimeout(go, 200);
+  };
+
+  P['effects/variable-font-cursor.js'] = function (target) {
+    target.innerHTML =
+      '<div style="font-family:\'Inter\',system-ui,sans-serif;font-size:2.4rem;font-weight:800;line-height:1.1;letter-spacing:-0.02em;color:#fff;text-align:center;max-width:420px;">' +
+        'TYPE'.split('').map(function (ch, i) { return '<span style="display:inline-block;font-variation-settings:\'wght\' ' + (300 + (i * 200) % 600) + ';margin:0 0.05em;">' + ch + '</span>'; }).join('') +
+        '<br>' +
+        'VARIATIONS'.split('').map(function (ch, i) { return '<span style="display:inline-block;font-variation-settings:\'wght\' ' + (400 + (Math.abs(i - 5) * 80)) + ';margin:0 0.02em;">' + ch + '</span>'; }).join('') +
+      '</div>' +
+      '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:0.7rem;">Per-glyph weight by cursor distance</div>';
+  };
+
+  P['effects/image-cursor-trail.js'] = function (target) {
+    target.innerHTML =
+      '<div id="dapp-trail-stage" style="width:100%;max-width:540px;height:280px;background:radial-gradient(circle at center,rgba(139,92,246,0.15),transparent 70%);border:1px solid rgba(255,255,255,0.08);border-radius:10px;position:relative;overflow:hidden;cursor:crosshair;display:grid;place-items:center;">' +
+        '<div style="font-size:0.95rem;color:rgba(255,255,255,0.5);pointer-events:none;">Move cursor here</div>' +
+      '</div>';
+    var stage = target.querySelector('#dapp-trail-stage');
+    var lastX = 0, lastY = 0;
+    var colors = ['#8b5cf6','#ec4899','#f97316','#22c55e','#60a5fa'];
+    stage.addEventListener('mousemove', function (e) {
+      var rect = stage.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      if (Math.hypot(x - lastX, y - lastY) < 24) return;
+      lastX = x; lastY = y;
+      var d = document.createElement('div');
+      d.style.cssText = 'position:absolute;left:' + (x - 14) + 'px;top:' + (y - 14) + 'px;width:28px;height:28px;border-radius:50%;background:' + colors[Math.floor(Math.random() * colors.length)] + ';opacity:0.85;pointer-events:none;animation:dapp-trail 0.9s ease-out forwards;';
+      stage.appendChild(d);
+      setTimeout(function () { d.remove(); }, 900);
+    });
+    var s = document.createElement('style');
+    s.textContent = '@keyframes dapp-trail{0%{transform:scale(0.4);}100%{transform:scale(1.6);opacity:0;}}';
+    stage.appendChild(s);
+  };
+
+  // ============================================
+  // Notable JS components — explicit live setups
+  // ============================================
+  P['components/focus-mode.js'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:0.4rem;position:relative;">' +
+        [
+          'Quarterly OKRs draft',
+          'Stand-up notes',
+          '<b>→ Writing: AI agent design</b>',
+          'Bugs to triage',
+          'Inbox zero'
+        ].map(function (t, i) {
+          var on = i === 2;
+          return '<div style="padding:0.7rem 0.95rem;background:' + (on ? 'rgba(139,92,246,0.1)' : 'rgba(255,255,255,0.02)') + ';border:1px solid ' + (on ? 'rgba(139,92,246,0.35)' : 'rgba(255,255,255,0.06)') + ';border-radius:8px;color:' + (on ? '#fff' : 'rgba(255,255,255,0.35)') + ';font-size:0.85rem;line-height:1.4;transition:all 0.4s ease;">' + t + '</div>';
+        }).join('') +
+        '<div style="margin-top:0.4rem;display:flex;align-items:center;gap:0.5rem;justify-content:center;">' +
+          '<svg width="34" height="34" viewBox="0 0 36 36" style="transform:rotate(-90deg);"><circle cx="18" cy="18" r="14" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3"/><circle cx="18" cy="18" r="14" fill="none" stroke="#c4b5fd" stroke-width="3" stroke-dasharray="' + (88 * 0.65) + ' ' + 88 + '" stroke-linecap="round"/></svg>' +
+          '<span style="font-size:0.8rem;color:#c4b5fd;font-weight:700;">16:23 left</span>' +
+        '</div>' +
+      '</div>';
+  };
+
+  P['components/triage-row.js'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:540px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">' +
+        [
+          { id: 'BUG-481', t: 'OAuth callback drops state param', p: 'P0', pc: '#ef4444', a: 'JD' },
+          { id: 'BUG-482', t: 'Settings page leaks Listener on unmount', p: 'P1', pc: '#facc15', a: 'AS', sel: true },
+          { id: 'FEAT-93', t: 'Add bulk export to CSV', p: 'P2', pc: '#60a5fa', a: 'KR' },
+          { id: 'BUG-485', t: 'Tooltip overflow on RTL languages', p: 'P3', pc: '#a78bfa', a: 'MP' }
+        ].map(function (r, i) {
+          return '<div style="display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0.8rem;border-top:' + (i === 0 ? 'none' : '1px solid rgba(255,255,255,0.05)') + ';background:' + (r.sel ? 'rgba(139,92,246,0.12)' : 'transparent') + ';">' +
+            '<input type="checkbox"' + (r.sel ? ' checked' : '') + ' style="accent-color:#a78bfa;">' +
+            '<span style="font-family:monospace;font-size:0.7rem;color:rgba(255,255,255,0.45);min-width:64px;">' + r.id + '</span>' +
+            '<span style="padding:0.05rem 0.4rem;background:rgba(255,255,255,0.05);border:1px solid ' + r.pc + ';border-radius:3px;color:' + r.pc + ';font-size:0.65rem;font-weight:700;">' + r.p + '</span>' +
+            '<span style="flex:1;font-size:0.82rem;color:#fff;">' + r.t + '</span>' +
+            '<span style="width:22px;height:22px;border-radius:50%;background:#8b5cf6;color:#fff;font-size:0.66rem;display:grid;place-items:center;font-weight:700;">' + r.a + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
+      '<div style="margin-top:0.5rem;font-size:0.7rem;color:rgba(255,255,255,0.5);text-align:center;">Keyboard: <code style="background:rgba(255,255,255,0.06);padding:0.05rem 0.25rem;border-radius:3px;">j/k</code> nav · <code style="background:rgba(255,255,255,0.06);padding:0.05rem 0.25rem;border-radius:3px;">x</code> select · <code style="background:rgba(255,255,255,0.06);padding:0.05rem 0.25rem;border-radius:3px;">⌫</code> delete</div>';
+  };
+
+  P['components/changelog-popover.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;justify-content:flex-end;width:100%;max-width:460px;position:relative;padding-right:0.5rem;">' +
+        '<button style="position:relative;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#fff;cursor:pointer;font-size:1rem;">🔔<span style="position:absolute;top:5px;right:6px;width:8px;height:8px;border-radius:50%;background:#ef4444;border:1.5px solid #0a0a14;"></span></button>' +
+        '<div style="position:absolute;top:46px;right:0;width:300px;background:#15152a;border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:0.8rem;box-shadow:0 12px 40px rgba(0,0,0,0.5);">' +
+          '<div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:0.6rem;">What\'s new</div>' +
+          [
+            { d: 'Today', t: 'Slash commands beta', new: true, tag: 'feature' },
+            { d: '2d ago', t: 'Faster cold-start times', new: false, tag: 'perf' },
+            { d: '4d ago', t: 'Fixed: settings sidebar crash', new: false, tag: 'fix' }
+          ].map(function (it) {
+            var tagColor = it.tag === 'feature' ? '#86efac' : it.tag === 'perf' ? '#fcd34d' : '#fda4af';
+            return '<div style="display:flex;gap:0.5rem;padding:0.4rem 0;border-top:1px solid rgba(255,255,255,0.04);">' +
+              '<span style="width:6px;height:6px;border-radius:50%;background:' + (it.new ? '#ef4444' : 'transparent') + ';margin-top:0.5rem;flex-shrink:0;"></span>' +
+              '<div style="flex:1;"><span style="font-size:0.55rem;color:' + tagColor + ';text-transform:uppercase;letter-spacing:0.06em;font-weight:700;">' + it.tag + '</span>' +
+              '<div style="font-size:0.78rem;color:#fff;">' + it.t + '</div><div style="font-size:0.65rem;color:rgba(255,255,255,0.4);">' + it.d + '</div></div>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+      '</div>';
+  };
+
+  // ============================================
+  // Media — distinctive visual files
+  // ============================================
+  P['media/signature-pad.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;">' +
+        '<div style="width:380px;height:160px;background:rgba(255,255,255,0.95);border-radius:10px;display:grid;place-items:center;font-family:\'Brush Script MT\',cursive;font-size:2.4rem;color:#1a1a2e;font-style:italic;border:1px dashed rgba(0,0,0,0.2);position:relative;">' +
+          '<span>frontendmaxxing</span>' +
+          '<svg style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 380 160">' +
+            '<path d="M40 110 Q 80 60, 120 90 T 200 80 T 280 100 T 340 70" stroke="#1a1a2e" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0.4"/>' +
+          '</svg>' +
+        '</div>' +
+        '<div style="display:flex;gap:0.5rem;">' +
+          '<button style="padding:0.4rem 0.95rem;background:rgba(239,68,68,0.15);border:1px solid #ef4444;border-radius:6px;color:#fca5a5;font-size:0.78rem;cursor:pointer;">Clear</button>' +
+          '<button style="padding:0.4rem 0.95rem;background:#22c55e;border:none;border-radius:6px;color:#fff;font-size:0.78rem;cursor:pointer;font-weight:700;">Save PNG</button>' +
+        '</div>' +
+      '</div>';
+  };
+
+  P['media/waveform-regions.js'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:560px;background:#0a0a14;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:0.8rem;">' +
+        '<div style="position:relative;height:60px;display:flex;align-items:center;">' +
+          '<div style="position:absolute;left:8%;right:18%;top:0;bottom:0;background:rgba(139,92,246,0.18);border-left:2px solid #c4b5fd;border-right:2px solid #c4b5fd;border-radius:4px;"></div>' +
+          '<div style="position:absolute;left:60%;right:5%;top:0;bottom:0;background:rgba(34,197,94,0.15);border-left:2px solid #86efac;border-right:2px solid #86efac;border-radius:4px;"></div>' +
+          '<div style="display:flex;align-items:center;gap:1px;height:100%;width:100%;position:relative;">' +
+            Array.from({ length: 80 }, function (_, i) {
+              var h = 16 + Math.abs(Math.sin(i * 0.4) * 32) + Math.random() * 12;
+              return '<div style="width:4px;height:' + h + 'px;background:rgba(255,255,255,0.55);"></div>';
+            }).join('') +
+          '</div>' +
+          '<div style="position:absolute;left:38%;top:-4px;bottom:-4px;width:2px;background:#ef4444;box-shadow:0 0 8px #ef4444;"></div>' +
+        '</div>' +
+        '<div style="display:flex;justify-content:space-between;font-family:monospace;font-size:0.65rem;color:rgba(255,255,255,0.4);margin-top:0.4rem;">' +
+          '<span>00:00</span><span>01:23 / 03:14</span><span>03:14</span>' +
+        '</div>' +
+      '</div>';
+  };
+
+  // ============================================
+  // Cursor folder previews
+  // ============================================
+  P['cursor/custom-cursor.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;max-width:520px;">' +
+        ['Dot', 'Ring', 'Cross', 'Star', 'Blob', 'Magnetic'].map(function (n, i) {
+          var colors = ['#8b5cf6','#ec4899','#22c55e','#fcd34d','#60a5fa','#f97316'];
+          return '<div style="height:90px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;display:grid;place-items:center;position:relative;">' +
+            '<span style="width:16px;height:16px;border-radius:50%;background:' + colors[i] + ';box-shadow:0 0 16px ' + colors[i] + ';"></span>' +
+            '<span style="position:absolute;bottom:6px;left:8px;font-size:0.7rem;color:rgba(255,255,255,0.55);">' + n + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
+  // ============================================
+  // Shaders — when running standalone via runner.js
+  // ============================================
+  function shaderStage(target, globalName, opts) {
+    opts = opts || {};
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">' +
+        '<div id="dapp-shader-host" style="width:100%;max-width:540px;height:320px;border-radius:10px;background:#000;overflow:hidden;"></div>' +
+        (opts.note ? '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">' + opts.note + '</div>' : '') +
+      '</div>';
+    var host = target.querySelector('#dapp-shader-host');
+    var attempt = function (n) {
+      var Shader = window[globalName];
+      if (window.ShaderRunner && Shader && Shader.fragment) {
+        try {
+          window.ShaderRunner.create(host, {
+            fragmentShader: Shader.fragment,
+            uniforms: Shader.defaults || {}
+          });
+          return;
+        } catch (e) { console.warn('shader init', e); return; }
+      }
+      if (n < 40) setTimeout(function () { attempt(n + 1); }, 80);
+    };
+    attempt(0);
+  }
+
+  P['shaders/noise-flow.glsl.js']        = function (t) { shaderStage(t, 'NoiseFlowShader',        { note: 'Flowing simplex noise' }); };
+  P['shaders/gradient-mesh.glsl.js']     = function (t) { shaderStage(t, 'GradientMeshShader',     { note: 'Animated 4-stop gradient mesh' }); };
+  P['shaders/liquid-distortion.glsl.js'] = function (t) { shaderStage(t, 'LiquidDistortionShader', { note: 'Fluid-like UV distortion' }); };
+  P['shaders/voronoi.glsl.js']           = function (t) { shaderStage(t, 'VoronoiShader',          { note: 'Worley/Voronoi cells' }); };
+  P['shaders/kaleidoscope.glsl.js']      = function (t) { shaderStage(t, 'KaleidoscopeShader',     { note: 'Sector-folding kaleidoscope' }); };
+  P['shaders/raymarch-sdf.glsl.js']      = function (t) { shaderStage(t, 'RaymarchSDFShader',      { note: 'SDF raymarched primitives' }); };
+  P['shaders/godrays.glsl.js']           = function (t) { shaderStage(t, 'GodraysShader',          { note: 'Volumetric god rays' }); };
+  P['shaders/plasma.glsl.js']            = function (t) { shaderStage(t, 'PlasmaShader',           { note: 'Classic demoscene plasma' }); };
+  P['shaders/fluid.glsl.js']             = function (t) { shaderStage(t, 'FluidShader',            { note: 'Curl-noise fluid simulation' }); };
+  P['shaders/sdf-text.glsl.js']          = function (t) { shaderStage(t, 'SDFTextShader',          { note: 'Signed-distance-field text + glow' }); };
+  P['shaders/halftone.glsl.js']          = function (t) { shaderStage(t, 'HalftoneShader',         { note: 'Halftone dot pattern' }); };
+  P['shaders/gradient-flow.glsl.js']     = function (t) { shaderStage(t, 'GradientFlowShader',     { note: 'Smooth gradient flow' }); };
+  P['shaders/mesh-gradient-wgl.glsl.js'] = function (t) { shaderStage(t, 'MeshGradientWGLShader',  { note: 'Whatamesh-style WebGL mesh gradient' }); };
+
 })();

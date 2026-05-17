@@ -135,6 +135,18 @@
   }
 
   // ===== Dynamic loaders =====
+  var threeLoadPromise = null;
+  function loadThreeOnce() {
+    if (window.THREE) return Promise.resolve();
+    if (threeLoadPromise) return threeLoadPromise;
+    threeLoadPromise = new Promise(function (resolve) {
+      var script = document.createElement('script');
+      script.src = 'https://unpkg.com/three@0.160.0/build/three.min.js';
+      script.onload = script.onerror = function () { resolve(); };
+      document.head.appendChild(script);
+    });
+    return threeLoadPromise;
+  }
   function loadCSS(path) {
     if (state.loaded.css.has(path)) return Promise.resolve();
     return new Promise(function (resolve) {
@@ -458,10 +470,15 @@
       setTimeout(function () { copyBtn.textContent = 'Copy path'; }, 1500);
     });
 
+    // If any of the companions is a 3D snippet, load Three.js from CDN first.
+    var needsThree = comps.some(function (c) { return /^3d\//.test(c.path); });
+    var threePromise = needsThree ? loadThreeOnce() : Promise.resolve();
+
     // Load CSS + JS of all companions then render preview
     var toLoad = comps.map(function (c) {
       return c.kind === 'CSS' ? loadCSS(c.path) : loadJS(c.path);
     });
+    toLoad.unshift(threePromise);
     Promise.all(toLoad).then(function () {
       var body = document.getElementById('dapp-preview-body');
       renderPreviewInto(body, entry, { comps: comps });
@@ -562,6 +579,27 @@
     if (joined.length > 0 && textOnly.length < 3 && joined.indexOf('…') !== -1) {
       return null;
     }
+    // Rewrite any image references that point to non-existent demo-relative files
+    // (placeholder names like `1.jpg`, `photo.jpg`, `cat.png`) to inline SVG data URIs.
+    // Avoids 404 spam in the console without changing the rest of the markup.
+    joined = joined.replace(/(src|href|poster)\s*=\s*(['"])([^'"]+)\2/g, function (m, attr, q, val) {
+      // Leave fully-qualified URLs and data: URIs alone.
+      if (/^(https?:|data:|\/\/|#)/.test(val)) return m;
+      // Only rewrite obvious image / media extensions.
+      if (!/\.(jpe?g|png|gif|webp|avif|svg|mp4|webm)$/i.test(val)) return m;
+      var isVideo = /\.(mp4|webm)$/i.test(val);
+      if (isVideo) return attr + '=' + q + 'data:,' + q;
+      // Tiny gradient SVG placeholder with the filename label.
+      var label = val.split(/[\\/]/).pop();
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200" viewBox="0 0 320 200">'
+              + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+              + '<stop offset="0" stop-color="%238b5cf6"/><stop offset="1" stop-color="%23ec4899"/>'
+              + '</linearGradient></defs>'
+              + '<rect width="320" height="200" fill="url(%23g)"/>'
+              + '<text x="160" y="106" fill="rgba(255,255,255,0.85)" font-family="-apple-system,Segoe UI,sans-serif" font-size="14" font-weight="600" text-anchor="middle">'
+              + label + '</text></svg>';
+      return attr + '=' + q + 'data:image/svg+xml;utf8,' + svg + q;
+    });
     return joined;
   }
 
