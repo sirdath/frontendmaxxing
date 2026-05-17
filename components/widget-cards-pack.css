@@ -1,0 +1,283 @@
+/* ============================================
+   WIDGET CARDS PACK — 10 dashboard / homepage widgets
+   weather, todo-progress, sport-score, calendar-mini, music-now-playing,
+   recent-activity, top-articles, stock-watch, fitness-ring, day-greeting
+   ============================================ */
+
+:where(.wc-weather, .wc-todo, .wc-sport, .wc-cal, .wc-music,
+       .wc-act, .wc-arts, .wc-stock, .wc-fit, .wc-greet) {
+  --w-bg: #14141e;
+  --w-bg-2: #1f1f2e;
+  --w-fg: #f5f5fa;
+  --w-muted: rgba(245, 245, 250, 0.55);
+  --w-line: rgba(255, 255, 255, 0.08);
+  --w-accent: #8b5cf6;
+  --w-good: #10b981;
+  --w-bad: #ef4444;
+  color: var(--w-fg);
+  font-family: inherit;
+}
+
+/* 1. WEATHER — Current + forecast */
+.wc-weather {
+  width: 100%; max-width: 280px;
+  padding: 1.2rem 1.4rem;
+  background:
+    radial-gradient(circle at 70% 20%, rgba(96, 165, 250, 0.3), transparent 50%),
+    linear-gradient(135deg, #2d2d44, #14141e);
+  border-radius: 16px;
+  border: 1px solid var(--w-line);
+}
+.wc-weather-loc { font-size: 0.85rem; color: var(--w-muted); }
+.wc-weather-temp {
+  font-size: 3.4rem; font-weight: 200;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.wc-weather-cond { font-size: 0.95rem; margin: 0.2rem 0 1rem; }
+.wc-weather-forecast {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.3rem;
+  font-size: 0.74rem; text-align: center;
+}
+.wc-weather-fc-day { color: var(--w-muted); margin-bottom: 0.2rem; }
+.wc-weather-fc-ic { font-size: 1.2rem; }
+.wc-weather-fc-t { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* 2. TODO PROGRESS */
+.wc-todo {
+  width: 100%; max-width: 320px;
+  padding: 1rem 1.2rem;
+  background: var(--w-bg); border: 1px solid var(--w-line);
+  border-radius: 14px;
+}
+.wc-todo h4 { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 0.8rem; font-size: 0.95rem; }
+.wc-todo-count { font-size: 0.78rem; color: var(--w-muted); }
+.wc-todo-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; margin-bottom: 0.8rem; overflow: hidden; }
+.wc-todo-bar > i { display: block; height: 100%; width: var(--p, 40%); background: var(--w-accent); border-radius: inherit; }
+.wc-todo-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.3rem; }
+.wc-todo-list li {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 0.88rem;
+}
+.wc-todo-list li::before {
+  content: ''; width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.2);
+}
+.wc-todo-list li.is-done { color: var(--w-muted); text-decoration: line-through; }
+.wc-todo-list li.is-done::before { background: var(--w-good); border-color: var(--w-good); }
+
+/* 3. SPORT SCORE */
+.wc-sport {
+  width: 100%; max-width: 320px;
+  padding: 1rem 1.2rem;
+  background: var(--w-bg); border: 1px solid var(--w-line);
+  border-radius: 12px;
+}
+.wc-sport-league { font-size: 0.7rem; color: var(--w-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.wc-sport-status { font-size: 0.72rem; color: var(--w-bad); font-weight: 700; }
+.wc-sport-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; }
+.wc-sport-team { display: flex; align-items: center; gap: 0.6rem; font-weight: 600; font-size: 0.92rem; }
+.wc-sport-logo { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #ef4444, #b91c1c); }
+.wc-sport-row.b .wc-sport-logo { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.wc-sport-score { font-size: 1.4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.wc-sport-row.win .wc-sport-score { color: var(--w-good); }
+
+/* 4. CALENDAR MINI */
+.wc-cal {
+  width: 100%; max-width: 240px;
+  padding: 0.9rem 1.1rem;
+  background: var(--w-bg); border: 1px solid var(--w-line);
+  border-radius: 14px;
+  text-align: center;
+}
+.wc-cal-mo { font-size: 0.78rem; color: var(--w-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.wc-cal-day { font-size: 3.4rem; font-weight: 800; line-height: 1; letter-spacing: -0.04em; }
+.wc-cal-wd { font-size: 0.88rem; color: var(--w-muted); margin-bottom: 0.5rem; }
+.wc-cal-events { display: flex; justify-content: center; gap: 0.3rem; }
+.wc-cal-event {
+  padding: 0.15rem 0.5rem;
+  background: rgba(139,92,246,0.18);
+  color: var(--w-accent);
+  border-radius: 999px;
+  font-size: 0.7rem;
+}
+
+/* 5. MUSIC NOW PLAYING */
+.wc-music {
+  width: 100%; max-width: 340px;
+  padding: 1rem;
+  background: linear-gradient(135deg, #1e1b4b, #4c1d95);
+  border-radius: 14px;
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 0.8rem;
+  align-items: center;
+}
+.wc-music-art {
+  width: 64px; height: 64px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
+  position: relative;
+}
+.wc-music-art::after {
+  content: '♫'; position: absolute;
+  bottom: 4px; right: 4px;
+  background: rgba(0,0,0,0.6);
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 0.7rem;
+}
+.wc-music-title { font-weight: 700; font-size: 0.92rem; }
+.wc-music-artist { font-size: 0.78rem; color: rgba(255,255,255,0.7); }
+.wc-music-progress {
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+.wc-music-progress > i {
+  display: block; height: 100%;
+  width: var(--p, 60%);
+  background: #fff;
+}
+.wc-music-controls {
+  display: flex; justify-content: space-between;
+  grid-column: 1 / -1;
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.55);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 6. RECENT ACTIVITY */
+.wc-act {
+  width: 100%; max-width: 320px;
+  padding: 1rem 1.2rem;
+  background: var(--w-bg); border: 1px solid var(--w-line);
+  border-radius: 14px;
+}
+.wc-act h4 { margin: 0 0 0.6rem; font-size: 0.95rem; }
+.wc-act-row { display: grid; grid-template-columns: 8px 1fr; gap: 0.6rem; padding: 0.35rem 0; font-size: 0.82rem; }
+.wc-act-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--w-accent); margin-top: 0.4rem; }
+.wc-act-row.added .wc-act-dot { background: var(--w-good); }
+.wc-act-row.removed .wc-act-dot { background: var(--w-bad); }
+.wc-act-row b { font-weight: 600; }
+.wc-act-row span { color: var(--w-muted); display: block; font-size: 0.74rem; }
+
+/* 7. TOP ARTICLES */
+.wc-arts {
+  width: 100%; max-width: 320px;
+  padding: 1rem 1.2rem;
+  background: var(--w-bg); border: 1px solid var(--w-line);
+  border-radius: 14px;
+}
+.wc-arts h4 { margin: 0 0 0.6rem; font-size: 0.95rem; }
+.wc-arts-row {
+  display: grid; grid-template-columns: 28px 1fr;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--w-line);
+}
+.wc-arts-row:last-child { border-bottom: 0; }
+.wc-arts-rank {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--w-bg-2);
+  display: grid; place-items: center;
+  font-size: 0.78rem; font-weight: 800;
+  color: var(--w-muted);
+  font-variant-numeric: tabular-nums;
+}
+.wc-arts-row:nth-child(1) .wc-arts-rank, .wc-arts-row:nth-child(2) .wc-arts-rank { background: var(--w-accent); color: #fff; }
+.wc-arts-title { font-weight: 500; font-size: 0.85rem; line-height: 1.4; }
+.wc-arts-meta { font-size: 0.72rem; color: var(--w-muted); margin-top: 0.1rem; }
+
+/* 8. STOCK WATCH */
+.wc-stock {
+  width: 100%; max-width: 240px;
+  padding: 1rem 1.2rem;
+  background: var(--w-bg); border: 1px solid var(--w-line);
+  border-radius: 12px;
+}
+.wc-stock-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem; }
+.wc-stock-sym { font-weight: 800; font-size: 1rem; }
+.wc-stock-mkt { font-size: 0.66rem; color: var(--w-muted); }
+.wc-stock-price { font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.wc-stock-delta { font-size: 0.85rem; font-weight: 600; }
+.wc-stock-delta.up { color: var(--w-good); }
+.wc-stock-delta.up::before { content: '↑ '; }
+.wc-stock-delta.down { color: var(--w-bad); }
+.wc-stock-delta.down::before { content: '↓ '; }
+.wc-stock-spark {
+  height: 40px;
+  margin-top: 0.4rem;
+  background: linear-gradient(180deg, rgba(16,185,129,0.3), transparent);
+  clip-path: polygon(0 80%, 12% 60%, 24% 75%, 36% 50%, 48% 60%, 60% 35%, 72% 40%, 84% 20%, 100% 25%, 100% 100%, 0 100%);
+}
+.wc-stock.is-down .wc-stock-spark {
+  background: linear-gradient(180deg, rgba(239,68,68,0.3), transparent);
+  clip-path: polygon(0 20%, 15% 30%, 30% 25%, 45% 50%, 60% 45%, 75% 70%, 100% 85%, 100% 100%, 0 100%);
+}
+
+/* 9. FITNESS RING (small + big number) */
+.wc-fit {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 1rem; align-items: center;
+  padding: 1rem 1.2rem;
+  background: var(--w-bg); border: 1px solid var(--w-line);
+  border-radius: 14px;
+  width: 100%; max-width: 320px;
+}
+.wc-fit-ring {
+  --pct: 70;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: conic-gradient(#10b981 calc(var(--pct) * 1%), rgba(255,255,255,0.08) 0);
+  position: relative;
+  display: grid; place-items: center;
+}
+.wc-fit-ring::before {
+  content: ''; position: absolute; inset: 8px;
+  background: var(--w-bg); border-radius: 50%;
+}
+.wc-fit-ring-num { position: relative; font-weight: 800; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.wc-fit-label { font-size: 0.75rem; color: var(--w-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.wc-fit-val { font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+.wc-fit-goal { font-size: 0.78rem; color: var(--w-muted); }
+
+/* 10. DAY GREETING — Big hello + time */
+.wc-greet {
+  width: 100%; max-width: 380px;
+  padding: 1.4rem 1.6rem;
+  background: linear-gradient(160deg, #1f1f2e, #14141e);
+  border-radius: 16px;
+  border: 1px solid var(--w-line);
+}
+.wc-greet-time {
+  font-size: 0.75rem;
+  color: var(--w-accent);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  font-weight: 700;
+}
+.wc-greet-msg {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0.4rem 0 0.3rem;
+}
+.wc-greet-sub { font-size: 0.88rem; color: var(--w-muted); margin: 0; line-height: 1.5; }
+.wc-greet-stats {
+  display: flex; gap: 1.4rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--w-line);
+  font-size: 0.78rem;
+}
+.wc-greet-stats b { display: block; font-size: 0.95rem; font-weight: 800; }
+.wc-greet-stats span { color: var(--w-muted); }

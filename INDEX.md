@@ -2513,3 +2513,23 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **timeline-pack-2.css** `components/timeline-pack-2.css` (CSS) — tags: timeline-pack-2 alternating left-right horizontal-strip year-grouped activity-feed chunky-dots with-avatars
   6 timeline variants: alternating (left/right with center line), horizontal-strip (top progress w/ stops), year-grouped (h3 sections + vertical line list), activity-feed (avatar + action text), chunky-dots (big colored dots), with-avatars (profile + event rows).
+
+**Phase 27 — Widget dashboards + landing templates (6 files, ~46 patterns)**
+
+**widget-cards-pack.css** `components/widget-cards-pack.css` (CSS) — tags: widget-cards-pack weather todo-progress sport-score calendar-mini music-now-playing recent-activity top-articles stock-watch fitness-ring day-greeting
+  10 homepage/dashboard widgets: weather (current + forecast), todo-progress (bar + tickable list), sport-score (live match), calendar-mini (big day), music-now-playing (album + waveform), recent-activity (dotted log), top-articles (numbered ranks), stock-watch (sparkline + delta), fitness-ring (conic + label), day-greeting (time + msg + stats).
+
+**dashboard-grids.css** `layout/dashboard-grids.css` (CSS) — tags: dashboard-grids classic-4col sidebar-main holy-grail masonry-flex bento-dashboard stats-row-charts grid-areas
+  6 dashboard layout templates: classic-4col (4 KPIs + main + side), sidebar-main, holy-grail (header/side/main/aside/foot), masonry-flex (auto-fit), bento-dashboard (asymmetric w/ size variants), stats-row + charts.
+
+**landing-sections.css** `layout/landing-sections.css` (CSS) — tags: landing-sections alt-content three-feature-cols big-image-split testimonials-trio logos-strip faq-section footer-cta-band demo-video-section eyebrow
+  8 landing-page section templates: alt-content (alternating rows), three-feature-cols, big-image-split, testimonials-trio, logos-strip ("trusted by"), faq-section (sticky title + details), footer-cta-band (gradient bg + huge CTA), demo-video-section (browser frame mockup).
+
+**quote-blocks.css** `typography/quote-blocks.css` (CSS) — tags: quote-blocks classic-bar big-marks pull-quote testimonial-frame inline-quote gradient-card scroll-attention twitter-style
+  8 quote styles: classic-bar (left border + italic), big-marks (huge " around), pull-quote (top/bottom border + bold), testimonial-frame (card + stars + avatar), inline-quote (highlighted span), gradient-card (full gradient bg + big "), scroll-attention (growing underline), twitter-style (X-post layout).
+
+**announcement-bars.css** `components/announcement-bars.css` (CSS) — tags: announcement-bars gradient-strip sale-strip beta-strip marquee-strip dismissible cta-pill multi-link status-bar pulse
+  8 bar variants: gradient-strip (purple/pink), sale-strip (red + dashed coupon code), beta-strip (BETA tag + amber), marquee-strip (scrolling), dismissible (msg + CTA + ×), cta-with-pill (NEW pill + link arrow), multi-link (joined navlinks), status-bar (live pulse + warn/bad).
+
+**share-cards.css** `components/share-cards.css` (CSS) — tags: share-cards open-graph og-rich og-compact twitter-summary twitter-large slack-unfurl discord-embed link-preview
+  6 link/share preview cards: og-rich (image + body), og-compact (horizontal), twitter-summary (small square), twitter-large (big image), slack-unfurl (vertical bar + title + meta), discord-embed (accent bar + fields + thumb + footer).

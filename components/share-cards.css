@@ -1,0 +1,174 @@
+/* ============================================
+   SHARE CARDS — 6 link/share preview card variants
+   og-rich, og-compact, twitter-summary, twitter-large, slack-unfurl, discord-embed
+   ============================================ */
+
+:where(.sh) {
+  --s-bg: #1e1e1e;
+  --s-fg: #f5f5fa;
+  --s-muted: rgba(245, 245, 250, 0.55);
+  --s-line: rgba(255, 255, 255, 0.08);
+  --s-accent: #8b5cf6;
+  font-family: inherit;
+}
+
+/* 1. OG RICH — Standard Open Graph card */
+.sh-og {
+  width: 100%; max-width: 540px;
+  background: #1e1f23;
+  border: 1px solid var(--s-line);
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.sh-og-img {
+  height: 280px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.sh-og-body { padding: 1rem 1.2rem; }
+.sh-og-host { font-size: 0.74rem; color: var(--s-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+.sh-og-title { font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0; line-height: 1.35; }
+.sh-og-desc { color: var(--s-muted); font-size: 0.85rem; line-height: 1.5; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* 2. OG COMPACT — Horizontal layout */
+.sh-og-c {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  width: 100%; max-width: 540px;
+  background: #1e1f23;
+  border: 1px solid var(--s-line);
+  border-radius: 10px;
+  overflow: hidden;
+  text-decoration: none; color: inherit;
+}
+.sh-og-c-img {
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+}
+.sh-og-c-body { padding: 0.7rem 1rem; }
+.sh-og-c-host { font-size: 0.7rem; color: var(--s-muted); }
+.sh-og-c-title { font-weight: 700; font-size: 0.92rem; margin: 0.2rem 0; line-height: 1.35; }
+.sh-og-c-desc { font-size: 0.78rem; color: var(--s-muted); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* 3. TWITTER SUMMARY — Small square */
+.sh-tw-sm {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  border: 1px solid var(--s-line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #16181c;
+  max-width: 540px;
+  text-decoration: none; color: inherit;
+}
+.sh-tw-sm-img {
+  background: linear-gradient(135deg, #1d9bf0, #6366f1);
+}
+.sh-tw-sm-body { padding: 0.8rem 1rem; }
+.sh-tw-sm-host { font-size: 0.78rem; color: #71767b; }
+.sh-tw-sm-title { font-weight: 400; font-size: 0.92rem; margin: 0.2rem 0; color: #e7e9ea; }
+.sh-tw-sm-desc { font-size: 0.78rem; color: #71767b; }
+
+/* 4. TWITTER LARGE — Big image card */
+.sh-tw-lg {
+  border: 1px solid #2f3336;
+  border-radius: 16px;
+  overflow: hidden;
+  max-width: 540px;
+  background: #16181c;
+  text-decoration: none; color: inherit;
+  display: block;
+}
+.sh-tw-lg-img {
+  height: 270px;
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
+}
+.sh-tw-lg-body {
+  padding: 0.8rem 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 1px solid #2f3336;
+}
+.sh-tw-lg-host { font-size: 0.78rem; color: #71767b; }
+.sh-tw-lg-title { color: #e7e9ea; font-size: 0.92rem; margin: 0.2rem 0 0; }
+
+/* 5. SLACK UNFURL — Slack-style link unfurl */
+.sh-slack {
+  display: grid;
+  grid-template-columns: 4px 1fr;
+  gap: 0.8rem;
+  padding: 0.5rem 0;
+  max-width: 540px;
+}
+.sh-slack-bar {
+  background: var(--s-accent);
+  border-radius: 4px;
+}
+.sh-slack-body { padding: 0.4rem 0; }
+.sh-slack-from {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.78rem; color: var(--s-muted);
+  margin-bottom: 0.3rem;
+}
+.sh-slack-from-icon {
+  width: 16px; height: 16px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.sh-slack-title {
+  font-weight: 700; color: var(--s-accent);
+  font-size: 0.95rem;
+  margin: 0 0 0.2rem;
+}
+.sh-slack-desc { font-size: 0.85rem; color: var(--s-fg); line-height: 1.45; }
+.sh-slack-meta {
+  display: flex; gap: 0.7rem;
+  font-size: 0.72rem; color: var(--s-muted);
+  margin-top: 0.4rem;
+}
+.sh-slack-img {
+  width: 280px;
+  height: 140px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+  margin-top: 0.4rem;
+}
+
+/* 6. DISCORD EMBED — Discord-style embed */
+.sh-discord {
+  display: grid;
+  grid-template-columns: 4px 1fr 100px;
+  gap: 0.7rem;
+  background: #2b2d31;
+  border-radius: 4px;
+  max-width: 480px;
+}
+.sh-discord-bar { background: var(--s-accent); border-radius: 4px 0 0 4px; }
+.sh-discord-body { padding: 0.7rem 0; min-width: 0; }
+.sh-discord-author { font-size: 0.78rem; color: #b5bac1; margin-bottom: 0.3rem; }
+.sh-discord-title { color: #00a8fc; font-weight: 600; font-size: 0.92rem; margin: 0 0 0.3rem; text-decoration: none; display: block; }
+.sh-discord-title:hover { text-decoration: underline; }
+.sh-discord-desc { color: #dbdee1; font-size: 0.82rem; line-height: 1.4; margin: 0; }
+.sh-discord-fields {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+.sh-discord-field-name { font-size: 0.75rem; color: #fff; font-weight: 600; }
+.sh-discord-field-val { font-size: 0.74rem; color: #b5bac1; }
+.sh-discord-thumb {
+  width: 80px; height: 80px;
+  margin: 0.7rem 0.7rem 0.7rem 0;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #5865f2, #ec4899);
+}
+.sh-discord-foot {
+  grid-column: 1 / -1;
+  display: flex; gap: 0.4rem; align-items: center;
+  padding: 0 0.7rem 0.7rem 1.1rem;
+  font-size: 0.72rem;
+  color: #b5bac1;
+}
+.sh-discord-foot-icon {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: linear-gradient(135deg, #5865f2, #ec4899);
+}

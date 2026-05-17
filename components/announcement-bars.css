@@ -1,0 +1,174 @@
+/* ============================================
+   ANNOUNCEMENT BARS — 8 announcement bar variants
+   gradient-strip, sale-strip, beta-strip, marquee-strip,
+   dismissible-strip, cta-with-pill, multi-link, status-bar
+   ============================================ */
+
+:where(.an) {
+  --a-fg: #fff;
+  --a-accent: #8b5cf6;
+  font-family: inherit;
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.85rem;
+  position: relative;
+  font-weight: 500;
+}
+
+/* 1. GRADIENT STRIP */
+.an-grad {
+  background: linear-gradient(90deg, #8b5cf6, #ec4899);
+  color: var(--a-fg);
+  justify-content: center;
+}
+.an-grad a {
+  color: #fff; text-decoration: underline; font-weight: 700;
+}
+
+/* 2. SALE STRIP — Discount banner */
+.an-sale {
+  background: #ef4444; color: #fff;
+  justify-content: center;
+}
+.an-sale-tag {
+  padding: 0.1rem 0.4rem;
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  font-size: 0.7rem; font-weight: 800;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.an-sale-code {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.1rem 0.5rem;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px dashed rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  font-family: ui-monospace, monospace;
+  font-weight: 700;
+}
+
+/* 3. BETA STRIP — Beta notice */
+.an-beta {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+  justify-content: center;
+}
+.an-beta::before {
+  content: 'BETA';
+  padding: 0.1rem 0.4rem;
+  background: #f59e0b; color: #14141e;
+  border-radius: 4px;
+  font-size: 0.65rem; font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+/* 4. MARQUEE STRIP — Scrolling banner */
+.an-marq {
+  background: var(--a-accent); color: #fff;
+  overflow: hidden;
+  display: block;
+  padding: 0.55rem 0;
+}
+.an-marq-track {
+  display: inline-block;
+  white-space: nowrap;
+  animation: an-marq 24s linear infinite;
+  font-weight: 700;
+}
+.an-marq-track > span {
+  margin: 0 1.4rem;
+}
+@keyframes an-marq {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* 5. DISMISSIBLE STRIP */
+.an-dis {
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: #f5f5fa;
+}
+.an-dis-msg { flex: 1 1 auto; }
+.an-dis-cta {
+  appearance: none; border: 0;
+  padding: 0.3rem 0.7rem;
+  background: var(--a-accent); color: #fff;
+  border-radius: 6px;
+  font: inherit; font-weight: 600; font-size: 0.78rem;
+  cursor: pointer;
+}
+.an-dis-x {
+  appearance: none; border: 0;
+  width: 24px; height: 24px;
+  background: transparent;
+  color: inherit; opacity: 0.6;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.an-dis-x:hover { opacity: 1; background: rgba(255,255,255,0.06); }
+
+/* 6. CTA WITH PILL — Featured pill + message + arrow */
+.an-cta {
+  background: rgba(255, 255, 255, 0.04);
+  color: #f5f5fa;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  justify-content: center;
+}
+.an-cta-pill {
+  padding: 0.15rem 0.6rem;
+  background: var(--a-accent); color: #fff;
+  border-radius: 999px;
+  font-size: 0.7rem; font-weight: 800;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.an-cta a {
+  color: var(--a-accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+.an-cta a::after { content: ' →'; }
+
+/* 7. MULTI LINK — Multiple links in bar */
+.an-multi {
+  background: #0a0a14; color: rgba(255,255,255,0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  justify-content: center;
+}
+.an-multi a {
+  color: #fff; text-decoration: none;
+  padding: 0 0.6rem;
+  border-left: 1px solid rgba(255,255,255,0.15);
+  font-weight: 500;
+}
+.an-multi a:first-child { border-left: 0; }
+.an-multi a:hover { color: var(--a-accent); }
+
+/* 8. STATUS BAR — Service status */
+.an-status {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.25);
+  justify-content: center;
+}
+.an-status::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 0 currentColor;
+  animation: an-pulse 1.6s ease-out infinite;
+}
+@keyframes an-pulse {
+  0% { box-shadow: 0 0 0 0 currentColor; }
+  100% { box-shadow: 0 0 0 6px transparent; }
+}
+.an-status.is-warn { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border-bottom-color: rgba(245, 158, 11, 0.3); }
+.an-status.is-bad { background: rgba(239, 68, 68, 0.12); color: #ef4444; border-bottom-color: rgba(239, 68, 68, 0.3); }
+.an-status.is-bad::before { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .an-marq-track, .an-status::before { animation: none; }
+}
