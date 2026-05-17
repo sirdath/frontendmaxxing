@@ -2533,3 +2533,20 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **share-cards.css** `components/share-cards.css` (CSS) — tags: share-cards open-graph og-rich og-compact twitter-summary twitter-large slack-unfurl discord-embed link-preview
   6 link/share preview cards: og-rich (image + body), og-compact (horizontal), twitter-summary (small square), twitter-large (big image), slack-unfurl (vertical bar + title + meta), discord-embed (accent bar + fields + thumb + footer).
+
+**Phase 28 — Admin/app UI: settings / billing / team / api-keys / permissions (5 files, ~38 patterns)**
+
+**settings-pack.css** `components/settings-pack.css` (CSS) — tags: settings-pack profile-edit notification-prefs integration-list appearance-picker language-region danger-zone two-factor sessions-list theme switch
+  8 settings patterns: profile-edit (avatar + 2-col fields), notification-prefs (channel × event grid w/ checkboxes), integration-list (logo + name + toggle), appearance-picker (light/dark/system), language-region (select rows), danger-zone (red border + actions), 2FA setup (method list), sessions-list (current + revoke).
+
+**billing-pack.css** `components/billing-pack.css` (CSS) — tags: billing-pack invoice-card payment-method plan-upgrade usage-meter receipt-modal credit-balance refund-row addon-toggle stripe
+  8 billing UI patterns: invoice-card (paid/due/failed status + download), payment-method-row (Visa style card mockup), plan-upgrade-card (gradient w/ feats + CTA), usage-meter (gradient bar + warn states), receipt-modal (animated tick), credit-balance (gold gradient), refund-row (red w/ negative amount), addon-toggle.
+
+**team-org-pack.css** `components/team-org-pack.css` (CSS) — tags: team-org-pack member-row invite-flow role-badge owner admin member viewer billing guest pending-invite org-switcher transfer-ownership audit-trail workspace-card
+  8 team/org patterns: member-row, invite-flow (email + role select + send + copy link), role-badge-set (owner/admin/member/viewer/billing/guest), pending-invite-row (amber + revoke), org-switcher (current + plan + new), transfer-ownership (red + warning), audit-trail-mini, workspace-card.
+
+**api-keys-pack.css** `components/api-keys-pack.css` (CSS) — tags: api-keys-pack developer-portal api-key-row masked scope-picker webhook-row signing-secret reveal rate-limit-meter sandbox-toggle request-log generate-modal stripe-style
+  8 dev-portal patterns: api-key-row (masked + copy + revoke + last used), scope-picker grid, webhook-row (URL + events + status), signing-secret (blur reveal), rate-limit-meter (good/warn/bad), sandbox-toggle (yellow indicator), request-log-row (method + path + code + time), generate-key-modal w/ warn.
+
+**permissions-pack.css** `components/permissions-pack.css` (CSS) — tags: permissions-pack permission-matrix role-card scope-tree indeterminate role-picker-dropdown permission-toggle role-comparison
+  6 permission UI patterns: permission-matrix (resource × action w/ section dividers), role-card (perms list), scope-tree (nested w/ indeterminate state), role-picker-dropdown (with description), permission-inline-toggle (mono-name + desc), role-comparison (side-by-side).

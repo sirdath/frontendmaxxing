@@ -1,0 +1,298 @@
+/* ============================================
+   BILLING PACK — 8 billing UI patterns
+   invoice-card, payment-method-row, plan-upgrade-card, usage-meter,
+   receipt-modal, credit-balance, refund-row, addon-toggle
+   ============================================ */
+
+:where(.bl) {
+  --b-bg: #14141e;
+  --b-bg-2: #1f1f2e;
+  --b-fg: #f5f5fa;
+  --b-muted: rgba(245, 245, 250, 0.55);
+  --b-line: rgba(255, 255, 255, 0.08);
+  --b-accent: #8b5cf6;
+  --b-good: #10b981;
+  --b-warn: #f59e0b;
+  --b-bad: #ef4444;
+  color: var(--b-fg);
+  font-family: inherit;
+}
+
+/* 1. INVOICE CARD — Past invoice row */
+.bl-inv {
+  display: grid;
+  grid-template-columns: 32px 1fr auto auto auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  background: var(--b-bg);
+  border: 1px solid var(--b-line);
+  border-radius: 10px;
+  max-width: 720px;
+}
+.bl-inv-ic {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  background: rgba(139,92,246,0.15);
+  color: var(--b-accent);
+  display: grid; place-items: center;
+  font-size: 0.85rem;
+}
+.bl-inv-name { font-weight: 600; font-size: 0.92rem; }
+.bl-inv-date { font-size: 0.74rem; color: var(--b-muted); }
+.bl-inv-status {
+  padding: 0.15rem 0.55rem;
+  background: rgba(16,185,129,0.15); color: var(--b-good);
+  border-radius: 4px;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.bl-inv-status.due { background: rgba(245,158,11,0.15); color: var(--b-warn); }
+.bl-inv-status.failed { background: rgba(239,68,68,0.15); color: var(--b-bad); }
+.bl-inv-amt { font-weight: 700; font-variant-numeric: tabular-nums; }
+.bl-inv-dl {
+  appearance: none; border: 0;
+  width: 32px; height: 32px;
+  background: transparent;
+  color: var(--b-muted);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.bl-inv-dl:hover { background: rgba(255,255,255,0.05); color: var(--b-fg); }
+
+/* 2. PAYMENT METHOD ROW */
+.bl-pm {
+  display: grid;
+  grid-template-columns: 44px 1fr auto auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  background: var(--b-bg);
+  border: 1px solid var(--b-line);
+  border-radius: 10px;
+  max-width: 540px;
+}
+.bl-pm-card {
+  width: 44px; height: 30px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+  position: relative;
+}
+.bl-pm-card::after {
+  content: 'VISA';
+  position: absolute;
+  bottom: 4px; right: 5px;
+  font-size: 0.55rem; font-weight: 800;
+  color: rgba(255,255,255,0.8);
+  font-family: ui-monospace, monospace;
+  letter-spacing: 0.04em;
+}
+.bl-pm-name { font-size: 0.88rem; font-weight: 600; font-family: ui-monospace, monospace; }
+.bl-pm-exp { font-size: 0.74rem; color: var(--b-muted); }
+.bl-pm-default {
+  padding: 0.15rem 0.4rem;
+  background: rgba(139,92,246,0.15);
+  color: var(--b-accent);
+  border-radius: 4px;
+  font-size: 0.66rem; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.bl-pm-x {
+  appearance: none; border: 0;
+  width: 28px; height: 28px;
+  background: transparent;
+  color: var(--b-muted);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* 3. PLAN UPGRADE CARD */
+.bl-plan {
+  width: 100%; max-width: 480px;
+  padding: 1.4rem 1.6rem;
+  background: linear-gradient(160deg, rgba(139,92,246,0.18), rgba(236,72,153,0.08));
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 16px;
+}
+.bl-plan-name {
+  font-weight: 800; font-size: 1rem;
+  background: linear-gradient(135deg, #c4b5fd, #f9a8d4);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.bl-plan-price {
+  font-size: 2.4rem; font-weight: 900;
+  letter-spacing: -0.03em;
+  margin: 0.3rem 0;
+  font-variant-numeric: tabular-nums;
+}
+.bl-plan-price small { font-size: 0.78rem; color: var(--b-muted); font-weight: 500; margin-left: 0.3em; }
+.bl-plan-feats { list-style: none; margin: 1rem 0; padding: 0; }
+.bl-plan-feats li { padding: 0.3rem 0 0.3rem 1.4rem; position: relative; font-size: 0.88rem; }
+.bl-plan-feats li::before {
+  content: '✓';
+  position: absolute; left: 0; top: 0.3rem;
+  width: 18px; height: 18px;
+  background: var(--b-accent); color: #fff;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 0.65rem; font-weight: 800;
+}
+.bl-plan-cta {
+  appearance: none; border: 0; width: 100%;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, var(--b-accent), #ec4899);
+  color: #fff;
+  border-radius: 10px;
+  font: inherit; font-weight: 700; font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* 4. USAGE METER */
+.bl-use {
+  width: 100%; max-width: 380px;
+  padding: 1rem 1.2rem;
+  background: var(--b-bg);
+  border: 1px solid var(--b-line);
+  border-radius: 12px;
+}
+.bl-use-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+.bl-use-label { font-size: 0.85rem; }
+.bl-use-pct { font-size: 0.78rem; color: var(--b-muted); font-variant-numeric: tabular-nums; }
+.bl-use-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.bl-use-bar > i {
+  display: block; height: 100%;
+  width: var(--p, 60%);
+  background: linear-gradient(90deg, var(--b-accent), #ec4899);
+  border-radius: inherit;
+  transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.bl-use.is-warn .bl-use-bar > i { background: var(--b-warn); }
+.bl-use.is-bad .bl-use-bar > i { background: var(--b-bad); }
+.bl-use-foot {
+  display: flex; justify-content: space-between;
+  font-size: 0.74rem;
+  color: var(--b-muted);
+  margin-top: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 5. RECEIPT MODAL (compact card) */
+.bl-rec {
+  width: 100%; max-width: 380px;
+  padding: 1.4rem 1.6rem;
+  background: var(--b-bg);
+  border: 1px solid var(--b-line);
+  border-radius: 16px;
+  text-align: center;
+}
+.bl-rec-ic {
+  width: 56px; height: 56px;
+  margin: 0 auto 0.8rem;
+  border-radius: 50%;
+  background: var(--b-good); color: #fff;
+  display: grid; place-items: center;
+  font-size: 1.6rem;
+}
+.bl-rec-ic::before { content: '✓'; font-weight: 800; }
+.bl-rec-amt {
+  font-size: 2rem; font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.bl-rec-meta { font-size: 0.85rem; color: var(--b-muted); margin-bottom: 1rem; }
+.bl-rec-rows {
+  display: grid; gap: 0.3rem;
+  font-size: 0.82rem;
+  text-align: left;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--b-line);
+}
+.bl-rec-rows .row { display: flex; justify-content: space-between; }
+.bl-rec-rows span { color: var(--b-muted); }
+
+/* 6. CREDIT BALANCE */
+.bl-credit {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.4rem;
+  background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04));
+  border: 1px solid rgba(245,158,11,0.25);
+  border-radius: 14px;
+  max-width: 360px;
+}
+.bl-credit-ic {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  display: grid; place-items: center;
+  color: #422006; font-size: 1.4rem;
+}
+.bl-credit-amt {
+  font-size: 1.4rem; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.bl-credit-label { font-size: 0.78rem; color: var(--b-muted); }
+
+/* 7. REFUND ROW */
+.bl-refund {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.7rem 0.9rem;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 8px;
+  max-width: 480px;
+}
+.bl-refund-ic {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(239,68,68,0.18);
+  color: var(--b-bad);
+  display: grid; place-items: center;
+  font-size: 0.85rem;
+}
+.bl-refund-ic::before { content: '↺'; font-weight: 800; }
+.bl-refund-info b { font-weight: 600; font-size: 0.88rem; }
+.bl-refund-info span { font-size: 0.74rem; color: var(--b-muted); display: block; }
+.bl-refund-amt { color: var(--b-bad); font-weight: 700; font-variant-numeric: tabular-nums; }
+.bl-refund-amt::before { content: '−'; }
+
+/* 8. ADDON TOGGLE — Optional add-on with price */
+.bl-addon {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.7rem; align-items: center;
+  padding: 0.9rem 1.1rem;
+  background: var(--b-bg);
+  border: 1.5px solid var(--b-line);
+  border-radius: 10px;
+  max-width: 480px;
+}
+.bl-addon.is-on { border-color: var(--b-accent); background: rgba(139,92,246,0.05); }
+.bl-addon-name { font-weight: 600; font-size: 0.92rem; }
+.bl-addon-desc { font-size: 0.78rem; color: var(--b-muted); margin-top: 0.1rem; }
+.bl-addon-price { font-weight: 700; font-variant-numeric: tabular-nums; }
+.bl-addon-price span { font-size: 0.74rem; color: var(--b-muted); font-weight: 500; }
+.bl-addon-toggle {
+  appearance: none; border: 0;
+  width: 42px; height: 24px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  cursor: pointer; position: relative;
+  transition: background 0.2s ease;
+}
+.bl-addon-toggle::before {
+  content: ''; position: absolute;
+  top: 2px; left: 2px;
+  width: 20px; height: 20px;
+  border-radius: 50%; background: #fff;
+  transition: transform 0.2s ease;
+}
+.bl-addon.is-on .bl-addon-toggle { background: var(--b-accent); }
+.bl-addon.is-on .bl-addon-toggle::before { transform: translateX(18px); }

@@ -1,0 +1,301 @@
+/* ============================================
+   TEAM ORG PACK — 8 team/org management patterns
+   member-row, invite-flow, role-badge-set, pending-invite-row,
+   org-switcher, transfer-ownership, audit-trail-mini, workspace-card
+   ============================================ */
+
+:where(.to) {
+  --t-bg: #14141e;
+  --t-bg-2: #1f1f2e;
+  --t-fg: #f5f5fa;
+  --t-muted: rgba(245, 245, 250, 0.55);
+  --t-line: rgba(255, 255, 255, 0.08);
+  --t-accent: #8b5cf6;
+  --t-good: #10b981;
+  --t-warn: #f59e0b;
+  --t-bad: #ef4444;
+  color: var(--t-fg);
+  font-family: inherit;
+}
+
+/* 1. MEMBER ROW */
+.to-member {
+  display: grid;
+  grid-template-columns: 40px 1fr auto auto auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 10px;
+  max-width: 720px;
+}
+.to-member-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.to-member-name { font-weight: 600; font-size: 0.92rem; }
+.to-member-email { font-size: 0.74rem; color: var(--t-muted); }
+.to-member-last { font-size: 0.74rem; color: var(--t-muted); }
+.to-member-role {
+  padding: 0.2rem 0.55rem;
+  background: var(--t-bg-2);
+  border: 1px solid var(--t-line);
+  border-radius: 6px;
+  font: inherit; font-size: 0.78rem; font-weight: 600;
+  color: var(--t-fg);
+  cursor: pointer;
+}
+.to-member-more {
+  appearance: none; border: 0;
+  width: 28px; height: 28px;
+  background: transparent;
+  color: var(--t-muted);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 2. INVITE FLOW */
+.to-invite {
+  width: 100%; max-width: 480px;
+  padding: 1rem 1.2rem;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 12px;
+}
+.to-invite-input {
+  display: flex; gap: 0.4rem;
+  margin-bottom: 0.7rem;
+}
+.to-invite-input input {
+  flex: 1;
+  background: var(--t-bg-2);
+  border: 1px solid var(--t-line);
+  color: var(--t-fg);
+  padding: 0.55rem 0.9rem;
+  border-radius: 8px;
+  font: inherit; font-size: 0.88rem;
+  outline: 0;
+}
+.to-invite-input select {
+  background: var(--t-bg-2);
+  border: 1px solid var(--t-line);
+  color: var(--t-fg);
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  font: inherit; font-size: 0.85rem;
+  cursor: pointer;
+}
+.to-invite-send {
+  appearance: none; border: 0;
+  padding: 0.55rem 1rem;
+  background: var(--t-accent); color: #fff;
+  border-radius: 8px;
+  font: inherit; font-weight: 600;
+  cursor: pointer;
+}
+.to-invite-link {
+  display: flex; gap: 0.4rem;
+  padding: 0.55rem 0.9rem;
+  background: var(--t-bg-2);
+  border: 1px dashed var(--t-line);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-family: ui-monospace, monospace;
+  color: var(--t-muted);
+}
+.to-invite-link input {
+  flex: 1; background: transparent; border: 0; outline: 0;
+  color: var(--t-muted);
+  font: inherit;
+}
+.to-invite-link button {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--t-accent);
+  font: inherit; font-weight: 700; font-size: 0.78rem;
+  cursor: pointer;
+}
+
+/* 3. ROLE BADGE SET */
+.to-role {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.to-role.owner    { background: rgba(245,158,11,0.18); color: var(--t-warn); }
+.to-role.admin    { background: rgba(139,92,246,0.18); color: var(--t-accent); }
+.to-role.member   { background: rgba(6,182,212,0.18); color: #06b6d4; }
+.to-role.viewer   { background: rgba(245,245,250,0.08); color: var(--t-muted); }
+.to-role.billing  { background: rgba(16,185,129,0.18); color: var(--t-good); }
+.to-role.guest    { background: rgba(245,245,250,0.04); color: var(--t-muted); border: 1px dashed var(--t-line); }
+
+/* 4. PENDING INVITE ROW */
+.to-pending {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  background: rgba(245,158,11,0.06);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 8px;
+  max-width: 540px;
+}
+.to-pending-ic {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(245,158,11,0.18);
+  color: var(--t-warn);
+  display: grid; place-items: center;
+  font-size: 0.85rem;
+}
+.to-pending-ic::before { content: '✉'; }
+.to-pending-email { font-weight: 500; font-size: 0.88rem; font-family: ui-monospace, monospace; }
+.to-pending-meta { font-size: 0.74rem; color: var(--t-muted); }
+.to-pending-actions { display: flex; gap: 0.3rem; }
+.to-pending-actions button {
+  appearance: none; border: 1px solid var(--t-line);
+  background: transparent;
+  color: var(--t-fg);
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font: inherit; font-size: 0.74rem; font-weight: 600;
+  cursor: pointer;
+}
+.to-pending-actions .revoke { color: var(--t-bad); border-color: rgba(239,68,68,0.3); }
+
+/* 5. ORG SWITCHER */
+.to-switcher {
+  width: 280px;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 10px;
+  padding: 0.3rem;
+  box-shadow: 0 12px 28px -8px rgba(0,0,0,0.4);
+}
+.to-switcher-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.to-switcher-row:hover { background: rgba(255,255,255,0.04); }
+.to-switcher-row.is-current { background: rgba(139,92,246,0.15); }
+.to-switcher-ic {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.to-switcher-name { font-weight: 600; font-size: 0.88rem; }
+.to-switcher-plan { font-size: 0.7rem; color: var(--t-muted); }
+.to-switcher-row.is-current::after { content: '✓'; color: var(--t-accent); font-weight: 700; }
+.to-switcher-divider { height: 1px; background: var(--t-line); margin: 0.3rem; }
+.to-switcher-new {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  color: var(--t-accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.to-switcher-new::before { content: '+'; font-size: 1.2rem; line-height: 1; }
+
+/* 6. TRANSFER OWNERSHIP */
+.to-transfer {
+  width: 100%; max-width: 460px;
+  padding: 1.4rem 1.6rem;
+  background: rgba(239,68,68,0.06);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 14px;
+}
+.to-transfer h3 { color: var(--t-bad); margin: 0 0 0.5rem; font-size: 1rem; }
+.to-transfer p { font-size: 0.85rem; color: var(--t-muted); margin: 0 0 1rem; line-height: 1.55; }
+.to-transfer-pick {
+  width: 100%; box-sizing: border-box;
+  background: var(--t-bg-2);
+  border: 1px solid var(--t-line);
+  color: var(--t-fg);
+  padding: 0.55rem 0.9rem;
+  border-radius: 8px;
+  font: inherit;
+  outline: 0;
+  margin-bottom: 0.8rem;
+}
+.to-transfer-warn {
+  font-size: 0.78rem;
+  color: var(--t-bad);
+  padding: 0.4rem 0.7rem;
+  background: rgba(239,68,68,0.08);
+  border-radius: 6px;
+  margin-bottom: 0.8rem;
+}
+.to-transfer-warn::before { content: '⚠ '; }
+.to-transfer-cta {
+  appearance: none; border: 0;
+  background: var(--t-bad); color: #fff;
+  padding: 0.55rem 1.2rem;
+  border-radius: 8px;
+  font: inherit; font-weight: 700; font-size: 0.88rem;
+  cursor: pointer;
+}
+
+/* 7. AUDIT TRAIL MINI */
+.to-audit {
+  display: grid; gap: 0.4rem;
+  max-width: 540px;
+}
+.to-audit-row {
+  display: grid;
+  grid-template-columns: 28px 80px 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.5rem 0.8rem;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 8px;
+  font-size: 0.82rem;
+}
+.to-audit-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+}
+.to-audit-actor { font-weight: 600; }
+.to-audit-event { color: var(--t-muted); }
+.to-audit-event b { color: var(--t-fg); font-weight: 500; }
+.to-audit-when { font-size: 0.7rem; color: var(--t-muted); font-variant-numeric: tabular-nums; }
+
+/* 8. WORKSPACE CARD */
+.to-ws {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 0.8rem;
+  padding: 1rem 1.2rem;
+  background: var(--t-bg);
+  border: 1px solid var(--t-line);
+  border-radius: 12px;
+  width: 100%; max-width: 360px;
+}
+.to-ws-ic {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+}
+.to-ws-name { font-weight: 700; font-size: 0.98rem; }
+.to-ws-meta { font-size: 0.78rem; color: var(--t-muted); }
+.to-ws-stats {
+  display: flex; gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.72rem;
+}
+.to-ws-stats b { display: block; font-size: 0.92rem; font-weight: 700; }
+.to-ws-stats span { color: var(--t-muted); }
