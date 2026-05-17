@@ -1,0 +1,204 @@
+/* ============================================
+   RATINGS PACK — 6 review/rating patterns
+   star-rating-1-5, star-rating-1-10, rating-distribution, review-card,
+   thumbs-rating, nps-scale
+   ============================================ */
+
+:where(.rp-stars, .rp-tens, .rp-dist, .rp-rev, .rp-tum, .rp-nps) {
+  --r-bg: #14141e;
+  --r-bg-2: #1f1f2e;
+  --r-fg: #f5f5fa;
+  --r-muted: rgba(245, 245, 250, 0.55);
+  --r-line: rgba(255, 255, 255, 0.08);
+  --r-accent: #8b5cf6;
+  --r-good: #10b981;
+  --r-bad: #ef4444;
+  --r-amber: #fbbf24;
+  color: var(--r-fg);
+  font-family: inherit;
+}
+
+/* 1. STAR RATING 1-5 */
+.rp-stars {
+  display: inline-flex; align-items: center; gap: 0.2rem;
+}
+.rp-stars button {
+  appearance: none; border: 0;
+  background: transparent;
+  color: rgba(255,255,255,0.15);
+  width: 28px; height: 28px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  display: grid; place-items: center;
+  padding: 0;
+}
+.rp-stars button.is-filled { color: var(--r-amber); }
+.rp-stars button:hover { transform: scale(1.15); }
+.rp-stars button:hover ~ button.is-filled { color: rgba(255,255,255,0.15); }
+.rp-stars .rp-stars-val {
+  margin-left: 0.4rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.rp-stars-readonly { pointer-events: none; }
+.rp-stars-sm button { width: 20px; height: 20px; font-size: 1rem; }
+.rp-stars-lg button { width: 36px; height: 36px; font-size: 1.8rem; }
+
+/* 2. RATING 1-10 — Number row */
+.rp-tens {
+  display: inline-flex; gap: 0.25rem;
+}
+.rp-tens-opt {
+  appearance: none; border: 1px solid var(--r-line);
+  background: transparent;
+  color: var(--r-fg);
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  font: inherit; font-weight: 600; font-size: 0.82rem;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.rp-tens-opt:hover { background: rgba(255,255,255,0.04); }
+.rp-tens-opt.is-picked, .rp-tens-opt:hover.is-picked {
+  background: var(--r-accent); color: #fff; border-color: var(--r-accent);
+}
+
+/* 3. RATING DISTRIBUTION — Histogram */
+.rp-dist {
+  display: grid; gap: 0.3rem;
+  width: 100%; max-width: 380px;
+}
+.rp-dist-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 50px;
+  gap: 0.6rem;
+  align-items: center;
+  font-size: 0.78rem;
+}
+.rp-dist-label {
+  color: var(--r-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.rp-dist-label::after { content: '★'; color: var(--r-amber); margin-left: 0.2rem; }
+.rp-dist-bar {
+  height: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.rp-dist-bar > i {
+  display: block; height: 100%;
+  width: var(--p, 50%);
+  background: var(--r-amber);
+  border-radius: inherit;
+  transition: width 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.rp-dist-count {
+  color: var(--r-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 4. REVIEW CARD */
+.rp-rev {
+  width: 100%; max-width: 460px;
+  padding: 1.2rem 1.4rem;
+  background: var(--r-bg);
+  border: 1px solid var(--r-line);
+  border-radius: 14px;
+}
+.rp-rev-head {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 0.7rem;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+.rp-rev-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.rp-rev-name { font-weight: 700; font-size: 0.92rem; }
+.rp-rev-meta { font-size: 0.74rem; color: var(--r-muted); }
+.rp-rev-verified::before { content: '✓ '; color: var(--r-good); }
+.rp-rev-stars { display: inline-flex; gap: 0.1rem; color: var(--r-amber); font-size: 0.95rem; }
+.rp-rev-title { font-weight: 700; font-size: 0.95rem; margin: 0.3rem 0; }
+.rp-rev-body { font-size: 0.88rem; line-height: 1.55; color: var(--r-fg); margin: 0; }
+.rp-rev-actions {
+  display: flex; gap: 0.5rem; margin-top: 0.8rem;
+  font-size: 0.78rem; color: var(--r-muted);
+}
+.rp-rev-actions button {
+  appearance: none; border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+.rp-rev-actions button:hover { background: rgba(255,255,255,0.05); color: var(--r-fg); }
+
+/* 5. THUMBS UP / DOWN */
+.rp-tum {
+  display: inline-flex; gap: 0.3rem;
+  padding: 0.3rem;
+  background: var(--r-bg-2);
+  border-radius: 999px;
+}
+.rp-tum-btn {
+  appearance: none; border: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--r-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.rp-tum-btn:hover { background: rgba(255,255,255,0.06); color: var(--r-fg); }
+.rp-tum-btn.up.is-on { color: var(--r-good); background: rgba(16,185,129,0.15); }
+.rp-tum-btn.down.is-on { color: var(--r-bad); background: rgba(239,68,68,0.15); }
+.rp-tum-count {
+  font-weight: 700; padding: 0 0.4rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  align-self: center;
+}
+
+/* 6. NPS SCALE — 0-10 with colors */
+.rp-nps {
+  display: inline-flex; gap: 0; align-items: stretch;
+}
+.rp-nps-opt {
+  appearance: none; border: 1px solid var(--r-line);
+  background: transparent;
+  color: var(--r-fg);
+  width: 36px; height: 36px;
+  font: inherit; font-weight: 700; font-size: 0.82rem;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+  margin: 0 -1px 0 0;
+  transition: background 0.15s ease;
+}
+.rp-nps-opt:hover { background: rgba(255,255,255,0.04); }
+.rp-nps-opt:first-child { border-radius: 6px 0 0 6px; }
+.rp-nps-opt:last-child  { border-radius: 0 6px 6px 0; }
+.rp-nps-opt[data-value="0"], .rp-nps-opt[data-value="1"], .rp-nps-opt[data-value="2"],
+.rp-nps-opt[data-value="3"], .rp-nps-opt[data-value="4"], .rp-nps-opt[data-value="5"],
+.rp-nps-opt[data-value="6"] { color: var(--r-bad); }
+.rp-nps-opt[data-value="7"], .rp-nps-opt[data-value="8"] { color: var(--r-amber); }
+.rp-nps-opt[data-value="9"], .rp-nps-opt[data-value="10"] { color: var(--r-good); }
+.rp-nps-opt.is-picked {
+  background: currentColor; color: #14141e; border-color: currentColor;
+}
+.rp-nps-foot {
+  display: flex; justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--r-muted);
+  margin-top: 0.3rem;
+  width: 100%; max-width: 380px;
+}

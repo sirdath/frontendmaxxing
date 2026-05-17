@@ -1,0 +1,316 @@
+/* ============================================
+   MICRO INTERACTIONS PACK — 14 tiny interaction patterns
+   like-burst, copy-tick, share-pop, follow-toggle, save-bookmark,
+   notification-ping, ping-dot, badge-bump, draft-saved, link-arrow,
+   pulse-attention, hover-swap, kbd-pressed, slot-shake
+   ============================================ */
+
+:where(.mi-like, .mi-copy, .mi-share, .mi-follow, .mi-bm, .mi-ping,
+       .mi-dot, .mi-badge, .mi-draft, .mi-arrow, .mi-attn, .mi-swap,
+       .mi-kbd, .mi-shake) {
+  --m-fg: currentColor;
+  --m-accent: #8b5cf6;
+  --m-good: #10b981;
+  --m-bad: #ef4444;
+  font-family: inherit;
+}
+
+/* 1. LIKE BURST — Heart pop + radial particles */
+.mi-like {
+  appearance: none; border: 0;
+  width: 32px; height: 32px;
+  background: transparent;
+  color: rgba(255,255,255,0.55);
+  font-size: 1.1rem;
+  cursor: pointer;
+  position: relative;
+  display: grid; place-items: center;
+}
+.mi-like.is-liked {
+  color: #ec4899;
+  animation: mi-like-pop 0.4s cubic-bezier(0.32, 1.6, 0.5, 1);
+}
+.mi-like.is-liked::after {
+  content: '';
+  position: absolute; inset: -6px;
+  border-radius: 50%;
+  background: rgba(236, 72, 153, 0.3);
+  animation: mi-like-ring 0.6s ease-out;
+  pointer-events: none;
+}
+@keyframes mi-like-pop {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.3); }
+}
+@keyframes mi-like-ring {
+  0%   { transform: scale(0.3); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* 2. COPY TICK — Inline copy button with tick on success */
+.mi-copy {
+  appearance: none; border: 0;
+  background: rgba(255,255,255,0.06);
+  color: var(--m-fg);
+  width: 28px; height: 28px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: grid; place-items: center;
+  font-size: 0.78rem;
+  transition: background 0.18s ease;
+}
+.mi-copy:hover { background: rgba(255, 255, 255, 0.12); }
+.mi-copy.is-copied {
+  background: var(--m-good);
+  color: #fff;
+  animation: mi-copy-bump 0.4s ease;
+}
+@keyframes mi-copy-bump {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.18); }
+}
+
+/* 3. SHARE POP — Button + radial menu on click */
+.mi-share {
+  position: relative;
+  display: inline-block;
+}
+.mi-share-trig {
+  appearance: none; border: 0;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  color: var(--m-fg);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.18s ease;
+}
+.mi-share.is-open .mi-share-trig { transform: rotate(45deg); background: var(--m-accent); color: #fff; }
+.mi-share-menu {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, 0) scale(0);
+  display: flex; gap: 0.3rem;
+  margin-bottom: 6px;
+  transform-origin: bottom center;
+  transition: transform 0.25s cubic-bezier(0.32, 1.6, 0.5, 1), opacity 0.2s ease;
+  opacity: 0; pointer-events: none;
+}
+.mi-share.is-open .mi-share-menu {
+  transform: translate(-50%, 0) scale(1); opacity: 1; pointer-events: auto;
+}
+.mi-share-opt {
+  appearance: none; border: 0;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  color: var(--m-fg);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.mi-share-opt:hover { background: var(--m-accent); color: #fff; }
+
+/* 4. FOLLOW TOGGLE — Follow / Following with hover-unfollow */
+.mi-follow {
+  appearance: none; border: 1px solid var(--m-accent);
+  background: var(--m-accent);
+  color: #fff;
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  font: inherit; font-weight: 700; font-size: 0.82rem;
+  cursor: pointer;
+  min-width: 96px;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.mi-follow.is-following {
+  background: transparent;
+  color: var(--m-accent);
+}
+.mi-follow.is-following:hover {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: var(--m-bad);
+  color: var(--m-bad);
+}
+.mi-follow.is-following::before { content: '✓ '; }
+.mi-follow.is-following:hover::before { content: '× '; }
+.mi-follow.is-following::after { content: 'Following'; }
+.mi-follow.is-following:hover::after { content: 'Unfollow'; }
+.mi-follow:not(.is-following)::after { content: 'Follow'; }
+
+/* 5. BOOKMARK — Save to read later */
+.mi-bm {
+  appearance: none; border: 0;
+  width: 30px; height: 30px;
+  background: transparent;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  font-size: 1.05rem;
+  display: grid; place-items: center;
+  transition: color 0.18s ease, transform 0.18s ease;
+}
+.mi-bm::before { content: '☐'; }
+.mi-bm.is-saved { color: var(--m-accent); transform: scale(1.1); }
+.mi-bm.is-saved::before { content: '◼'; }
+
+/* 6. NOTIFICATION PING — Wave when new notification arrives */
+.mi-ping {
+  position: relative;
+  display: inline-block;
+}
+.mi-ping-icon {
+  display: inline-block;
+  font-size: 1.2rem;
+  position: relative;
+  z-index: 2;
+}
+.mi-ping.is-new::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--m-bad);
+  box-shadow: 0 0 0 0 var(--m-bad);
+  animation: mi-ping-wave 1.4s ease-out infinite;
+}
+@keyframes mi-ping-wave {
+  0%   { box-shadow: 0 0 0 0 var(--m-bad); }
+  100% { box-shadow: 0 0 0 10px transparent; }
+}
+
+/* 7. STATUS DOT — Online/away/busy/offline */
+.mi-dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--m-good);
+  position: relative;
+}
+.mi-dot.is-pulse::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: mi-ping-wave 1.6s ease-out infinite;
+}
+.mi-dot-away { background: #f59e0b; }
+.mi-dot-busy { background: var(--m-bad); }
+.mi-dot-off  { background: rgba(255,255,255,0.3); }
+
+/* 8. BADGE BUMP — Number badge that bumps on update */
+.mi-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px; height: 18px;
+  padding: 0 5px;
+  background: var(--m-bad); color: #fff;
+  border-radius: 99px;
+  font-size: 0.65rem; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.mi-badge.is-bumped { animation: mi-badge-bump 0.35s ease; }
+@keyframes mi-badge-bump {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.4); }
+}
+
+/* 9. DRAFT SAVED — "Saved at 12:42 PM" indicator */
+.mi-draft {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--m-good);
+  border-radius: 999px;
+  font-size: 0.72rem; font-weight: 600;
+}
+.mi-draft::before { content: '✓'; font-weight: 800; }
+.mi-draft.is-saving {
+  background: rgba(245, 158, 11, 0.12); color: #f59e0b;
+}
+.mi-draft.is-saving::before {
+  content: '';
+  width: 10px; height: 10px;
+  border: 1.5px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: mi-draft-spin 0.7s linear infinite;
+}
+@keyframes mi-draft-spin { to { transform: rotate(360deg); } }
+.mi-draft.is-error { background: rgba(239,68,68,0.12); color: var(--m-bad); }
+.mi-draft.is-error::before { content: '!'; font-weight: 800; }
+
+/* 10. LINK ARROW — Hover slides right */
+.mi-arrow {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  color: var(--m-accent);
+  text-decoration: none;
+  font: inherit; font-weight: 600;
+}
+.mi-arrow::after {
+  content: '→';
+  transition: transform 0.2s ease;
+}
+.mi-arrow:hover::after { transform: translateX(4px); }
+
+/* 11. PULSE ATTENTION — Glow ring that pulls attention */
+.mi-attn {
+  position: relative;
+  display: inline-block;
+}
+.mi-attn::before {
+  content: '';
+  position: absolute; inset: -8px;
+  border: 2px solid var(--m-accent);
+  border-radius: inherit;
+  animation: mi-attn-pulse 1.8s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes mi-attn-pulse {
+  0%   { transform: scale(0.85); opacity: 0.8; }
+  100% { transform: scale(1.2);  opacity: 0; }
+}
+
+/* 12. HOVER SWAP — Show second text on hover */
+.mi-swap { display: inline-block; position: relative; overflow: hidden; }
+.mi-swap > span { display: inline-block; transition: transform 0.25s ease; }
+.mi-swap > .alt {
+  position: absolute; left: 0; top: 100%;
+}
+.mi-swap:hover > .base { transform: translateY(-100%); }
+.mi-swap:hover > .alt  { transform: translateY(-100%); }
+
+/* 13. KBD PRESSED — Keyboard key press animation */
+.mi-kbd {
+  display: inline-flex; align-items: center; gap: 0.15rem;
+  padding: 0.15rem 0.4rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font: inherit; font-family: ui-monospace, monospace;
+  font-size: 0.72rem;
+  cursor: pointer;
+  user-select: none;
+}
+.mi-kbd.is-pressed {
+  transform: translateY(1px);
+  border-bottom-width: 1px;
+  background: rgba(255,255,255,0.15);
+}
+
+/* 14. SLOT SHAKE — Subtle horizontal shake (error feedback) */
+.mi-shake.is-shaking {
+  animation: mi-shake 0.4s ease;
+}
+@keyframes mi-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mi-like, .mi-like.is-liked::after, .mi-share-menu, .mi-bm,
+  .mi-ping.is-new::after, .mi-dot.is-pulse::after, .mi-badge.is-bumped,
+  .mi-attn::before, .mi-arrow::after, .mi-swap > span,
+  .mi-shake.is-shaking, .mi-draft.is-saving::before { animation: none !important; transition: none !important; }
+}

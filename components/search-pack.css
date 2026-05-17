@@ -1,0 +1,314 @@
+/* ============================================
+   SEARCH PACK — 7 search/filter UI patterns
+   search-input-pro, faceted-sidebar, filter-chips, sort-dropdown,
+   recent-searches, result-card, no-results-state
+   ============================================ */
+
+:where(.sp-inp, .sp-fac, .sp-chips, .sp-sort, .sp-rec, .sp-res, .sp-empty) {
+  --s-bg: #14141e;
+  --s-bg-2: #1f1f2e;
+  --s-fg: #f5f5fa;
+  --s-muted: rgba(245, 245, 250, 0.55);
+  --s-line: rgba(255, 255, 255, 0.08);
+  --s-accent: #8b5cf6;
+  color: var(--s-fg);
+  font-family: inherit;
+}
+
+/* 1. SEARCH INPUT PRO — Icon + clear + kbd + loading */
+.sp-inp {
+  position: relative;
+  display: inline-flex; align-items: center;
+  width: 100%; max-width: 380px;
+}
+.sp-inp::before {
+  content: '🔍';
+  position: absolute;
+  left: 0.7rem; top: 50%;
+  transform: translateY(-50%);
+  color: var(--s-muted);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+.sp-inp input {
+  width: 100%; box-sizing: border-box;
+  background: var(--s-bg-2);
+  border: 1px solid var(--s-line);
+  color: var(--s-fg);
+  padding: 0.55rem 4.5rem 0.55rem 2.2rem;
+  border-radius: 999px;
+  font: inherit; font-size: 0.9rem;
+  outline: 0;
+  transition: border-color 0.18s ease;
+}
+.sp-inp input:focus { border-color: var(--s-accent); }
+.sp-inp-kbd {
+  position: absolute;
+  right: 0.6rem; top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex; gap: 0.1rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--s-line);
+  border-radius: 4px;
+  color: var(--s-muted);
+}
+.sp-inp-clear {
+  position: absolute;
+  right: 3.6rem; top: 50%;
+  transform: translateY(-50%);
+  appearance: none; border: 0;
+  width: 22px; height: 22px;
+  background: rgba(255,255,255,0.08);
+  color: var(--s-fg);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.7rem;
+  display: none;
+}
+.sp-inp.is-filled .sp-inp-clear { display: block; }
+.sp-inp.is-loading::after {
+  content: '';
+  position: absolute;
+  right: 3.6rem; top: 50%;
+  transform: translateY(-50%);
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-top-color: var(--s-accent);
+  border-radius: 50%;
+  animation: sp-spin 0.7s linear infinite;
+}
+@keyframes sp-spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+/* 2. FACETED SIDEBAR — Filter groups */
+.sp-fac {
+  width: 240px;
+  background: var(--s-bg);
+  border: 1px solid var(--s-line);
+  border-radius: 12px;
+  padding: 0.7rem;
+}
+.sp-fac-group {
+  border-bottom: 1px solid var(--s-line);
+  padding: 0.5rem 0;
+}
+.sp-fac-group:last-child { border-bottom: 0; }
+.sp-fac-head {
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.3rem 0.4rem;
+  border-radius: 6px;
+}
+.sp-fac-head:hover { background: rgba(255,255,255,0.04); }
+.sp-fac-head::after {
+  content: '';
+  width: 0; height: 0;
+  border: 4px solid transparent;
+  border-top-color: var(--s-muted);
+  margin-top: 4px;
+  transition: transform 0.2s ease;
+}
+.sp-fac-group.is-collapsed .sp-fac-head::after { transform: rotate(-90deg); }
+.sp-fac-list {
+  padding: 0.3rem 0.4rem 0;
+}
+.sp-fac-group.is-collapsed .sp-fac-list { display: none; }
+.sp-fac-item {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.sp-fac-item:hover { color: var(--s-fg); }
+.sp-fac-item input[type=checkbox] {
+  appearance: none;
+  width: 14px; height: 14px;
+  background: var(--s-bg-2);
+  border: 1.5px solid var(--s-line);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+}
+.sp-fac-item input[type=checkbox]:checked {
+  background: var(--s-accent); border-color: var(--s-accent);
+}
+.sp-fac-item input[type=checkbox]:checked::after {
+  content: '✓'; position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.62rem; font-weight: 700; color: #fff;
+}
+.sp-fac-count {
+  margin-left: auto;
+  font-size: 0.72rem; color: var(--s-muted);
+}
+
+/* 3. FILTER CHIPS — Active filters row */
+.sp-chips {
+  display: flex; flex-wrap: wrap; gap: 0.3rem;
+  align-items: center;
+}
+.sp-chip {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.25rem 0.4rem 0.25rem 0.6rem;
+  background: rgba(139,92,246,0.15);
+  border: 1px solid rgba(139,92,246,0.3);
+  color: var(--s-accent);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.sp-chip-x {
+  appearance: none; border: 0;
+  background: transparent;
+  width: 16px; height: 16px;
+  color: inherit;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.85rem; line-height: 1; padding: 0;
+}
+.sp-chip-x:hover { background: rgba(139,92,246,0.3); }
+.sp-chip-clear {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--s-muted);
+  font: inherit; font-size: 0.78rem; font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0.2rem 0.4rem;
+}
+
+/* 4. SORT DROPDOWN */
+.sp-sort {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.4rem 0.5rem 0.4rem 0.8rem;
+  background: var(--s-bg-2);
+  border: 1px solid var(--s-line);
+  color: var(--s-fg);
+  border-radius: 8px;
+  font: inherit; font-size: 0.82rem;
+  cursor: pointer;
+}
+.sp-sort::before { content: '↑↓'; color: var(--s-muted); font-size: 0.78rem; }
+.sp-sort select {
+  background: transparent; border: 0; color: inherit;
+  font: inherit;
+  cursor: pointer;
+  outline: 0;
+}
+
+/* 5. RECENT SEARCHES — Dropdown */
+.sp-rec {
+  width: 320px;
+  background: var(--s-bg);
+  border: 1px solid var(--s-line);
+  border-radius: 10px;
+  padding: 0.4rem;
+  box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
+}
+.sp-rec-section {
+  font-size: 0.68rem;
+  color: var(--s-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.5rem 0.3rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.sp-rec-clear {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--s-muted);
+  font: inherit; font-size: 0.7rem;
+  cursor: pointer;
+  text-decoration: underline;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.sp-rec-item {
+  display: grid;
+  grid-template-columns: 18px 1fr 18px;
+  gap: 0.5rem; align-items: center;
+  padding: 0.45rem 0.6rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.sp-rec-item:hover { background: rgba(255,255,255,0.04); }
+.sp-rec-item-ic { color: var(--s-muted); font-size: 0.8rem; }
+.sp-rec-item-x {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--s-muted);
+  width: 18px; height: 18px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.85rem; line-height: 1; padding: 0;
+  opacity: 0;
+}
+.sp-rec-item:hover .sp-rec-item-x { opacity: 0.7; }
+
+/* 6. RESULT CARD — Search result row */
+.sp-res {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 0.8rem;
+  padding: 0.9rem 1rem;
+  background: var(--s-bg);
+  border: 1px solid var(--s-line);
+  border-radius: 10px;
+  width: 100%; max-width: 540px;
+}
+.sp-res-thumb {
+  width: 60px; height: 60px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  flex: 0 0 60px;
+}
+.sp-res-title { font-weight: 700; font-size: 0.95rem; margin: 0 0 0.2rem; }
+.sp-res-title mark { background: rgba(139,92,246,0.3); color: inherit; padding: 0 2px; border-radius: 2px; }
+.sp-res-snippet {
+  font-size: 0.82rem; color: var(--s-muted); line-height: 1.55;
+  margin: 0 0 0.3rem;
+}
+.sp-res-meta {
+  font-size: 0.72rem; color: var(--s-muted);
+  display: flex; gap: 0.6rem;
+}
+.sp-res-tag {
+  padding: 0.1rem 0.4rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+  font-size: 0.65rem;
+}
+.sp-res-relevance {
+  font-size: 0.7rem; color: var(--s-muted);
+  text-align: right;
+  align-self: start;
+}
+
+/* 7. NO RESULTS STATE */
+.sp-empty {
+  width: 100%; max-width: 380px;
+  padding: 2rem 1.4rem;
+  text-align: center;
+  background: var(--s-bg);
+  border: 1px dashed var(--s-line);
+  border-radius: 14px;
+}
+.sp-empty-emoji { font-size: 3rem; opacity: 0.5; margin-bottom: 0.4rem; }
+.sp-empty h3 { margin: 0 0 0.4rem; font-size: 1rem; }
+.sp-empty p { margin: 0 0 1rem; color: var(--s-muted); font-size: 0.85rem; line-height: 1.55; }
+.sp-empty-tips {
+  list-style: none;
+  margin: 0; padding: 0;
+  text-align: left;
+  display: inline-block;
+  font-size: 0.78rem;
+  color: var(--s-muted);
+}
+.sp-empty-tips li { padding: 0.2rem 0; }
+.sp-empty-tips li::before { content: '• '; color: var(--s-accent); }

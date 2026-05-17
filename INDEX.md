@@ -2344,3 +2344,47 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **scenes-pack.js** `3d/scenes-pack.js` (JS, global: `ScenesPack`) — tags: scenes-pack three.js shader-ball gltf-cards ascii hologram gradient-cube-array ribbon-trail wireframe rim-light catmull-rom torus-knot scanline
   6 self-contained Three.js scenes: shaderBall (glossy sphere + rim light), gltfCards (drag-rotate stack), ascii (torus knot rendered as ASCII grid), hologram (wireframe icosahedron + scanline overlay), gradientCubeArray (HSL grid with sine wave), ribbonTrail (animated Catmull-Rom tube). Each returns `{destroy}`. Requires three.js global.
+
+**Phase 22 — Pro patterns: forms / charts / chatbot / ratings / video / auth / search / micro (14 files, ~55 patterns)**
+
+**form-pack.css** `components/form-pack.css` (CSS) — tags: form-pack multi-step-form wizard validation-states good warn bad icon file-upload-pro drag-drop preview progress password-meter strength autocomplete typeahead char-counter dependency-chain captcha recaptcha
+  8 form patterns: multi-step-form w/ progress pills, field-validation-states (good/warn/bad w/ inline icon), file-upload-pro (drag-drop + file rows + progress bar), password-meter (4-step strength + tips checklist), autocomplete dropdown, char-counter (warn/over states), dependency-chain visual indicator, captcha-look (Google-style).
+
+**form-pack.js** `components/form-pack.js` (JS, global: `FormPack`) — tags: form-pack wizard step validate password strength file drag-drop autocomplete keyboard arrow char count captcha verify
+  `FormPack.step({onComplete, validate})`, `.password()` (live strength + tips), `.file({maxSize, accept, onAdd})`, `.autocomplete({items, onPick})` w/ keyboard nav, `.charCount({max})`, `.captcha({onVerified})`.
+
+**charts-pro.css** `data-viz/charts-pro.css` (CSS) — tags: charts-pro heatmap github-contribution scatter candlestick stock donut-pro multi-segment gauge-arc half-circle sparkbars-grid
+  6 advanced charts: heatmap (GitHub contribution grid), scatter (axis + grouped points), candlestick (OHLC bars w/ up/down), donut-pro (3-segment + center label), gauge-arc (half-circle with needle + value), sparkbars-grid (cards w/ mini bar charts + up/down).
+
+**charts-pro.js** `data-viz/charts-pro.js` (JS, global: `ChartsPro`) — tags: charts-pro heatmap scatter candlestick donut gauge sparkline grid data render conic-gradient
+  `ChartsPro.heatmap({cols, rows, data})`, `.scatter({points})` (auto-scaled), `.candlestick({bars: [{o,h,l,c}]})`, `.donut({segments: [{value, color}], centerLabel})`, `.gauge({value})`, `.sparkGrid({cards})`.
+
+**chatbot-pack.css** `ai/chatbot-pack.css` (CSS) — tags: chatbot-pack widget launcher floating bubble window typing-dots prompt-builder slot quick-reply suggestion-chips feedback thumbs gradient-bubble
+  6 chatbot patterns: floating launcher pill (with badge + optional pulse), chatbot-window (avatar + status + scroll body + composer), prompt-builder w/ editable slots + tag chips, quick-reply-chips (horizontal scroll), suggested-questions cards, model-output-feedback toolbar.
+
+**chatbot-pack.js** `ai/chatbot-pack.js` (JS, global: `ChatbotPack`) — tags: chatbot-pack widget open close toggle send typing reply user bot feedback prompt slot
+  `ChatbotPack.widget({launcher, window, greeting, onSend})` returns `{open, close, toggle, addBot, addUser}`. `onSend(text, addBotReply)` for async replies. `.feedback({onFeedback})`, `.prompt({onChange})`.
+
+**ratings-pack.css** `components/ratings-pack.css` (CSS) — tags: ratings-pack stars 1-5 1-10 distribution histogram review-card thumbs-up thumbs-down nps net-promoter promoters passives detractors
+  6 rating patterns: stars 1-5 (sm/lg + readonly), tens (1-10 number row), rating-distribution (5-row histogram), review-card (avatar+stars+verified+actions), thumbs-up/down toggle, NPS 0-10 scale w/ color-coded promoters/passives/detractors.
+
+**ratings-pack.js** `components/ratings-pack.js` (JS, global: `Ratings`) — tags: ratings-pack stars pick tens thumbs nps onChange auto-generate max
+  `Ratings.stars({value, max, onChange})` (auto-generates buttons if empty), `.tens({onChange})`, `.thumbs({onUp, onDown})`, `.nps({onChange})`.
+
+**video-player-pro.css** `media/video-player-pro.css` (CSS) — tags: video-player-pro html5 video controls play pause scrub track chapters captions cc speed playback rate picture-in-picture pip fullscreen big-play loading buffer
+  Full HTML5 video player chrome with chapter markers, caption overlay, speed/PiP/fullscreen, big-play overlay, buffering spinner. Distinct from media/video-player.css basic.
+
+**video-player-pro.js** `media/video-player-pro.js` (JS, global: `VideoPlayerPro`) — tags: video-player-pro html5 video play pause seek chapters captions speed pip fullscreen muted buffer onTimeUpdate
+  `VideoPlayerPro.init('[data-vpp]', {chapters, captions, speeds, onPlay, onPause, onEnd, onTimeUpdate})`. Click track to seek, chapter markers, caption overlay synced to currentTime, speed cycle, Picture-in-Picture, fullscreen.
+
+**auth-pack-2.css** `components/auth-pack-2.css` (CSS) — tags: auth-pack-2 2fa pin big-otp 6-digit password-reset flow sso google github apple microsoft magic-link account-locked security session row revoke
+  6 auth patterns: 2FA pin-input (big 56x64 cells + filled/error states + shake), password-reset card (icon + email + resend), SSO buttons (Google/GitHub/Apple/Microsoft logos), magic-link card "check your email" state, account-locked alert (with reasons list), session-row (device + current badge + revoke).
+
+**search-pack.css** `components/search-pack.css` (CSS) — tags: search-pack search-input-pro icon clear kbd loading faceted-sidebar filter-chips sort-dropdown recent-searches result-card no-results-state highlight mark
+  7 search/filter patterns: search-input-pro (icon + clear + kbd + loading spinner), faceted-sidebar (collapsible groups + checkbox + count), filter-chips (active filters w/ × + clear-all), sort-dropdown, recent-searches dropdown, result-card (thumb + highlighted snippet + meta + relevance), no-results-state w/ tips.
+
+**micro-interactions-pack.css** `micro/micro-interactions-pack.css` (CSS) — tags: micro-interactions-pack like-burst heart copy-tick share-pop follow-toggle bookmark notification-ping status-dot badge-bump draft-saved link-arrow pulse-attention hover-swap kbd-pressed slot-shake
+  14 micro-interactions: like-burst (heart + radial ring), copy-tick, share-pop (radial menu), follow-toggle (Follow/Following/Unfollow on hover), bookmark, notification-ping (badge wave), status-dot (online/away/busy/offline + pulse), badge-bump animation, draft-saved (idle/saving/saved/error states), link-arrow slide-on-hover, pulse-attention ring, hover-swap text rotate, kbd-pressed animation, slot-shake error.
+
+**micro-interactions-pack.js** `micro/micro-interactions-pack.js` (JS, global: `MicroIx`) — tags: micro-interactions-pack like copy share follow bookmark draft kbd combo shake badge bump clipboard
+  `MicroIx.like({onToggle})`, `.copy({text})` (clipboard + tick), `.share()` (radial menu open/close), `.follow({onToggle})`, `.bookmark({onToggle})`, `.draft({simulate})` (idle/saving/saved states), `.kbd({combo, onTrigger})` (e.g. 'mod+k'), `.shake()`, `.badge()` (bump with optional next value).
