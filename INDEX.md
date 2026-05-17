@@ -2455,3 +2455,32 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **loading-pages.css** `components/loading-pages.css` (CSS) — tags: loading-pages center-spinner skeleton-page progress-bar brand-splash logo pulse percent-bar multi-step-loader pomodoro
   6 full-page loading states: center-spinner (ring + msg), skeleton-page (head + sub + lines + grid of cards shimmer), progress-page (fixed top bar at --p%), brand-splash (logo pulse + 3 dots), percent-bar-page (huge gradient % + bar), multi-step-loader (steps with active spinner + done check).
+
+**Phase 25 — More UI primitives: inputs / buttons / cards / chips / dividers / auth / breadcrumb / pagination / comparison (9 files, ~86 patterns)**
+
+**input-pack.css** `components/input-pack.css` (CSS) — tags: input-pack tags-input mention-input number-stepper password-reveal search-autocomplete pretty-file color-input range-fill date-input time-input otp-pin currency-input masked-input dark-color-scheme
+  13 input variants: tags-input (pills + free entry), mention-input, number-stepper, password-reveal (eye toggle), search w/ icon + clear, pretty-file (hides native), color-input (swatch + hex), range w/ fill, date, time, otp 6-cell, currency w/ sign + code, masked input.
+
+**button-pack-3.css** `blocks/button-pack-3.css` (CSS) — tags: button-pack-3 icon-circle fab segmented-group button-group ghost-icon hold-to-confirm loading-states success-shake link-style animated-arrow gradient-soft 3d-shadow neumorph color-shift sound-pulse ripple
+  14 button variants: icon-only-circle, FAB (gradient + glow), segmented-group, button-group joined, ghost-icon, hold-to-confirm (fill on hold), loading-states (loading/success/error w/ shake), link-style, animated-arrow (slides on hover), gradient-soft, 3D-shadow (press effect), neumorph 2 inset, color-shift slide bg, sound-pulse ripple.
+
+**card-pack-3.css** `components/card-pack-3.css` (CSS) — tags: card-pack-3 info-card stat-trend product-mini blog-tile video-preview playlist-tile member-card-pro app-tile deal-card feature-spotlight
+  10 card patterns: info-card (icon + tip), stat-trend (val + delta + sparkline), product-mini (e-commerce w/ badge + save), blog-tile (img + cat + meta), video-preview (YouTube-style w/ duration + play), playlist-tile (stacked covers + count), member-card-pro (avatar + stats), app-tile (iOS-style), deal-card (gradient promo), feature-spotlight (premium glow).
+
+**chip-pack.css** `blocks/chip-pack.css` (CSS) — tags: chip-pack filter-chip action-chip status-chip choice-chip removable-chip avatar-chip icon-chip dot-chip gradient-chip ghost-chip metric-chip animated-chip pulse
+  12 chip variants: filter (toggle), action (CTA), status (dot + 4 types + pulse), choice (radio-like), removable (× button), avatar (img + name), icon (emoji prefix), dot-only, gradient (4 colors), ghost, metric (number + delta), animated (pop-in). Sizes sm/lg.
+
+**divider-pack.css** `blocks/divider-pack.css` (CSS) — tags: divider-pack solid-line dashed dotted gradient-fade double-line decorative-star text-divider icon-divider vertical-divider zigzag wavy svg thick-bar tab-divider dotted-vertical or-separator
+  14 divider variants: solid, dashed, dotted, gradient-fade (faded edges), double-line, decorative-glyph (text in middle), text-divider ("OR"), icon-divider (icon center), vertical, zigzag, wavy SVG, thick-bar gradient, tab-divider (sliding underline via CSS vars), dotted-vertical.
+
+**auth-screens-2.css** `components/auth-screens-2.css` (CSS) — tags: auth-screens-2 login-classic signup-w-social forgot-password lockscreen onboard-account signup-split-marketing google github apple
+  6 full auth screens: login-classic (logo + email/password + remember/forgot + link foot), signup-w-social (social-first w/ "or" divider + terms), forgot-password (icon + email + back link), lockscreen (avatar + password field), onboard-account (photo + form), signup-split (form left + marketing quote right).
+
+**breadcrumb-pack.css** `components/breadcrumb-pack.css` (CSS) — tags: breadcrumb-pack classic-slash chevron dot arrow pill capsule step-progress mobile-back truncate
+  8 breadcrumb variants: classic-slash, chevron ›, dot •, arrow →, pill (separated), capsule (joined), step-progress (numbered counter w/ done state), mobile-back (just ‹ + parent). Truncate w/ ellipsis variant.
+
+**pagination-pack.css** `components/pagination-pack.css` (CSS) — tags: pagination-pack numbered-classic compact arrow-only large-pill ellipsis load-more-button infinite-scroll-hint jump-to-page
+  8 pagination variants: numbered-classic, compact (small), arrow-only (joined w/ page info), large-pill, ellipsis spacer, load-more-button (loading state + meta), infinite-scroll-hint (spinner + end state), jump-to-page (input + go button).
+
+**feature-comparison.css** `components/feature-comparison.css` (CSS) — tags: feature-comparison comparison-table plans products frameworks featured recommended yes no premium star zebra compact mobile-stacked
+  Full comparison table for plans/products. Featured column highlight, Yes (✓)/No (—)/Premium (★) cells, section dividers, recommended ribbon, compact + zebra variants, mobile collapses to stacked w/ data-label attrs.

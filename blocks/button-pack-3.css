@@ -1,0 +1,239 @@
+/* ============================================
+   BUTTON PACK 3 — 14 button variants (extends buttons.css + buttons-pack.css)
+   icon-only-circle, fab, segmented-group, button-group, ghost-icon,
+   hold-to-confirm, loading-states, link-style, animated-arrow,
+   gradient-soft, shadow-3d, neumorph-2, color-shift, sound-pulse
+   ============================================ */
+
+:where(.btn3) {
+  --b-bg: #1f1f2e;
+  --b-fg: #f5f5fa;
+  --b-line: rgba(255, 255, 255, 0.08);
+  --b-accent: #8b5cf6;
+}
+.btn3 {
+  appearance: none; border: 0;
+  background: var(--b-bg);
+  color: var(--b-fg);
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font: inherit; font-weight: 600; font-size: 0.88rem;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  font-family: inherit;
+}
+
+/* 1. ICON-ONLY CIRCLE */
+.btn3-icon-circle {
+  width: 36px; height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+}
+
+/* 2. FAB — Big floating action button */
+.btn3-fab {
+  width: 56px; height: 56px;
+  padding: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--b-accent), #ec4899);
+  color: #fff;
+  font-size: 1.4rem;
+  box-shadow: 0 8px 22px -4px rgba(139, 92, 246, 0.5);
+  justify-content: center;
+}
+.btn3-fab:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -6px rgba(139, 92, 246, 0.6); }
+
+/* 3. SEGMENTED GROUP */
+.btn3-segmented {
+  display: inline-flex;
+  background: var(--b-bg);
+  border: 1px solid var(--b-line);
+  border-radius: 8px;
+  padding: 3px;
+}
+.btn3-segmented .btn3 {
+  background: transparent;
+  border-radius: 5px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.82rem;
+}
+.btn3-segmented .btn3.is-active {
+  background: var(--b-accent); color: #fff;
+}
+
+/* 4. BUTTON GROUP — Joined buttons */
+.btn3-group {
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--b-line);
+}
+.btn3-group .btn3 {
+  border-radius: 0;
+  padding: 0.55rem 0.9rem;
+  border-right: 1px solid var(--b-line);
+  background: transparent;
+}
+.btn3-group .btn3:last-child { border-right: 0; }
+.btn3-group .btn3:hover { background: rgba(255,255,255,0.05); }
+.btn3-group .btn3.is-active { background: var(--b-accent); color: #fff; }
+
+/* 5. GHOST ICON */
+.btn3-ghost-icon {
+  background: transparent;
+  width: 36px; height: 36px;
+  padding: 0;
+  border-radius: 8px;
+  color: var(--b-fg);
+  justify-content: center;
+}
+.btn3-ghost-icon:hover { background: rgba(255, 255, 255, 0.06); }
+
+/* 6. HOLD TO CONFIRM — Progress bar fills on hold */
+.btn3-hold {
+  position: relative;
+  overflow: hidden;
+  background: var(--b-accent); color: #fff;
+}
+.btn3-hold::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 0;
+  background: rgba(255, 255, 255, 0.2);
+  transition: width 0.05s linear;
+}
+.btn3-hold.is-holding::before { width: 100%; transition-duration: 1.4s; }
+.btn3-hold span { position: relative; z-index: 2; }
+
+/* 7. LOADING STATES */
+.btn3-load { position: relative; }
+.btn3-load.is-loading { color: transparent; pointer-events: none; }
+.btn3-load.is-loading::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: btn3-spin 0.7s linear infinite;
+}
+@keyframes btn3-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+.btn3-load.is-success { background: #10b981; color: #fff; pointer-events: none; }
+.btn3-load.is-success::before {
+  content: '✓';
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 800; font-size: 1rem;
+  color: #fff;
+}
+.btn3-load.is-error { background: #ef4444; color: #fff; animation: btn3-shake 0.4s ease; }
+@keyframes btn3-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* 8. LINK STYLE */
+.btn3-link {
+  background: transparent;
+  color: var(--b-accent);
+  padding: 0.2rem 0;
+  font-weight: 600;
+  text-decoration: none;
+}
+.btn3-link:hover { color: #c4b5fd; text-decoration: underline; }
+
+/* 9. ANIMATED ARROW — Arrow slides on hover */
+.btn3-arrow {
+  background: var(--b-accent); color: #fff;
+}
+.btn3-arrow::after {
+  content: '→';
+  transition: transform 0.2s ease;
+}
+.btn3-arrow:hover::after { transform: translateX(4px); }
+.btn3-arrow-ghost {
+  background: transparent;
+  border: 1px solid var(--b-line);
+  color: var(--b-fg);
+}
+
+/* 10. GRADIENT SOFT */
+.btn3-grad-soft {
+  background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(236,72,153,0.18));
+  border: 1px solid rgba(139,92,246,0.3);
+  color: #c4b5fd;
+}
+.btn3-grad-soft:hover { background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(236,72,153,0.3)); }
+
+/* 11. 3D SHADOW — Press effect */
+.btn3-3d {
+  background: var(--b-accent); color: #fff;
+  box-shadow: 0 4px 0 #5b21b6;
+  transform: translateY(0);
+}
+.btn3-3d:hover { box-shadow: 0 5px 0 #5b21b6; transform: translateY(-1px); }
+.btn3-3d:active { box-shadow: 0 1px 0 #5b21b6; transform: translateY(3px); }
+
+/* 12. NEUMORPH 2 — Soft inset on press */
+.btn3-neumorph {
+  background: #1a1a25;
+  color: var(--b-fg);
+  box-shadow: 5px 5px 12px #0a0a14, -5px -5px 12px #2a2a35;
+}
+.btn3-neumorph:hover { color: var(--b-accent); }
+.btn3-neumorph:active {
+  box-shadow: inset 5px 5px 12px #0a0a14, inset -5px -5px 12px #2a2a35;
+}
+
+/* 13. COLOR SHIFT — Background slides on hover */
+.btn3-shift {
+  position: relative;
+  background: var(--b-bg); color: var(--b-fg);
+  overflow: hidden; z-index: 0;
+}
+.btn3-shift::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--b-accent), #ec4899);
+  z-index: -1;
+  transform: translateX(-100%);
+  transition: transform 0.32s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.btn3-shift:hover { color: #fff; }
+.btn3-shift:hover::before { transform: translateX(0); }
+
+/* 14. SOUND PULSE — Click ripple */
+.btn3-pulse {
+  background: var(--b-accent); color: #fff;
+  position: relative;
+}
+.btn3-pulse::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.3);
+  opacity: 0;
+  pointer-events: none;
+}
+.btn3-pulse.is-clicked::after {
+  animation: btn3-ripple 0.5s ease-out;
+}
+@keyframes btn3-ripple {
+  0%   { opacity: 1; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* Sizes */
+.btn3-sm { padding: 0.35rem 0.7rem; font-size: 0.78rem; }
+.btn3-lg { padding: 0.75rem 1.3rem; font-size: 0.98rem; }
+.btn3-xl { padding: 0.9rem 1.6rem; font-size: 1.05rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn3, .btn3::before, .btn3::after { transition: none !important; animation: none !important; }
+}

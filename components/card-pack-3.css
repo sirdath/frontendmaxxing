@@ -1,0 +1,343 @@
+/* ============================================
+   CARD PACK 3 — 10 distinct card patterns
+   info-card, stat-trend, product-mini, blog-tile, video-preview,
+   playlist-tile, member-card-pro, app-tile, deal-card, feature-spotlight
+   ============================================ */
+
+:where(.cd3-info, .cd3-stat, .cd3-prod, .cd3-blog, .cd3-vid,
+       .cd3-pl, .cd3-mem, .cd3-app, .cd3-deal, .cd3-spot) {
+  --c-bg: #14141e;
+  --c-bg-2: #1f1f2e;
+  --c-fg: #f5f5fa;
+  --c-muted: rgba(245, 245, 250, 0.55);
+  --c-line: rgba(255, 255, 255, 0.08);
+  --c-accent: #8b5cf6;
+  color: var(--c-fg);
+  font-family: inherit;
+}
+
+/* 1. INFO CARD — Tip / message with leading icon */
+.cd3-info {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 0.8rem;
+  padding: 1rem 1.2rem;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  max-width: 480px;
+}
+.cd3-info-ic {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: rgba(139,92,246,0.15);
+  color: var(--c-accent);
+  display: grid; place-items: center;
+  font-size: 1.2rem;
+}
+.cd3-info h4 { margin: 0; font-size: 0.95rem; font-weight: 700; }
+.cd3-info p { margin: 0.2rem 0 0; color: var(--c-muted); font-size: 0.85rem; line-height: 1.55; }
+
+/* 2. STAT TREND — Number + sparkline + delta */
+.cd3-stat {
+  display: grid; gap: 0.3rem;
+  padding: 1rem 1.2rem;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  min-width: 200px;
+}
+.cd3-stat-label { font-size: 0.74rem; color: var(--c-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+.cd3-stat-val { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.cd3-stat-delta { font-size: 0.82rem; font-weight: 600; }
+.cd3-stat-delta.up { color: #10b981; }
+.cd3-stat-delta.up::before { content: '↑ '; }
+.cd3-stat-delta.down { color: #ef4444; }
+.cd3-stat-delta.down::before { content: '↓ '; }
+.cd3-stat-spark {
+  height: 32px;
+  background: linear-gradient(180deg, rgba(139,92,246,0.3), transparent);
+  clip-path: polygon(0 80%, 12% 60%, 24% 70%, 36% 40%, 48% 50%, 60% 30%, 72% 35%, 84% 20%, 100% 25%, 100% 100%, 0 100%);
+}
+
+/* 3. PRODUCT MINI — Compact e-commerce tile */
+.cd3-prod {
+  width: 100%; max-width: 220px;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.cd3-prod-img {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  position: relative;
+}
+.cd3-prod-badge {
+  position: absolute;
+  top: 8px; left: 8px;
+  padding: 0.15rem 0.5rem;
+  background: #ef4444; color: #fff;
+  border-radius: 4px;
+  font-size: 0.65rem; font-weight: 800;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.cd3-prod-save {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 28px; height: 28px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 0; color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+.cd3-prod-body { padding: 0.7rem 0.9rem; }
+.cd3-prod-name { font-weight: 500; font-size: 0.88rem; margin: 0 0 0.2rem; }
+.cd3-prod-meta { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--c-muted); }
+.cd3-prod-price { font-weight: 700; font-variant-numeric: tabular-nums; }
+.cd3-prod-old { text-decoration: line-through; color: var(--c-muted); margin-left: 0.3rem; font-weight: 500; font-size: 0.78rem; }
+
+/* 4. BLOG TILE */
+.cd3-blog {
+  width: 100%; max-width: 320px;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+}
+.cd3-blog:hover { transform: translateY(-2px); transition: transform 0.18s ease; }
+.cd3-blog-img {
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+}
+.cd3-blog-body { padding: 1rem 1.2rem; }
+.cd3-blog-cat { font-size: 0.7rem; color: var(--c-accent); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.cd3-blog h3 { margin: 0.3rem 0; font-size: 1.05rem; line-height: 1.35; }
+.cd3-blog-meta { display: flex; gap: 0.5rem; font-size: 0.75rem; color: var(--c-muted); margin-top: 0.5rem; }
+.cd3-blog-meta b { color: var(--c-fg); font-weight: 500; }
+
+/* 5. VIDEO PREVIEW — YouTube-style thumb */
+.cd3-vid {
+  width: 100%; max-width: 320px;
+  cursor: pointer;
+}
+.cd3-vid-thumb {
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.cd3-vid-thumb::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 14px 0 14px 22px;
+  border-color: transparent transparent transparent #fff;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.cd3-vid:hover .cd3-vid-thumb::before { opacity: 1; }
+.cd3-vid-thumb::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.5));
+}
+.cd3-vid-dur {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  padding: 0.1rem 0.4rem;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-family: ui-monospace, monospace;
+  z-index: 2;
+}
+.cd3-vid-body { padding: 0.6rem 0.2rem; }
+.cd3-vid-title { font-weight: 600; font-size: 0.92rem; line-height: 1.35; margin: 0 0 0.3rem; }
+.cd3-vid-meta { font-size: 0.78rem; color: var(--c-muted); }
+.cd3-vid-meta b { color: var(--c-fg); font-weight: 500; }
+
+/* 6. PLAYLIST TILE — Stacked covers */
+.cd3-pl {
+  position: relative;
+  width: 100%; max-width: 220px;
+  padding-top: 12px;
+  cursor: pointer;
+}
+.cd3-pl::before, .cd3-pl::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 8px; right: 8px;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1f1f2e, #2d2d44);
+  z-index: -1;
+}
+.cd3-pl::after {
+  top: 6px; left: 4px; right: 4px;
+  background: linear-gradient(135deg, #2d2d44, #14141e);
+  z-index: -2;
+}
+.cd3-pl-cover {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  border-radius: 8px;
+  box-shadow: 0 8px 18px -4px rgba(0,0,0,0.3);
+  position: relative;
+}
+.cd3-pl-count {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  padding: 0.15rem 0.45rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+.cd3-pl-name { font-weight: 600; font-size: 0.88rem; margin-top: 0.5rem; }
+.cd3-pl-sub { font-size: 0.74rem; color: var(--c-muted); }
+
+/* 7. MEMBER CARD PRO — Profile w/ stats */
+.cd3-mem {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 0.8rem;
+  padding: 1rem 1.2rem;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line);
+  border-radius: 14px;
+  max-width: 380px;
+}
+.cd3-mem-avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.cd3-mem-name { font-weight: 700; font-size: 0.95rem; }
+.cd3-mem-role { font-size: 0.78rem; color: var(--c-muted); }
+.cd3-mem-stats {
+  display: flex; gap: 1rem;
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+}
+.cd3-mem-stats b { display: block; font-weight: 800; font-size: 0.92rem; }
+.cd3-mem-stats span { color: var(--c-muted); }
+
+/* 8. APP TILE — iOS-style app icon + name */
+.cd3-app {
+  display: grid; place-items: center; gap: 0.4rem;
+  width: 88px;
+  cursor: pointer;
+}
+.cd3-app-ic {
+  width: 64px; height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  display: grid; place-items: center;
+  font-size: 1.8rem; color: #fff;
+  box-shadow: 0 8px 18px -4px rgba(139,92,246,0.4);
+  transition: transform 0.2s ease;
+}
+.cd3-app:hover .cd3-app-ic { transform: scale(1.08); }
+.cd3-app-name {
+  font-size: 0.78rem;
+  text-align: center;
+  max-width: 88px;
+}
+.cd3-app-badge {
+  position: absolute;
+  top: -4px; right: -4px;
+  min-width: 18px; height: 18px;
+  padding: 0 4px;
+  background: #ef4444; color: #fff;
+  border-radius: 9px;
+  font-size: 0.62rem; font-weight: 800;
+  display: grid; place-items: center;
+}
+
+/* 9. DEAL CARD — Promo / discount */
+.cd3-deal {
+  position: relative;
+  width: 100%; max-width: 320px;
+  padding: 1.4rem;
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  color: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.cd3-deal::before {
+  content: ''; position: absolute;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  top: -80px; right: -80px;
+  z-index: -1;
+}
+.cd3-deal-tag {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font-size: 0.66rem; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.cd3-deal-title { font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; margin: 0.5rem 0 0.2rem; }
+.cd3-deal-sub { font-size: 0.88rem; opacity: 0.9; margin: 0 0 1rem; }
+.cd3-deal-cta {
+  appearance: none; border: 0;
+  padding: 0.5rem 1rem;
+  background: #14141e; color: #fff;
+  border-radius: 6px;
+  font: inherit; font-weight: 700; font-size: 0.82rem;
+  cursor: pointer;
+}
+
+/* 10. FEATURE SPOTLIGHT — Premium feature highlight */
+.cd3-spot {
+  width: 100%; max-width: 380px;
+  padding: 1.4rem;
+  background: var(--c-bg);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.cd3-spot::before {
+  content: ''; position: absolute;
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.3), transparent 60%);
+  filter: blur(40px);
+  top: -100px; right: -100px;
+  pointer-events: none;
+}
+.cd3-spot-ic {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  display: grid; place-items: center;
+  font-size: 1.3rem; color: #fff;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.cd3-spot h3 { margin: 0 0 0.4rem; font-size: 1.1rem; position: relative; }
+.cd3-spot p { color: var(--c-muted); font-size: 0.88rem; line-height: 1.55; margin: 0 0 1rem; position: relative; }
+.cd3-spot-cta {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  appearance: none; border: 0;
+  padding: 0.5rem 1rem;
+  background: var(--c-accent); color: #fff;
+  border-radius: 8px;
+  font: inherit; font-weight: 600; font-size: 0.85rem;
+  cursor: pointer;
+  position: relative;
+}

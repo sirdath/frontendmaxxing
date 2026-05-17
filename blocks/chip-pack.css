@@ -1,0 +1,143 @@
+/* ============================================
+   CHIP PACK — 12 chip / pill variants
+   filter-chip, action-chip, status-chip, choice-chip, removable-chip,
+   avatar-chip, icon-chip, dot-chip, gradient-chip, ghost-chip,
+   metric-chip, animated-chip
+   ============================================ */
+
+.chp {
+  --c-bg: rgba(255, 255, 255, 0.06);
+  --c-fg: #f5f5fa;
+  --c-bd: rgba(255, 255, 255, 0.1);
+  --c-accent: #8b5cf6;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.3rem 0.7rem;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  border: 1px solid var(--c-bd);
+  border-radius: 999px;
+  font: inherit; font-size: 0.78rem; font-weight: 500;
+  font-family: inherit;
+  cursor: default;
+  vertical-align: middle;
+  line-height: 1.3;
+}
+
+/* 1. FILTER CHIP — Selectable */
+.chp-filter { cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease; }
+.chp-filter:hover { background: rgba(255,255,255,0.1); }
+.chp-filter.is-picked {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+  font-weight: 600;
+}
+.chp-filter.is-picked::before { content: '✓ '; }
+
+/* 2. ACTION CHIP — Clickable button */
+.chp-action {
+  cursor: pointer;
+  background: var(--c-accent); color: #fff;
+  border-color: transparent;
+  font-weight: 600;
+}
+.chp-action:hover { filter: brightness(1.1); }
+
+/* 3. STATUS CHIP — Dot + label */
+.chp-status::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--status-c, #10b981);
+}
+.chp-status-good   { color: #6ee7b7; --status-c: #10b981; background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.25); }
+.chp-status-warn   { color: #fcd34d; --status-c: #f59e0b; background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.25); }
+.chp-status-bad    { color: #fca5a5; --status-c: #ef4444; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.25); }
+.chp-status-info   { color: #67e8f9; --status-c: #06b6d4; background: rgba(6,182,212,0.1); border-color: rgba(6,182,212,0.25); }
+.chp-status-pulse::before { animation: chp-pulse 1.6s ease-out infinite; }
+@keyframes chp-pulse {
+  0%   { box-shadow: 0 0 0 0 currentColor; }
+  100% { box-shadow: 0 0 0 6px transparent; }
+}
+
+/* 4. CHOICE CHIP — Single radio-style pick */
+.chp-choice { cursor: pointer; }
+.chp-choice.is-picked {
+  background: var(--c-fg); color: #14141e; border-color: var(--c-fg);
+  font-weight: 700;
+}
+
+/* 5. REMOVABLE CHIP — Pill with × */
+.chp-rm { padding-right: 0.4rem; }
+.chp-rm-x {
+  margin-left: 0.2rem;
+  appearance: none; border: 0;
+  width: 16px; height: 16px;
+  background: rgba(0,0,0,0.2);
+  color: inherit;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.85rem; line-height: 1; padding: 0;
+}
+.chp-rm-x:hover { background: rgba(0,0,0,0.35); }
+
+/* 6. AVATAR CHIP — Avatar + name */
+.chp-av { padding-left: 0.25rem; gap: 0.4rem; }
+.chp-av-img {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+
+/* 7. ICON CHIP — Leading emoji/icon */
+.chp-ic::before {
+  content: attr(data-ic);
+  font-size: 0.85em;
+}
+
+/* 8. DOT CHIP — Tiny notification (no text) */
+.chp-dot {
+  width: 8px; height: 8px;
+  padding: 0; min-width: 0;
+  background: #ef4444; border: 0;
+  border-radius: 50%;
+}
+
+/* 9. GRADIENT CHIP */
+.chp-grad-1 { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: #fff; border-color: transparent; }
+.chp-grad-2 { background: linear-gradient(135deg, #06b6d4, #8b5cf6); color: #fff; border-color: transparent; }
+.chp-grad-3 { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; border-color: transparent; }
+.chp-grad-4 { background: linear-gradient(135deg, #10b981, #06b6d4); color: #fff; border-color: transparent; }
+
+/* 10. GHOST CHIP */
+.chp-ghost {
+  background: transparent;
+  color: var(--c-fg);
+  border-color: var(--c-bd);
+}
+.chp-ghost-violet { color: #c4b5fd; border-color: #8b5cf6; }
+.chp-ghost-pink   { color: #f9a8d4; border-color: #ec4899; }
+
+/* 11. METRIC CHIP — Number + label */
+.chp-met { font-variant-numeric: tabular-nums; }
+.chp-met b { font-weight: 700; }
+.chp-met span { color: rgba(255,255,255,0.55); margin-left: 0.2rem; }
+.chp-met-up   b { color: #10b981; }
+.chp-met-up   b::before { content: '↑ '; }
+.chp-met-down b { color: #ef4444; }
+.chp-met-down b::before { content: '↓ '; }
+
+/* 12. ANIMATED CHIP — Pulse on enter */
+.chp-anim { animation: chp-pop 0.4s cubic-bezier(0.32, 1.6, 0.5, 1); }
+@keyframes chp-pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Sizes */
+.chp-sm { padding: 0.15rem 0.5rem; font-size: 0.7rem; }
+.chp-lg { padding: 0.45rem 1rem; font-size: 0.88rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .chp-status-pulse::before, .chp-anim { animation: none; }
+}

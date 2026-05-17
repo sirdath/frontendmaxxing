@@ -1,0 +1,361 @@
+/* ============================================
+   INPUT PACK — 12 input variants (extends blocks/inputs.css + inputs-pro.css)
+   tags-input, mention-input, number-stepper, password-reveal,
+   search-with-autocomplete, pretty-file, color-input, range-with-fill,
+   date-input, time-input, otp-input, currency-input, masked-input
+   ============================================ */
+
+:where(.inp-tags, .inp-ment, .inp-num, .inp-pwd, .inp-srch, .inp-file,
+       .inp-clr, .inp-rng, .inp-dt, .inp-tm, .inp-otp, .inp-cur, .inp-mask) {
+  --i-bg: #14141e;
+  --i-bg-2: #1f1f2e;
+  --i-fg: #f5f5fa;
+  --i-muted: rgba(245, 245, 250, 0.55);
+  --i-line: rgba(255, 255, 255, 0.1);
+  --i-accent: #8b5cf6;
+  color: var(--i-fg);
+  font-family: inherit;
+}
+
+/* Shared field box */
+.inp-box {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  border-radius: 8px;
+  font: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  width: 100%; box-sizing: border-box;
+}
+.inp-box:focus-within { border-color: var(--i-accent); }
+.inp-box input {
+  flex: 1; min-width: 0;
+  background: transparent; border: 0; outline: 0;
+  color: var(--i-fg);
+  font: inherit; font-size: 0.9rem;
+}
+
+/* 1. TAGS INPUT — Pills + free entry */
+.inp-tags {
+  display: flex; flex-wrap: wrap; gap: 0.3rem;
+  padding: 0.4rem 0.5rem;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  border-radius: 8px;
+  width: 100%; max-width: 380px;
+}
+.inp-tags:focus-within { border-color: var(--i-accent); }
+.inp-tags input {
+  flex: 1; min-width: 80px;
+  background: transparent; border: 0; outline: 0;
+  color: var(--i-fg);
+  font: inherit; font-size: 0.88rem;
+  padding: 0.2rem;
+}
+.inp-tag {
+  display: inline-flex; align-items: center; gap: 0.2rem;
+  padding: 0.15rem 0.35rem 0.15rem 0.55rem;
+  background: rgba(139,92,246,0.15);
+  color: var(--i-accent);
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.inp-tag-x {
+  appearance: none; border: 0;
+  width: 16px; height: 16px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.78rem;
+  border-radius: 50%; padding: 0;
+}
+.inp-tag-x:hover { background: rgba(139,92,246,0.25); }
+
+/* 2. MENTION INPUT — @ triggers dropdown (CSS only — pair with autocomplete JS) */
+.inp-ment {
+  position: relative;
+}
+.inp-ment input {
+  width: 100%; box-sizing: border-box;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  color: var(--i-fg);
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font: inherit;
+  outline: 0;
+}
+.inp-ment input:focus { border-color: var(--i-accent); }
+
+/* 3. NUMBER STEPPER (inline +/-) */
+.inp-num {
+  display: inline-flex;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%; max-width: 220px;
+}
+.inp-num button {
+  appearance: none; border: 0;
+  background: transparent;
+  color: var(--i-fg);
+  width: 36px;
+  font: inherit; font-size: 1.1rem; font-weight: 600;
+  cursor: pointer;
+}
+.inp-num button:hover { background: rgba(255,255,255,0.06); }
+.inp-num input {
+  flex: 1; width: 0; min-width: 0;
+  background: transparent; border: 0; outline: 0;
+  color: var(--i-fg);
+  text-align: center;
+  padding: 0.5rem 0.4rem;
+  border-left: 1px solid var(--i-line);
+  border-right: 1px solid var(--i-line);
+  font: inherit; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 4. PASSWORD REVEAL */
+.inp-pwd { position: relative; width: 100%; max-width: 320px; }
+.inp-pwd input {
+  width: 100%; box-sizing: border-box;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  color: var(--i-fg);
+  padding: 0.55rem 2.4rem 0.55rem 0.85rem;
+  border-radius: 8px;
+  font: inherit;
+  outline: 0;
+  font-family: ui-monospace, monospace;
+  letter-spacing: 0.05em;
+}
+.inp-pwd input:focus { border-color: var(--i-accent); }
+.inp-pwd-eye {
+  position: absolute;
+  right: 0.5rem; top: 50%;
+  transform: translateY(-50%);
+  appearance: none; border: 0;
+  width: 28px; height: 28px;
+  background: transparent;
+  color: var(--i-muted);
+  cursor: pointer;
+  border-radius: 4px;
+}
+.inp-pwd-eye:hover { color: var(--i-fg); background: rgba(255,255,255,0.04); }
+
+/* 5. SEARCH WITH AUTOCOMPLETE (CSS only) */
+.inp-srch {
+  position: relative;
+  width: 100%; max-width: 320px;
+}
+.inp-srch input {
+  width: 100%; box-sizing: border-box;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  color: var(--i-fg);
+  padding: 0.55rem 2.4rem 0.55rem 2.2rem;
+  border-radius: 8px;
+  font: inherit;
+  outline: 0;
+}
+.inp-srch input:focus { border-color: var(--i-accent); }
+.inp-srch::before {
+  content: '🔍';
+  position: absolute; left: 0.7rem; top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  color: var(--i-muted);
+  pointer-events: none;
+}
+
+/* 6. PRETTY FILE INPUT (hides native input) */
+.inp-file {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+.inp-file input[type=file] {
+  position: absolute;
+  inset: 0; opacity: 0; cursor: pointer;
+  width: 100%;
+}
+.inp-file-label {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  color: var(--i-fg);
+  border-radius: 8px;
+  font: inherit; font-weight: 600; font-size: 0.88rem;
+}
+.inp-file:hover .inp-file-label { background: rgba(255, 255, 255, 0.04); }
+
+/* 7. COLOR INPUT */
+.inp-clr {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.3rem 0.6rem 0.3rem 0.4rem;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  border-radius: 8px;
+}
+.inp-clr-swatch {
+  width: 28px; height: 28px;
+  border-radius: 5px;
+  background: var(--clr, #8b5cf6);
+  border: 1px solid var(--i-line);
+  cursor: pointer;
+  position: relative;
+}
+.inp-clr-swatch input[type=color] {
+  position: absolute; inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.inp-clr-hex {
+  background: transparent; border: 0; outline: 0;
+  color: var(--i-fg);
+  font: inherit; font-family: ui-monospace, monospace;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  width: 90px;
+}
+
+/* 8. RANGE WITH FILL — Slider with visible filled portion */
+.inp-rng {
+  width: 100%; max-width: 320px;
+  --p: 50%;
+}
+.inp-rng input[type=range] {
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, var(--i-accent) 0 var(--p), rgba(255,255,255,0.08) var(--p) 100%);
+  border-radius: 3px;
+  outline: 0;
+}
+.inp-rng input[type=range]::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--i-accent);
+  border: 3px solid var(--i-bg);
+  box-shadow: 0 0 0 1px var(--i-accent);
+  cursor: grab;
+}
+
+/* 9. DATE INPUT */
+.inp-dt {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.4rem 0.7rem;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.inp-dt:focus-within { border-color: var(--i-accent); }
+.inp-dt::before {
+  content: '📅';
+  font-size: 0.92rem;
+}
+.inp-dt input {
+  background: transparent; border: 0; outline: 0;
+  color: var(--i-fg);
+  color-scheme: dark;
+  font: inherit; font-size: 0.88rem;
+  font-family: ui-monospace, monospace;
+}
+
+/* 10. TIME INPUT */
+.inp-tm {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.4rem 0.7rem;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  border-radius: 8px;
+}
+.inp-tm::before { content: '⏰'; font-size: 0.92rem; }
+.inp-tm input {
+  background: transparent; border: 0; outline: 0;
+  color: var(--i-fg);
+  color-scheme: dark;
+  font: inherit;
+  font-family: ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 11. OTP INPUT — 6 cells */
+.inp-otp {
+  display: inline-flex; gap: 0.4rem;
+}
+.inp-otp input {
+  width: 44px; height: 52px;
+  background: var(--i-bg-2);
+  border: 2px solid var(--i-line);
+  color: var(--i-fg);
+  text-align: center;
+  font: inherit; font-weight: 700; font-size: 1.3rem;
+  border-radius: 8px;
+  outline: 0;
+  font-variant-numeric: tabular-nums;
+  caret-color: var(--i-accent);
+  transition: border-color 0.15s ease;
+}
+.inp-otp input:focus { border-color: var(--i-accent); }
+.inp-otp input.is-filled { border-color: var(--i-accent); background: rgba(139,92,246,0.08); }
+
+/* 12. CURRENCY INPUT */
+.inp-cur {
+  display: inline-flex; align-items: center;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%; max-width: 220px;
+}
+.inp-cur:focus-within { border-color: var(--i-accent); }
+.inp-cur-sign {
+  padding: 0.5rem 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--i-muted);
+  font: inherit; font-weight: 700;
+  border-right: 1px solid var(--i-line);
+}
+.inp-cur input {
+  flex: 1; width: 0; min-width: 0;
+  background: transparent; border: 0; outline: 0;
+  color: var(--i-fg);
+  padding: 0.5rem 0.7rem;
+  text-align: right;
+  font: inherit; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.inp-cur-code {
+  padding: 0.5rem 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--i-muted);
+  font: inherit; font-size: 0.78rem; font-weight: 600;
+  border-left: 1px solid var(--i-line);
+}
+
+/* 13. MASKED INPUT (CSS only — pair with JS for actual masking) */
+.inp-mask {
+  display: inline-flex;
+  padding: 0.5rem 0.8rem;
+  background: var(--i-bg-2);
+  border: 1.5px solid var(--i-line);
+  border-radius: 8px;
+}
+.inp-mask:focus-within { border-color: var(--i-accent); }
+.inp-mask input {
+  background: transparent; border: 0; outline: 0;
+  color: var(--i-fg);
+  font: inherit;
+  font-family: ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  width: 100%; min-width: 180px;
+}
+.inp-mask::placeholder { letter-spacing: 0.08em; }

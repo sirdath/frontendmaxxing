@@ -1,0 +1,270 @@
+/* ============================================
+   AUTH SCREENS 2 — 6 full auth screen layouts (distinct from auth-pack/auth-pack-2)
+   login-classic, signup-w-social, forgot-password, lockscreen,
+   onboard-account, signup-split-marketing
+   ============================================ */
+
+:where(.au-login, .au-signup, .au-forgot, .au-lock, .au-onboard, .au-split) {
+  --a-bg: #14141e;
+  --a-bg-2: #1f1f2e;
+  --a-fg: #f5f5fa;
+  --a-muted: rgba(245, 245, 250, 0.55);
+  --a-line: rgba(255, 255, 255, 0.08);
+  --a-accent: #8b5cf6;
+  color: var(--a-fg);
+  font-family: inherit;
+}
+
+/* Shared form fields */
+.au-field { display: block; margin-bottom: 0.7rem; }
+.au-field label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--a-muted);
+  margin-bottom: 0.3rem;
+}
+.au-field input {
+  width: 100%; box-sizing: border-box;
+  background: var(--a-bg-2);
+  border: 1px solid var(--a-line);
+  color: var(--a-fg);
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  font: inherit; font-size: 0.9rem;
+  outline: 0;
+  transition: border-color 0.15s ease;
+}
+.au-field input:focus { border-color: var(--a-accent); }
+.au-cta {
+  appearance: none; border: 0; width: 100%;
+  padding: 0.7rem;
+  background: var(--a-accent); color: #fff;
+  border-radius: 10px;
+  font: inherit; font-weight: 600; font-size: 0.92rem;
+  cursor: pointer;
+}
+.au-cta:hover { filter: brightness(1.1); }
+
+/* 1. LOGIN CLASSIC */
+.au-login {
+  width: 100%; max-width: 380px;
+  padding: 2rem 2rem 1.6rem;
+  background: var(--a-bg);
+  border: 1px solid var(--a-line);
+  border-radius: 16px;
+}
+.au-login-head { text-align: center; margin-bottom: 1.4rem; }
+.au-login-logo {
+  width: 48px; height: 48px;
+  margin: 0 auto 0.8rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+}
+.au-login h2 { margin: 0 0 0.4rem; font-size: 1.4rem; letter-spacing: -0.02em; }
+.au-login-sub { color: var(--a-muted); font-size: 0.85rem; }
+.au-login-foot {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.78rem;
+}
+.au-login-remember { display: inline-flex; align-items: center; gap: 0.3rem; color: var(--a-muted); cursor: pointer; }
+.au-login-remember input { accent-color: var(--a-accent); }
+.au-login-forgot { color: var(--a-accent); text-decoration: none; font-weight: 600; }
+.au-login-foot-link {
+  text-align: center; margin-top: 1.2rem;
+  font-size: 0.85rem;
+  color: var(--a-muted);
+}
+.au-login-foot-link a { color: var(--a-accent); font-weight: 600; text-decoration: none; }
+
+/* 2. SIGNUP W SOCIAL — Social-first signup */
+.au-signup {
+  width: 100%; max-width: 400px;
+  padding: 2.2rem 2rem;
+  background: var(--a-bg);
+  border: 1px solid var(--a-line);
+  border-radius: 16px;
+  text-align: center;
+}
+.au-signup h2 { font-size: 1.6rem; letter-spacing: -0.02em; margin: 0 0 0.5rem; }
+.au-signup-sub { color: var(--a-muted); font-size: 0.92rem; margin: 0 0 1.6rem; }
+.au-signup-social {
+  display: grid; gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+.au-signup-social button {
+  appearance: none; border: 1px solid var(--a-line);
+  background: var(--a-bg);
+  color: var(--a-fg);
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font: inherit; font-weight: 600; font-size: 0.92rem;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 0.6rem;
+  justify-content: center;
+}
+.au-signup-social button:hover { background: var(--a-bg-2); }
+.au-signup-or {
+  display: flex; align-items: center; gap: 0.8rem;
+  color: var(--a-muted); font-size: 0.78rem;
+  margin: 1.2rem 0;
+}
+.au-signup-or::before, .au-signup-or::after {
+  content: ''; flex: 1; height: 1px; background: var(--a-line);
+}
+.au-signup-terms {
+  font-size: 0.74rem;
+  color: var(--a-muted);
+  margin: 0.8rem 0 0;
+  line-height: 1.5;
+}
+.au-signup-terms a { color: var(--a-accent); text-decoration: none; }
+
+/* 3. FORGOT PASSWORD */
+.au-forgot {
+  width: 100%; max-width: 380px;
+  padding: 2.2rem 2rem;
+  background: var(--a-bg);
+  border: 1px solid var(--a-line);
+  border-radius: 16px;
+  text-align: center;
+}
+.au-forgot-icon {
+  width: 56px; height: 56px;
+  margin: 0 auto 1rem;
+  border-radius: 16px;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--a-accent);
+  display: grid; place-items: center;
+  font-size: 1.6rem;
+}
+.au-forgot h3 { font-size: 1.3rem; margin: 0 0 0.4rem; }
+.au-forgot p { color: var(--a-muted); margin: 0 0 1.4rem; font-size: 0.9rem; line-height: 1.55; }
+.au-forgot-foot { margin-top: 1rem; }
+.au-forgot-foot a {
+  color: var(--a-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+}
+.au-forgot-foot a:hover { color: var(--a-fg); }
+.au-forgot-foot a::before { content: '← '; }
+
+/* 4. LOCKSCREEN — User session locked, enter password */
+.au-lock {
+  width: 100%; max-width: 320px;
+  padding: 2rem;
+  background: var(--a-bg);
+  border: 1px solid var(--a-line);
+  border-radius: 18px;
+  text-align: center;
+}
+.au-lock-avatar {
+  width: 80px; height: 80px;
+  margin: 0 auto 0.7rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  display: grid; place-items: center;
+  color: #fff; font-weight: 800; font-size: 1.8rem;
+}
+.au-lock-name { font-weight: 700; font-size: 1.1rem; }
+.au-lock-email { font-size: 0.78rem; color: var(--a-muted); margin-bottom: 1rem; }
+.au-lock input {
+  width: 100%; box-sizing: border-box;
+  background: var(--a-bg-2);
+  border: 1px solid var(--a-line);
+  color: var(--a-fg);
+  padding: 0.7rem 0.95rem;
+  border-radius: 10px;
+  font: inherit;
+  outline: 0;
+  text-align: center;
+  font-family: ui-monospace, monospace;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.7rem;
+}
+.au-lock-switch {
+  appearance: none; border: 0;
+  background: transparent; color: var(--a-muted);
+  font: inherit; font-size: 0.78rem;
+  cursor: pointer;
+  margin-top: 0.6rem;
+}
+
+/* 5. ONBOARD ACCOUNT — First-time setup w/ avatar upload */
+.au-onboard {
+  width: 100%; max-width: 460px;
+  padding: 2rem;
+  background: var(--a-bg);
+  border: 1px solid var(--a-line);
+  border-radius: 16px;
+}
+.au-onboard h2 { margin: 0 0 0.4rem; font-size: 1.5rem; letter-spacing: -0.02em; }
+.au-onboard-sub { color: var(--a-muted); font-size: 0.92rem; margin: 0 0 1.4rem; }
+.au-onboard-photo {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.7rem;
+  background: var(--a-bg-2);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+.au-onboard-avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+}
+.au-onboard-photo button {
+  appearance: none; border: 1px solid var(--a-line);
+  background: transparent; color: var(--a-fg);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font: inherit; font-size: 0.82rem;
+  cursor: pointer;
+}
+
+/* 6. SIGNUP SPLIT — Left form, right marketing visuals */
+.au-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 540px;
+  background: var(--a-bg);
+  border: 1px solid var(--a-line);
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%; max-width: 920px;
+}
+.au-split-form {
+  padding: 2.4rem 2rem;
+  display: grid; align-content: center; gap: 0.5rem;
+  max-width: 380px; width: 100%;
+  margin: 0 auto;
+}
+.au-split-art {
+  position: relative;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(139,92,246,0.35), transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(236,72,153,0.3), transparent 60%),
+    linear-gradient(135deg, #14141e, #2d2d44);
+  overflow: hidden;
+  display: grid; place-items: center;
+  padding: 2rem;
+}
+.au-split-quote {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  padding: 1.4rem 1.6rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  max-width: 320px;
+  position: relative;
+}
+.au-split-quote p { font-size: 1rem; line-height: 1.5; margin: 0 0 0.7rem; }
+.au-split-quote-author { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+.au-split-quote-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+}
+
+@media (max-width: 768px) {
+  .au-split { grid-template-columns: 1fr; }
+  .au-split-art { display: none; }
+}

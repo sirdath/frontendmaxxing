@@ -1,0 +1,152 @@
+/* ============================================
+   FEATURE COMPARISON — Plan / product / framework comparison tables
+   ============================================
+   Usage:
+     <table class="fcmp fcmp-4col">…</table>
+   Variants: fcmp-3col, fcmp-4col, fcmp-5col, fcmp-compact, fcmp-zebra
+   ============================================ */
+
+.fcmp {
+  --f-bg: #14141e;
+  --f-bg-2: #1f1f2e;
+  --f-fg: #f5f5fa;
+  --f-muted: rgba(245, 245, 250, 0.55);
+  --f-line: rgba(255, 255, 255, 0.08);
+  --f-accent: #8b5cf6;
+  --f-good: #10b981;
+  --f-bad: #ef4444;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--f-bg);
+  border: 1px solid var(--f-line);
+  border-radius: 14px;
+  overflow: hidden;
+  font-family: inherit;
+  color: var(--f-fg);
+}
+
+.fcmp thead th {
+  background: var(--f-bg-2);
+  text-align: center;
+  padding: 1rem 1.2rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--f-line);
+  position: sticky; top: 0;
+  z-index: 1;
+}
+.fcmp thead th:first-child { text-align: left; }
+.fcmp th .fcmp-plan-name {
+  font-size: 1.05rem; font-weight: 800;
+  display: block;
+}
+.fcmp th .fcmp-plan-price {
+  font-size: 1.4rem; font-weight: 900; margin: 0.3rem 0 0.1rem;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.fcmp th .fcmp-plan-price small { font-size: 0.65rem; font-weight: 500; color: var(--f-muted); }
+.fcmp th .fcmp-plan-cta {
+  appearance: none; border: 0;
+  padding: 0.4rem 0.9rem;
+  background: var(--f-bg);
+  color: var(--f-fg);
+  border-radius: 6px;
+  font: inherit; font-size: 0.78rem; font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.4rem;
+}
+.fcmp thead th.is-featured {
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.15), var(--f-bg-2));
+  color: var(--f-accent);
+}
+.fcmp thead th.is-featured .fcmp-plan-cta {
+  background: var(--f-accent); color: #fff;
+}
+.fcmp thead th.is-featured::before {
+  content: 'Recommended';
+  display: block;
+  margin: -0.4rem auto 0.3rem;
+  width: max-content;
+  padding: 0.1rem 0.5rem;
+  background: var(--f-accent); color: #fff;
+  border-radius: 999px;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+.fcmp td {
+  padding: 0.75rem 1.2rem;
+  border-bottom: 1px solid var(--f-line);
+  font-size: 0.85rem;
+  text-align: center;
+}
+.fcmp td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+.fcmp tbody tr:last-child td { border-bottom: 0; }
+.fcmp tbody tr.fcmp-section td {
+  background: rgba(255,255,255,0.02);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--f-muted);
+  text-align: left;
+}
+
+/* Yes / No cells */
+.fcmp-yes  { color: var(--f-good); font-size: 1.1rem; }
+.fcmp-yes::before { content: '✓'; font-weight: 800; }
+.fcmp-no   { color: var(--f-muted); }
+.fcmp-no::before { content: '—'; }
+.fcmp-prem { color: var(--f-accent); font-weight: 700; }
+.fcmp-prem::before { content: '★ '; color: #fbbf24; }
+
+/* Featured column highlight */
+.fcmp tbody td.is-featured {
+  background: rgba(139, 92, 246, 0.06);
+  border-left: 1px solid rgba(139, 92, 246, 0.18);
+  border-right: 1px solid rgba(139, 92, 246, 0.18);
+  font-weight: 600;
+}
+
+/* Compact variant */
+.fcmp-compact td, .fcmp-compact th { padding: 0.5rem 0.8rem; font-size: 0.82rem; }
+.fcmp-compact thead th { font-size: 0.85rem; }
+
+/* Zebra rows */
+.fcmp-zebra tbody tr:nth-child(odd) td:not(.is-featured) {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Mobile — collapse to stacked */
+@media (max-width: 768px) {
+  .fcmp { display: block; }
+  .fcmp thead { display: none; }
+  .fcmp tbody, .fcmp tr { display: block; }
+  .fcmp tr {
+    border-bottom: 1px solid var(--f-line);
+    padding: 0.5rem 0;
+  }
+  .fcmp td {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    text-align: left;
+    border-bottom: 0;
+    padding: 0.35rem 1rem;
+  }
+  .fcmp td::before {
+    content: attr(data-label);
+    color: var(--f-muted);
+    font-weight: 500;
+  }
+  .fcmp td:first-child {
+    grid-column: 1 / -1;
+    font-weight: 700;
+    font-size: 0.95rem;
+    background: var(--f-bg-2);
+    padding: 0.6rem 1rem;
+  }
+}
