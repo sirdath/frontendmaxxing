@@ -1,0 +1,248 @@
+/* ============================================
+   FOOTER PACK 2 — 6 footer variants (distinct from components/footers.css)
+   minimal-centered, 4-col-corp, newsletter-stripe, mega-link-grid,
+   sticky-bottom-cta, signature-art
+   ============================================ */
+
+:where(.ft-min, .ft-4col, .ft-news, .ft-mega, .ft-sticky, .ft-sig) {
+  --f-bg: #0a0a14;
+  --f-bg-2: #14141e;
+  --f-fg: #f5f5fa;
+  --f-muted: rgba(245, 245, 250, 0.55);
+  --f-line: rgba(255, 255, 255, 0.08);
+  --f-accent: #8b5cf6;
+  background: var(--f-bg);
+  color: var(--f-fg);
+  font-family: inherit;
+}
+
+/* 1. MINIMAL CENTERED — Logo + few links + copyright */
+.ft-min {
+  text-align: center;
+  padding: 2.4rem 1.4rem;
+  border-top: 1px solid var(--f-line);
+}
+.ft-min-logo {
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.ft-min-links {
+  display: flex; justify-content: center; gap: 1.4rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.88rem;
+}
+.ft-min-links a {
+  color: var(--f-muted);
+  text-decoration: none;
+}
+.ft-min-links a:hover { color: var(--f-fg); }
+.ft-min-copy { font-size: 0.78rem; color: var(--f-muted); }
+.ft-min-social { display: flex; justify-content: center; gap: 0.4rem; margin: 1rem 0; }
+.ft-min-social a {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--f-bg-2);
+  display: grid; place-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+.ft-min-social a:hover { background: rgba(255,255,255,0.08); }
+
+/* 2. 4-COL CORPORATE */
+.ft-4col {
+  padding: 3rem 1.4rem 1.4rem;
+  border-top: 1px solid var(--f-line);
+}
+.ft-4col-grid {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, 1fr);
+  gap: 2.4rem;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+}
+.ft-4col-brand h3 {
+  margin: 0 0 0.6rem;
+  font-size: 1.05rem; font-weight: 800;
+}
+.ft-4col-brand p {
+  color: var(--f-muted);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  margin: 0 0 1rem;
+  max-width: 280px;
+}
+.ft-4col h4 {
+  font-size: 0.74rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--f-muted);
+  margin: 0 0 0.6rem;
+}
+.ft-4col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.35rem; }
+.ft-4col ul a {
+  color: var(--f-fg);
+  text-decoration: none;
+  font-size: 0.88rem;
+  opacity: 0.85;
+  transition: opacity 0.18s ease;
+}
+.ft-4col ul a:hover { opacity: 1; }
+.ft-4col-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--f-line);
+  font-size: 0.78rem;
+  color: var(--f-muted);
+  flex-wrap: wrap; gap: 0.5rem;
+  max-width: 1200px; margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .ft-4col-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .ft-4col-grid { grid-template-columns: 1fr; }
+}
+
+/* 3. NEWSLETTER STRIPE — Big subscribe band */
+.ft-news {
+  padding: 3rem 1.4rem;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.1));
+  border-top: 1px solid var(--f-line);
+  text-align: center;
+}
+.ft-news h3 {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.6rem;
+}
+.ft-news p {
+  color: var(--f-muted);
+  font-size: 0.95rem;
+  margin: 0 0 1.4rem;
+  max-width: 480px;
+  margin-left: auto; margin-right: auto;
+}
+.ft-news-form {
+  display: inline-flex; gap: 0.4rem;
+  max-width: 420px;
+  width: 100%;
+}
+.ft-news-form input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--f-fg);
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font: inherit;
+  outline: 0;
+}
+.ft-news-form button {
+  appearance: none; border: 0;
+  padding: 0.7rem 1.4rem;
+  background: var(--f-fg); color: #14141e;
+  border-radius: 10px;
+  font: inherit; font-weight: 700;
+  cursor: pointer;
+}
+
+/* 4. MEGA LINK GRID — Many links organized */
+.ft-mega {
+  padding: 3rem 1.4rem 1.4rem;
+  border-top: 1px solid var(--f-line);
+}
+.ft-mega-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.4rem 2rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.ft-mega h4 {
+  font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--f-fg);
+  margin: 0 0 0.5rem;
+}
+.ft-mega ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.3rem; }
+.ft-mega ul a {
+  color: var(--f-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+}
+.ft-mega ul a:hover { color: var(--f-fg); }
+.ft-mega-tag {
+  margin-left: 0.3rem;
+  padding: 0.05rem 0.3rem;
+  background: rgba(139, 92, 246, 0.18);
+  color: var(--f-accent);
+  border-radius: 3px;
+  font-size: 0.62rem; font-weight: 700;
+}
+
+/* 5. STICKY BOTTOM CTA — Fixed bottom strip */
+.ft-sticky {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: rgba(20, 20, 30, 0.92);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--f-line);
+  z-index: 100;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+.ft-sticky.is-hidden { transform: translateY(100%); }
+.ft-sticky-msg {
+  flex: 1; min-width: 0;
+  font-size: 0.88rem;
+}
+.ft-sticky-msg b { font-weight: 700; }
+.ft-sticky-msg span { color: var(--f-muted); margin-left: 0.4rem; }
+.ft-sticky-actions { display: flex; gap: 0.4rem; }
+.ft-sticky-actions button {
+  appearance: none; border: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font: inherit; font-weight: 600; font-size: 0.85rem;
+  cursor: pointer;
+}
+.ft-sticky-actions .primary { background: var(--f-accent); color: #fff; }
+.ft-sticky-actions .ghost { background: transparent; color: var(--f-muted); }
+
+/* 6. SIGNATURE ART — Big artistic footer with huge text + signature */
+.ft-sig {
+  padding: 4rem 1.4rem 2rem;
+  border-top: 1px solid var(--f-line);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.ft-sig-big {
+  font-size: clamp(3rem, 12vw, 9rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  margin: 0;
+  background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.1) 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+}
+.ft-sig-meta {
+  display: flex; justify-content: space-between;
+  margin-top: 2rem;
+  font-size: 0.78rem;
+  color: var(--f-muted);
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.ft-sig-links { display: flex; gap: 1.2rem; }
+.ft-sig-links a { color: inherit; text-decoration: none; }
+.ft-sig-links a:hover { color: var(--f-fg); }

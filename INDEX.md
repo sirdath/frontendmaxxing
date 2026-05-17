@@ -2388,3 +2388,38 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **micro-interactions-pack.js** `micro/micro-interactions-pack.js` (JS, global: `MicroIx`) — tags: micro-interactions-pack like copy share follow bookmark draft kbd combo shake badge bump clipboard
   `MicroIx.like({onToggle})`, `.copy({text})` (clipboard + tick), `.share()` (radial menu open/close), `.follow({onToggle})`, `.bookmark({onToggle})`, `.draft({simulate})` (idle/saving/saved states), `.kbd({combo, onTrigger})` (e.g. 'mod+k'), `.shake()`, `.badge()` (bump with optional next value).
+
+**Phase 23 — Marketing & tools: datetime / color-tools / error-pages / table-2 / empty-states / pricing / header / footer / notifications / image-tools (11 files, ~59 patterns)**
+
+**datetime-pack.css** `components/datetime-pack.css` (CSS) — tags: datetime-pack date-range-picker two-month time-picker-wheel ios datetime-popover year-view week-view recurrence-builder presets every weekly weekdays
+  6 date/time pickers: date-range-picker (two-month w/ in-range highlight + presets), time-picker-wheel (3 spinning columns w/ snap), datetime-popover (date/time tabs), year-view (12-month grid), week-view (7-day timeline w/ event overlay), recurrence-builder ("Every N days/weeks/months" w/ day picker + summary).
+
+**color-tools-pack.css** `components/color-tools-pack.css` (CSS) — tags: color-tools-pack square-picker hsl ring conic palette-grid gradient-stops tailwind shades contrast-checker wcag hex
+  6 color tools: square-picker (saturation + hue slider), ring-hsl (conic ring), palette-grid (named swatches), gradient-stops (stop track w/ add/active), tailwind-palette (rows × shades), contrast-checker (live preview + ratio + WCAG grades).
+
+**error-pages.css** `components/error-pages.css` (CSS) — tags: error-pages 404 not-found 500 server-error 403 forbidden 503 maintenance coming-soon paused-billing countdown gradient
+  6 full-page error states: 404 (gradient blobs + huge gradient num), 500 (red glow + stack trace), 403 (lock icon), 503 (animated gears + ETA), coming-soon (countdown cells + email form), paused-billing (red card + amount).
+
+**table-pack-2.css** `components/table-pack-2.css` (CSS) — tags: table-pack-2 advanced sortable sticky-header column-resizer row-actions expandable density-toggle dense comfy status-pill avatar checkbox pagination empty loading
+  Advanced data table: sortable headers, sticky-header, column-resizer, row-actions on hover, expandable row, density toggle (dense/default/comfy), inline status pills, avatar cells, checkbox column, toolbar w/ search, pagination footer, empty + loading states.
+
+**table-pack-2.js** `components/table-pack-2.js` (JS, global: `TablePack2`) — tags: table-pack-2 data sort filter paginate columns render accessor onRow onSelect refresh setData
+  `TablePack2.init({data, columns: [{key, label, sortable, render, accessor}], pageSize, onRow, onSelect})`. Sort by header, search filter, pagination buttons, returns `{refresh, setData, getSelected}`.
+
+**empty-states-pack-2.css** `components/empty-states-pack-2.css` (CSS) — tags: empty-states-pack-2 no-results first-time inbox-zero no-permission lock draft filter expired hourglass success all-done illustration
+  8 empty/zero-data states: no-results, first-time (welcome), inbox-zero (celebrate + bounce), no-permission (lock), draft, filter (funnel), expired (rocking hourglass), success-all-done (big check). Small variant.
+
+**pricing-tables-pack.css** `components/pricing-tables-pack.css` (CSS) — tags: pricing-tables-pack 3-tier featured popular comparison-bar single-plan slider-pricing usage horizontal-3col addon-grid mix-match
+  6 pricing layouts: 3-tier classic w/ featured scale, comparison-bar (feature horizontal bars), single-plan-card (huge featured), slider-pricing (usage slider updates price), horizontal-3col (compact), addon-grid (pick & mix).
+
+**header-pack.css** `components/header-pack.css` (CSS) — tags: header-pack centered-logo mega-menu hover transparent-on-top dual-bar announcement-strip-attached breadcrumb-header search-prominent mobile-hamburger sticky
+  8 header variants: centered-logo, mega-menu w/ hover panel, transparent-on-top (becomes solid on scroll), dual-bar, announcement-strip-attached, breadcrumb-header, search-prominent, mobile-hamburger w/ slide panel.
+
+**footer-pack-2.css** `components/footer-pack-2.css` (CSS) — tags: footer-pack-2 minimal-centered 4-col-corporate newsletter-stripe mega-link-grid sticky-bottom-cta signature-art big-text gradient-bg
+  6 footer variants: minimal-centered, 4-col corporate, newsletter-stripe (gradient bg), mega-link-grid (auto-fit), sticky-bottom-cta (fixed), signature-art (huge gradient name).
+
+**notifications-pro.css** `feedback/notifications-pro.css` (CSS) — tags: notifications-pro alert-pro success warn error info dismissible notification-row inbox unread notification-popover bell dropdown floating-action-pill linear action-required-banner push-permission slack-mention
+  7 notification patterns: alert-pro (4 types w/ icon + actions + dismiss), notification-row (avatar + tag + read state), notification-popover (dropdown w/ tabs + scrollable list), floating-action-pill, action-required-banner, push-permission-prompt, slack-mention card.
+
+**image-tools.css** `media/image-tools.css` (CSS) — tags: image-tools crop-overlay rule-of-thirds rotate-controls flip filter-strip presets brightness-contrast saturation exposure undo-redo
+  5 image-editor patterns: crop-overlay (dim mask + adjustable rect + 3x3 grid + corner handles), rotate-controls (90° steps + freeform slider), filter-strip (8 CSS filter presets: warm/cool/bw/fade/vintage/vivid/matte/noir), brightness-contrast sliders, undo-redo bar.

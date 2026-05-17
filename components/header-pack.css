@@ -1,0 +1,298 @@
+/* ============================================
+   HEADER PACK — 8 navbar / header variants (distinct from existing components/navbars)
+   centered-logo, mega-menu-hover, transparent-on-top, dual-bar,
+   announcement-strip-attached, breadcrumb-header, search-prominent, mobile-hamburger
+   ============================================ */
+
+:where(.hd-cent, .hd-mega, .hd-trans, .hd-dual, .hd-ann, .hd-bcrumb, .hd-srch, .hd-mob) {
+  --h-bg: #14141e;
+  --h-fg: #f5f5fa;
+  --h-muted: rgba(245, 245, 250, 0.55);
+  --h-line: rgba(255, 255, 255, 0.08);
+  --h-accent: #8b5cf6;
+  color: var(--h-fg);
+  font-family: inherit;
+}
+
+/* 1. CENTERED LOGO — Nav on either side, logo middle */
+.hd-cent {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: var(--h-bg);
+  border-bottom: 1px solid var(--h-line);
+}
+.hd-cent-nav-l, .hd-cent-nav-r {
+  display: flex; gap: 1rem;
+  align-items: center;
+  font-size: 0.88rem;
+}
+.hd-cent-nav-r { justify-content: flex-end; }
+.hd-cent-logo {
+  font-weight: 800; letter-spacing: -0.02em;
+  font-size: 1.05rem;
+}
+.hd-cent a { color: var(--h-fg); text-decoration: none; }
+.hd-cent a:hover { color: var(--h-accent); }
+
+/* 2. MEGA MENU ON HOVER — Big dropdown panels */
+.hd-mega {
+  position: relative;
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.8rem 1.2rem;
+  background: var(--h-bg);
+  border-bottom: 1px solid var(--h-line);
+}
+.hd-mega-item {
+  position: relative;
+}
+.hd-mega-link {
+  padding: 0.55rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.88rem; font-weight: 500;
+  background: transparent; border: 0;
+  color: var(--h-fg);
+}
+.hd-mega-link:hover { background: rgba(255,255,255,0.05); }
+.hd-mega-panel {
+  position: absolute;
+  top: 100%; left: 0;
+  margin-top: 8px;
+  width: 480px;
+  background: var(--h-bg);
+  border: 1px solid var(--h-line);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 16px 40px -10px rgba(0,0,0,0.4);
+  opacity: 0; transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 50;
+}
+.hd-mega-item:hover .hd-mega-panel { opacity: 1; transform: none; pointer-events: auto; }
+.hd-mega-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+.hd-mega-tile {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+.hd-mega-tile:hover { background: rgba(255,255,255,0.04); }
+.hd-mega-ic {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: rgba(139,92,246,0.18);
+  color: var(--h-accent);
+  display: grid; place-items: center;
+  font-size: 0.78rem;
+}
+.hd-mega-name { font-weight: 600; font-size: 0.88rem; }
+.hd-mega-desc { font-size: 0.74rem; color: var(--h-muted); margin-top: 0.1rem; }
+
+/* 3. TRANSPARENT ON TOP — Becomes solid on scroll */
+.hd-trans {
+  position: sticky; top: 0;
+  display: flex; align-items: center;
+  padding: 1rem 1.4rem;
+  background: transparent;
+  z-index: 50;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+.hd-trans.is-stuck {
+  background: rgba(20, 20, 30, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom-color: var(--h-line);
+}
+.hd-trans-logo { font-weight: 800; letter-spacing: -0.02em; }
+.hd-trans-nav { display: flex; gap: 0.4rem; margin-left: 2rem; }
+.hd-trans-nav a {
+  padding: 0.4rem 0.8rem;
+  color: var(--h-fg);
+  text-decoration: none;
+  font-size: 0.88rem;
+  border-radius: 6px;
+}
+.hd-trans-nav a:hover { background: rgba(255,255,255,0.06); }
+.hd-trans-actions { margin-left: auto; display: flex; gap: 0.4rem; }
+
+/* 4. DUAL BAR — Two stacked bars (utility + nav) */
+.hd-dual { background: var(--h-bg); border-bottom: 1px solid var(--h-line); }
+.hd-dual-top {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.4rem 1.2rem;
+  font-size: 0.78rem;
+  color: var(--h-muted);
+  border-bottom: 1px solid var(--h-line);
+  background: rgba(255,255,255,0.02);
+}
+.hd-dual-links { display: flex; gap: 0.7rem; margin-left: auto; }
+.hd-dual-links a {
+  color: var(--h-muted);
+  text-decoration: none;
+}
+.hd-dual-links a:hover { color: var(--h-fg); }
+.hd-dual-main {
+  display: flex; align-items: center; gap: 1.2rem;
+  padding: 0.8rem 1.2rem;
+}
+.hd-dual-nav { display: flex; gap: 0.4rem; margin-left: auto; align-items: center; }
+
+/* 5. ANNOUNCEMENT STRIP ATTACHED — Stripe-style top strip */
+.hd-ann {
+  background: var(--h-bg);
+  border-bottom: 1px solid var(--h-line);
+}
+.hd-ann-strip {
+  background: linear-gradient(90deg, #8b5cf6, #ec4899);
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.82rem;
+  display: flex; justify-content: center; align-items: center; gap: 0.5rem;
+}
+.hd-ann-strip b { font-weight: 700; }
+.hd-ann-strip a {
+  color: #fff;
+  text-decoration: underline;
+  font-weight: 600;
+}
+.hd-ann-strip-x {
+  margin-left: auto;
+  appearance: none; border: 0;
+  background: transparent;
+  color: #fff;
+  width: 22px; height: 22px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.hd-ann-bar {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.7rem 1.2rem;
+}
+
+/* 6. BREADCRUMB HEADER — Path + page title */
+.hd-bcrumb {
+  padding: 1.2rem 1.4rem;
+  background: var(--h-bg);
+  border-bottom: 1px solid var(--h-line);
+}
+.hd-bcrumb-path {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--h-muted);
+  margin-bottom: 0.5rem;
+}
+.hd-bcrumb-path a {
+  color: inherit;
+  text-decoration: none;
+}
+.hd-bcrumb-path a:hover { color: var(--h-fg); }
+.hd-bcrumb-path .sep::before { content: '/'; opacity: 0.5; }
+.hd-bcrumb-title {
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.hd-bcrumb-title h1 {
+  margin: 0; font-size: 1.6rem; font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.hd-bcrumb-actions { margin-left: auto; display: flex; gap: 0.4rem; }
+
+/* 7. SEARCH PROMINENT — Big centered search */
+.hd-srch {
+  padding: 1rem 1.4rem;
+  background: var(--h-bg);
+  border-bottom: 1px solid var(--h-line);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+.hd-srch-logo { font-weight: 800; font-size: 1.1rem; }
+.hd-srch-input {
+  position: relative;
+  max-width: 540px;
+  margin: 0 auto;
+  width: 100%;
+}
+.hd-srch-input input {
+  width: 100%; box-sizing: border-box;
+  background: var(--h-bg);
+  border: 1px solid var(--h-line);
+  color: var(--h-fg);
+  padding: 0.6rem 3rem 0.6rem 2.4rem;
+  border-radius: 999px;
+  font: inherit;
+  outline: 0;
+}
+.hd-srch-input::before {
+  content: '🔍';
+  position: absolute;
+  left: 0.8rem; top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 0.85rem;
+  color: var(--h-muted);
+}
+.hd-srch-actions { display: flex; gap: 0.4rem; }
+
+/* 8. MOBILE HAMBURGER — Hamburger + slide menu */
+.hd-mob {
+  position: relative;
+  background: var(--h-bg);
+  border-bottom: 1px solid var(--h-line);
+}
+.hd-mob-bar {
+  display: flex; align-items: center;
+  padding: 0.8rem 1rem;
+}
+.hd-mob-burger {
+  appearance: none; border: 0;
+  width: 36px; height: 36px;
+  background: transparent;
+  color: var(--h-fg);
+  cursor: pointer;
+  display: grid; place-items: center;
+  font-size: 1.2rem;
+}
+.hd-mob-logo {
+  font-weight: 800;
+  margin-left: 0.4rem;
+}
+.hd-mob-actions { margin-left: auto; }
+.hd-mob-panel {
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: var(--h-bg);
+  border-bottom: 1px solid var(--h-line);
+  padding: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.hd-mob.is-open .hd-mob-panel {
+  max-height: 480px;
+}
+.hd-mob-panel a {
+  display: block;
+  padding: 0.55rem 0.8rem;
+  border-radius: 6px;
+  color: var(--h-fg);
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+.hd-mob-panel a:hover { background: rgba(255,255,255,0.04); }
+.hd-mob-panel hr {
+  border: 0; border-top: 1px solid var(--h-line);
+  margin: 0.4rem 0;
+}

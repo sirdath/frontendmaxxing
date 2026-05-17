@@ -1,0 +1,307 @@
+/* ============================================
+   PRICING TABLES PACK — 6 pricing layouts
+   3-tier-classic, comparison-bar, single-plan-card, slider-pricing,
+   horizontal-3col, addon-grid
+   ============================================ */
+
+:where(.pr-tier, .pr-bar, .pr-single, .pr-slide, .pr-horiz, .pr-addon) {
+  --p-bg: #14141e;
+  --p-bg-2: #1f1f2e;
+  --p-fg: #f5f5fa;
+  --p-muted: rgba(245, 245, 250, 0.55);
+  --p-line: rgba(255, 255, 255, 0.08);
+  --p-accent: #8b5cf6;
+  color: var(--p-fg);
+  font-family: inherit;
+}
+
+/* 1. 3-TIER CLASSIC — Free / Pro / Enterprise */
+.pr-tier {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  width: 100%; max-width: 920px;
+}
+.pr-tier-card {
+  padding: 1.6rem 1.4rem;
+  background: var(--p-bg);
+  border: 1px solid var(--p-line);
+  border-radius: 16px;
+  position: relative;
+}
+.pr-tier-card.featured {
+  border-color: var(--p-accent);
+  background: linear-gradient(160deg, rgba(139,92,246,0.08), transparent);
+  transform: scale(1.05);
+}
+.pr-tier-card.featured::before {
+  content: 'Most popular';
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--p-accent); color: #fff;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+}
+.pr-tier-name { font-weight: 700; font-size: 1.1rem; }
+.pr-tier-desc { color: var(--p-muted); font-size: 0.85rem; margin: 0.3rem 0 1rem; }
+.pr-tier-price {
+  font-size: 2.6rem; font-weight: 800;
+  letter-spacing: -0.03em; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.pr-tier-price small { font-size: 0.78rem; color: var(--p-muted); font-weight: 500; margin-left: 0.3em; }
+.pr-tier-feats {
+  list-style: none; margin: 1.4rem 0; padding: 0;
+  display: grid; gap: 0.45rem;
+}
+.pr-tier-feats li::before { content: '✓ '; color: var(--p-accent); font-weight: 700; }
+.pr-tier-cta {
+  appearance: none; border: 0; width: 100%;
+  padding: 0.8rem;
+  background: var(--p-bg-2);
+  color: var(--p-fg);
+  border-radius: 10px;
+  font: inherit; font-weight: 600; font-size: 0.92rem;
+  cursor: pointer;
+}
+.pr-tier-card.featured .pr-tier-cta { background: var(--p-accent); color: #fff; }
+
+@media (max-width: 768px) {
+  .pr-tier { grid-template-columns: 1fr; }
+  .pr-tier-card.featured { transform: none; }
+}
+
+/* 2. COMPARISON BAR — Horizontal compare bars */
+.pr-bar {
+  width: 100%; max-width: 540px;
+  padding: 1rem 1.2rem;
+  background: var(--p-bg);
+  border: 1px solid var(--p-line);
+  border-radius: 12px;
+}
+.pr-bar-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 80px;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.55rem 0;
+}
+.pr-bar-row + .pr-bar-row { border-top: 1px solid var(--p-line); }
+.pr-bar-name { font-weight: 600; font-size: 0.88rem; }
+.pr-bar-track {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.pr-bar-track > i {
+  display: block; height: 100%;
+  width: var(--p, 60%);
+  background: linear-gradient(90deg, var(--p-accent), #ec4899);
+  border-radius: inherit;
+}
+.pr-bar-val {
+  text-align: right;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 3. SINGLE PLAN CARD — One huge featured plan */
+.pr-single {
+  width: 100%; max-width: 460px;
+  padding: 2.4rem 2rem;
+  background: linear-gradient(160deg, #1f1f2e, #14141e);
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.pr-single::before, .pr-single::after {
+  content: '';
+  position: absolute;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+.pr-single::before { background: #8b5cf6; top: -50px; left: -50px; }
+.pr-single::after  { background: #ec4899; bottom: -50px; right: -50px; }
+.pr-single h3 { margin: 0 0 0.6rem; font-size: 1.3rem; position: relative; }
+.pr-single-price {
+  font-size: 4rem; font-weight: 900;
+  letter-spacing: -0.04em; line-height: 1;
+  margin: 0.4rem 0;
+  background: linear-gradient(135deg, #fff, #c4b5fd);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+.pr-single-price small {
+  font-size: 0.85rem; font-weight: 500; color: var(--p-muted);
+  -webkit-text-fill-color: var(--p-muted);
+  margin-left: 0.2em;
+}
+.pr-single-feats {
+  list-style: none; padding: 0; margin: 1.4rem 0;
+  display: grid; gap: 0.4rem;
+  text-align: left;
+  position: relative;
+}
+.pr-single-feats li { padding: 0.2rem 0 0.2rem 1.6rem; position: relative; }
+.pr-single-feats li::before {
+  content: '✓';
+  position: absolute; left: 0;
+  width: 18px; height: 18px;
+  background: var(--p-accent); color: #fff;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 0.7rem; font-weight: 800;
+}
+.pr-single-cta {
+  appearance: none; border: 0;
+  width: 100%; padding: 1rem;
+  background: linear-gradient(135deg, var(--p-accent), #ec4899);
+  color: #fff;
+  border-radius: 12px;
+  font: inherit; font-weight: 700; font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+}
+
+/* 4. SLIDER PRICING — Usage slider that updates price */
+.pr-slide {
+  width: 100%; max-width: 480px;
+  padding: 1.4rem 1.6rem;
+  background: var(--p-bg);
+  border: 1px solid var(--p-line);
+  border-radius: 14px;
+}
+.pr-slide-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 1rem;
+}
+.pr-slide-label { color: var(--p-muted); font-size: 0.85rem; }
+.pr-slide-val {
+  font-size: 1.4rem; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.pr-slide-input {
+  --p-pct: 50%;
+  width: 100%;
+  appearance: none;
+  height: 6px;
+  background: linear-gradient(90deg, var(--p-accent) 0 var(--p-pct), rgba(255,255,255,0.08) var(--p-pct) 100%);
+  border-radius: 3px;
+  outline: 0;
+}
+.pr-slide-input::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--p-accent);
+  border: 3px solid var(--p-bg);
+  box-shadow: 0 0 0 1px var(--p-accent);
+  cursor: grab;
+}
+.pr-slide-stops {
+  display: flex; justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  color: var(--p-muted);
+}
+.pr-slide-price {
+  text-align: center;
+  margin: 1.4rem 0 0.7rem;
+}
+.pr-slide-price b {
+  font-size: 2.4rem; font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.pr-slide-price small { color: var(--p-muted); display: block; font-size: 0.82rem; }
+.pr-slide-cta {
+  appearance: none; border: 0; width: 100%;
+  padding: 0.8rem;
+  background: var(--p-accent); color: #fff;
+  border-radius: 10px;
+  font: inherit; font-weight: 600;
+  cursor: pointer;
+}
+
+/* 5. HORIZONTAL 3-COL — Side-by-side compact */
+.pr-horiz {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--p-line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--p-bg);
+}
+.pr-horiz-col {
+  padding: 1rem 1.2rem;
+  text-align: center;
+  border-right: 1px solid var(--p-line);
+}
+.pr-horiz-col:last-child { border-right: 0; }
+.pr-horiz-col.featured { background: rgba(139,92,246,0.06); }
+.pr-horiz-name { font-weight: 700; font-size: 0.92rem; }
+.pr-horiz-price { font-size: 1.6rem; font-weight: 800; margin: 0.4rem 0 0.8rem; }
+.pr-horiz-cta {
+  appearance: none; border: 0;
+  padding: 0.45rem 0.9rem;
+  background: var(--p-bg-2);
+  color: var(--p-fg);
+  border-radius: 6px;
+  font: inherit; font-size: 0.78rem; font-weight: 600;
+  cursor: pointer;
+}
+.pr-horiz-col.featured .pr-horiz-cta { background: var(--p-accent); color: #fff; }
+
+/* 6. ADDON GRID — Pick & mix add-ons */
+.pr-addon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.5rem;
+  width: 100%; max-width: 720px;
+}
+.pr-addon-card {
+  padding: 1rem 1.1rem;
+  background: var(--p-bg);
+  border: 1.5px solid var(--p-line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.18s ease;
+}
+.pr-addon-card:hover { border-color: rgba(139,92,246,0.4); }
+.pr-addon-card.is-picked {
+  border-color: var(--p-accent);
+  background: rgba(139,92,246,0.06);
+}
+.pr-addon-head { display: flex; justify-content: space-between; align-items: start; }
+.pr-addon-name { font-weight: 600; font-size: 0.92rem; }
+.pr-addon-tick {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--p-line);
+}
+.pr-addon-card.is-picked .pr-addon-tick {
+  background: var(--p-accent); border-color: var(--p-accent);
+  display: grid; place-items: center;
+}
+.pr-addon-card.is-picked .pr-addon-tick::after {
+  content: '✓'; color: #fff; font-size: 0.72rem; font-weight: 800;
+}
+.pr-addon-price {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0.4rem 0;
+  font-variant-numeric: tabular-nums;
+}
+.pr-addon-desc { color: var(--p-muted); font-size: 0.78rem; line-height: 1.5; margin: 0; }
