@@ -547,14 +547,14 @@
 
     loadSource(entry.path).then(function (source) {
       if (!source) {
-        return renderFallback(target, entry, null);
+        return renderFallback(target, entry, null, null);
       }
       var usage = extractUsageBlock(source);
       var html = extractHtmlBlock(usage);
 
       if (!html) {
-        // No HTML found — show code preview of Usage block
-        return renderFallback(target, entry, usage);
+        // No HTML found — try class-variant preview tiles fallback
+        return renderFallback(target, entry, usage, source);
       }
 
       // Render the HTML
@@ -576,23 +576,102 @@
         setTimeout(function () { tryAutoInit(stage, entry, usage); }, 30);
       }
     }).catch(function () {
-      renderFallback(target, entry, null);
+      renderFallback(target, entry, null, null);
     });
   }
 
-  function renderFallback(target, entry, usage) {
+  function renderFallback(target, entry, usage, source) {
     var icon = (FOLDER_DESCRIPTIONS[entry.folder] && FOLDER_DESCRIPTIONS[entry.folder].icon) || '•';
     var hasUsage = usage && usage.trim().length;
+
+    // If this is a CSS entry and we have the source, try class-variant preview tiles
+    var variantPreview = '';
+    if (entry.kind === 'CSS' && source) {
+      variantPreview = buildVariantPreview(source);
+    }
+
     target.innerHTML =
       '<div style="display:flex;flex-direction:column;align-items:center;gap:0.85rem;padding:1.5rem 1rem;text-align:center;width:100%;">' +
         '<div style="font-size:1.8rem;">' + icon + '</div>' +
         '<div style="font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.85rem;font-weight:600;color:#fff;">' + esc(entry.file) + '</div>' +
-        '<div style="font-size:0.78rem;color:rgba(255,255,255,0.65);max-width:480px;line-height:1.5;">' + esc(entry.desc) + '</div>' +
+        '<div style="font-size:0.78rem;color:rgba(255,255,255,0.65);max-width:580px;line-height:1.5;">' + esc(entry.desc) + '</div>' +
+        variantPreview +
         (hasUsage
-          ? '<pre style="margin:0.4rem 0 0;padding:0.7rem 0.9rem;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);border-radius:6px;font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.72rem;line-height:1.55;text-align:left;max-width:580px;width:100%;overflow-x:auto;color:#d4d4dc;white-space:pre-wrap;">' + esc(usage) + '</pre>'
-          : '<div style="font-size:0.72rem;color:rgba(255,255,255,0.4);">No usage example in header. Click <b>Source</b> tab for the full file.</div>'
+          ? '<details style="width:100%;max-width:580px;font-size:0.7rem;color:rgba(255,255,255,0.45);"><summary style="cursor:pointer;user-select:none;padding:0.25rem 0;">Show usage source</summary><pre style="margin:0.3rem 0 0;padding:0.6rem 0.75rem;background:rgba(0,0,0,0.4);border-radius:6px;font-family:ui-monospace,SF Mono,Menlo,monospace;font-size:0.7rem;line-height:1.5;overflow-x:auto;color:#d4d4dc;white-space:pre-wrap;">' + esc(usage) + '</pre></details>'
+          : '<div style="font-size:0.72rem;color:rgba(255,255,255,0.4);">Open the <b>Source</b> tab for the full file.</div>'
         ) +
       '</div>';
+  }
+
+  // Extract top-level class names from CSS source and group by prefix.
+  // Then render a preview "wall" with one tile per variant.
+  function buildVariantPreview(source) {
+    // Strip /* … */ comments to avoid matching example markup inside header
+    var clean = source.replace(/\/\*[\s\S]*?\*\//g, '');
+
+    // Find class selectors used in rule heads (left-side, before {).
+    // Capture all .name-foo style class identifiers across the file.
+    var classes = {};
+    var ruleHeads = clean.match(/^[^{}\n][^{}]*\{/gm) || [];
+    ruleHeads.forEach(function (head) {
+      // Skip @-rules and :where/:is/:has wrappers
+      head = head.replace(/:where\([^)]*\)|:is\([^)]*\)|:has\([^)]*\)/g, '');
+      var rx = /\.([a-z][a-z0-9_-]*)/gi;
+      var m;
+      while ((m = rx.exec(head)) !== null) {
+        var n = m[1];
+        // Skip overly long names, pseudo-state classes, modifier flags
+        if (n.length < 2 || n.length > 50) continue;
+        if (/^is-|^has-/.test(n)) continue;
+        classes[n] = (classes[n] || 0) + 1;
+      }
+    });
+
+    var names = Object.keys(classes);
+    if (names.length < 2) return '';
+
+    // Find common prefix(es). Group classes by their first hyphen-segment.
+    var groups = {};
+    names.forEach(function (n) {
+      var parts = n.split('-');
+      // Use 2-segment prefix for namespace-rich variants, else 1.
+      var prefix = parts.length >= 2 ? parts[0] + '-' + parts[1] : parts[0];
+      // If the single-segment prefix is a known root class (matches a standalone classname), use that instead.
+      if (classes[parts[0]] && parts.length > 1) prefix = parts[0];
+      if (!groups[prefix]) groups[prefix] = [];
+      groups[prefix].push(n);
+    });
+
+    // Pick the largest variant group
+    var bestKey = null, bestCount = 0;
+    Object.keys(groups).forEach(function (k) {
+      if (groups[k].length > bestCount) { bestCount = groups[k].length; bestKey = k; }
+    });
+    if (!bestKey || bestCount < 2) return '';
+    var variants = groups[bestKey].slice(0, 24); // cap at 24 tiles
+
+    // Determine if we have a "base" class (the root one without variant suffix)
+    var baseGuess = bestKey;
+    var hasBase = classes[baseGuess] && variants.indexOf(baseGuess) !== -1;
+    var withoutBase = hasBase ? variants.filter(function (n) { return n !== baseGuess; }) : variants;
+
+    if (withoutBase.length === 0) return '';
+
+    // Render tiles
+    var tiles = withoutBase.map(function (v) {
+      var classes = hasBase ? baseGuess + ' ' + v : v;
+      var label = v.replace(baseGuess + '-', '').replace(baseGuess, '') || v;
+      return '<div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;">' +
+                '<div class="' + classes + '" style="min-width:64px;min-height:32px;display:grid;place-items:center;padding:0.4rem 0.7rem;">' +
+                  '<span style="font-size:0.72rem;font-family:ui-monospace,monospace;opacity:0.85;">' + esc(label || '·') + '</span>' +
+                '</div>' +
+              '</div>';
+    }).join('');
+
+    return '<div style="margin:0.6rem 0 0.2rem;font-size:0.7rem;color:rgba(255,255,255,0.4);letter-spacing:0.06em;text-transform:uppercase;">' + esc(bestCount) + ' variant' + (bestCount > 1 ? 's' : '') + ' detected · prefix <code style="background:rgba(255,255,255,0.06);padding:0 4px;border-radius:3px;">' + esc(bestKey) + '</code></div>' +
+           '<div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;justify-content:center;max-width:720px;width:100%;padding:0.8rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:10px;">' +
+             tiles +
+           '</div>';
   }
 
   // ===== Utility =====
