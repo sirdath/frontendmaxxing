@@ -1,6 +1,6 @@
 # AGENTS.md — Read this first
 
-This folder is a **vanilla CSS+JS snippet vault** — 481 standalone, copy-paste-ready files for frontend design. Zero build step. Zero dependencies (except Three.js for `3d/*` snippets via CDN).
+This folder is a **vanilla CSS+JS snippet vault** — 765 standalone, copy-paste-ready files for frontend design. Zero build step. Zero dependencies (except Three.js for `3d/*` and GSAP for `gsap/*`, both loaded via CDN). Live demo: https://sirdath.github.io/frontendmaxxing/demo/ · For JS animation read [`gsap.skill.md`](gsap.skill.md) first.
 
 ## What you do here
 
@@ -17,6 +17,7 @@ This folder is a **vanilla CSS+JS snippet vault** — 481 standalone, copy-paste
 | `AGENTS.md` (this file) | Entry point + conventions | First time landing in folder |
 | `INDEX.md` | Tagged inventory of every file (~1800 lines) | Whenever finding/adding a snippet |
 | `gradients.skill.md` | Gradient-specific decision tree | Anything involving color blends, holo, mesh, brand recreations |
+| `gsap.skill.md` | GSAP/JS-animation decision tree (CSS vs GSAP, free-plugin fact, ScrollTrigger/timeline/Flip) | Any JavaScript animation, scroll-driven motion, timelines, `gsap/*` snippets |
 | `demo/index.html` | Live preview of every snippet | When adding a new file (must register) |
 | `MEMORY.md` (separate, in user memory dir) | Phase summaries | Already loaded for Claude — auto-consulted |
 

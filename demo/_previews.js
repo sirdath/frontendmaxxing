@@ -4460,4 +4460,215 @@
       '</div>';
   };
 
+  // ============================================
+  // GSAP snippets — loaded via CDN by _app.js
+  // ============================================
+  function waitForGsap(cb, tries) {
+    tries = tries || 0;
+    if (window.gsap) return cb();
+    if (tries > 60) return;
+    setTimeout(function () { waitForGsap(cb, tries + 1); }, 80);
+  }
+  function gsapStage(target, inner, note) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.7rem;width:100%;">' +
+        '<div data-gsap-stage style="width:100%;max-width:540px;background:#0b0b16;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem;overflow:hidden;">' + inner + '</div>' +
+        (note ? '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);text-align:center;max-width:480px;">' + note + '</div>' : '') +
+        '<button data-gsap-replay style="padding:0.4rem 1rem;background:rgba(34,197,94,0.16);border:1px solid #22c55e;border-radius:6px;color:#86efac;font-size:0.78rem;cursor:pointer;font-weight:600;">↻ Replay</button>' +
+      '</div>';
+    return target.querySelector('[data-gsap-stage]');
+  }
+  function gsapReplay(target, fn) {
+    var btn = target.querySelector('[data-gsap-replay]');
+    if (btn) btn.addEventListener('click', fn);
+  }
+
+  P['gsap/scroll-reveal.js'] = function (target) {
+    var cells = [1,2,3,4,5,6].map(function (i) {
+      return '<div class="dapp-gr-cell" style="height:54px;border-radius:8px;background:linear-gradient(135deg,#8b5cf6,#ec4899);display:grid;place-items:center;color:#fff;font-weight:700;">' + i + '</div>';
+    }).join('');
+    var stage = gsapStage(target,
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;">' + cells + '</div>',
+      'In-page ScrollReveal demo (plays immediately here; in real use it triggers on scroll).');
+    function run() {
+      waitForGsap(function () {
+        var els = stage.querySelectorAll('.dapp-gr-cell');
+        window.gsap.set(els, { y: 40, autoAlpha: 0 });
+        window.gsap.to(els, { y: 0, autoAlpha: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out' });
+      });
+    }
+    run(); gsapReplay(target, run);
+  };
+
+  P['gsap/stagger-grid.js'] = function (target) {
+    var cells = Array.from({ length: 25 }, function (_, i) {
+      return '<div class="dapp-sg-cell" style="aspect-ratio:1;border-radius:6px;background:hsl(' + (i * 14) + ',75%,60%);"></div>';
+    }).join('');
+    var stage = gsapStage(target,
+      '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0.4rem;max-width:280px;margin:0 auto;">' + cells + '</div>',
+      'Advanced grid stagger — from:"center".');
+    function run() {
+      waitForGsap(function () {
+        var els = stage.querySelectorAll('.dapp-sg-cell');
+        window.gsap.set(els, { autoAlpha: 0, scale: 0.4 });
+        window.gsap.to(els, { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'back.out(1.7)', stagger: { amount: 0.9, grid: [5,5], from: 'center' } });
+      });
+    }
+    run(); gsapReplay(target, run);
+  };
+
+  P['gsap/split-text.js'] = function (target) {
+    var stage = gsapStage(target,
+      '<h2 class="dapp-split" style="font-size:2.4rem;font-weight:800;color:#fff;text-align:center;margin:0;letter-spacing:-0.02em;">Frontend Maxxing</h2>',
+      'Dependency-free char split + reveal (SplitReveal global).');
+    function run() {
+      waitForGsap(function () {
+        if (!window.SplitReveal) return;
+        var h = stage.querySelector('.dapp-split');
+        if (h._sr) h._sr.revert();
+        h._sr = window.SplitReveal.init(h, { type: 'chars', duration: 0.8, stagger: 0.03 });
+      });
+    }
+    run(); gsapReplay(target, run);
+  };
+
+  P['gsap/counter.js'] = function (target) {
+    var stage = gsapStage(target,
+      '<div style="display:flex;justify-content:space-around;text-align:center;color:#fff;">' +
+        '<div><div class="dapp-ct" data-to="12480" style="font-size:2.2rem;font-weight:800;">0</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.5);">Users</div></div>' +
+        '<div><div class="dapp-ct2" style="font-size:2.2rem;font-weight:800;">0</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.5);">Uptime</div></div>' +
+      '</div>',
+      'Animated count-up with separators / suffix.');
+    function run() {
+      waitForGsap(function () {
+        if (!window.Counter) return;
+        window.Counter.init(stage.querySelector('.dapp-ct'), { to: 12480, separator: ',', duration: 1.8, scroll: false });
+        window.Counter.init(stage.querySelector('.dapp-ct2'), { to: 99.9, decimals: 1, suffix: '%', duration: 1.8, scroll: false });
+      });
+    }
+    run(); gsapReplay(target, run);
+  };
+
+  P['gsap/marquee.js'] = function (target) {
+    var items = ['DESIGN','★','MOTION','★','GSAP','★','VANILLA','★','ZERO-BUILD','★'].map(function (t) {
+      return '<span style="font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:0.05em;">' + t + '</span>';
+    }).join('');
+    var stage = gsapStage(target,
+      '<div class="dapp-mq" style="display:flex;gap:40px;">' + items + '</div>',
+      'Seamless infinite loop · hover to pause.');
+    function run() {
+      waitForGsap(function () {
+        if (!window.GsapMarquee) return;
+        var el = stage.querySelector('.dapp-mq');
+        if (el._mq) el._mq.destroy();
+        el._mq = window.GsapMarquee.init(el, { speed: 90 });
+      });
+    }
+    run(); gsapReplay(target, run);
+  };
+
+  P['gsap/magnetic.js'] = function (target) {
+    var stage = gsapStage(target,
+      '<div style="display:grid;place-items:center;min-height:120px;">' +
+        '<button class="dapp-mag" style="padding:1rem 2rem;background:linear-gradient(135deg,#8b5cf6,#ec4899);border:0;border-radius:12px;color:#fff;font-weight:700;font-size:1rem;cursor:pointer;"><span class="dapp-mag-l" style="display:inline-block;">Hover me ✨</span></button>' +
+      '</div>',
+      'Move your cursor near the button — it follows magnetically.');
+    waitForGsap(function () {
+      if (!window.Magnetic) return;
+      window.Magnetic.init(stage.querySelector('.dapp-mag'), { strength: 0.5, innerSelector: '.dapp-mag-l', innerStrength: 0.8 });
+    });
+    var btn = target.querySelector('[data-gsap-replay]');
+    if (btn) btn.style.display = 'none';
+  };
+
+  P['gsap/text-scramble.js'] = function (target) {
+    var stage = gsapStage(target,
+      '<div class="dapp-scr" style="font-family:ui-monospace,monospace;font-size:1.8rem;font-weight:700;color:#22c55e;text-align:center;letter-spacing:0.06em;">SYSTEM ONLINE</div>',
+      'Dependency-free ScrambleText-style decode.');
+    function run() {
+      waitForGsap(function () {
+        if (!window.TextScramble) return;
+        var el = stage.querySelector('.dapp-scr');
+        if (el._ts) el._ts.destroy();
+        el._ts = window.TextScramble.init(el, { duration: 1.4 });
+      });
+    }
+    run(); gsapReplay(target, run);
+  };
+
+  P['gsap/flip-layout.js'] = function (target) {
+    var cells = [1,2,3,4,5,6].map(function (i) {
+      return '<div class="dapp-fl-cell" style="border-radius:8px;background:linear-gradient(135deg,#06b6d4,#8b5cf6);color:#fff;font-weight:700;display:grid;place-items:center;height:60px;">' + i + '</div>';
+    }).join('');
+    var stage = gsapStage(target,
+      '<div class="dapp-fl" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;">' + cells + '</div>',
+      'Click Replay to FLIP-shuffle the grid order.');
+    var grid = stage.querySelector('.dapp-fl');
+    function run() {
+      waitForGsap(function () {
+        if (!window.FlipLayout) return;
+        if (!grid._fl) grid._fl = window.FlipLayout.init(grid);
+        grid._fl.animate(function () {
+          var kids = Array.prototype.slice.call(grid.children);
+          for (var i = kids.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            grid.appendChild(kids[j]);
+            kids.splice(j, 1);
+          }
+        }, { duration: 0.7, ease: 'power2.inOut', stagger: 0.04 });
+      });
+    }
+    gsapReplay(target, run);
+  };
+
+  P['gsap/draggable.js'] = function (target) {
+    var stage = gsapStage(target,
+      '<div class="dapp-dg-area" style="position:relative;height:200px;border:1px dashed rgba(255,255,255,0.15);border-radius:10px;">' +
+        '<div class="dapp-dg" style="position:absolute;left:20px;top:20px;width:80px;height:80px;border-radius:14px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:grid;place-items:center;color:#fff;font-weight:700;cursor:grab;">drag</div>' +
+      '</div>',
+      'Drag the tile — throw it (inertia) within bounds.');
+    waitForGsap(function () {
+      if (!window.GsapDraggable) return;
+      window.GsapDraggable.init(stage.querySelector('.dapp-dg'), { type: 'x,y', bounds: stage.querySelector('.dapp-dg-area'), inertia: true });
+    });
+    var btn = target.querySelector('[data-gsap-replay]');
+    if (btn) btn.style.display = 'none';
+  };
+
+  // ScrollTrigger-bound snippets: explain + show a static representative frame
+  function gsapScrollNote(target, title, body, demoHtml) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.8rem;width:100%;">' +
+        '<div style="width:100%;max-width:540px;background:#0b0b16;border:1px solid rgba(255,255,255,0.08);border-radius:12px;overflow:hidden;">' + demoHtml + '</div>' +
+        '<div style="font-size:0.74rem;color:rgba(255,255,255,0.6);max-width:500px;text-align:center;line-height:1.5;"><b style="color:#86efac;">' + title + '</b><br>' + body + '</div>' +
+      '</div>';
+  }
+
+  P['gsap/pin-section.js'] = function (target) {
+    gsapScrollNote(target, 'ScrollTrigger pin + scrub',
+      'Drop into a real page: pins a section while an inner timeline scrubs to scroll. <code style="color:#c4b5fd;">PinSection.init(\'.host\', { end:\'+=1200\', build })</code>',
+      '<div style="height:170px;background:radial-gradient(circle at 50% 40%,rgba(139,92,246,0.3),transparent 70%);display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.4rem;">📌 Pinned section</div>');
+  };
+
+  P['gsap/horizontal-scroll.js'] = function (target) {
+    gsapScrollNote(target, 'Pinned horizontal scroll',
+      'Vertical scroll drives a horizontal panel track. <code style="color:#c4b5fd;">HorizontalScroll.init(\'.hscroll\')</code> — panels flex 0 0 100vw.',
+      '<div style="display:flex;gap:6px;padding:1rem;overflow:hidden;">' + [1,2,3,4].map(function (i) { return '<div style="flex:0 0 60%;height:130px;border-radius:10px;background:linear-gradient(135deg,hsl(' + (i*60) + ',70%,55%),hsl(' + (i*60+40) + ',70%,45%));display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.6rem;">' + i + '</div>'; }).join('') + '</div>');
+  };
+
+  P['gsap/parallax.js'] = function (target) {
+    gsapScrollNote(target, 'Multi-layer scroll parallax',
+      'Each layer gets <code style="color:#c4b5fd;">data-speed</code> (1 normal, &lt;1 slow, &gt;1 fast). <code style="color:#c4b5fd;">Parallax.init(\'[data-speed]\')</code>',
+      '<div style="position:relative;height:170px;overflow:hidden;background:linear-gradient(180deg,#1e1b4b,#0b0b16);">' +
+        '<div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(139,92,246,0.4),transparent 50%);"></div>' +
+        '<div style="position:absolute;bottom:10px;left:0;right:0;text-align:center;color:#fff;font-weight:800;font-size:1.5rem;">Parallax hero</div>' +
+      '</div>');
+  };
+
+  P['gsap/smooth-scroll.js'] = function (target) {
+    gsapScrollNote(target, 'Smooth scroll + scroll-to',
+      'Uses ScrollSmoother when present (honors data-speed/data-lag), else smooth anchor jumps. <code style="color:#c4b5fd;">SmoothScroll.init(); SmoothScroll.to(\'#sec\')</code>',
+      '<div style="height:150px;display:grid;place-items:center;color:#fff;font-weight:700;background:linear-gradient(135deg,#0f172a,#1e293b);">🪄 Inertial smooth scrolling</div>');
+  };
+
 })();

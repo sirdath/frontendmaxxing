@@ -2118,6 +2118,49 @@ These cover components and gradient utilities that had only intent-table rows ab
 **app-logout-confirm.css** `mobile/app-logout-confirm.css` (CSS) — tags: mobile app logout sign-out delete-account confirm destructive warning danger typed-confirm checkbox
   Destructive confirm screen. `.apconfirm-warn` for sign-out (lists drafts/email), `.apconfirm-danger` for delete (checkbox + typed "DELETE" + disabled CTA until satisfied).
 
+**GSAP animation snippets (`gsap/` — load GSAP from CDN; see `gsap.skill.md`)**
+
+> All require `<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>` (plus the named plugin where noted). Same CDN-dependency model as `3d/` + three.js. Read **`gsap.skill.md`** at repo root first.
+
+**scroll-reveal.js** `gsap/scroll-reveal.js` (JS, global: `ScrollReveal`) — tags: gsap scrolltrigger reveal on-scroll batch entrance stagger intersection-observer fade-up
+  `ScrollReveal.init('.card', {y, opacity, duration, stagger, ease, start, once})`. ScrollTrigger.batch reveal-as-you-scroll. Needs ScrollTrigger.
+
+**pin-section.js** `gsap/pin-section.js` (JS, global: `PinSection`) — tags: gsap scrolltrigger pin scrub timeline sticky section storytelling
+  `PinSection.init('.host', {end, scrub, build})`. Pins a section and scrubs an inner timeline (custom `build(tl, el)`). Needs ScrollTrigger.
+
+**horizontal-scroll.js** `gsap/horizontal-scroll.js` (JS, global: `HorizontalScroll`) — tags: gsap scrolltrigger horizontal sideways pinned track panels containerAnimation
+  `HorizontalScroll.init('.hscroll', {track, panel, scrub})`. Pinned vertical-scroll → horizontal track motion; exposes `containerAnimation`. Needs ScrollTrigger.
+
+**parallax.js** `gsap/parallax.js` (JS, global: `Parallax`) — tags: gsap parallax data-speed layers depth scroll multi-layer hero
+  `Parallax.init('[data-speed]', {scrub})`. Per-layer `data-speed` (1 normal, <1 slow, >1 fast) scroll parallax. Needs ScrollTrigger.
+
+**split-text.js** `gsap/split-text.js` (JS, global: `SplitReveal`) — tags: gsap split text chars words reveal stagger headline kinetic typography no-plugin
+  `SplitReveal.init('.headline', {type:'chars'|'words', from, duration, stagger, scroll})`. Dependency-free char/word split + reveal; `.revert()`. ScrollTrigger optional.
+
+**stagger-grid.js** `gsap/stagger-grid.js` (JS, global: `StaggerGrid`) — tags: gsap stagger grid entrance from-center edges random advanced-stagger cards
+  `StaggerGrid.init('.grid', {item, from:'center'|'edges'|'random', amount, scroll})`. Grid-aware advanced stagger entrance. ScrollTrigger optional.
+
+**counter.js** `gsap/counter.js` (JS, global: `Counter`) — tags: gsap counter count-up number animate stat odometer separator decimals scroll
+  `Counter.init('.stat', {to, decimals, separator, prefix, suffix, duration, scroll})`. Animated number count-up; reads `data-to`. ScrollTrigger optional.
+
+**marquee.js** `gsap/marquee.js` (JS, global: `GsapMarquee`) — tags: gsap marquee infinite loop seamless ticker scrolling-text pause-on-hover
+  `GsapMarquee.init('.gmarquee', {speed, direction, pauseOnHover, gap})`. Seamless duplicated-track infinite loop with hover-pause.
+
+**magnetic.js** `gsap/magnetic.js` (JS, global: `Magnetic`) — tags: gsap magnetic hover cursor-follow button quickTo elastic inner-label
+  `Magnetic.init('.btn', {strength, innerSelector, innerStrength, ease, release})`. quickTo cursor-follow magnetic hover with elastic release.
+
+**text-scramble.js** `gsap/text-scramble.js` (JS, global: `TextScramble`) — tags: gsap scramble decode text glitch hacker matrix ticker no-plugin reveal
+  `TextScramble.init('.h', {chars, duration, scroll})`; `.to('NEW TEXT')`. Dependency-free ScrambleText-style decode via gsap.ticker.
+
+**flip-layout.js** `gsap/flip-layout.js` (JS, global: `FlipLayout`) — tags: gsap flip layout reorder grid-list expand shuffle filter sort FLIP transition
+  `FlipLayout.init('.grid', {item})` → `.animate(mutateFn, flipVars)`. Animates any layout/DOM change with FLIP. Needs Flip plugin.
+
+**draggable.js** `gsap/draggable.js` (JS, global: `GsapDraggable`) — tags: gsap draggable drag throw inertia bounds snap slider carousel kinetic
+  `GsapDraggable.init('.box', {type, bounds, inertia, snap, onDrag…})`. Drag/throw with inertia + bounds + grid snap. Needs Draggable (InertiaPlugin optional).
+
+**smooth-scroll.js** `gsap/smooth-scroll.js` (JS, global: `SmoothScroll`) — tags: gsap smooth-scroll scrollsmoother scrollto inertia anchor lenis-alternative parallax-effects
+  `SmoothScroll.init({smooth, effects})` + `.to('#sec')`. Uses ScrollSmoother when present (data-speed/lag effects), else smooth anchor scroll-to. Distinct from `utils/smooth-scroll.js` (pure-JS, no GSAP).
+
 **Specialty / effects / game UI**
 
 **perspective-tunnel.css** `effects/perspective-tunnel.css` (CSS) — tags: perspective tunnel synthwave vaporwave cyber 80s 90s retro grid floor sun stars matrix blueprint fire mono

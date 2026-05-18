@@ -1,12 +1,16 @@
 # frontendmaxxing
 
-> **481 standalone CSS + JS snippets for frontend design.** Vanilla. Zero build step. Zero dependencies. Copy-paste and ship.
+> **765 standalone CSS + JS snippets for frontend design.** Vanilla. Zero build step. Zero dependencies. Copy-paste and ship.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Files](https://img.shields.io/badge/snippets-481-8b5cf6)](INDEX.md)
+[![Files](https://img.shields.io/badge/snippets-765-8b5cf6)](INDEX.md)
 [![No build](https://img.shields.io/badge/build-none-success)](#)
 [![No deps](https://img.shields.io/badge/dependencies-0-success)](#)
 [![Framework-agnostic](https://img.shields.io/badge/framework-agnostic-ec4899)](#)
+
+### ▶︎ [**Browse the live demo →**](https://sirdath.github.io/frontendmaxxing/demo/)
+
+Every single snippet renders in the [interactive demo](https://sirdath.github.io/frontendmaxxing/demo/) — searchable sidebar, live preview, copy-the-path. No clone or build needed to look around. Mobile-app screens render inside a real iPhone frame; GSAP & 3D snippets load their CDN deps automatically.
 
 A massive snippet vault — heroes, navbars, buttons, modals, charts, gradients, shaders, AI-native UI, infinite canvases, fire effects, voronoi shaders, holographic foil, kinetic typography… and 450+ more. Every file is a single `.css` or `.js` you can drop into any project without setup.
 
@@ -72,7 +76,8 @@ Browse [`INDEX.md`](INDEX.md), grep for what you want, copy the file's contents 
 
 ### Option C — explore the demo
 
-Open [`demo/index.html`](demo/index.html) in any browser (no server needed). Every snippet is registered with a live preview.
+**Hosted:** [**sirdath.github.io/frontendmaxxing/demo**](https://sirdath.github.io/frontendmaxxing/demo/) — nothing to install.
+**Local:** open [`demo/index.html`](demo/index.html) in any browser (no server needed). Every snippet is registered with a live preview; search the sidebar, click any entry, copy the file path.
 
 ---
 
@@ -242,10 +247,12 @@ components/     Full components: heroes, navbars, cards, modals, kanban…
 data-viz/       Charts, sparklines, count-up, stat tiles
 effects/        Gradients, glitch, parallax, cursors, holo, fire/smoke, …
 feedback/       Confetti, sparkles, success/error states, achievements
+gsap/           GSAP animation snippets (loads GSAP via CDN) — see gsap.skill.md
 interactions/   Sortable, swipe, pinch-zoom, gravity, elastic-line
 layout/         Grids, masonry, container queries, sticky, aspect ratios
 media/          Image compare, video, audio waveform, lightbox, clip trim
 micro/          Tiny micro-interactions
+mobile/         iPhone-frame chrome (ios-*) + full mobile-app screens (app-*)
 responsive/     Breakpoints, dark mode, mobile patterns
 scroll/         Pin, scrub, snap, horizontal-pin
 shaders/        WebGL fullscreen-quad shaders
@@ -255,6 +262,12 @@ typography/     Fluid type, variable fonts, gradient numbers
 utils/          easing, lerp, dom, perf, smooth-scroll, palette generator
 demo/           Interactive showcase of every snippet
 ```
+
+**Skill docs** (read before generating in that territory): [`gradients.skill.md`](gradients.skill.md) for color blends / mesh / holo, [`gsap.skill.md`](gsap.skill.md) for any JavaScript animation (when to use GSAP vs CSS, the free-plugin fact, ScrollTrigger/timeline/Flip patterns).
+
+### Building a mobile app?
+
+The `mobile/app-*` files are **full app screens** (login, paywall, onboarding, OTP, PIN, age picker, receipt, error/empty states…) and `mobile/iphone-frame.css` is a reusable iPhone shell. They're vanilla CSS+JS but written as a **visual spec you translate to Flutter or React Native**: CSS custom properties → `ThemeData`/`StyleSheet`, the class tree → the widget/component tree, the `.js` controllers → your `useState`/lifecycle logic.
 
 ---
 
@@ -342,9 +355,9 @@ This repo is designed to work seamlessly when an AI agent (Claude, Cursor, Cody,
 - **Entry point:** [`AGENTS.md`](AGENTS.md) explains everything an agent needs to know — purpose, conventions, folder layout, JS/CSS templates, how to add new snippets.
 - **Lookup:** [`INDEX.md`](INDEX.md) is grep-friendly with synonym-rich tags.
 - **Domain expertise:** [`gradients.skill.md`](gradients.skill.md) is a structured skill reference for the gradient subsystem (32+ files).
-- **Verification:** every claim in the docs is verified — 481 files on disk, 481 tagged entries in INDEX, no orphans, no broken pointers, all globals match exports.
+- **Verification:** every claim in the docs is verified — 765 files on disk, matching tagged entries in INDEX, no orphans, no broken pointers, all globals match exports.
 
-Drop the folder into a Cursor or Claude Code project and the agent can reference any of the 481 snippets via grep, follow the exact conventions when adding new ones, and stay in sync with the index.
+Drop the folder into a Cursor or Claude Code project and the agent can reference any of the 765 snippets via grep, follow the exact conventions when adding new ones, and stay in sync with the index.
 
 ---
 

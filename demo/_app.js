@@ -147,6 +147,31 @@
     });
     return threeLoadPromise;
   }
+  // ===== GSAP CDN loader (core + plugins, loaded on demand for gsap/* snippets) =====
+  var GSAP_VER = '3.13.0';
+  var gsapScriptCache = {};
+  function loadScriptOnce(src) {
+    if (gsapScriptCache[src]) return gsapScriptCache[src];
+    gsapScriptCache[src] = new Promise(function (resolve) {
+      var s = document.createElement('script');
+      s.src = src;
+      s.onload = s.onerror = function () { resolve(); };
+      document.head.appendChild(s);
+    });
+    return gsapScriptCache[src];
+  }
+  function loadGsapOnce(plugins) {
+    var base = 'https://cdn.jsdelivr.net/npm/gsap@' + GSAP_VER + '/dist/';
+    var p = window.gsap ? Promise.resolve() : loadScriptOnce(base + 'gsap.min.js');
+    return p.then(function () {
+      var names = plugins || ['ScrollTrigger'];
+      return Promise.all(names.map(function (n) {
+        if (window[n]) return Promise.resolve();
+        return loadScriptOnce(base + n + '.min.js');
+      }));
+    });
+  }
+
   function loadCSS(path) {
     if (state.loaded.css.has(path)) return Promise.resolve();
     return new Promise(function (resolve) {
@@ -474,11 +499,18 @@
     var needsThree = comps.some(function (c) { return /^3d\//.test(c.path); });
     var threePromise = needsThree ? loadThreeOnce() : Promise.resolve();
 
+    // If any companion is a gsap/* snippet, load GSAP + common plugins from CDN first.
+    var needsGsap = comps.some(function (c) { return /^gsap\//.test(c.path); });
+    var gsapPromise = needsGsap
+      ? loadGsapOnce(['ScrollTrigger', 'Flip', 'Draggable', 'InertiaPlugin', 'ScrollToPlugin'])
+      : Promise.resolve();
+
     // Load CSS + JS of all companions then render preview
     var toLoad = comps.map(function (c) {
       return c.kind === 'CSS' ? loadCSS(c.path) : loadJS(c.path);
     });
     toLoad.unshift(threePromise);
+    toLoad.unshift(gsapPromise);
     Promise.all(toLoad).then(function () {
       var body = document.getElementById('dapp-preview-body');
       renderPreviewInto(body, entry, { comps: comps });
