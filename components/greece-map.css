@@ -1,10 +1,12 @@
 /* ============================================
-   GREECE MAP — Interactive choropleth of Greek regions + prefectures
+   GREECE MAP — Interactive choropleth of Greece, 4 layers + pin markers
    Inspired by Datawrapper / d3-geo choropleths
    ============================================
-   Two toggleable layers:
-     • regions      — 13 περιφέρειες (NUTS2)
-     • prefectures  — 52 περιφερειακές ενότητες (NUTS3, pre-Kallikratis)
+   Four toggleable layers + arbitrary lat/lng pin markers:
+     • regions        — 13  περιφέρειες (NUTS2)
+     • prefectures    — 74  περιφερειακές ενότητες (Kallikratis)
+     • municipalities — 326 δήμοι (geoBoundaries CC0)
+     • neighborhoods  — 20  Athens-central Voronoi cells
 
    Usage:
      <link rel="stylesheet" href="components/greece-map.css">
@@ -114,18 +116,23 @@
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 999px;
   padding: 3px;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.gmap-toggle::-webkit-scrollbar { display: none; }
 
 .gmap-toggle button {
   background: transparent;
   color: rgba(255,255,255,0.6);
   border: 0;
-  padding: 0.35rem 0.85rem;
+  padding: 0.35rem 0.75rem;
   font: inherit;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 500;
   border-radius: 999px;
   cursor: pointer;
+  white-space: nowrap;
   transition: background 0.18s ease, color 0.18s ease;
 }
 
@@ -202,4 +209,45 @@
   font-size: 0.7rem;
   color: rgba(255,255,255,0.4);
   font-style: italic;
+}
+
+/* ─── Pin markers (overlaid on top of paths, lat/lng-projected) ─── */
+.gmap-pin {
+  cursor: pointer;
+  pointer-events: all;
+}
+
+.gmap-pin-halo {
+  opacity: 0.35;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: gmap-pin-pulse 2s ease-out infinite;
+}
+
+@keyframes gmap-pin-pulse {
+  0%   { transform: scale(0.6); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.gmap-pin-dot {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+  transition: transform 0.15s ease;
+}
+
+.gmap-pin:hover .gmap-pin-dot {
+  transform: scale(1.25);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.gmap-pin-label {
+  fill: #fff;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  paint-order: stroke;
+  stroke: rgba(0,0,0,0.65);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+  user-select: none;
 }

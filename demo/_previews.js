@@ -1291,38 +1291,55 @@
       '</div>';
   };
 
-  // ===== Greece map (choropleth) =====
+  // ===== Greece map (choropleth + pins, 4 layers) =====
   P['components/greece-map.js'] = function (target) {
     target.innerHTML =
-      '<div style="display:flex;flex-direction:column;gap:1rem;align-items:center;width:100%;">' +
-        '<div id="gmap-host" style="width:100%;max-width:680px;"></div>' +
-        '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;font-family:ui-monospace,monospace;font-size:0.72rem;">' +
-          '<button data-scale="coverage" class="dapp-btn is-on" style="padding:0.3rem 0.7rem;">coverage</button>' +
-          '<button data-scale="heat"     class="dapp-btn"      style="padding:0.3rem 0.7rem;">heat</button>' +
-          '<button data-scale="ocean"    class="dapp-btn"      style="padding:0.3rem 0.7rem;">ocean</button>' +
-          '<button data-scale="mono"     class="dapp-btn"      style="padding:0.3rem 0.7rem;">mono</button>' +
-          '<button data-scale="traffic"  class="dapp-btn"      style="padding:0.3rem 0.7rem;">traffic</button>' +
+      '<div style="display:flex;flex-direction:column;gap:0.9rem;align-items:center;width:100%;">' +
+        '<div id="gmap-host" style="width:100%;max-width:720px;"></div>' +
+        '<div style="display:flex;gap:0.4rem;flex-wrap:wrap;justify-content:center;font-family:ui-monospace,monospace;font-size:0.7rem;">' +
+          '<span style="align-self:center;color:rgba(255,255,255,0.5);margin-right:0.4rem;">color scale:</span>' +
+          '<button data-scale="coverage" class="dapp-btn is-on" style="padding:0.25rem 0.6rem;">coverage</button>' +
+          '<button data-scale="heat"     class="dapp-btn"      style="padding:0.25rem 0.6rem;">heat</button>' +
+          '<button data-scale="ocean"    class="dapp-btn"      style="padding:0.25rem 0.6rem;">ocean</button>' +
+          '<button data-scale="mono"     class="dapp-btn"      style="padding:0.25rem 0.6rem;">mono</button>' +
+          '<button data-scale="traffic"  class="dapp-btn"      style="padding:0.25rem 0.6rem;">traffic</button>' +
         '</div>' +
       '</div>';
 
     function go() {
       if (!window.GreeceMap) return;
-      // Synthetic coverage values per NUTS2 + NUTS3 id (deterministic from id char codes)
+
+      // Synthetic deterministic value per feature id
       function fakeCoverage(id) {
         var n = 0; for (var i = 0; i < id.length; i++) n = (n * 31 + id.charCodeAt(i)) >>> 0;
         return Math.round((0.18 + (n % 700) / 1000) * 100) / 100;
       }
       var allData = {};
-      (window.GREECE_REGIONS || []).forEach(function (f) { allData[f.id] = fakeCoverage(f.id); });
-      (window.GREECE_PREFECTURES || []).forEach(function (f) { allData[f.id] = fakeCoverage(f.id); });
+      [
+        window.GREECE_REGIONS,
+        window.GREECE_PREFECTURES,
+        window.GREECE_MUNICIPALITIES,
+        window.GREECE_NEIGHBORHOODS
+      ].forEach(function (arr) {
+        (arr || []).forEach(function (f) { allData[f.id] = fakeCoverage(f.id); });
+      });
 
       var inst = window.GreeceMap.init('#gmap-host', {
-        title: 'Δείγμα κάλυψης (sample coverage)',
+        title: 'Sample coverage (δείγμα κάλυψης)',
         mode: 'regions',
         data: allData,
         scale: 'coverage',
         valueLabel: 'coverage'
       });
+
+      // A few real-city pins to demonstrate the lat/lng overlay
+      inst.pin([
+        { lat: 37.9838, lng: 23.7275, label: 'Athens',       color: '#ffd166', value: 0.92 },
+        { lat: 40.6401, lng: 22.9444, label: 'Thessaloniki', color: '#ef476f', value: 0.78 },
+        { lat: 35.3387, lng: 25.1442, label: 'Heraklion',    color: '#06d6a0', value: 0.63 },
+        { lat: 39.6243, lng: 19.9217, label: 'Corfu',        color: '#118ab2', value: 0.41 },
+        { lat: 37.4467, lng: 25.3289, label: 'Mykonos',      color: '#7b2cbf', value: 0.55 }
+      ]);
 
       target.querySelectorAll('button[data-scale]').forEach(function (b) {
         b.addEventListener('click', function () {
