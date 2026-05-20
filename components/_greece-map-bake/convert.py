@@ -158,14 +158,18 @@ def make_municipalities():
     gj = load_json("municipalities.geojson")
     if not gj:
         return []
+    # Greek-name lookup baked by match_names.py — {shapeID: {el, en, match}}
+    name_table = load_json("municipality_names.json") or {}
     out = []
     for feat in gj["features"]:
         p = feat["properties"]
         geom = simplify(feat["geometry"], 0.003)
+        sid = p.get("shapeID", "")
+        names = name_table.get(sid, {})
         out.append({
-            "id": p.get("shapeID", ""),
-            "el": p.get("shapeName", ""),  # Latin only in source
-            "en": p.get("shapeName", ""),
+            "id": sid,
+            "el": names.get("el") or p.get("shapeName", ""),
+            "en": names.get("en") or p.get("shapeName", ""),
             "d":  geom_to_path(geom),
         })
     return out

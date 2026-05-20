@@ -48,6 +48,11 @@ coverage/
 .eslintcache
 .stylelintcache
 
+# Python (data-bake scripts in components/_*-bake/ folders)
+__pycache__/
+*.pyc
+*.pyo
+
 # AI/agent local working files
 .claude/
 .cursor/
