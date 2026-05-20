@@ -1291,6 +1291,47 @@
       '</div>';
   };
 
+  // ===== Greek fonts pack =====
+  P['typography/greek-fonts.css'] = function (target) {
+    var fonts = [
+      // [class, label, category, sample Greek, sample Latin/numeric]
+      ['gf-gfs-didot',          'GFS Didot',          'Greek serif',         'Καλώς ορίσατε',     'Welcome 1234'],
+      ['gf-athena-vkf',         'Athena VKF',         'Greek display',       'Ἀθῆναι',            'Athena 567'],
+      ['gf-junicode',           'Junicode',           'Polytonic serif',     'Πολυτονικό κείμενο', 'Junicode Æ ﬂ'],
+      ['gf-open-sans',          'Open Sans',          'Sans (Greek)',        'Ελληνικά γράμματα', 'The quick brown fox'],
+      ['gf-ubuntu',             'Ubuntu',             'Sans (Greek)',        'Ελευθερία στο λογισμικό', 'Ubuntu means humanity'],
+      ['gf-ubuntu-condensed',   'Ubuntu Condensed',   'Condensed',           'ΣΥΜΠΥΚΝΩΣΗ',         'CONDENSED 1280'],
+      ['gf-ubuntu-mono',        'Ubuntu Mono',        'Mono (Greek)',        'κωδικός: αληθές',   '> npm install'],
+      ['gf-basenji',            'Basenji',            'Display',             'Αθήνα',             'Basenji Semi'],
+      ['gf-basis33',            'Basis33',            'Pixel / 8-bit',       'ΡΕΤΡΟ 8',           'PIXEL ART 88'],
+      ['gf-bodoni-z37',         'Bodoni Z37',         'Didone bold',         'ΕΛΕΓΑΝΣ',           'BODONI 37'],
+      ['gf-breamcatcher',       'Breamcatcher',       'Brush',               'γεια σου',          'hand drawn'],
+      ['gf-bubble-sans',        'Bubble Sans',        'Cartoon',             'γουστάρω',          'Bubbly Fun'],
+      ['gf-dihjauti',           'Dihjauti',           'Experimental',        'ΣΧΗΜΑ',             'Dihjauti'],
+      ['gf-dihjauti-s',         'Dihjauti S',         'Stylistic alt',       'ΑΛΛΑΓΗ',            'Dihjauti S'],
+      ['gf-galiver-sans',       'Galiver Sans',       'Geometric grotesque', 'ΓΑΛΑΞΙΑΣ',          'Galiver Bold'],
+      ['gf-slimamif',           'Slimamif',           'Condensed display',   'ΨΗΛΟ',              'TALL & SLIM'],
+      ['gf-stampatello-faceto', 'Stampatello Faceto', 'Schoolroom print',    'σχολείο',           'school print'],
+      ['gf-toxigenesis',        'Toxigenesis',        'Sci-fi',              'ΚΥΒΕΡΝΟ',           'CYBER 2099'],
+      ['gf-wimzik',             'Wimzik',             'Handwritten',         'σημείωση',          'whimsical note']
+    ];
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.8rem;width:100%;max-width:1100px;">' +
+        fonts.map(function (f) {
+          return '<div style="background:#14141e;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:0.45rem;">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">' +
+              '<div style="font-size:0.72rem;color:rgba(255,255,255,0.55);font-family:ui-monospace,monospace;letter-spacing:0.04em;">.' + f[0] + '</div>' +
+              '<div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;">' + f[2] + '</div>' +
+            '</div>' +
+            '<div style="font-size:0.95rem;color:rgba(255,255,255,0.85);font-weight:600;">' + f[1] + '</div>' +
+            '<div class="' + f[0] + '" style="font-size:1.9rem;line-height:1.15;color:#fff;">' + f[3] + '</div>' +
+            '<div class="' + f[0] + '" style="font-size:1.1rem;color:rgba(255,255,255,0.75);">' + f[4] + '</div>' +
+            '<div class="' + f[0] + '" style="font-size:0.75rem;color:rgba(255,255,255,0.45);letter-spacing:0.02em;">αβγδεζηθικλμ ABCDEFG 1234567890</div>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+  };
+
   // ===== Decorative shapes =====
   P['svg/decorative-shapes.css'] = function (target) {
     target.innerHTML =

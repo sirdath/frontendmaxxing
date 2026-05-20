@@ -1,0 +1,5 @@
+Wimzik is a playful handwritten font with a whimsical character. Supports extended Latin, Cyrillic, Greek and Georgian characters.
+
+Wimzik is distributed under The SIL Open Font License (OFL) and is completely free for both personal and commercial use.
+
+Designed by Dmitri Zdorov in 2024, the latest version is available from https://dimka.com/fonts/

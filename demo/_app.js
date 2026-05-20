@@ -35,7 +35,7 @@
     'shaders':     { icon: '🌈', desc: 'Pure-WebGL fullscreen-quad shaders — voronoi, mesh, godrays, plasma, fluid' },
     'svg':         { icon: '✏️', desc: 'SVG animations, gradient definitions' },
     'transitions': { icon: '🎞', desc: 'Page transitions: fade, curtain, morph, View Transitions API' },
-    'typography':  { icon: '🔤', desc: 'Fluid type, variable fonts, gradient numbers, text effects' },
+    'typography':  { icon: '🔤', desc: 'Fluid type, variable fonts, gradient numbers, text effects, Greek-font pack' },
     'utils':       { icon: '🛠', desc: 'easing, lerp, dom helpers, performance, palette generator, gradient builder' }
   };
   var FEATURED = [

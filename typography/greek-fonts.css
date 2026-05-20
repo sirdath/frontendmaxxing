@@ -1,0 +1,406 @@
+/* ============================================
+   GREEK FONTS — Curated @font-face pack for Greek-language sites
+   ============================================
+   16 hand-picked fonts unzipped into ./greek-fonts/<font>/.
+   Some have full Greek glyph coverage (use for body text); others are
+   Latin-only display faces (use for English headlines on Greek sites,
+   or for stylized branding where Greek text is short / hand-curated).
+
+   USAGE
+     <link rel="stylesheet" href="typography/greek-fonts.css">
+     <h1 class="gf-gfs-didot">Καλώς ορίσατε</h1>
+     <p class="gf-open-sans">Ελληνικό κείμενο σώματος.</p>
+
+   FAMILIES
+     ── Full Greek coverage (body-safe) ──
+     gf-gfs-didot           Neoclassical Greek serif (the gold standard for Greek body)
+     gf-athena-vkf          Display Greek serif (titles, posters)
+     gf-junicode            Polytonic Greek scholar serif — also Latin extended
+     gf-open-sans           Sans-serif w/ Greek subset (10 weights+italics)
+     gf-ubuntu              Modern humanist sans w/ Greek subset (9 styles)
+     gf-ubuntu-mono         Monospaced w/ Greek subset
+
+     ── Display / mostly Latin (headlines, branding, stickers) ──
+     gf-basenji             Mid-century semibold + slanted
+     gf-basis33             Pixel / bitmap (8-bit retro)
+     gf-bodoni-z37          High-contrast didone compressed bold
+     gf-breamcatcher        Hand-drawn brush display
+     gf-bubble-sans         Soft cartoony bubble letters
+     gf-dihjauti            Inverted-stress experimental
+     gf-galiver-sans        Geometric grotesque (Regular + Bold)
+     gf-slimamif            Tall condensed display
+     gf-stampatello-faceto  Italian schoolroom print
+     gf-toxigenesis         Sci-fi / cyber bold
+     gf-wimzik              Quirky handwritten
+
+   NOTES
+     - Paths are relative to this stylesheet. When copying out of the
+       toolkit, copy the matching ./greek-fonts/<font>/ folder alongside.
+     - All declarations use font-display: swap so text never blocks.
+     - Fall-backs are chosen by category (serif / sans / mono / display).
+   ============================================ */
+
+
+/* ─────────────────────────────────────────────
+   1 · GFS DIDOT — Greek neoclassical serif (OFL)
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'GFS Didot';
+  src: url('greek-fonts/gfs-didot/GFSDidot-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+.gf-gfs-didot { font-family: 'GFS Didot', 'Didot', Georgia, serif; }
+
+
+/* ─────────────────────────────────────────────
+   2 · ATHENA VKF — Display Greek serif
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Athena VKF';
+  src: url('greek-fonts/athena-vkf/AthenaVKF.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+.gf-athena-vkf { font-family: 'Athena VKF', 'GFS Didot', Georgia, serif; }
+
+
+/* ─────────────────────────────────────────────
+   3 · JUNICODE — Polytonic Greek + medievalist serif (OFL)
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Junicode';
+  src: url('greek-fonts/junicode/Junicode.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Junicode';
+  src: url('greek-fonts/junicode/Junicode-Italic.ttf') format('truetype');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Junicode';
+  src: url('greek-fonts/junicode/Junicode-Bold.ttf') format('truetype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Junicode';
+  src: url('greek-fonts/junicode/Junicode-BoldItalic.ttf') format('truetype');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+.gf-junicode { font-family: 'Junicode', Georgia, 'Times New Roman', serif; }
+
+
+/* ─────────────────────────────────────────────
+   4 · OPEN SANS — Humanist sans w/ Greek subset (Apache 2.0)
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Open Sans';
+  src: url('greek-fonts/open-sans/OpenSans-Light.ttf') format('truetype');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('greek-fonts/open-sans/OpenSans-LightItalic.ttf') format('truetype');
+  font-weight: 300; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('greek-fonts/open-sans/OpenSans-Regular.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('greek-fonts/open-sans/OpenSans-Italic.ttf') format('truetype');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('greek-fonts/open-sans/OpenSans-Semibold.ttf') format('truetype');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('greek-fonts/open-sans/OpenSans-SemiboldItalic.ttf') format('truetype');
+  font-weight: 600; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('greek-fonts/open-sans/OpenSans-Bold.ttf') format('truetype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('greek-fonts/open-sans/OpenSans-BoldItalic.ttf') format('truetype');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('greek-fonts/open-sans/OpenSans-ExtraBold.ttf') format('truetype');
+  font-weight: 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('greek-fonts/open-sans/OpenSans-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800; font-style: italic; font-display: swap;
+}
+.gf-open-sans { font-family: 'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+
+
+/* ─────────────────────────────────────────────
+   5 · UBUNTU — Modern humanist sans w/ Greek subset (Ubuntu Font Licence)
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/Ubuntu-L.ttf') format('truetype');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/Ubuntu-LI.ttf') format('truetype');
+  font-weight: 300; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/Ubuntu-R.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/Ubuntu-RI.ttf') format('truetype');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/Ubuntu-M.ttf') format('truetype');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/Ubuntu-MI.ttf') format('truetype');
+  font-weight: 500; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/Ubuntu-B.ttf') format('truetype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/Ubuntu-BI.ttf') format('truetype');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+.gf-ubuntu { font-family: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif; }
+
+/* Ubuntu Condensed (separate family per Ubuntu Font Licence convention) */
+@font-face {
+  font-family: 'Ubuntu Condensed';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/Ubuntu-C.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+.gf-ubuntu-condensed { font-family: 'Ubuntu Condensed', 'Arial Narrow', sans-serif; }
+
+/* Ubuntu Mono — monospaced */
+@font-face {
+  font-family: 'Ubuntu Mono';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/UbuntuMono-R.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu Mono';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/UbuntuMono-RI.ttf') format('truetype');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu Mono';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/UbuntuMono-B.ttf') format('truetype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Ubuntu Mono';
+  src: url('greek-fonts/ubuntu/ubuntu-font-family-0.80/UbuntuMono-BI.ttf') format('truetype');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+.gf-ubuntu-mono { font-family: 'Ubuntu Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+
+
+/* ─────────────────────────────────────────────
+   6 · BASENJI — Mid-century semibold display
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Basenji';
+  src: url('greek-fonts/basenji/Basenji-SemiBold.otf') format('opentype');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Basenji';
+  src: url('greek-fonts/basenji/Basenji-SemiBoldSlanted.otf') format('opentype');
+  font-weight: 600; font-style: italic; font-display: swap;
+}
+.gf-basenji { font-family: 'Basenji', 'Helvetica Neue', Arial, sans-serif; font-weight: 600; }
+
+
+/* ─────────────────────────────────────────────
+   7 · BASIS33 — Pixel / 8-bit bitmap
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Basis33';
+  src: url('greek-fonts/basis33/basis33.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+.gf-basis33 {
+  font-family: 'Basis33', 'Courier New', monospace;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: never;
+  image-rendering: pixelated;
+}
+
+
+/* ─────────────────────────────────────────────
+   8 · BODONI Z37 — High-contrast didone (compressed bold)
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Bodoni Z37';
+  src: url('greek-fonts/bodoni-z37/Bodoni Z37 M Compressed Bold.otf') format('opentype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Bodoni Z37';
+  src: url('greek-fonts/bodoni-z37/Bodoni Z37 M Compressed Bold Italic.otf') format('opentype');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+.gf-bodoni-z37 { font-family: 'Bodoni Z37', 'Didot', 'Bodoni 72', serif; font-weight: 700; }
+
+
+/* ─────────────────────────────────────────────
+   9 · BREAMCATCHER — Hand-drawn brush
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Breamcatcher';
+  src: url('greek-fonts/breamcatcher/breamcatcher rg.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+.gf-breamcatcher { font-family: 'Breamcatcher', 'Brush Script MT', cursive; }
+
+
+/* ─────────────────────────────────────────────
+   10 · BUBBLE SANS — Soft cartoony bubble letters
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Bubble Sans';
+  src: url('greek-fonts/bubble-sans/Bubble Sans 1.01.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+.gf-bubble-sans { font-family: 'Bubble Sans', 'Comic Sans MS', cursive, sans-serif; }
+
+
+/* ─────────────────────────────────────────────
+   11 · DIHJAUTI — Inverted-stress experimental display (OFL)
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Dihjauti';
+  src: url('greek-fonts/dihjauti/Dihjauti-Regular.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Dihjauti';
+  src: url('greek-fonts/dihjauti/Dihjauti-Italic.otf') format('opentype');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Dihjauti';
+  src: url('greek-fonts/dihjauti/Dihjauti-Bold.otf') format('opentype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Dihjauti';
+  src: url('greek-fonts/dihjauti/Dihjauti-BoldItalic.otf') format('opentype');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+.gf-dihjauti { font-family: 'Dihjauti', Georgia, serif; }
+
+/* Dihjauti S — stylistic alternate */
+@font-face {
+  font-family: 'Dihjauti S';
+  src: url('greek-fonts/dihjauti/DihjautiS-Regular.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Dihjauti S';
+  src: url('greek-fonts/dihjauti/DihjautiS-Italic.otf') format('opentype');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Dihjauti S';
+  src: url('greek-fonts/dihjauti/DihjautiS-Bold.otf') format('opentype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Dihjauti S';
+  src: url('greek-fonts/dihjauti/DihjautiS-BoldItalic.otf') format('opentype');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+.gf-dihjauti-s { font-family: 'Dihjauti S', Georgia, serif; }
+
+
+/* ─────────────────────────────────────────────
+   12 · GALIVER SANS — Geometric grotesque
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Galiver Sans';
+  src: url('greek-fonts/galiver-sans/GALS.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Galiver Sans';
+  src: url('greek-fonts/galiver-sans/GALSB.ttf') format('truetype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+.gf-galiver-sans { font-family: 'Galiver Sans', 'Futura', 'Avenir', sans-serif; }
+
+
+/* ─────────────────────────────────────────────
+   13 · SLIMAMIF — Tall condensed display
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Slimamif';
+  src: url('greek-fonts/slimamif/Slimamif.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+.gf-slimamif { font-family: 'Slimamif', 'Bebas Neue', 'Impact', sans-serif; letter-spacing: 0.02em; }
+
+
+/* ─────────────────────────────────────────────
+   14 · STAMPATELLO FACETO — Italian schoolroom print
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Stampatello Faceto';
+  src: url('greek-fonts/stampatello-faceto/StampatelloFaceto.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+.gf-stampatello-faceto { font-family: 'Stampatello Faceto', 'Marker Felt', cursive, sans-serif; }
+
+
+/* ─────────────────────────────────────────────
+   15 · TOXIGENESIS — Sci-fi / cyber bold
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Toxigenesis';
+  src: url('greek-fonts/toxigenesis/toxigenesis bd.otf') format('opentype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+.gf-toxigenesis { font-family: 'Toxigenesis', 'Eurostile', 'Bank Gothic', sans-serif; font-weight: 700; letter-spacing: 0.04em; }
+
+
+/* ─────────────────────────────────────────────
+   16 · WIMZIK — Quirky handwritten
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Wimzik';
+  src: url('greek-fonts/wimzik/Wimzik.otf') format('opentype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+.gf-wimzik { font-family: 'Wimzik', 'Comic Sans MS', cursive; }

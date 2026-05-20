@@ -1027,6 +1027,9 @@
 **gradient-numbers.css** `typography/gradient-numbers.css` (CSS) — tags: typography number numeral hero stat metric digit gradient counter mega large landing apple linear stripe stroke outlined shimmer glow tabular
   Hero stat numerals with gradient fill. Sizes sm→mega + 14 color presets. Variants: stroke (outlined), shimmer (animated), glow, tabular, italic.
 
+**greek-fonts.css** `typography/greek-fonts.css` (CSS) — tags: typography greek ελληνικά font-face fonts pack web-font self-hosted didot junicode open-sans ubuntu athena polytonic neoclassical display brand greek-website athens hellenic
+  16 self-hosted Greek-friendly fonts as @font-face declarations + `.gf-*` utility classes. Body-safe Greek-supporting families: GFS Didot, Athena VKF, Junicode (polytonic), Open Sans, Ubuntu, Ubuntu Mono, Ubuntu Condensed. Display/Latin headlines: Basenji, Basis33 (pixel), Bodoni Z37, Breamcatcher, Bubble Sans, Dihjauti (+ S alt), Galiver Sans, Slimamif, Stampatello Faceto, Toxigenesis, Wimzik. Font files live in `typography/greek-fonts/<name>/`.
+
 ---
 
 ### Utilities (math, DOM, perf)
