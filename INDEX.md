@@ -2459,6 +2459,15 @@ These cover components and gradient utilities that had only intent-table rows ab
 **maps-pack.css** `components/maps-pack.css` (CSS) — tags: maps-pack map-pin marker pulse map-tooltip callout map-legend cluster-bubble route-summary distance-pill location-search mini-map preview
   9 map-UI patterns: map-pin (drop pin SVG), pulsing marker (live presence), map-tooltip (callout with arrow), map-legend (frosted), cluster-bubble (sm/md/lg), route-summary (A→B with dashed line + duration), distance-pill (floating chip), location-search results (rows with addr), mini-map-card (stylized roads + pin).
 
+**greece-map.css** `components/greece-map.css` (CSS) — tags: greece-map ελλάδα greek hellenic choropleth map regions periphereies prefectures nomoi nuts2 nuts3 svg geojson coverage interactive hover tooltip legend toggle
+  Styles for the GreeceMap component: SVG paths w/ hover-lift, mode toggle pill, gradient legend bar, floating tooltip with Greek + Latin region names. Variants: `.gmap-sea` (Aegean blue bg), `.gmap-flat`, `.gmap-outline`. Pairs with greece-map.js and greece-map-data.js.
+
+**greece-map.js** `components/greece-map.js` (JS, global: `GreeceMap`) — tags: greece-map ελλάδα greek hellenic choropleth interactive svg geojson nuts2 nuts3 regions periphereies prefectures nomoi attiki kriti athens coverage data-viz dashboard color-scale eurostat
+  Interactive Greece choropleth with toggleable 13 περιφέρειες (NUTS2) and 52 prefectures (NUTS3). `GreeceMap.init(target, {mode, data: {NUTS_ID: value}, scale: 'coverage'|'heat'|'ocean'|'mono'|'traffic', valueLabel, valueFormat, onClick, onHover})`. Methods: `.setMode`, `.setData`, `.setScale`. Requires greece-map-data.js loaded first. Geometry: Eurostat NUTS 2021 (free reuse w/ attribution).
+
+**greece-map-data.js** `components/greece-map-data.js` (JS, globals: `GREECE_REGIONS`, `GREECE_PREFECTURES`, `GREECE_MAP_VIEWBOX`) — tags: greece-map data geojson svg-paths nuts2 nuts3 eurostat 1-20m equirectangular projection
+  Pre-projected SVG path data for greece-map.js (13 regions + 52 prefectures). Source: Eurostat NUTS 2021 (GISCO), 1:20M, EPSG:4326, equirectangular w/ cos(lat_mid) x-correction. 31 KB.
+
 **game-pack-2.css** `feedback/game-pack-2.css` (CSS) — tags: game-pack-2 inventory-grid rarity common rare epic legendary mythic skill-tree node-graph quest-log boss-bar dialogue-box loot-drop crosshair fps mini-map ammo-counter rpg fantasy
   9 game-UI patterns (extends game-hud.css): inventory-grid (8-col D&D/Diablo cells with rarity glows), skill-tree (positioned nodes + links), quest-log (RPG scroll style with objectives), boss-bar (uppercase name + shimmer health), dialogue-box (visual novel with choices), loot-drop (animated card with rarity tier), crosshair (FPS reticle with spread variant), mini-map (radar with player+enemies+sweep), ammo-counter (low-warn pulse).
 

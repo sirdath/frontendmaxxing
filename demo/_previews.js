@@ -1291,6 +1291,55 @@
       '</div>';
   };
 
+  // ===== Greece map (choropleth) =====
+  P['components/greece-map.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:1rem;align-items:center;width:100%;">' +
+        '<div id="gmap-host" style="width:100%;max-width:680px;"></div>' +
+        '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;font-family:ui-monospace,monospace;font-size:0.72rem;">' +
+          '<button data-scale="coverage" class="dapp-btn is-on" style="padding:0.3rem 0.7rem;">coverage</button>' +
+          '<button data-scale="heat"     class="dapp-btn"      style="padding:0.3rem 0.7rem;">heat</button>' +
+          '<button data-scale="ocean"    class="dapp-btn"      style="padding:0.3rem 0.7rem;">ocean</button>' +
+          '<button data-scale="mono"     class="dapp-btn"      style="padding:0.3rem 0.7rem;">mono</button>' +
+          '<button data-scale="traffic"  class="dapp-btn"      style="padding:0.3rem 0.7rem;">traffic</button>' +
+        '</div>' +
+      '</div>';
+
+    function go() {
+      if (!window.GreeceMap) return;
+      // Synthetic coverage values per NUTS2 + NUTS3 id (deterministic from id char codes)
+      function fakeCoverage(id) {
+        var n = 0; for (var i = 0; i < id.length; i++) n = (n * 31 + id.charCodeAt(i)) >>> 0;
+        return Math.round((0.18 + (n % 700) / 1000) * 100) / 100;
+      }
+      var allData = {};
+      (window.GREECE_REGIONS || []).forEach(function (f) { allData[f.id] = fakeCoverage(f.id); });
+      (window.GREECE_PREFECTURES || []).forEach(function (f) { allData[f.id] = fakeCoverage(f.id); });
+
+      var inst = window.GreeceMap.init('#gmap-host', {
+        title: 'Δείγμα κάλυψης (sample coverage)',
+        mode: 'regions',
+        data: allData,
+        scale: 'coverage',
+        valueLabel: 'coverage'
+      });
+
+      target.querySelectorAll('button[data-scale]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          target.querySelectorAll('button[data-scale]').forEach(function (x) { x.classList.remove('is-on'); });
+          b.classList.add('is-on');
+          inst.setScale(b.dataset.scale);
+        });
+      });
+    }
+
+    if (window.GREECE_REGIONS && window.GreeceMap) { go(); return; }
+    var s = document.createElement('script');
+    s.src = '../components/greece-map-data.js';
+    s.onload = go;
+    document.head.appendChild(s);
+  };
+
   // ===== Greek fonts pack =====
   P['typography/greek-fonts.css'] = function (target) {
     var fonts = [
