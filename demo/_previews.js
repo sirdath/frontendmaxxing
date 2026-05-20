@@ -1357,6 +1357,197 @@
     document.head.appendChild(s);
   };
 
+  // ===== Aceternity gap-fill: high-impact previews =====
+
+  P['components/infinite-moving-cards.js'] = function (target) {
+    target.innerHTML =
+      '<div class="imc-host" data-speed="30" data-direction="left" style="max-width:760px;">' +
+        '<ul class="imc-track">' +
+          ['"Game changer for our pipeline." — Maria · CTO',
+           '"Felt like cheating." — Alex · Designer',
+           '"Loved the migration story." — Jordan · PM',
+           '"Best devx in years." — Sam · Eng',
+           '"Shipped a redesign in a weekend." — Aria · Founder'
+          ].map(function (s) {
+            var parts = s.split(' — ');
+            return '<li class="imc-card"><p>' + parts[0] + '</p><span>' + parts[1] + '</span></li>';
+          }).join('') +
+        '</ul>' +
+      '</div>';
+    if (window.InfiniteMovingCards) window.InfiniteMovingCards.init('.imc-host');
+  };
+
+  P['components/card-stack.js'] = function (target) {
+    target.innerHTML =
+      '<div class="cs-host">' +
+        ['"This shipped twice as fast as anything else." — Maria · CTO',
+         '"DX so good it feels illegal." — Alex · Designer',
+         '"Our team\'s velocity doubled." — Jordan · PM'
+        ].map(function (s) {
+          var parts = s.split(' — ');
+          return '<div class="cs-card"><p>' + parts[0] + '</p><span>' + parts[1] + '</span></div>';
+        }).join('') +
+      '</div>' +
+      '<div style="margin-top:0.8rem;font-size:0.7rem;color:rgba(255,255,255,0.45);font-family:ui-monospace,monospace;">click or wait — auto-rotates every 4s</div>';
+    if (window.CardStack) window.CardStack.init('.cs-host', { interval: 4000 });
+  };
+
+  P['components/glare-card.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;">' +
+        '<div class="gc-host"><div class="gc-content"><h3>Aurora Pro</h3><p>Up to 12% APR · move mouse over</p></div></div>' +
+        '<div class="gc-host" style="--gc-bg:linear-gradient(135deg,#7c2d12,#ea580c);"><div class="gc-content"><h3>Sunset</h3><p>Limited edition</p></div></div>' +
+      '</div>';
+    if (window.GlareCard) window.GlareCard.init('.gc-host');
+  };
+
+  P['components/wobble-card.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;">' +
+        '<div class="wc-host"><div class="wc-inner"><h3>Pro</h3><p>Everything you need to ship.</p></div></div>' +
+        '<div class="wc-host wc-host-emerald"><div class="wc-inner"><h3>Team</h3><p>Collaborate without limits.</p></div></div>' +
+        '<div class="wc-host wc-host-sunset"><div class="wc-inner"><h3>Lifetime</h3><p>One-time, forever.</p></div></div>' +
+      '</div>';
+    if (window.WobbleCard) window.WobbleCard.init('.wc-host');
+  };
+
+  P['components/pin-container.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;padding-top:1rem;">' +
+        ['violet','emerald','amber'].map(function (variant) {
+          return '<a href="#" class="pc-host pc-host-' + variant + '">' +
+            '<div class="pc-pin"><span class="pc-pin-label">/ui/' + variant + '-card</span></div>' +
+            '<div class="pc-card">' +
+              '<h3>' + variant.charAt(0).toUpperCase() + variant.slice(1) + ' card</h3>' +
+              '<p style="margin-top:auto;">Hover me. The card tilts back and a pin extends above with a label.</p>' +
+            '</div>' +
+          '</a>';
+        }).join('') +
+      '</div>';
+  };
+
+  P['effects/background-beams.css'] = function (target) {
+    target.innerHTML =
+      '<div class="bb-host" style="height:240px;border-radius:12px;display:grid;place-items:center;">' +
+        '<svg class="bb-svg" viewBox="0 0 696 240" fill="none" preserveAspectRatio="none">' +
+          ['M0 80 C 200 80, 400 160, 696 100',
+           'M0 40  C 200 40, 400 200, 696 60',
+           'M0 120 C 200 120, 400 40,  696 140',
+           'M0 180 C 200 180, 400 80,  696 200',
+           'M0 60  C 250 60, 450 180, 696 30'
+          ].map(function (d) { return '<path class="bb-path" d="' + d + '"/>'; }).join('') +
+        '</svg>' +
+        '<div style="position:relative;z-index:2;font-family:system-ui,sans-serif;font-size:1.8rem;font-weight:700;color:#fff;text-align:center;letter-spacing:-0.02em;">Background <span style="background:linear-gradient(90deg,#a855f7,#ec4899);-webkit-background-clip:text;background-clip:text;color:transparent;">beams</span></div>' +
+      '</div>';
+    if (window.BackgroundBeams) window.BackgroundBeams.init();
+  };
+
+  P['effects/background-beams-collision.js'] = function (target) {
+    target.innerHTML = '<div class="bbc-host" style="height:320px;border-radius:12px;"></div>';
+    if (window.BackgroundBeamsCollision) window.BackgroundBeamsCollision.init('.bbc-host', { count: 14 });
+  };
+
+  P['effects/vortex.js'] = function (target) {
+    target.innerHTML =
+      '<div class="vtx-host" style="height:340px;border-radius:12px;display:grid;place-items:center;">' +
+        '<div style="position:relative;z-index:2;font-family:system-ui,sans-serif;color:#fff;text-align:center;">' +
+          '<div style="font-size:2.2rem;font-weight:700;letter-spacing:-0.02em;">The hypnotic <span style="background:linear-gradient(90deg,#a855f7,#ec4899);-webkit-background-clip:text;background-clip:text;color:transparent;">vortex</span></div>' +
+          '<div style="font-size:0.8rem;opacity:0.6;margin-top:0.4rem;">600 particles · curl-noise · pure canvas</div>' +
+        '</div>' +
+      '</div>';
+    if (window.Vortex) window.Vortex.init('.vtx-host', { count: 600 });
+  };
+
+  P['effects/background-boxes.js'] = function (target) {
+    target.innerHTML =
+      '<div class="bgx-host" style="height:340px;border-radius:12px;display:grid;place-items:center;">' +
+        '<div style="position:relative;z-index:2;font-family:system-ui,sans-serif;color:#fff;text-align:center;pointer-events:none;">' +
+          '<div style="font-size:2rem;font-weight:700;">Hover the <span style="color:#a855f7;">grid</span></div>' +
+          '<div style="font-size:0.78rem;opacity:0.6;margin-top:0.3rem;">cells light up + fade out</div>' +
+        '</div>' +
+      '</div>';
+    if (window.BackgroundBoxes) window.BackgroundBoxes.init('.bgx-host', { rows: 14, cols: 24 });
+  };
+
+  P['interactions/following-pointer.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">' +
+        '<div class="fp-host" data-label="Maria" data-color="#a855f7" style="background:#0e0e18;padding:2rem;border-radius:12px;width:280px;border:1px solid rgba(255,255,255,0.08);">' +
+          '<h3 style="margin:0 0 0.4rem;color:#fff;font-family:system-ui,sans-serif;">Hover me</h3>' +
+          '<p style="margin:0;color:rgba(255,255,255,0.55);font-family:system-ui,sans-serif;font-size:0.85rem;">Cursor turns into a Maria-labelled arrow.</p>' +
+        '</div>' +
+        '<div class="fp-host" data-label="Alex"  data-color="#10b981" style="background:#0e0e18;padding:2rem;border-radius:12px;width:280px;border:1px solid rgba(255,255,255,0.08);">' +
+          '<h3 style="margin:0 0 0.4rem;color:#fff;font-family:system-ui,sans-serif;">And me</h3>' +
+          '<p style="margin:0;color:rgba(255,255,255,0.55);font-family:system-ui,sans-serif;font-size:0.85rem;">A second region with a different label + color.</p>' +
+        '</div>' +
+      '</div>';
+    if (window.FollowingPointer) window.FollowingPointer.init('.fp-host');
+  };
+
+  // The scroll-driven ones (container-scroll, macbook-scroll, tracing-beam,
+  // sticky-scroll-reveal, google-gemini-effect) only animate during real-page
+  // scroll. The vault's per-snippet preview iframe isn't tall enough to drive
+  // them, so we render a representative still-frame + usage hint.
+  P['scroll/container-scroll.js'] = function (target) {
+    target.innerHTML =
+      '<div style="text-align:center;font-family:system-ui,sans-serif;color:#fff;max-width:540px;">' +
+        '<div style="perspective:1200px;margin-bottom:1.2rem;">' +
+          '<div style="width:100%;aspect-ratio:16/10;background:#1a1d27;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:10px;transform:rotateX(14deg) scale(0.9);box-shadow:0 30px 80px -20px rgba(0,0,0,0.45);">' +
+            '<div style="width:100%;height:100%;background:linear-gradient(135deg,#0f172a,#312e81);border-radius:8px;display:grid;place-items:center;font-size:1.6rem;font-weight:700;">Your hero image</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="font-size:0.85rem;opacity:0.6;">Scroll-driven. The frame rotates flat + scales up as you scroll through the section. Drop into a real page to see it animate.</div>' +
+      '</div>';
+  };
+  P['scroll/macbook-scroll.js'] = function (target) {
+    target.innerHTML =
+      '<div style="text-align:center;font-family:system-ui,sans-serif;color:#fff;max-width:540px;">' +
+        '<div style="perspective:900px;margin-bottom:1.2rem;display:flex;flex-direction:column;align-items:center;">' +
+          '<div style="width:280px;aspect-ratio:16/10;background:#2a2d36;border:1px solid rgba(255,255,255,0.08);border-radius:14px 14px 4px 4px;padding:10px;transform:rotateX(-30deg);transform-origin:bottom;box-shadow:0 30px 60px -24px rgba(0,0,0,0.55);">' +
+            '<div style="width:100%;height:100%;background:linear-gradient(135deg,#0f172a,#1e1b4b);border-radius:6px;"></div>' +
+          '</div>' +
+          '<div style="width:300px;height:18px;background:linear-gradient(180deg,#2a2d36,#1c1e25);border-radius:0 0 18px 18px;border:1px solid rgba(255,255,255,0.08);margin-top:-1px;"></div>' +
+        '</div>' +
+        '<div style="font-size:0.85rem;opacity:0.6;">Scroll-driven. The lid opens from closed (-90°) to open as the user scrolls through the section.</div>' +
+      '</div>';
+  };
+  P['scroll/google-gemini-effect.js'] = function (target) {
+    target.innerHTML =
+      '<div style="text-align:center;font-family:system-ui,sans-serif;color:#fff;max-width:600px;">' +
+        '<svg viewBox="0 0 1440 400" style="width:100%;background:#050510;border-radius:12px;" fill="none">' +
+          ['#a855f7','#ec4899','#f59e0b','#10b981','#3b82f6'].map(function (c, i) {
+            var y1 = 320, y2 = 200 - i * 30;
+            return '<path d="M0 ' + y1 + ' C 360 ' + (y1 - i*60) + ', 720 ' + (y1 - i*60) + ', 1440 ' + y2 + '" stroke="' + c + '" stroke-width="3" stroke-linecap="round" style="filter:drop-shadow(0 0 6px ' + c + ');"/>';
+          }).join('') +
+        '</svg>' +
+        '<div style="font-size:0.85rem;opacity:0.6;margin-top:0.7rem;">Scroll-driven. Each curve animates its stroke-dashoffset from 0 → full as you scroll through the section.</div>' +
+      '</div>';
+  };
+  P['scroll/tracing-beam.js'] = function (target) {
+    target.innerHTML =
+      '<div style="text-align:left;font-family:system-ui,sans-serif;color:#fff;max-width:560px;display:grid;grid-template-columns:30px 1fr;gap:1rem;">' +
+        '<div style="position:relative;background:rgba(255,255,255,0.04);width:2px;margin-left:14px;border-radius:1px;">' +
+          '<div style="position:absolute;top:0;width:2px;height:60%;background:linear-gradient(180deg,transparent,#a855f7);"></div>' +
+          '<div style="position:absolute;top:60%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #a855f7;box-shadow:0 0 24px rgba(168,85,247,0.85);"></div>' +
+        '</div>' +
+        '<div style="opacity:0.75;font-size:0.9rem;line-height:1.6;">' +
+          '<p style="margin:0 0 1rem;">Long-form article body. The beam to the left fills + the glowing dot travels down as the reader scrolls. Pair with `article` and ResizeObserver handles dynamic heights.</p>' +
+          '<p style="margin:0;opacity:0.55;font-size:0.78rem;">Static preview — the real beam animates from scroll progress.</p>' +
+        '</div>' +
+      '</div>';
+  };
+  P['scroll/sticky-scroll-reveal.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:680px;font-family:system-ui,sans-serif;color:#fff;">' +
+        '<div>' +
+          '<div style="opacity:0.35;font-size:0.95rem;margin-bottom:1.2rem;"><strong>Step one</strong><br>Sketch the layout.</div>' +
+          '<div style="opacity:1;font-size:0.95rem;margin-bottom:1.2rem;"><strong style="font-size:1.1rem;">Step two — active</strong><br>Wire up the data.</div>' +
+          '<div style="opacity:0.35;font-size:0.95rem;"><strong>Step three</strong><br>Polish + ship.</div>' +
+        '</div>' +
+        '<div style="background:linear-gradient(135deg,#312e81,#1e293b);border-radius:14px;min-height:200px;display:grid;place-items:center;font-size:0.85rem;opacity:0.7;">visual for active panel</div>' +
+      '</div>';
+  };
+
   // ===== Greek fonts pack =====
   P['typography/greek-fonts.css'] = function (target) {
     var fonts = [

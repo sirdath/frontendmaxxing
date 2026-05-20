@@ -1,0 +1,67 @@
+/* ============================================
+   BACKGROUND BEAMS — Animated SVG beams flowing across a dark background
+   Inspired by Aceternity UI · backgroundBeams
+   ============================================
+   Several thin SVG paths with gradient strokes get their stroke-dashoffset
+   animated, creating the illusion of glowing beams of light running along
+   the curves. Pairs with background-beams.js (optional — pure CSS works too).
+
+   Usage:
+     <div class="bb-host">
+       <svg class="bb-svg" viewBox="0 0 696 316" fill="none">
+         <path d="M0 100 C 100 100, 200 200, 696 200" class="bb-path"/>
+         <path d="M0 60  C 200 60, 300 240, 696 240" class="bb-path"/>
+         <path d="M0 140 C 200 140, 300 60,  696 80"  class="bb-path"/>
+         <!-- add as many as you want -->
+       </svg>
+       <!-- foreground content goes here -->
+     </div>
+
+   Variants:
+     .bb-host-violet (default) · .bb-host-cyan · .bb-host-rose · .bb-host-emerald
+   ============================================ */
+.bb-host {
+  --bb-c1: #a855f7;
+  --bb-c2: #ec4899;
+  --bb-bg: radial-gradient(ellipse at 50% 50%, rgba(168,85,247,0.12), transparent 70%), #050510;
+  --bb-stroke: 1.2;
+
+  position: relative;
+  width: 100%;
+  min-height: 240px;
+  background: var(--bb-bg);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.bb-host-cyan    { --bb-c1: #06b6d4; --bb-c2: #3b82f6; --bb-bg: radial-gradient(ellipse at 50% 50%, rgba(6,182,212,0.14), transparent 70%), #02050e; }
+.bb-host-rose    { --bb-c1: #f43f5e; --bb-c2: #f97316; --bb-bg: radial-gradient(ellipse at 50% 50%, rgba(244,63,94,0.14),  transparent 70%), #0e0508; }
+.bb-host-emerald { --bb-c1: #10b981; --bb-c2: #6ee7b7; --bb-bg: radial-gradient(ellipse at 50% 50%, rgba(16,185,129,0.14), transparent 70%), #051210; }
+
+.bb-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bb-path {
+  stroke: url(#bb-grad);
+  stroke-width: var(--bb-stroke);
+  stroke-linecap: round;
+  stroke-dasharray: 80 240;
+  stroke-dashoffset: 0;
+  fill: none;
+  opacity: 0.65;
+  animation: bb-flow 5s linear infinite;
+  filter: drop-shadow(0 0 6px var(--bb-c1));
+}
+
+.bb-path:nth-child(odd)  { animation-duration: 6s; animation-delay: -1.5s; }
+.bb-path:nth-child(3n)   { animation-duration: 7s; animation-delay: -3s;   filter: drop-shadow(0 0 6px var(--bb-c2)); }
+
+@keyframes bb-flow {
+  from { stroke-dashoffset: 320; }
+  to   { stroke-dashoffset: 0; }
+}

@@ -1,0 +1,35 @@
+/* ============================================
+   VORTEX — Swirling particle vortex background (canvas)
+   Inspired by Aceternity UI · vortex
+   ============================================
+   Hundreds of dots orbit a center point with curl-noise drift, creating
+   a hypnotic vortex. Driven entirely by vortex.js (canvas), the CSS just
+   provides the container + an optional radial fade mask.
+
+   Usage:
+     <div class="vtx-host"></div>
+     <script>Vortex.init('.vtx-host', {count: 600});</script>
+
+   Variants: .vtx-host-violet · .vtx-host-cyan · .vtx-host-fire
+   ============================================ */
+.vtx-host {
+  --vtx-bg: radial-gradient(ellipse at center, rgba(168,85,247,0.15), transparent 70%), #050510;
+
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  background: var(--vtx-bg);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.vtx-host-cyan { --vtx-bg: radial-gradient(ellipse at center, rgba(6,182,212,0.15), transparent 70%), #02050e; }
+.vtx-host-fire { --vtx-bg: radial-gradient(ellipse at center, rgba(234,88,12,0.18), transparent 70%), #0e0405; }
+
+.vtx-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}

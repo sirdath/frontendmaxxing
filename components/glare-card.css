@@ -1,0 +1,87 @@
+/* ============================================
+   GLARE CARD — Card with a specular highlight that follows the cursor
+   Inspired by Aceternity UI · glareCard
+   ============================================
+   The glare is a radial-gradient layered above the content; its position
+   is driven by --mx / --my CSS vars set by JS on mousemove (no JS needed
+   for static look — works on hover-only too).
+
+   Usage:
+     <div class="gc-host">
+       <div class="gc-content">
+         <h3>Aurora Pro</h3><p>Up to 12% APR.</p>
+       </div>
+     </div>
+     <script>GlareCard.init('.gc-host');</script>
+   ============================================ */
+.gc-host {
+  --gc-bg: linear-gradient(135deg, #1e1b4b, #312e81 60%, #1e293b);
+  --gc-border: rgba(255,255,255,0.12);
+  --gc-text: #f1f5f9;
+  --gc-glare: rgba(255,255,255,0.55);
+  --mx: 50%;
+  --my: 50%;
+
+  position: relative;
+  width: 320px;
+  aspect-ratio: 16 / 10;
+  background: var(--gc-bg);
+  border: 1px solid var(--gc-border);
+  border-radius: 18px;
+  color: var(--gc-text);
+  overflow: hidden;
+  isolation: isolate;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  box-shadow: 0 20px 40px -16px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
+}
+
+.gc-host::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    320px circle at var(--mx) var(--my),
+    var(--gc-glare) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  z-index: 2;
+}
+.gc-host:hover::before { opacity: 1; }
+
+.gc-host::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255,255,255,0.08) 45%,
+    rgba(255,255,255,0.16) 50%,
+    rgba(255,255,255,0.08) 55%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 1;
+}
+.gc-host:hover::after { transform: translateX(100%); }
+
+.gc-content {
+  position: relative;
+  z-index: 3;
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.gc-content h3 { margin: 0; font-size: 1.2rem; font-weight: 600; }
+.gc-content p  { margin: 0.35rem 0 0; font-size: 0.85rem; opacity: 0.75; }

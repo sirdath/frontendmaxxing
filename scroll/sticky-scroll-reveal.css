@@ -1,0 +1,104 @@
+/* ============================================
+   STICKY SCROLL REVEAL — Pinned-right image swaps as scroll-left text changes
+   Inspired by Aceternity UI · stickyScroll
+   ============================================
+   Two columns: left scrolls through several text panels, right is sticky
+   and shows whichever image/visual belongs to the currently-active panel.
+
+   Usage:
+     <section class="ssr-host">
+       <div class="ssr-text">
+         <div class="ssr-panel" data-bg="#1e293b" data-src="a.jpg">
+           <h3>Step one</h3><p>Lorem…</p>
+         </div>
+         <div class="ssr-panel" data-bg="#312e81" data-src="b.jpg">
+           <h3>Step two</h3><p>Ipsum…</p>
+         </div>
+         <div class="ssr-panel" data-bg="#0f766e" data-src="c.jpg">
+           <h3>Step three</h3><p>Dolor…</p>
+         </div>
+       </div>
+       <div class="ssr-stage">
+         <div class="ssr-visual"></div>
+       </div>
+     </section>
+     <script>StickyScrollReveal.init('.ssr-host');</script>
+   ============================================ */
+.ssr-host {
+  --ssr-gap: 4rem;
+  --ssr-stage-radius: 16px;
+  --ssr-text-color: #f1f5f9;
+  --ssr-muted: rgba(241,245,249,0.5);
+  --ssr-active: #fff;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ssr-gap);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  align-items: start;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+.ssr-text {
+  display: flex;
+  flex-direction: column;
+  gap: 30vh;
+  padding: 30vh 0;
+  color: var(--ssr-muted);
+}
+
+.ssr-panel {
+  transition: color 0.35s ease, opacity 0.35s ease, transform 0.35s ease;
+  opacity: 0.35;
+}
+.ssr-panel.is-active {
+  color: var(--ssr-active);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ssr-panel h3 {
+  margin: 0 0 0.7rem;
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.ssr-panel p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 36ch;
+}
+
+.ssr-stage {
+  position: sticky;
+  top: calc(50vh - 200px);
+  height: 400px;
+}
+
+.ssr-visual {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--ssr-stage-radius);
+  background: #1e293b center/cover no-repeat;
+  background-size: cover;
+  box-shadow: 0 20px 60px -20px rgba(0,0,0,0.5);
+  transition: background 0.55s ease;
+  position: relative;
+  overflow: hidden;
+}
+.ssr-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), transparent 60%);
+  pointer-events: none;
+}
+
+@media (max-width: 800px) {
+  .ssr-host { grid-template-columns: 1fr; gap: 1rem; }
+  .ssr-text { padding: 8vh 0; gap: 18vh; }
+  .ssr-stage { position: relative; top: 0; height: 280px; }
+}

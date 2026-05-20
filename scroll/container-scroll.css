@@ -1,0 +1,106 @@
+/* ============================================
+   CONTAINER SCROLL ANIMATION — Apple-style hero image that "unfolds"
+   Inspired by Aceternity UI · containerScrollAnimation
+   ============================================
+   A tilted 3D laptop/iPad-style frame at the top of the scroll range
+   rotates flat + scales up as the user scrolls — the classic Apple
+   product-page hero. Pairs with container-scroll.js.
+
+   Usage:
+     <section class="csa-host">
+       <h2 class="csa-title">Build at the speed of <br><span>thought</span></h2>
+       <div class="csa-frame">
+         <img src="hero.jpg" alt="" class="csa-img">
+       </div>
+     </section>
+     <script>ContainerScroll.init('.csa-host');</script>
+
+   Variants:
+     .csa-host-tall  — taller scroll range (300vh)
+     .csa-host-dark  — dark frame chrome
+   ============================================ */
+.csa-host {
+  --csa-rot-start: 22deg;
+  --csa-scale-start: 0.78;
+  --csa-shadow: 0 30px 80px -20px rgba(0,0,0,0.45);
+  --csa-radius: 18px;
+  --csa-frame-pad: 10px;
+  --csa-frame-bg: #1a1d27;
+  --csa-frame-border: rgba(255,255,255,0.08);
+  --csa-title-color: #fff;
+  --csa-accent: #6366f1;
+
+  position: relative;
+  height: 220vh;
+  perspective: 1400px;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(180deg, transparent, rgba(99,102,241,0.04) 60%, transparent);
+}
+
+.csa-host-tall { height: 300vh; }
+
+.csa-host > .csa-title,
+.csa-host > .csa-frame {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.csa-title {
+  z-index: 2;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 4.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--csa-title-color);
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: none;
+}
+.csa-title span {
+  background: linear-gradient(90deg, var(--csa-accent), #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.csa-frame {
+  z-index: 1;
+  width: min(94%, 1100px);
+  aspect-ratio: 16 / 10;
+  margin-top: 28vh;
+  padding: var(--csa-frame-pad);
+  background: var(--csa-frame-bg);
+  border: 1px solid var(--csa-frame-border);
+  border-radius: var(--csa-radius);
+  box-shadow: var(--csa-shadow);
+  transform-style: preserve-3d;
+  transform: rotateX(var(--csa-rot-start)) scale(var(--csa-scale-start));
+  transform-origin: center top;
+  transition: none; /* JS-driven, no transition lag */
+  will-change: transform;
+}
+
+.csa-img,
+.csa-frame > * {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: calc(var(--csa-radius) - 6px);
+  object-fit: cover;
+}
+
+.csa-host-dark { --csa-frame-bg: #0a0a12; --csa-title-color: #f1f5f9; }
+
+@media (max-width: 600px) {
+  .csa-host { height: 180vh; perspective: 800px; }
+  .csa-frame { margin-top: 22vh; }
+}

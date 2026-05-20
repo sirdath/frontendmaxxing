@@ -1,0 +1,56 @@
+/* ============================================
+   FOLLOWING POINTER — Cursor-trailing label / arrow (Notion / Linear-style)
+   Inspired by Aceternity UI · followingPointer
+   ============================================
+   When the cursor enters .fp-host, a colored label appears next to the
+   cursor and follows it around with a slight smooth lag (lerp).
+
+   Usage:
+     <div class="fp-host" data-label="Maria" data-color="#a855f7">
+       <h2>Hover me</h2>
+       <p>This is a region with a following pointer label.</p>
+     </div>
+     <script>FollowingPointer.init('.fp-host');</script>
+   ============================================ */
+.fp-host {
+  position: relative;
+  cursor: none;
+}
+
+.fp-host * { cursor: none; }
+
+.fp-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transform: translate3d(-50%, -50%, 0);
+  z-index: 9999;
+  display: none;
+}
+
+.fp-cursor.is-on { display: block; }
+
+.fp-arrow {
+  width: 16px;
+  height: 16px;
+  fill: var(--fp-color, #a855f7);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+  transform: rotate(-45deg);
+}
+
+.fp-label {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  background: var(--fp-color, #a855f7);
+  color: #fff;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  letter-spacing: 0.01em;
+}

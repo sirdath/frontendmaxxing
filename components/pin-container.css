@@ -1,0 +1,120 @@
+/* ============================================
+   PIN CONTAINER — 3D perspective card that tilts + lifts on hover (like a pinned post)
+   Inspired by Aceternity UI · pinContainer
+   ============================================
+   On hover, the card lifts and tilts forward in 3D, a glowing pin extends
+   above with a label, and the content reveals as the card pushes back.
+
+   Usage:
+     <a href="#" class="pc-host">
+       <div class="pc-pin"><span class="pc-pin-label">/ui/3d-card</span></div>
+       <div class="pc-card">
+         <h3>Aceternity UI</h3>
+         <p>Customizable Tailwind CSS + Framer Motion components.</p>
+       </div>
+     </a>
+
+   Variants:
+     .pc-host-violet · .pc-host-emerald · .pc-host-amber
+   ============================================ */
+.pc-host {
+  --pc-bg: #0c0c14;
+  --pc-card-bg: linear-gradient(180deg, #1a1c25, #0e1018);
+  --pc-border: rgba(255,255,255,0.1);
+  --pc-glow: #a78bfa;
+  --pc-text: #f1f5f9;
+  --pc-muted: rgba(241,245,249,0.6);
+  --pc-pin-bg: rgba(168,139,250,0.12);
+  --pc-pin-fg: #c4b5fd;
+
+  display: inline-block;
+  position: relative;
+  width: 320px;
+  height: 360px;
+  padding-top: 40px;
+  perspective: 1000px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pc-host-violet  { --pc-glow: #a78bfa; --pc-pin-bg: rgba(168,139,250,0.12); --pc-pin-fg: #c4b5fd; }
+.pc-host-emerald { --pc-glow: #34d399; --pc-pin-bg: rgba(52,211,153,0.12);  --pc-pin-fg: #6ee7b7; }
+.pc-host-amber   { --pc-glow: #fbbf24; --pc-pin-bg: rgba(251,191,36,0.12);  --pc-pin-fg: #fcd34d; }
+
+.pc-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--pc-card-bg);
+  border: 1px solid var(--pc-border);
+  border-radius: 22px;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  color: var(--pc-text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  transform-style: preserve-3d;
+  transform: rotateX(0) translateZ(0) scale(1);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+}
+
+.pc-card h3 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+.pc-card p  { margin: 0; font-size: 0.85rem; line-height: 1.55; color: var(--pc-muted); }
+
+.pc-host:hover .pc-card {
+  transform: rotateX(40deg) translateZ(-40px);
+  box-shadow: 0 30px 50px -20px rgba(0,0,0,0.6);
+}
+
+/* The pin: hidden by default, animates up + grows label on hover */
+.pc-pin {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+.pc-pin::after {
+  content: '';
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(180deg, var(--pc-glow), transparent);
+  margin-top: 6px;
+}
+
+.pc-pin-label {
+  background: var(--pc-pin-bg);
+  color: var(--pc-pin-fg);
+  font-size: 0.7rem;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--pc-glow);
+  border-radius: 999px;
+  box-shadow: 0 0 24px var(--pc-glow);
+  white-space: nowrap;
+}
+
+.pc-host:hover .pc-pin {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-32px);
+}
+
+/* Glow halo behind the card on hover */
+.pc-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 0%, var(--pc-glow), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+  filter: blur(20px);
+}
+.pc-host:hover .pc-card::before { opacity: 0.5; }

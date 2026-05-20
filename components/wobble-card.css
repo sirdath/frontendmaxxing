@@ -1,0 +1,78 @@
+/* ============================================
+   WOBBLE CARD — Squishy card that tilts + distorts toward the cursor
+   Inspired by Aceternity UI · wobbleCard
+   ============================================
+   On hover the card "wobbles" toward the cursor — tilt and slight scale
+   are driven by --rx / --ry / --tx / --ty CSS vars set by JS.
+
+   Usage:
+     <div class="wc-host">
+       <div class="wc-inner">
+         <h3>Premium</h3>
+         <p>Every feature, no limits.</p>
+       </div>
+     </div>
+     <script>WobbleCard.init('.wc-host');</script>
+
+   Variants: .wc-host-violet · .wc-host-emerald · .wc-host-sunset
+   ============================================ */
+.wc-host {
+  --wc-bg: linear-gradient(135deg, #1e1b4b, #4c1d95);
+  --wc-border: rgba(255,255,255,0.12);
+  --wc-shadow: 0 25px 50px -20px rgba(76,29,149,0.6);
+  --rx: 0deg; --ry: 0deg;
+  --tx: 0px;  --ty: 0px;
+
+  display: inline-block;
+  width: 320px;
+  aspect-ratio: 4 / 3;
+  perspective: 800px;
+  cursor: pointer;
+}
+
+.wc-host-emerald { --wc-bg: linear-gradient(135deg, #064e3b, #047857); --wc-shadow: 0 25px 50px -20px rgba(4,120,87,0.55); }
+.wc-host-sunset  { --wc-bg: linear-gradient(135deg, #7c2d12, #ea580c); --wc-shadow: 0 25px 50px -20px rgba(234,88,12,0.55); }
+
+.wc-inner {
+  width: 100%;
+  height: 100%;
+  background: var(--wc-bg);
+  border: 1px solid var(--wc-border);
+  border-radius: 22px;
+  padding: 1.5rem 1.7rem;
+  color: #fff;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: var(--wc-shadow);
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) translate3d(var(--tx), var(--ty), 0);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.wc-inner::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: radial-gradient(420px circle at calc(50% + var(--tx) * 2) calc(50% + var(--ty) * 2), rgba(255,255,255,0.18), transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.wc-host:hover .wc-inner::before { opacity: 1; }
+
+.wc-inner h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.wc-inner p {
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
+  max-width: 28ch;
+}

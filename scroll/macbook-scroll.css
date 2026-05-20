@@ -1,0 +1,129 @@
+/* ============================================
+   MACBOOK SCROLL — MacBook frame opens as you scroll
+   Inspired by Aceternity UI · macbookScroll
+   ============================================
+   A pure-CSS MacBook silhouette (lid + base + screen) that opens from
+   closed to laptop pose as the user scrolls. Pairs with macbook-scroll.js.
+
+   Usage:
+     <section class="mbs-host">
+       <h2 class="mbs-title">Watch your <span>idea</span> ship</h2>
+       <div class="mbs-stage">
+         <div class="mbs-lid"><img src="screenshot.jpg" alt=""></div>
+         <div class="mbs-base">
+           <div class="mbs-trackpad"></div>
+           <div class="mbs-keyboard"></div>
+         </div>
+       </div>
+     </section>
+     <script>MacbookScroll.init('.mbs-host');</script>
+   ============================================ */
+.mbs-host {
+  --mbs-frame: #2a2d36;
+  --mbs-frame-edge: rgba(255,255,255,0.06);
+  --mbs-screen-bg: #0a0a12;
+  --mbs-key-bg: #1f2128;
+  --mbs-trackpad: #44464f;
+  --mbs-shadow: 0 50px 80px -30px rgba(0,0,0,0.6);
+  --mbs-accent: #6366f1;
+  --mbs-radius: 14px;
+
+  position: relative;
+  height: 260vh;
+  perspective: 1200px;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(180deg, transparent, rgba(99,102,241,0.04) 50%, transparent);
+}
+
+.mbs-host > .mbs-title,
+.mbs-host > .mbs-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.mbs-title {
+  z-index: 2;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  pointer-events: none;
+  padding-top: 8vh;
+}
+.mbs-title span {
+  background: linear-gradient(90deg, var(--mbs-accent), #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.mbs-stage {
+  z-index: 1;
+  transform-style: preserve-3d;
+  width: min(80%, 900px);
+}
+
+.mbs-lid {
+  --rot: -90deg;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: var(--mbs-frame);
+  border: 1px solid var(--mbs-frame-edge);
+  border-radius: var(--mbs-radius) var(--mbs-radius) 4px 4px;
+  padding: 12px;
+  box-shadow: var(--mbs-shadow);
+  transform-origin: bottom center;
+  transform: rotateX(var(--rot));
+  transition: none;
+  will-change: transform;
+}
+.mbs-lid img,
+.mbs-lid > * {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  background: var(--mbs-screen-bg);
+  border-radius: calc(var(--mbs-radius) - 8px);
+}
+
+.mbs-base {
+  width: 105%;
+  height: 22px;
+  margin-top: -1px;
+  background: linear-gradient(180deg, var(--mbs-frame), #1c1e25);
+  border: 1px solid var(--mbs-frame-edge);
+  border-radius: 4px 4px 22px 22px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(-2px);
+  box-shadow: 0 18px 40px -12px rgba(0,0,0,0.55);
+}
+.mbs-base::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  width: 22%;
+  height: 6px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 0 0 8px 8px;
+}
+.mbs-keyboard,
+.mbs-trackpad { display: none; } /* base bar is enough for visual */
+
+@media (max-width: 600px) {
+  .mbs-host { height: 200vh; perspective: 700px; }
+}

@@ -2779,3 +2779,94 @@ These cover components and gradient utilities that had only intent-table rows ab
 
 **entry-exit-pack.css** `animations/entry-exit-pack.css` (CSS) — tags: entry-exit-pack fade zoom scale blur slide rotate bounce flip wipe expand collapse delay stagger reusable utility
   ~28 entry/exit animation utilities: fade-in/out, fade-up/down/left/right, zoom-in/out, scale-in/out, blur-in/out, slide-in/out (4 directions), rotate-in/out, bounce-in/out, flip-in-x/y, wipe-in (right/bottom), expand-in, collapse-out. Modifiers: fast/slow, delay-100-1000, stagger via :nth-child.
+
+**Phase aceternity-15 — Aceternity UI gap-fill: 5 scroll-driven + 5 cards + 4 backgrounds + 1 cursor (15 components, ~28 files)**
+
+Ports of the most-requested Aceternity UI patterns the vault was missing. All vanilla CSS+JS, framework-free.
+
+**container-scroll.css** `scroll/container-scroll.css` (CSS) — tags: container-scroll apple hero scroll-animation unfold tilt rotateX scale aceternity laptop product-page
+  Apple-style hero frame that rotates flat + scales up as the user scrolls through the section. Pairs with container-scroll.js. Variants: `.csa-host-tall`, `.csa-host-dark`.
+
+**container-scroll.js** `scroll/container-scroll.js` (JS, global: `ContainerScroll`) — tags: container-scroll scroll-progress rotateX scale lerp apple hero aceternity
+  `ContainerScroll.init('.csa-host', {rotateStart, rotateEnd, scaleStart, scaleEnd, titleLift})`. Drives the .csa-frame rotateX + scale + title lift from scroll progress.
+
+**macbook-scroll.css** `scroll/macbook-scroll.css` (CSS) — tags: macbook-scroll laptop lid open scroll apple product-page aceternity 3d perspective
+  Pure-CSS MacBook frame (lid + base) with screen image inside. Lid opens from closed (-90deg) to open as you scroll. Pairs with macbook-scroll.js.
+
+**macbook-scroll.js** `scroll/macbook-scroll.js` (JS, global: `MacbookScroll`) — tags: macbook-scroll laptop open scroll rotateX lift apple aceternity
+  `MacbookScroll.init('.mbs-host', {openStart, openEnd, liftStart, liftEnd, scaleEnd})`. Drives lid rotateX + stage lift/scale from scroll progress.
+
+**tracing-beam.css** `scroll/tracing-beam.css` (CSS) — tags: tracing-beam scroll-progress vertical-line glowing-dot article rail aceternity
+  Vertical SVG line + glowing dot for long-form articles. The fill + dot animate down the rail as the reader scrolls. Pairs with tracing-beam.js.
+
+**tracing-beam.js** `scroll/tracing-beam.js` (JS, global: `TracingBeam`) — tags: tracing-beam scroll-progress stroke-dashoffset resize-observer article aceternity
+  `TracingBeam.init('.tb-host', {startOffset, endOffset})`. Tracks viewport-center against article bounds and updates stroke-dashoffset + dot position.
+
+**sticky-scroll-reveal.css** `scroll/sticky-scroll-reveal.css` (CSS) — tags: sticky-scroll-reveal pinned-image scroll-text-panels two-column stripe aceternity vercel
+  Two-column scroll: left text panels scroll past, right image is sticky and swaps to match the active panel. Pairs with sticky-scroll-reveal.js.
+
+**sticky-scroll-reveal.js** `scroll/sticky-scroll-reveal.js` (JS, global: `StickyScrollReveal`) — tags: sticky-scroll-reveal scroll active-panel image-swap viewport-center aceternity
+  `StickyScrollReveal.init('.ssr-host', {onChange})`. Reads `data-bg`/`data-src` from each .ssr-panel and applies to .ssr-visual whichever panel is closest to viewport center.
+
+**google-gemini-effect.css** `scroll/google-gemini-effect.css` (CSS) — tags: google-gemini-effect scroll-draw svg-curves bezier multi-color stroke-dashoffset aceternity dna
+  5 colored SVG bezier curves fan out from one point on the left; each draws itself as you scroll. Pairs with google-gemini-effect.js.
+
+**google-gemini-effect.js** `scroll/google-gemini-effect.js` (JS, global: `GoogleGeminiEffect`) — tags: google-gemini-effect scroll-draw stroke-dashoffset svg getTotalLength stagger aceternity
+  `GoogleGeminiEffect.init('.gge-host', {stagger})`. Pre-measures each curve's length, then animates stroke-dashoffset per scroll progress with optional per-curve lag.
+
+**pin-container.css** `components/pin-container.css` (CSS) — tags: pin-container 3d-card perspective rotateX pin hover lift glowing-label aceternity
+  3D perspective card that tilts forward on hover with a glowing pin + label extending above. Variants: `.pc-host-violet`, `.pc-host-emerald`, `.pc-host-amber`.
+
+**infinite-moving-cards.css** `components/infinite-moving-cards.css` (CSS) — tags: infinite-moving-cards marquee testimonial scroll-row pause-hover seamless duplicate aceternity
+  Seamless horizontal marquee row of testimonial cards. Hover-pause built in, mask-fade at edges. `data-speed` + `data-direction` attrs. Pairs with infinite-moving-cards.js.
+
+**infinite-moving-cards.js** `components/infinite-moving-cards.js` (JS, global: `InfiniteMovingCards`) — tags: infinite-moving-cards clone-track seamless marquee aceternity
+  `InfiniteMovingCards.init('.imc-host')` — clones children once into the same track so translateX(-50%) loops without seams. Reads `data-speed` (seconds) and applies `--imc-duration`.
+
+**card-stack.css** `components/card-stack.css` (CSS) — tags: card-stack testimonial-stack rotating-cards quote auto-rotate stagger aceternity hinge
+  3 stacked cards with slight offsets + rotation. Top one slides off to reveal the next. Pairs with card-stack.js.
+
+**card-stack.js** `components/card-stack.js` (JS, global: `CardStack`) — tags: card-stack auto-rotate timer pause-hover click-advance aceternity
+  `CardStack.init('.cs-host', {interval})`. Rotates the front card to back on a timer (or click). Hover-pauses.
+
+**glare-card.css** `components/glare-card.css` (CSS) — tags: glare-card specular highlight cursor-glare radial-gradient overlay shimmer pass aceternity stripe
+  Card with a radial specular highlight that follows the cursor + a one-pass shimmer sweep on hover. CSS-only fallback works. Pairs with glare-card.js.
+
+**glare-card.js** `components/glare-card.js` (JS, global: `GlareCard`) — tags: glare-card cursor-tracking css-vars mx my mousemove aceternity
+  `GlareCard.init('.gc-host')`. Sets `--mx`/`--my` from cursor position to drive the radial-gradient highlight.
+
+**wobble-card.css** `components/wobble-card.css` (CSS) — tags: wobble-card squishy hover-tilt translate perspective gradient-card aceternity
+  Card that tilts + translates toward the cursor with a soft inner glow. Variants: `.wc-host-violet`, `.wc-host-emerald`, `.wc-host-sunset`.
+
+**wobble-card.js** `components/wobble-card.js` (JS, global: `WobbleCard`) — tags: wobble-card cursor-tilt rotateX rotateY translate3d css-vars aceternity
+  `WobbleCard.init('.wc-host', {maxTilt, maxOffset})`. Sets `--rx`/`--ry`/`--tx`/`--ty` from cursor position over the card.
+
+**background-beams.css** `effects/background-beams.css` (CSS) — tags: background-beams svg-paths animated-stroke gradient-beam dashoffset flow aceternity
+  Animated SVG beams flowing across a dark background. Stroke-dashoffset animation; hostable behind any content. Variants: `.bb-host-violet`, `.bb-host-cyan`, `.bb-host-rose`, `.bb-host-emerald`.
+
+**background-beams.js** `effects/background-beams.js` (JS, global: `BackgroundBeams`) — tags: background-beams svg-defs linear-gradient inject auto-init aceternity
+  `BackgroundBeams.init()` — injects a shared `<linearGradient id="bb-grad">` so .bb-path strokes can reference it. Auto-runs on DOMContentLoaded.
+
+**background-beams-collision.css** `effects/background-beams-collision.css` (CSS) — tags: background-beams-collision falling-beams floor canvas explosion particles aceternity
+  Vertical beams that fall from the top + canvas-rendered explosion particles when they hit the bottom floor. Variants: `.bbc-host-violet`, `.bbc-host-cyan`, `.bbc-host-rose`.
+
+**background-beams-collision.js** `effects/background-beams-collision.js` (JS, global: `BackgroundBeamsCollision`) — tags: background-beams-collision falling spawn collision burst canvas particles aceternity
+  `BackgroundBeamsCollision.init('.bbc-host', {count, minDuration, maxDuration, particles})`. Spawns CSS beams + canvas particle bursts on each collision cycle.
+
+**vortex.css** `effects/vortex.css` (CSS) — tags: vortex swirling particles canvas curl-noise hypnotic background aceternity
+  Container + radial fade for the canvas vortex. Variants: `.vtx-host-violet`, `.vtx-host-cyan`, `.vtx-host-fire`.
+
+**vortex.js** `effects/vortex.js` (JS, global: `Vortex`) — tags: vortex canvas particle-flow curl-noise orbit center hue aceternity
+  `Vortex.init('.vtx-host', {count, baseSpeed, hueA, hueB, backgroundFade})`. Particles orbit the container center with curl-noise wobble. Pure canvas, no WebGL.
+
+**background-boxes.css** `effects/background-boxes.css` (CSS) — tags: background-boxes skewed-grid hover-color glow-cell ambient aceternity
+  Skewed grid of empty cells that light to a random color on hover, then fade out. Pairs with background-boxes.js (generates the grid).
+
+**background-boxes.js** `effects/background-boxes.js` (JS, global: `BackgroundBoxes`) — tags: background-boxes grid-generate hover-color random fade aceternity
+  `BackgroundBoxes.init('.bgx-host', {rows, cols, colors, fadeMs})`. Generates the grid and wires hover-color behaviour with auto-fade.
+
+**following-pointer.css** `interactions/following-pointer.css` (CSS) — tags: following-pointer custom-cursor arrow label notion linear collaboration aceternity
+  Custom cursor (colored arrow + name label) for collaborative-app vibes. Cursor is hidden over .fp-host while custom one shows. Pairs with following-pointer.js.
+
+**following-pointer.js** `interactions/following-pointer.js` (JS, global: `FollowingPointer`) — tags: following-pointer cursor lerp smooth-follow label color data-attr notion aceternity
+  `FollowingPointer.init('.fp-host', {label, color, smooth})`. Reads `data-label` / `data-color` from host. Renders the cursor in `<body>`, lerps toward real cursor.

@@ -1,0 +1,67 @@
+/* ============================================
+   BACKGROUND BEAMS COLLISION — Vertical beams falling from top, exploding at the bottom
+   Inspired by Aceternity UI · backgroundBeamsWithCollision
+   ============================================
+   Tall thin lines falling top→bottom; when they hit the floor, a small
+   explosion burst plays. Driven by background-beams-collision.js (canvas
+   for the explosion particles).
+
+   Usage:
+     <div class="bbc-host"></div>
+     <script>BackgroundBeamsCollision.init('.bbc-host', {count: 12});</script>
+
+   Variants: .bbc-host-violet · .bbc-host-cyan · .bbc-host-rose
+   ============================================ */
+.bbc-host {
+  --bbc-c1: #a855f7;
+  --bbc-c2: #ec4899;
+  --bbc-bg: linear-gradient(180deg, #050510, #0a0a18);
+  --bbc-floor: 2px;
+
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  background: var(--bbc-bg);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.bbc-host-cyan { --bbc-c1: #06b6d4; --bbc-c2: #3b82f6; }
+.bbc-host-rose { --bbc-c1: #f43f5e; --bbc-c2: #f97316; }
+
+.bbc-host::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--bbc-floor);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  z-index: 1;
+}
+
+.bbc-beam {
+  position: absolute;
+  top: -120px;
+  width: 1.5px;
+  height: 80px;
+  background: linear-gradient(180deg, transparent, var(--bbc-c1), var(--bbc-c2));
+  border-radius: 2px;
+  filter: drop-shadow(0 0 4px var(--bbc-c1));
+  animation: bbc-fall var(--dur, 4s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes bbc-fall {
+  0%   { transform: translateY(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(var(--travel, 100vh)); opacity: 0; }
+}
+
+.bbc-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
