@@ -1357,6 +1357,52 @@
     document.head.appendChild(s);
   };
 
+  // ===== Phase flows-pro previews =====
+  P['components/booking-flow.js'] = function (target) {
+    target.innerHTML = '<div class="struct pal-saas-indigo" style="width:100%;display:flex;justify-content:center;"><div class="bk" id="bk-demo" style="width:100%;"></div></div>';
+    if (window.BookingFlow) window.BookingFlow.init('#bk-demo', { services: [
+      { id:'cut', name:'Haircut & style', duration:'45 min', price:'$40' },
+      { id:'col', name:'Color', duration:'2 hr', price:'$120' },
+      { id:'beard', name:'Beard trim', duration:'20 min', price:'$20' }
+    ]});
+  };
+
+  P['components/survey-flow.js'] = function (target) {
+    target.innerHTML = '<div class="struct pal-saas-indigo" style="width:100%;max-width:680px;"><div class="sv" id="sv-demo" style="max-width:none;"></div></div>';
+    if (window.SurveyFlow) window.SurveyFlow.init('#sv-demo', { questions: [
+      { type:'choice', q:'How did you hear about us?', options:['Search','A friend','Social media','An ad'] },
+      { type:'rating', q:'How likely are you to recommend us?', max:5 },
+      { type:'scale', q:'Rate your overall experience', min:0, max:10 },
+      { type:'text', q:'Anything else we should know?', placeholder:'Optional…' }
+    ]});
+  };
+
+  P['components/feedback-widget.js'] = function (target) {
+    // Render the panel inline (not fixed) so it doesn't hijack the demo viewport
+    target.innerHTML =
+      '<div class="struct pal-saas-indigo" style="width:100%;display:flex;justify-content:center;">' +
+        '<div class="fbw is-open" style="position:relative;right:auto;bottom:auto;">' +
+          '<div class="fbw-panel" style="position:relative;bottom:auto;right:auto;opacity:1;visibility:visible;transform:none;width:340px;">' +
+            '<div class="fbw-form"><div class="fbw-head"><h4>Send feedback</h4><button class="fbw-close">×</button></div>' +
+            '<div class="fbw-emoji"><button>😞</button><button>😐</button><button class="is-sel">🙂</button><button>😍</button></div>' +
+            '<div class="fbw-cats"><button class="fbw-cat">Bug</button><button class="fbw-cat is-sel">Idea</button><button class="fbw-cat">Praise</button></div>' +
+            '<textarea class="fbw-text" placeholder="Tell us more…"></textarea>' +
+            '<div class="fbw-row"><label class="fbw-shot">📷 Include screenshot</label></div>' +
+            '<button class="fbw-submit">Send feedback</button></div>' +
+          '</div>' +
+        '</div>' +
+      '</div><div style="text-align:center;margin-top:0.7rem;font-size:0.72rem;color:rgba(255,255,255,0.45);font-family:ui-monospace,monospace;">live: a corner FAB opens this · FeedbackWidget.init(...)</div>';
+  };
+
+  P['components/waitlist.css'] = function (target) {
+    target.innerHTML = '<div class="struct pal-saas-indigo" style="width:100%;"><section class="wl" style="border-radius:16px;">' +
+      '<div class="wl-in"><span class="wl-badge">Early access</span><h1 class="wl-title">Join the waitlist</h1>' +
+      '<p class="wl-sub">Be first in line when we launch this spring.</p>' +
+      '<form class="wl-form" onsubmit="return false"><input type="email" placeholder="you@email.com"><button>Get early access</button></form>' +
+      '<div class="wl-avatars"><span></span><span></span><span></span><span></span><span class="wl-count">+2,481 joined</span></div>' +
+      '</div></section></div>';
+  };
+
   // ===== Phase chrome-pro previews =====
   P['components/headers-pro.js'] = function (target) {
     target.innerHTML =

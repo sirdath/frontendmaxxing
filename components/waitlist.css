@@ -1,0 +1,75 @@
+/* ============================================
+   WAITLIST — Launch / early-access waitlist hero
+   Inspired by typical product-launch + referral waitlists (Robinhood, Superhuman)
+   ============================================
+   A focused capture block: headline + email form → success state with a
+   referral position + share row. CSS-only (success/states via .is-* classes
+   you toggle, or wire your own submit). Themeable via tokens.
+
+   Usage:
+     <section class="wl">
+       <div class="wl-in">
+         <span class="wl-badge">Early access</span>
+         <h1 class="wl-title">Join the waitlist</h1>
+         <p class="wl-sub">Be first in line when we launch this spring.</p>
+         <form class="wl-form"><input type="email" placeholder="you@email.com" required><button>Get early access</button></form>
+         <div class="wl-avatars"><span></span><span></span><span></span><span></span><span class="wl-count">+2,481 joined</span></div>
+         <!-- success (add .is-joined to .wl to reveal) -->
+         <div class="wl-success">
+           <div class="wl-pos">You're <b>#1,284</b> in line</div>
+           <p class="wl-sub">Skip ahead — invite friends. Each signup moves you up.</p>
+           <div class="wl-share"><button data-share="x">Share on X</button><button data-share="copy">Copy link</button></div>
+         </div>
+       </div>
+     </section>
+
+   Variants: wl-split (form left / visual right), wl-dark-card, wl-center (default)
+   ============================================ */
+
+.wl {
+  --wl-bg: var(--bg, #0a0a12);
+  --wl-fg: var(--fg, #f2f3f7);
+  --wl-muted: var(--muted, rgba(242,243,247,.6));
+  --wl-border: var(--border, rgba(255,255,255,.12));
+  --wl-accent: var(--accent, #7c5cff);
+  --wl-on-accent: var(--on-accent, #0a0a12);
+
+  background:
+    radial-gradient(60% 50% at 50% 0%, color-mix(in srgb, var(--wl-accent) 18%, transparent), transparent 70%),
+    var(--wl-bg);
+  color: var(--wl-fg); padding: clamp(3rem, 9vw, 6rem) 1.4rem;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+.wl-in { max-width: 560px; margin-inline: auto; text-align: center; }
+.wl-badge { display: inline-block; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--wl-accent); background: color-mix(in srgb, var(--wl-accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--wl-accent) 40%, transparent); border-radius: 999px; padding: .3rem .8rem; margin-bottom: 1.2rem; }
+.wl-title { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin: 0 0 .8rem; }
+.wl-sub { color: var(--wl-muted); font-size: 1.05rem; margin: 0 0 1.8rem; }
+
+.wl-form { display: flex; gap: .6rem; max-width: 440px; margin: 0 auto 1.4rem; }
+@media (max-width: 460px){ .wl-form { flex-direction: column; } }
+.wl-form input { flex: 1; background: var(--surface, #16161f); color: var(--wl-fg); border: 1px solid var(--wl-border); border-radius: 12px; padding: .85rem 1rem; font: inherit; outline: none; }
+.wl-form input:focus { border-color: var(--wl-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--wl-accent) 22%, transparent); }
+.wl-form button { border: 0; border-radius: 12px; background: var(--wl-accent); color: var(--wl-on-accent); font: inherit; font-weight: 700; padding: .85rem 1.4rem; cursor: pointer; white-space: nowrap; }
+.wl-form button:hover { filter: brightness(1.08); }
+
+/* Social proof avatars */
+.wl-avatars { display: inline-flex; align-items: center; gap: .5rem; }
+.wl-avatars span:not(.wl-count) { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--wl-bg); margin-left: -10px; background: linear-gradient(135deg, var(--wl-accent), var(--accent-2, #22d3ee)); }
+.wl-avatars span:first-child { margin-left: 0; }
+.wl-avatars .wl-count { margin-left: .6rem; color: var(--wl-muted); font-size: .85rem; }
+
+/* Success state */
+.wl-success { display: none; }
+.wl.is-joined .wl-success { display: block; animation: wl-in .4s ease; }
+.wl.is-joined .wl-form, .wl.is-joined .wl-avatars { display: none; }
+@keyframes wl-in { from { opacity: 0; transform: translateY(10px); } }
+.wl-pos { font-size: 1.4rem; font-weight: 700; margin-bottom: .5rem; }
+.wl-pos b { color: var(--wl-accent); }
+.wl-share { display: flex; gap: .6rem; justify-content: center; margin-top: 1.2rem; }
+.wl-share button { border: 1px solid var(--wl-border); background: var(--surface, #16161f); color: var(--wl-fg); border-radius: 10px; padding: .6rem 1.1rem; font: inherit; font-weight: 600; font-size: .85rem; cursor: pointer; }
+.wl-share button:hover { border-color: var(--wl-accent); }
+
+/* Split variant */
+.wl-split .wl-in { max-width: 1000px; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; text-align: left; align-items: center; }
+.wl-split .wl-form { margin-inline: 0; } .wl-split .wl-visual { aspect-ratio: 4/3; border-radius: 18px; border: 1px solid var(--wl-border); background: linear-gradient(135deg, color-mix(in srgb, var(--wl-accent) 20%, transparent), transparent); }
+@media (max-width: 760px){ .wl-split .wl-in { grid-template-columns: 1fr; text-align: center; } .wl-split .wl-form { margin-inline: auto; } .wl-split .wl-visual { display: none; } }

@@ -3037,3 +3037,26 @@ Ports of the most-requested Aceternity UI patterns the vault was missing. All va
 
 **scroll-area.js** `components/scroll-area.js` (JS, global: `ScrollArea`) — tags: scroll-area edge-fade is-top is-bottom is-start is-end resize-observer mutation-observer overflow
   `ScrollArea.init('.sa-fade')`. Toggles `.is-top`/`.is-bottom` (or `.is-start`/`.is-end` for `.sa-x`) so the fade mask only shows where there's more to scroll. Re-checks on scroll/resize/content change.
+
+**Phase flows-pro — business/conversion flows: booking, survey, feedback widget, waitlist (7 files). Inspired by Calendly, Typeform, Canny/Sentry, Superhuman**
+
+**booking-flow.css** `components/booking-flow.css` (CSS) — tags: booking appointment calendly cal.com schedule service date time slot multi-step confirm salon clinic restaurant demo themeable
+  Styles for the multi-step appointment booker (`.bk-*`): step progress, service cards, month calendar, time-slot grid, details form, summary, success. Pairs with booking-flow.js.
+
+**booking-flow.js** `components/booking-flow.js` (JS, global: `BookingFlow`) — tags: booking appointment multi-step calendar month slot picker validation summary confirm calendly
+  `BookingFlow.init('#book', {services, slots, onConfirm})`. 4 steps (service → date+time → details → confirm), generates a month calendar, validates email, builds a summary, fires onConfirm with the full booking.
+
+**survey-flow.css** `components/survey-flow.css` (CSS) — tags: survey quiz typeform tally one-question form questionnaire choice multi rating scale nps text email progress big-type themeable
+  Typeform-style one-question-at-a-time survey (`.sv-*`): progress bar, big-type questions, choice/multi/rating(stars)/scale(NPS)/text/email inputs, done screen. Pairs with survey-flow.js.
+
+**survey-flow.js** `components/survey-flow.js` (JS, global: `SurveyFlow`) — tags: survey quiz typeform step keyboard enter choice-keys rating scale nps required validation onComplete onAnswer
+  `SurveyFlow.init('#survey', {questions:[{type,q,options,max,required}], onComplete, onAnswer})`. Keyboard-first (Enter advances, A/B/C select), per-question types, required validation, progress, completion screen.
+
+**feedback-widget.css** `components/feedback-widget.css` (CSS) — tags: feedback bug-report widget floating launcher canny sentry intercom emoji rating category message screenshot fab tab corner themeable
+  Floating feedback/bug-report launcher (`.fbw-*`): corner FAB (or edge tab), panel with emoji rating, category chips, message, screenshot toggle, sent state. Pairs with feedback-widget.js. Variants: fbw-left, fbw-tab.
+
+**feedback-widget.js** `components/feedback-widget.js` (JS, global: `FeedbackWidget`) — tags: feedback bug-report floating emoji rating category screenshot submit escape outside-close onSubmit canny sentry
+  `FeedbackWidget.init('#fb', {title, emojis, categories, screenshot, onSubmit})`. Builds the launcher + panel, collects rating/category/message/screenshot, shows a thank-you, Esc/outside-close.
+
+**waitlist.css** `components/waitlist.css` (CSS) — tags: waitlist launch early-access signup email-capture referral position share social-proof avatars hero coming-soon superhuman robinhood themeable
+  Launch waitlist hero (`.wl-*`): badge + headline + email form + social-proof avatars, and a success state (referral position + share row) toggled via `.is-joined`. Variants: wl-split, wl-center. CSS-only (wire your own submit).

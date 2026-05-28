@@ -1,0 +1,84 @@
+/* ============================================
+   SURVEY FLOW — Typeform-style one-question-at-a-time survey / quiz
+   Inspired by Typeform, Tally, Paperform
+   ============================================
+   One question per screen, big type, keyboard-friendly, progress bar.
+   Question types: choice (single), multi, rating, scale (NPS), text, email.
+   Pairs with survey-flow.js. Themeable via tokens.
+
+   Usage:
+     <div class="sv" id="survey"></div>
+     <script>
+       SurveyFlow.init('#survey', {
+         questions: [
+           {type:'choice', q:'How did you hear about us?', options:['Search','Friend','Social','Ad']},
+           {type:'rating', q:'How likely are you to recommend us?', max:5},
+           {type:'scale', q:'Rate your experience', min:0, max:10},
+           {type:'text', q:'Anything else?', placeholder:'Optional…'},
+           {type:'email', q:"What's your email?"}
+         ],
+         onComplete: function (answers) { … }
+       });
+     </script>
+   ============================================ */
+
+.sv {
+  --sv-bg: var(--bg, #0a0a12);
+  --sv-fg: var(--fg, #f2f3f7);
+  --sv-muted: var(--muted, rgba(242,243,247,.6));
+  --sv-border: var(--border, rgba(255,255,255,.14));
+  --sv-accent: var(--accent, #7c5cff);
+  --sv-on-accent: var(--on-accent, #0a0a12);
+
+  position: relative; background: var(--sv-bg); color: var(--sv-fg);
+  border: 1px solid var(--sv-border); border-radius: 18px; overflow: hidden;
+  min-height: 360px; display: flex; flex-direction: column;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+.sv-progress { height: 4px; background: var(--sv-border); }
+.sv-progress > i { display: block; height: 100%; width: var(--p, 0%); background: var(--sv-accent); transition: width .35s ease; }
+
+.sv-stage { flex: 1; display: grid; }
+.sv-q { grid-area: 1 / 1; padding: clamp(1.6rem, 5vw, 3rem); display: flex; flex-direction: column; justify-content: center; gap: 1.2rem;
+  opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity .35s ease, transform .35s ease; }
+.sv-q.is-active { opacity: 1; transform: none; pointer-events: auto; }
+.sv-q-num { font-size: .8rem; color: var(--sv-accent); font-weight: 600; }
+.sv-q-title { font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 700; letter-spacing: -.02em; line-height: 1.2; margin: 0; }
+
+/* Choice options */
+.sv-opts { display: flex; flex-direction: column; gap: .6rem; max-width: 460px; }
+.sv-opt { display: flex; align-items: center; gap: .8rem; padding: .85rem 1rem; border: 1px solid var(--sv-border); border-radius: 12px; cursor: pointer; background: 0; color: var(--sv-fg); font: inherit; font-size: .95rem; text-align: left; transition: border-color .15s ease, background .15s ease; }
+.sv-opt:hover { border-color: var(--sv-accent); }
+.sv-opt.is-sel { border-color: var(--sv-accent); background: color-mix(in srgb, var(--sv-accent) 12%, transparent); }
+.sv-opt-key { width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--sv-border); display: grid; place-items: center; font-size: .72rem; font-weight: 700; color: var(--sv-muted); flex: 0 0 auto; }
+.sv-opt.is-sel .sv-opt-key { background: var(--sv-accent); color: var(--sv-on-accent); border-color: var(--sv-accent); }
+
+/* Rating (stars) */
+.sv-rating { display: flex; gap: .4rem; }
+.sv-star { font-size: 2rem; color: var(--sv-border); cursor: pointer; transition: color .12s ease, transform .12s ease; background: 0; border: 0; }
+.sv-star:hover, .sv-star.is-on { color: #f5a623; } .sv-star:hover { transform: scale(1.15); }
+
+/* Scale (NPS 0–10) */
+.sv-scale { display: flex; flex-wrap: wrap; gap: .4rem; }
+.sv-scale button { width: 44px; height: 44px; border: 1px solid var(--sv-border); border-radius: 10px; background: 0; color: var(--sv-fg); font: inherit; font-weight: 600; cursor: pointer; }
+.sv-scale button:hover { border-color: var(--sv-accent); } .sv-scale button.is-sel { background: var(--sv-accent); color: var(--sv-on-accent); border-color: var(--sv-accent); }
+
+/* Text / email */
+.sv-input { width: 100%; max-width: 460px; background: transparent; border: 0; border-bottom: 2px solid var(--sv-border); color: var(--sv-fg); font: inherit; font-size: 1.3rem; padding: .5rem 0; outline: none; }
+.sv-input:focus { border-color: var(--sv-accent); }
+
+.sv-hint { font-size: .78rem; color: var(--sv-muted); }
+.sv-hint kbd { font-family: ui-monospace, monospace; background: var(--sv-border); border-radius: 4px; padding: 1px 5px; }
+
+/* Footer nav */
+.sv-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.4rem; border-top: 1px solid var(--sv-border); }
+.sv-count { font-size: .82rem; color: var(--sv-muted); }
+.sv-actions { display: flex; gap: .6rem; }
+.sv-btn { border: 0; border-radius: 10px; padding: .6rem 1.3rem; font: inherit; font-weight: 600; cursor: pointer; background: var(--sv-accent); color: var(--sv-on-accent); }
+.sv-btn:disabled { opacity: .5; cursor: not-allowed; }
+.sv-btn-ghost { background: transparent; border: 1px solid var(--sv-border); color: var(--sv-fg); }
+
+/* Done screen */
+.sv-done { grid-area: 1 / 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: .8rem; padding: 2rem; }
+.sv.is-done .sv-done { display: flex; } .sv.is-done .sv-q { display: none; }
+.sv-done-ico { width: 60px; height: 60px; border-radius: 50%; background: color-mix(in srgb, var(--ok, #34d399) 18%, transparent); color: var(--ok, #34d399); display: grid; place-items: center; font-size: 1.8rem; }

@@ -1,0 +1,68 @@
+/* ============================================
+   FEEDBACK WIDGET — Floating feedback / bug-report launcher
+   Inspired by Canny, Sentry User Feedback, Linear, Intercom
+   ============================================
+   A corner launcher that opens a small panel: emoji rating → category →
+   message → (optional) screenshot/email. Pairs with feedback-widget.js.
+   Themeable via tokens.
+
+   Usage:
+     <div class="fbw" id="fb"></div>
+     <script>FeedbackWidget.init('#fb', {categories:['Bug','Idea','Other'], onSubmit:function(d){…}});</script>
+
+   Variants: fbw-left (bottom-left), fbw-tab (edge tab instead of FAB)
+   ============================================ */
+
+.fbw {
+  --fbw-bg: var(--surface, #16161f);
+  --fbw-fg: var(--fg, #f2f3f7);
+  --fbw-muted: var(--muted, rgba(242,243,247,.6));
+  --fbw-border: var(--border, rgba(255,255,255,.1));
+  --fbw-accent: var(--accent, #7c5cff);
+  --fbw-on-accent: var(--on-accent, #0a0a12);
+
+  position: fixed; right: 1.4rem; bottom: 1.4rem; z-index: 300;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+.fbw-left { right: auto; left: 1.4rem; }
+
+/* Launcher */
+.fbw-fab { display: inline-flex; align-items: center; gap: .5rem; border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--fbw-accent); color: var(--fbw-on-accent); font: inherit; font-weight: 600; font-size: .9rem; padding: .7rem 1.1rem;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,.5); transition: transform .15s ease, filter .15s ease; }
+.fbw-fab:hover { filter: brightness(1.08); } .fbw-fab:active { transform: scale(.96); }
+.fbw-tab .fbw-fab { position: fixed; right: -1px; top: 50%; transform: rotate(-90deg) translateX(50%); transform-origin: right center; border-radius: 10px 10px 0 0; }
+
+/* Panel */
+.fbw-panel { position: absolute; right: 0; bottom: calc(100% + .8rem); width: 320px;
+  background: var(--fbw-bg); color: var(--fbw-fg); border: 1px solid var(--fbw-border); border-radius: 16px;
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,.6); padding: 1.2rem;
+  opacity: 0; visibility: hidden; transform: translateY(10px) scale(.98); transition: opacity .2s ease, transform .2s ease, visibility .2s; }
+.fbw.is-open .fbw-panel { opacity: 1; visibility: visible; transform: none; }
+.fbw-left .fbw-panel { right: auto; left: 0; }
+.fbw-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.fbw-head h4 { margin: 0; font-size: 1rem; } .fbw-close { background: 0; border: 0; color: var(--fbw-muted); font-size: 1.3rem; cursor: pointer; line-height: 1; }
+
+/* Emoji rating */
+.fbw-emoji { display: flex; justify-content: space-between; margin-bottom: 1rem; }
+.fbw-emoji button { font-size: 1.5rem; background: 0; border: 0; cursor: pointer; filter: grayscale(1) opacity(.6); transition: filter .15s ease, transform .15s ease; }
+.fbw-emoji button:hover { transform: scale(1.2); } .fbw-emoji button.is-sel { filter: none; transform: scale(1.25); }
+
+/* Categories */
+.fbw-cats { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+.fbw-cat { padding: .35rem .7rem; border: 1px solid var(--fbw-border); border-radius: 999px; background: 0; color: var(--fbw-muted); font: inherit; font-size: .8rem; cursor: pointer; }
+.fbw-cat.is-sel { background: color-mix(in srgb, var(--fbw-accent) 16%, transparent); border-color: var(--fbw-accent); color: var(--fbw-fg); }
+
+.fbw-text { width: 100%; min-height: 84px; resize: vertical; background: var(--bg, #0a0a12); color: var(--fbw-fg); border: 1px solid var(--fbw-border); border-radius: 10px; padding: .65rem .8rem; font: inherit; font-size: .9rem; outline: none; margin-bottom: .7rem; }
+.fbw-text:focus { border-color: var(--fbw-accent); }
+.fbw-row { display: flex; gap: .5rem; align-items: center; margin-bottom: .9rem; }
+.fbw-shot { flex: 1; display: flex; align-items: center; gap: .5rem; padding: .55rem .7rem; border: 1px dashed var(--fbw-border); border-radius: 9px; color: var(--fbw-muted); font-size: .8rem; cursor: pointer; }
+.fbw-shot.is-on { border-style: solid; border-color: var(--fbw-accent); color: var(--fbw-fg); }
+.fbw-submit { width: 100%; border: 0; border-radius: 10px; padding: .7rem; background: var(--fbw-accent); color: var(--fbw-on-accent); font: inherit; font-weight: 700; cursor: pointer; }
+.fbw-submit:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Sent state */
+.fbw-sent { text-align: center; padding: 1rem .5rem; }
+.fbw-sent-ico { width: 48px; height: 48px; border-radius: 50%; background: color-mix(in srgb, var(--ok, #34d399) 18%, transparent); color: var(--ok, #34d399); display: grid; place-items: center; font-size: 1.4rem; margin: 0 auto .8rem; }
+.fbw-panel.is-sent .fbw-form { display: none; }
+.fbw-sent { display: none; } .fbw-panel.is-sent .fbw-sent { display: block; }
