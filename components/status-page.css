@@ -1,0 +1,80 @@
+/* ============================================
+   STATUS PAGE — Service status / uptime page
+   Inspired by Atlassian Statuspage, Instatus, BetterStack, GitHub status
+   ============================================
+   The public "are we up?" page: overall banner, per-component status rows
+   with 90-day uptime bars, an incident timeline, and a metrics strip.
+   Themeable via structure/palette tokens.
+
+   Usage:
+     <div class="sts">
+       <div class="sts-banner ok"><span class="sts-banner-dot"></span> All systems operational</div>
+       <div class="sts-group">
+         <div class="sts-row"><span class="sts-name">API</span><div class="sts-uptime">…bars…</div><span class="sts-state ok">Operational</span></div>
+       </div>
+       <div class="sts-incidents"> …timeline… </div>
+     </div>
+
+   State classes: ok · degraded · partial · down · maintenance
+   ============================================ */
+
+.sts {
+  --s-bg: var(--bg, #0a0a12);
+  --s-fg: var(--fg, #f2f3f7);
+  --s-muted: var(--muted, rgba(242,243,247,.62));
+  --s-faint: var(--faint, rgba(242,243,247,.4));
+  --s-border: var(--border, rgba(255,255,255,.1));
+  --s-surface: var(--surface, #16161f);
+  --s-ok: var(--ok, #34d399);
+  --s-warn: var(--warn, #fbbf24);
+  --s-down: var(--danger, #f87171);
+  --s-info: var(--info, #60a5fa);
+
+  max-width: 820px; margin-inline: auto;
+  color: var(--s-fg); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Overall banner */
+.sts-banner { display: flex; align-items: center; gap: .7rem; padding: 1.1rem 1.3rem; border-radius: 14px; font-weight: 600; font-size: 1.05rem; margin-bottom: 1.8rem; border: 1px solid var(--s-border); }
+.sts-banner-dot { width: 12px; height: 12px; border-radius: 50%; position: relative; }
+.sts-banner-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid currentColor; animation: sts-pulse 1.8s ease-out infinite; }
+@keyframes sts-pulse { 0% { transform: scale(.6); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+.sts-banner.ok        { background: color-mix(in srgb, var(--s-ok) 12%, transparent); color: var(--s-ok); }
+.sts-banner.degraded  { background: color-mix(in srgb, var(--s-warn) 12%, transparent); color: var(--s-warn); }
+.sts-banner.down      { background: color-mix(in srgb, var(--s-down) 12%, transparent); color: var(--s-down); }
+.sts-banner.maintenance { background: color-mix(in srgb, var(--s-info) 12%, transparent); color: var(--s-info); }
+
+/* Component group */
+.sts-group { border: 1px solid var(--s-border); border-radius: 14px; overflow: hidden; margin-bottom: 1.8rem; }
+.sts-row { display: grid; grid-template-columns: 1fr auto; gap: .4rem 1rem; align-items: center; padding: 1rem 1.2rem; border-bottom: 1px solid var(--s-border); }
+.sts-row:last-child { border-bottom: 0; }
+.sts-name { font-weight: 600; font-size: .95rem; }
+.sts-state { font-size: .82rem; font-weight: 600; display: inline-flex; align-items: center; gap: .4rem; }
+.sts-state::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.sts-state.ok { color: var(--s-ok); } .sts-state.degraded { color: var(--s-warn); } .sts-state.partial { color: var(--s-warn); } .sts-state.down { color: var(--s-down); } .sts-state.maintenance { color: var(--s-info); }
+
+/* 90-day uptime bar strip */
+.sts-uptime { grid-column: 1 / -1; display: flex; gap: 2px; height: 30px; margin-top: .3rem; }
+.sts-uptime i { flex: 1; border-radius: 2px; background: var(--s-ok); min-width: 2px; }
+.sts-uptime i.degraded { background: var(--s-warn); } .sts-uptime i.down { background: var(--s-down); } .sts-uptime i.none { background: var(--s-border); }
+.sts-uptime-legend { grid-column: 1 / -1; display: flex; justify-content: space-between; font-size: .72rem; color: var(--s-faint); margin-top: .35rem; }
+
+/* Metrics strip */
+.sts-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; padding: 1.2rem; border: 1px solid var(--s-border); border-radius: 14px; margin-bottom: 1.8rem; }
+.sts-metric b { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
+.sts-metric small { display: block; color: var(--s-muted); font-size: .8rem; }
+
+/* Incident timeline */
+.sts-incidents h3 { font-size: 1rem; margin: 0 0 1rem; color: var(--s-muted); text-transform: uppercase; letter-spacing: .06em; font-size: .78rem; }
+.sts-incident { border-left: 2px solid var(--s-border); padding: 0 0 1.4rem 1.2rem; position: relative; margin-left: .4rem; }
+.sts-incident::before { content: ''; position: absolute; left: -7px; top: .2rem; width: 12px; height: 12px; border-radius: 50%; background: var(--s-bg); border: 2px solid var(--s-faint); }
+.sts-incident.resolved::before { border-color: var(--s-ok); }
+.sts-incident.ongoing::before { border-color: var(--s-down); }
+.sts-incident-date { font-size: .78rem; color: var(--s-faint); }
+.sts-incident h4 { margin: .2rem 0 .4rem; font-size: .98rem; }
+.sts-incident-update { font-size: .85rem; color: var(--s-muted); line-height: 1.55; margin: 0 0 .5rem; }
+.sts-incident-update b { color: var(--s-fg); }
+.sts-pill { display: inline-block; font-size: .68rem; font-weight: 700; text-transform: uppercase; padding: .15rem .5rem; border-radius: 999px; }
+.sts-pill.resolved { background: color-mix(in srgb, var(--s-ok) 16%, transparent); color: var(--s-ok); }
+.sts-pill.ongoing { background: color-mix(in srgb, var(--s-down) 16%, transparent); color: var(--s-down); }
+.sts-pill.monitoring { background: color-mix(in srgb, var(--s-info) 16%, transparent); color: var(--s-info); }

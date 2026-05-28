@@ -1357,6 +1357,44 @@
     document.head.appendChild(s);
   };
 
+  // ===== Phase saas-pages previews =====
+  P['components/docs-layout.css'] = function (target) {
+    target.innerHTML = '<div class="pal-saas-indigo" style="width:100%;background:var(--bg);border-radius:12px;overflow:hidden;border:1px solid var(--border);">' +
+      '<div class="docs" style="padding:1.2rem;gap:1.5rem;">' +
+        '<aside class="docs-nav"><div class="docs-nav-group"><h4>Start</h4><a>Introduction</a><a class="is-active">Installation</a><a>Quickstart</a></div><div class="docs-nav-group"><h4>Guides</h4><a>Auth</a><a>Webhooks</a></div></aside>' +
+        '<main class="docs-main"><nav class="docs-crumb"><a>Docs</a> / <b>Installation</b></nav><article class="docs-prose"><h1>Installation</h1><p class="docs-lead">Running in under five minutes.</p><h2>Install via npm</h2><p>Add the package and import the client.</p><pre><code>npm install @nimbus/sdk</code></pre><div class="docs-callout note"><span class="docs-callout-ico">i</span><p>You need an API key first.</p></div><div class="docs-callout tip"><span class="docs-callout-ico">+</span><p>Use env vars for keys.</p></div></article>' +
+        '<nav class="docs-pager"><a class="docs-prev"><small>Previous</small><b>Introduction</b></a><a class="docs-next"><small>Next</small><b>Quickstart</b></a></nav><div class="docs-helpful">Was this helpful? <button>up</button><button>dn</button></div></main>' +
+        '<aside class="docs-toc"><h4>On this page</h4><a class="is-active">Install via npm</a><a>Verify</a></aside>' +
+      '</div></div>';
+  };
+
+  P['components/roadmap.css'] = function (target) {
+    target.innerHTML = '<div class="pal-saas-indigo" style="width:100%;"><div class="rm">' +
+      '<div class="rm-col"><div class="rm-col-head"><span class="rm-status planned"></span>Planned <span class="rm-count">8</span></div>' +
+        '<div class="rm-card"><button class="rm-vote"><span>▲</span>124</button><div><h4>Dark mode</h4><p>System-aware theme</p><div class="rm-tags"><span class="rm-tag">UI</span></div></div></div>' +
+        '<div class="rm-card"><button class="rm-vote"><span>▲</span>89</button><div><h4>Slack integration</h4><p>Push alerts to channels</p></div></div></div>' +
+      '<div class="rm-col"><div class="rm-col-head"><span class="rm-status progress"></span>In progress <span class="rm-count">3</span></div>' +
+        '<div class="rm-card"><button class="rm-vote is-voted"><span>▲</span>211</button><div><h4>Booking flow</h4><p>Appointment scheduling</p><div class="rm-tags"><span class="rm-tag">Feature</span></div></div></div></div>' +
+      '<div class="rm-col"><div class="rm-col-head"><span class="rm-status shipped"></span>Shipped <span class="rm-count">42</span></div>' +
+        '<div class="rm-card"><button class="rm-vote"><span>▲</span>302</button><div><h4>CSV export</h4><p>Download any report</p><div class="rm-tags"><span class="rm-tag new">Shipped</span></div></div></div></div>' +
+    '</div></div>';
+  };
+
+  P['components/status-page.css'] = function (target) {
+    var comps = [['API','ok'],['Web app','ok'],['Email','degraded'],['CDN','ok']];
+    var rows = comps.map(function (c) {
+      var bars = ''; for (var i = 0; i < 90; i++) { var r = Math.random(); var cls = r > 0.985 ? 'down' : r > 0.96 ? 'degraded' : ''; bars += '<i class="' + cls + '"></i>'; }
+      var label = c[1] === 'ok' ? 'Operational' : c[1] === 'degraded' ? 'Degraded' : 'Down';
+      return '<div class="sts-row"><span class="sts-name">' + c[0] + '</span><span class="sts-state ' + c[1] + '">' + label + '</span><div class="sts-uptime">' + bars + '</div><div class="sts-uptime-legend"><span>90 days ago</span><span>' + (c[1] === 'ok' ? '99.99%' : '99.2%') + ' uptime</span><span>Today</span></div></div>';
+    }).join('');
+    target.innerHTML = '<div class="pal-saas-indigo" style="width:100%;"><div class="sts">' +
+      '<div class="sts-banner ok"><span class="sts-banner-dot"></span> All systems operational</div>' +
+      '<div class="sts-metrics"><div class="sts-metric"><b>99.98%</b><small>90-day uptime</small></div><div class="sts-metric"><b>184ms</b><small>avg response</small></div><div class="sts-metric"><b>0</b><small>active incidents</small></div></div>' +
+      '<div class="sts-group">' + rows + '</div>' +
+      '<div class="sts-incidents"><h3>Past incidents</h3><div class="sts-incident resolved"><div class="sts-incident-date">May 24, 2026</div><h4>Elevated API latency <span class="sts-pill resolved">Resolved</span></h4><p class="sts-incident-update"><b>Resolved</b> — DB failover caused ~12 min of latency. Recovered.</p></div></div>' +
+    '</div></div>';
+  };
+
   // ===== Phase flows-pro previews =====
   P['components/booking-flow.js'] = function (target) {
     target.innerHTML = '<div class="struct pal-saas-indigo" style="width:100%;display:flex;justify-content:center;"><div class="bk" id="bk-demo" style="width:100%;"></div></div>';

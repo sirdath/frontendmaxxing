@@ -3060,3 +3060,14 @@ Ports of the most-requested Aceternity UI patterns the vault was missing. All va
 
 **waitlist.css** `components/waitlist.css` (CSS) — tags: waitlist launch early-access signup email-capture referral position share social-proof avatars hero coming-soon superhuman robinhood themeable
   Launch waitlist hero (`.wl-*`): badge + headline + email form + social-proof avatars, and a success state (referral position + share row) toggled via `.is-joined`. Variants: wl-split, wl-center. CSS-only (wire your own submit).
+
+**Phase saas-pages — SaaS page-types: docs layout, roadmap/changelog, status page (3 files, CSS-only). Inspired by Stripe/Mintlify docs, Canny/Linear roadmap, Atlassian Statuspage**
+
+**docs-layout.css** `components/docs-layout.css` (CSS) — tags: docs documentation knowledge-base layout 3-column sidebar prose toc on-this-page prev-next pager callout note tip warn was-this-helpful stripe mintlify tailwind radix
+  3-column docs shell (`.docs`): left nav (groups + active), center `.docs-prose` (h1/lead/h2/h3/code/pre/table/img + note/tip/warn/danger callouts), prev/next pager, "was this helpful", right "on this page" TOC. Composes with sidebar-nav.css + toc.css. Themeable.
+
+**roadmap.css** `components/roadmap.css` (CSS) — tags: roadmap changelog board canny linear productboard status-columns planned in-progress shipped upvote vote feature-card tag release-notes feed dated themeable
+  Two patterns: roadmap board (`.rm`) with Planned/In-progress/Shipped columns + upvotable feature cards + tags, and a changelog feed (`.rm-log`) with dated release entries, tag chips (new/fix/improved), and media slots.
+
+**status-page.css** `components/status-page.css` (CSS) — tags: status-page uptime statuspage instatus betterstack incident operational degraded down maintenance 90-day-bars component metrics timeline pulse themeable
+  Service status page (`.sts`): overall banner (ok/degraded/down/maintenance + pulse), metrics strip, component rows with 90-day uptime bar strips, and an incident timeline (resolved/ongoing/monitoring pills). Generate the uptime `<i>` bars in markup/JS.

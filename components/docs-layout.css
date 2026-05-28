@@ -1,0 +1,95 @@
+/* ============================================
+   DOCS LAYOUT — Documentation / knowledge-base page shell
+   Inspired by Stripe, Tailwind, Radix, Mintlify docs
+   ============================================
+   The classic 3-column docs shell: left nav · prose content · right "on this
+   page" TOC, with prev/next pager, callouts, "was this helpful". Composes with
+   sidebar-nav.css / toc.css if you want their behaviors, but works standalone.
+   Themeable via structure/palette tokens.
+
+   Usage:
+     <div class="docs">
+       <aside class="docs-nav"> …nav groups… </aside>
+       <main class="docs-main">
+         <nav class="docs-crumb"><a>Docs</a> / <a>Guides</a> / <b>Auth</b></nav>
+         <article class="docs-prose"> …h1/h2/p/pre/callouts… </article>
+         <nav class="docs-pager"><a class="docs-prev">…</a><a class="docs-next">…</a></nav>
+         <div class="docs-helpful">Was this helpful? <button>👍</button><button>👎</button></div>
+       </main>
+       <aside class="docs-toc"> …on this page… </aside>
+     </div>
+   ============================================ */
+
+.docs {
+  --d-bg: var(--bg, #0a0a12);
+  --d-fg: var(--fg, #f2f3f7);
+  --d-muted: var(--muted, rgba(242,243,247,.62));
+  --d-faint: var(--faint, rgba(242,243,247,.4));
+  --d-border: var(--border, rgba(255,255,255,.1));
+  --d-accent: var(--accent, #7c5cff);
+  --d-surface: var(--surface, #16161f);
+
+  display: grid; grid-template-columns: 240px minmax(0, 1fr) 200px;
+  gap: clamp(1.5rem, 4vw, 3rem); max-width: 1320px; margin-inline: auto;
+  padding: 1.5rem clamp(1rem, 4vw, 2rem);
+  color: var(--d-fg); background: var(--d-bg);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+@media (max-width: 1080px){ .docs { grid-template-columns: 220px 1fr; } .docs-toc { display: none; } }
+@media (max-width: 760px){ .docs { grid-template-columns: 1fr; } .docs-nav { display: none; } }
+
+/* Left nav */
+.docs-nav { position: sticky; top: 1.5rem; align-self: start; max-height: calc(100vh - 3rem); overflow-y: auto; font-size: .88rem; }
+.docs-nav-group { margin-bottom: 1.2rem; }
+.docs-nav-group > h4 { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--d-faint); margin: 0 0 .5rem; }
+.docs-nav a { display: block; color: var(--d-muted); text-decoration: none; padding: .32rem .6rem; border-radius: 7px; border-left: 2px solid transparent; }
+.docs-nav a:hover { color: var(--d-fg); background: color-mix(in srgb, var(--d-fg) 5%, transparent); }
+.docs-nav a.is-active { color: var(--d-fg); border-left-color: var(--d-accent); background: color-mix(in srgb, var(--d-accent) 10%, transparent); font-weight: 600; }
+
+/* Content + prose */
+.docs-main { min-width: 0; }
+.docs-crumb { font-size: .82rem; color: var(--d-muted); margin-bottom: 1.2rem; }
+.docs-crumb a { color: var(--d-muted); text-decoration: none; } .docs-crumb a:hover { color: var(--d-fg); } .docs-crumb b { color: var(--d-fg); }
+.docs-prose { max-width: 720px; }
+.docs-prose h1 { font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 800; letter-spacing: -.02em; margin: 0 0 .5rem; }
+.docs-prose .docs-lead { font-size: 1.15rem; color: var(--d-muted); margin: 0 0 2rem; }
+.docs-prose h2 { font-size: 1.4rem; font-weight: 700; margin: 2.4rem 0 .8rem; scroll-margin-top: 1.5rem; }
+.docs-prose h3 { font-size: 1.1rem; font-weight: 700; margin: 1.8rem 0 .6rem; scroll-margin-top: 1.5rem; }
+.docs-prose p { line-height: 1.7; color: color-mix(in srgb, var(--d-fg) 88%, transparent); margin: 0 0 1rem; }
+.docs-prose a { color: var(--d-accent); text-decoration: none; } .docs-prose a:hover { text-decoration: underline; }
+.docs-prose ul, .docs-prose ol { line-height: 1.7; color: color-mix(in srgb, var(--d-fg) 88%, transparent); padding-left: 1.3rem; margin: 0 0 1rem; }
+.docs-prose code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: .88em; background: var(--d-surface); border: 1px solid var(--d-border); border-radius: 5px; padding: .1em .4em; }
+.docs-prose pre { background: var(--d-surface); border: 1px solid var(--d-border); border-radius: 12px; padding: 1rem 1.1rem; overflow-x: auto; margin: 0 0 1.2rem; }
+.docs-prose pre code { background: 0; border: 0; padding: 0; font-size: .85rem; line-height: 1.6; }
+.docs-prose img { border-radius: 10px; border: 1px solid var(--d-border); max-width: 100%; }
+.docs-prose table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 0 0 1.2rem; }
+.docs-prose th, .docs-prose td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--d-border); }
+.docs-prose th { color: var(--d-muted); font-weight: 600; }
+
+/* Callouts */
+.docs-callout { display: flex; gap: .8rem; padding: 1rem 1.1rem; border-radius: 12px; margin: 0 0 1.2rem; border: 1px solid var(--d-border); border-left-width: 3px; }
+.docs-callout-ico { flex: 0 0 auto; font-size: 1.1rem; }
+.docs-callout p { margin: 0; font-size: .92rem; }
+.docs-callout.note { border-left-color: var(--info, #60a5fa); background: color-mix(in srgb, var(--info, #60a5fa) 8%, transparent); }
+.docs-callout.tip  { border-left-color: var(--ok, #34d399); background: color-mix(in srgb, var(--ok, #34d399) 8%, transparent); }
+.docs-callout.warn { border-left-color: var(--warn, #fbbf24); background: color-mix(in srgb, var(--warn, #fbbf24) 8%, transparent); }
+.docs-callout.danger { border-left-color: var(--danger, #f87171); background: color-mix(in srgb, var(--danger, #f87171) 8%, transparent); }
+
+/* Prev / next pager */
+.docs-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2.5rem 0 1.5rem; }
+.docs-pager a { border: 1px solid var(--d-border); border-radius: 12px; padding: 1rem 1.1rem; text-decoration: none; color: var(--d-fg); transition: border-color .15s ease; }
+.docs-pager a:hover { border-color: var(--d-accent); }
+.docs-pager .docs-next { text-align: right; }
+.docs-pager small { display: block; color: var(--d-faint); font-size: .75rem; margin-bottom: .25rem; }
+.docs-pager b { font-weight: 600; }
+
+/* Was this helpful */
+.docs-helpful { display: flex; align-items: center; gap: .6rem; font-size: .88rem; color: var(--d-muted); padding-top: 1.2rem; border-top: 1px solid var(--d-border); }
+.docs-helpful button { border: 1px solid var(--d-border); background: 0; color: var(--d-fg); width: 36px; height: 32px; border-radius: 8px; cursor: pointer; }
+.docs-helpful button:hover { border-color: var(--d-accent); }
+
+/* Right TOC (reuse .toc from toc.css, or this minimal one) */
+.docs-toc { position: sticky; top: 1.5rem; align-self: start; font-size: .82rem; }
+.docs-toc h4 { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--d-faint); margin: 0 0 .7rem; }
+.docs-toc a { display: block; color: var(--d-muted); text-decoration: none; padding: .25rem 0 .25rem .8rem; border-left: 2px solid var(--d-border); }
+.docs-toc a:hover { color: var(--d-fg); } .docs-toc a.is-active { color: var(--d-fg); border-left-color: var(--d-accent); }
