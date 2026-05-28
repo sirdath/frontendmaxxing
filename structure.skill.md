@@ -8,8 +8,10 @@ site needs, their sequence, pacing, and how to connect them.
 > Pair: the **`structure/`** folder. `structure.css` is the backbone (tokens +
 > section rhythm + nav/hero/grid/split/footer shells). `section-transitions.css`
 > connects sections (wave/diagonal/curve…). `section-frames.css` frames a block.
-> Four full openable reference pages live there: `saas.html`, `agency.html`,
-> `restaurant.html`, `ecommerce.html` — open them to *see* the architecture.
+> Nine full openable reference pages live there — open them to *see* the
+> architecture: `saas.html`, `agency.html`, `restaurant.html`, `ecommerce.html`,
+> `shop-store.html` (a complete store wiring the e-shop component kit), and the
+> **local-business** set: `legal.html`, `cleaning.html`, `gym.html`, `coffee.html`.
 
 ## How to use this skill
 
@@ -119,12 +121,55 @@ Footer (trust badges, payment icons)      → .s-footer
 Pacing: keep the Buy CTA in the nav AND a sticky bottom bar. Confidence section
 (reviews, returns) right before the final buy. One transition before the gallery.
 
+> Full store: `structure/shop-store.html` wires the actual e-shop kit
+> (`product-cards-pro` grid + `shop-filters` PLP + `cart-pro` drawer +
+> `shop-extras` free-ship bar/trust). Use it as the collection-page reference.
+
+### 5 · Local service business  (legal / cleaning / gym / coffee / salon / dentist / trades)
+Goal: **build trust fast and make the one action obvious** — book, call, or get a
+quote. These businesses live or die on the hero CTA + proof. They share ONE
+skeleton; only the theme + the action verb change.
+
+```
+Nav (logo + 1 clear CTA: Book / Quote / Call)  → .s-nav
+Hero (promise + the ONE action, split or full) → .s-hero (+ inline quote/booking card)
+Trust bar (rating, "insured", years, badges)   → .s-cluster / .shx-trust
+Services / offerings (grid of 3–6)             → .s-grid--3 + .s-card
+Why us / differentiators (split + checklist)   → .s-split + ✓ list / .sf-brackets
+How it works (3 numbered steps)                → .s-grid--3 + numbered
+Pricing / packages (tiers, middle featured)    → .s-grid--3  (skip if quote-based)
+Team / trainers / attorneys (photo grid)       → .s-grid--4
+Testimonials / results / case outcomes         → .s-card grid or big quote
+Service area / hours / location (+ map)         → .s-split + components/maps-pack
+FAQ (accordion)                                → components/accordion-pack
+Contact / booking CTA band (phone + form)      → .s-section--accent
+Footer (NAP: name, address, phone)             → .s-footer
+```
+The four shipped references show how far theme alone takes the *same* skeleton:
+- **`legal.html`** — navy + gold + serif. Authority. Stats ($ recovered, years,
+  win-rate), practice-area grid, attorney grid, big case-outcome quote, "free
+  consultation" everywhere. Action verb: **Request consultation / Call**.
+- **`cleaning.html`** — fresh teal + lime, light. Instant-quote card *inside* the
+  hero, plan tiers (one-time/bi-weekly/weekly), 1-2-3 how-it-works, satisfaction
+  guarantee. Action verb: **Get a free quote / Book**.
+- **`gym.html`** — black + electric lime, huge uppercase type. Class grid with
+  tags, trainer grid, no-contract membership tiers, transformation quote.
+  Action verb: **Claim free class / Join now**.
+- **`coffee.html`** — warm espresso + cream + serif, cozy. Story blurb, two-column
+  menu with dotted leaders, values, gallery, hours/location. Action verb:
+  **Order ahead / Visit**.
+
+Pick the theme from the trade (legal=trust/navy, health=clean/blue-green,
+food=warm, fitness=bold/energetic, beauty=soft/elegant) and keep the skeleton.
+
 ## Choosing when you only have a *reference* (no stated genre)
 
 Look at the reference and classify by **primary goal**:
 - "Sign up / start free trial / book a demo" → **SaaS** archetype.
 - "Look at our work / hire us" → **Agency** archetype.
 - "Come visit / order / reserve" → **Local/restaurant** archetype.
+- "Book / call / get a quote" (a service: law, cleaning, gym, salon, trades) →
+  **Local service business** archetype (#5). Theme by trade; keep the skeleton.
 - "Buy this thing" → **E-commerce** archetype.
 - Long text, author-led, dated posts → **Editorial/blog** (SaaS skeleton minus
   pricing, plus a content list + reading layout).

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coffee shop / café — structure reference</title>
+<link rel="stylesheet" href="structure.css">
+<link rel="stylesheet" href="section-transitions.css">
+<link rel="stylesheet" href="section-frames.css">
+<style>
+  /* Warm espresso + cream — cozy, hand-made */
+  .struct {
+    --accent: #b06a3b; --accent-2: #d99a63;
+    --bg: #fbf6ee; --bg-alt: #f2e7d6; --surface: #fffdf9;
+    --fg: #2c1d12; --muted: #6f5949; --faint: #a08a76;
+    --border: rgba(44,29,18,0.12); --on-accent: #fffdf9;
+    --font-head: Georgia, 'Times New Roman', serif;
+    --radius: 14px;
+  }
+  .cf-hero { min-height: 80vh; display: grid; place-items: center; text-align: center;
+    background: linear-gradient(rgba(40,25,14,0.5),rgba(40,25,14,0.62)), linear-gradient(135deg,#6b4226,#2c1b0f); color: #fdf6ec; }
+  .cf-hero h1 { font-size: clamp(3rem,8vw,6rem); }
+  .cf-hero .s-lead { color: rgba(253,246,236,0.88); }
+  .cf-menu-item { display: grid; grid-template-columns: 1fr auto; gap: 0.3rem 1rem; padding: 0.9rem 0; border-bottom: 1px dashed var(--border); }
+  .cf-menu-item .dots { border-bottom: 1px dotted var(--faint); align-self: end; margin-bottom: 0.35rem; }
+  .cf-menu-name { font-family: var(--font-head); font-size: 1.1rem; }
+  .cf-menu-desc { grid-column: 1/-1; color: var(--muted); font-size: 0.85rem; }
+  .cf-menu-price { font-weight: 700; color: var(--accent); }
+  .cf-gal { aspect-ratio: 1; border-radius: 14px; background: linear-gradient(135deg,#caa57e,#8a5a36); }
+  .cf-val { text-align: center; }
+  .cf-val-ico { width: 50px; height: 50px; border-radius: 50%; background: var(--bg-alt); margin: 0 auto 0.8rem; }
+</style>
+</head>
+<body class="struct">
+
+<header class="s-nav" style="--bg:#fbf6ee;">
+  <div class="s-nav-inner">
+    <a class="s-brand" style="font-family:var(--font-head);">Maple &amp; Bean</a>
+    <nav class="s-nav-links"><a href="#menu">Menu</a><a href="#story">Our story</a><a href="#gallery">Gallery</a><a href="#visit">Visit</a></nav>
+    <a class="s-btn" href="#visit">Order ahead</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="cf-hero">
+  <div class="s-container-narrow">
+    <span class="s-eyebrow" style="color:var(--accent-2);">Small-batch roastery &amp; café</span>
+    <h1>Your daily ritual,<br>done right</h1>
+    <p class="s-lead" style="margin:1.2rem auto 1.8rem;">Single-origin coffee, fresh pastries, and a corner that feels like home.</p>
+    <a class="s-btn s-btn--lg" href="#visit">Order ahead</a>
+  </div>
+</section>
+
+<!-- STORY INTRO -->
+<section class="s-section s-section-tight" id="story">
+  <div class="s-container-narrow" style="text-align:center;">
+    <p style="font-family:var(--font-head);font-size:1.3rem;line-height:1.6;">We roast every bean in-house, pull every shot with care, and bake before sunrise. Twelve years on the same corner, and we still treat your morning like it matters.</p>
+  </div>
+  <div class="st st-curve" style="--st-fill:var(--bg-alt);"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 0 C 400 120 800 120 1200 0 L1200 120 L0 120 Z"/></svg></div>
+</section>
+
+<!-- MENU -->
+<section class="s-section s-section--alt" id="menu">
+  <div class="s-container">
+    <div class="s-section-head"><span class="s-eyebrow">The menu</span><h2 class="s-title">What's brewing</h2></div>
+    <div class="s-split" style="align-items:start;">
+      <div>
+        <h3 style="font-family:var(--font-head);margin-bottom:0.5rem;">Coffee</h3>
+        <div class="cf-menu-item"><span class="cf-menu-name">Espresso</span><span class="dots"></span><span class="cf-menu-price">$3.5</span><span class="cf-menu-desc">Double shot, house blend</span></div>
+        <div class="cf-menu-item"><span class="cf-menu-name">Flat white</span><span class="dots"></span><span class="cf-menu-price">$4.5</span><span class="cf-menu-desc">Silky microfoam, single origin</span></div>
+        <div class="cf-menu-item"><span class="cf-menu-name">Pour over</span><span class="dots"></span><span class="cf-menu-price">$5</span><span class="cf-menu-desc">Rotating beans, ask the barista</span></div>
+        <div class="cf-menu-item"><span class="cf-menu-name">Cold brew</span><span class="dots"></span><span class="cf-menu-price">$4.5</span><span class="cf-menu-desc">18-hour steep, smooth &amp; bold</span></div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-head);margin-bottom:0.5rem;">Bakery</h3>
+        <div class="cf-menu-item"><span class="cf-menu-name">Butter croissant</span><span class="dots"></span><span class="cf-menu-price">$4</span><span class="cf-menu-desc">Laminated in-house, 3 days</span></div>
+        <div class="cf-menu-item"><span class="cf-menu-name">Banana bread</span><span class="dots"></span><span class="cf-menu-price">$4.5</span><span class="cf-menu-desc">Brown butter, walnuts</span></div>
+        <div class="cf-menu-item"><span class="cf-menu-name">Morning bun</span><span class="dots"></span><span class="cf-menu-price">$5</span><span class="cf-menu-desc">Cardamom sugar, orange zest</span></div>
+        <div class="cf-menu-item"><span class="cf-menu-name">Quiche of the day</span><span class="dots"></span><span class="cf-menu-price">$7</span><span class="cf-menu-desc">Ask about today's</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="s-section">
+  <div class="s-container">
+    <div class="s-grid s-grid--3">
+      <div class="cf-val"><div class="cf-val-ico"></div><h3 style="font-family:var(--font-head);">Roasted here</h3><p class="s-lead" style="font-size:0.9rem;">Small batches, every week.</p></div>
+      <div class="cf-val"><div class="cf-val-ico"></div><h3 style="font-family:var(--font-head);">Baked at dawn</h3><p class="s-lead" style="font-size:0.9rem;">Everything made from scratch.</p></div>
+      <div class="cf-val"><div class="cf-val-ico"></div><h3 style="font-family:var(--font-head);">Fair &amp; direct</h3><p class="s-lead" style="font-size:0.9rem;">Sourced straight from farms.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="s-section s-section--alt" id="gallery">
+  <div class="s-container">
+    <div class="s-section-head"><h2 class="s-title">The café</h2></div>
+    <div class="s-grid s-grid--4" style="--gap:0.8rem;"><div class="cf-gal"></div><div class="cf-gal"></div><div class="cf-gal"></div><div class="cf-gal"></div></div>
+  </div>
+</section>
+
+<!-- VISIT -->
+<section class="s-section" id="visit">
+  <div class="s-container">
+    <div class="s-split">
+      <div>
+        <span class="s-eyebrow">Come by</span>
+        <h2 class="s-title" style="margin-bottom:1rem;">Hours &amp; location</h2>
+        <div class="s-stack s-stack--sm">
+          <p><strong>Mon–Fri</strong> · 6:30am – 6pm</p>
+          <p><strong>Sat–Sun</strong> · 7am – 5pm</p>
+          <p style="margin-top:1rem;color:var(--muted);">88 Maple Street, Riverside<br>(503) 555-0177</p>
+        </div>
+        <a class="s-btn" href="#" style="margin-top:1.4rem;">Order ahead</a>
+      </div>
+      <div class="sf sf-outline" style="--sf-bg:var(--surface);--sf-line:var(--border);min-height:260px;display:grid;place-items:center;color:var(--faint);">map slot</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="s-section s-section--accent">
+  <div class="s-container-narrow" style="text-align:center;">
+    <h2 style="font-family:var(--font-head);font-size:var(--t-h1);margin-bottom:1rem;">See you in the morning</h2>
+    <p style="font-size:1.1rem;margin-bottom:1.8rem;opacity:0.9;">Skip the line — order ahead and we'll have it ready.</p>
+    <a class="s-btn s-btn--lg" href="#" style="background:var(--on-accent);color:var(--accent);">Order ahead</a>
+  </div>
+</section>
+
+<footer class="s-footer">
+  <div class="s-container">
+    <div class="s-footer-bottom" style="border:0;"><span>© 2026 Maple &amp; Bean · 88 Maple Street</span><span><a href="#">Instagram</a> · <a href="#">Order online</a></span></div>
+  </div>
+</footer>
+
+</body>
+</html>

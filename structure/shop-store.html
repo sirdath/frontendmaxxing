@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Store (collection) — full e-shop reference</title>
+<!-- structure backbone -->
+<link rel="stylesheet" href="structure.css">
+<link rel="stylesheet" href="section-transitions.css">
+<!-- e-shop component kit -->
+<link rel="stylesheet" href="../components/product-cards-pro.css">
+<link rel="stylesheet" href="../components/shop-filters.css">
+<link rel="stylesheet" href="../components/shop-extras.css">
+<link rel="stylesheet" href="../components/cart-pro.css">
+<style>
+  .struct { --accent: #7c5cff; --accent-2: #22d3ee; --bg: #0a0a12; --bg-alt: #0f0f1b; --surface: #14141d; }
+  .store-hero { background: radial-gradient(60% 60% at 50% 0%, rgba(124,92,255,0.2), transparent 70%); }
+  .ppc-media { display: grid; place-items: center; color: var(--faint); font-size: 0.75rem; }
+  .ppc-media::after { content: 'product image'; }
+</style>
+</head>
+<body class="struct">
+
+<!-- Free shipping announcement bar -->
+<div class="shx"><div class="shx-shipbar">🚚 Free shipping on orders over $75 — <b style="margin-left:.3rem">limited time</b></div></div>
+
+<!-- NAV -->
+<header class="s-nav">
+  <div class="s-nav-inner">
+    <a class="s-brand"><span class="s-brand-dot"></span> Aura</a>
+    <nav class="s-nav-links"><a href="#">New</a><a href="#">Audio</a><a href="#">Accessories</a><a href="#">Sale</a></nav>
+    <div class="s-cluster">
+      <label class="uinp"></label>
+      <button class="s-btn s-btn--ghost" data-cart-open>Cart (3)</button>
+    </div>
+  </div>
+</header>
+
+<!-- Collection hero -->
+<section class="s-section s-section-tight store-hero">
+  <div class="s-container">
+    <div class="s-stack s-stack--sm">
+      <span class="s-eyebrow">Collection</span>
+      <h1 style="font-size:var(--t-h1);">Headphones &amp; Audio</h1>
+      <p class="s-lead">248 products engineered to disappear on your head and not in your budget.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLP: toolbar + chips + sidebar + grid -->
+<section class="s-section" style="padding-top:0;">
+  <div class="s-container-wide">
+    <div class="shf-toolbar">
+      <span class="shf-count"><b>248</b> products</span>
+      <div class="shf-toolbar-right">
+        <button class="shf-filter-btn">Filters</button>
+        <div class="shf-sort"><select><option>Featured</option><option>Price: low to high</option><option>Price: high to low</option><option>Newest</option><option>Top rated</option></select></div>
+        <div class="shf-view"><button class="is-on">▦</button><button>☰</button></div>
+      </div>
+    </div>
+    <div class="shf-chips">
+      <span class="shf-chip">Under $400 <button>×</button></span>
+      <span class="shf-chip">Wireless <button>×</button></span>
+      <span class="shf-chip">In stock <button>×</button></span>
+      <button class="shf-chip-clear">Clear all</button>
+    </div>
+
+    <div class="shf-layout">
+      <!-- Sidebar facets -->
+      <aside class="shf-sidebar">
+        <details class="shf-group" open><summary>Category</summary><div class="shf-group-body">
+          <label class="shf-check"><input type="checkbox" checked>Over-ear<span class="shf-cnt">84</span></label>
+          <label class="shf-check"><input type="checkbox">In-ear<span class="shf-cnt">52</span></label>
+          <label class="shf-check"><input type="checkbox">On-ear<span class="shf-cnt">31</span></label>
+          <label class="shf-check"><input type="checkbox">Speakers<span class="shf-cnt">28</span></label>
+        </div></details>
+        <details class="shf-group" open><summary>Price</summary><div class="shf-group-body">
+          <div class="shf-range"><div class="shf-range-track"><div class="shf-range-fill"></div><div class="shf-range-knob" style="left:15%"></div><div class="shf-range-knob" style="left:78%"></div></div><div class="shf-range-vals"><span>$20</span><span>$400</span></div></div>
+        </div></details>
+        <details class="shf-group" open><summary>Color</summary><div class="shf-group-body">
+          <div class="shf-swatch"><i style="--c:#111" class="is-on"></i><i style="--c:#c0392b"></i><i style="--c:#2e5aa8"></i><i style="--c:#dcdcdc"></i><i style="--c:#16a34a"></i><i style="--c:#f59e0b"></i></div>
+        </div></details>
+        <details class="shf-group" open><summary>Rating</summary><div class="shf-group-body shf-rating">
+          <label><input type="radio" name="r"><span class="stars">★★★★</span>★ &amp; up</label>
+          <label><input type="radio" name="r"><span class="stars">★★★</span>★★ &amp; up</label>
+        </div></details>
+      </aside>
+
+      <!-- Product grid -->
+      <div class="shf-results">
+        <div class="s-grid s-grid--3" style="--gap:1.1rem;">
+          <article class="ppc"><div class="ppc-media"><span class="ppc-badge ppc-badge-sale">-30%</span><button class="ppc-wish is-on"></button><button class="ppc-quick">Quick add +</button></div><div class="ppc-body"><div class="ppc-brand">Aura</div><h3 class="ppc-name">Gen 3 Headphones</h3><div class="ppc-rating"><span class="ppc-stars" style="--r:4.5"></span><span>(2.4k)</span></div><div class="ppc-price"><span class="ppc-now">$349</span><span class="ppc-was">$499</span></div><div class="ppc-swatches"><i style="--c:#111" class="is-on"></i><i style="--c:#c44"></i><i style="--c:#46a"></i></div></div></article>
+          <article class="ppc"><div class="ppc-media"><span class="ppc-badge ppc-badge-best">Bestseller</span><button class="ppc-wish"></button><button class="ppc-quick">Quick add +</button></div><div class="ppc-body"><div class="ppc-brand">Aura</div><h3 class="ppc-name">Studio Monitors</h3><div class="ppc-rating"><span class="ppc-stars" style="--r:5"></span><span>(880)</span></div><div class="ppc-price"><span class="ppc-now">$219</span></div></div></article>
+          <article class="ppc"><div class="ppc-media"><span class="ppc-badge ppc-badge-new">New</span><button class="ppc-wish"></button><button class="ppc-quick">Quick add +</button></div><div class="ppc-body"><div class="ppc-brand">Aura</div><h3 class="ppc-name">Air Buds Pro</h3><div class="ppc-rating"><span class="ppc-stars" style="--r:4"></span><span>(311)</span></div><div class="ppc-price"><span class="ppc-now">$129</span></div><div class="ppc-stock">Only 3 left</div></div></article>
+          <article class="ppc"><div class="ppc-media"><button class="ppc-wish"></button><button class="ppc-quick">Quick add +</button></div><div class="ppc-body"><div class="ppc-brand">Lumen</div><h3 class="ppc-name">Desk Speaker</h3><div class="ppc-rating"><span class="ppc-stars" style="--r:4.5"></span><span>(540)</span></div><div class="ppc-price"><span class="ppc-now">$89</span></div></div></article>
+          <article class="ppc is-soldout"><div class="ppc-media"><span class="ppc-badge ppc-badge-soldout">Sold out</span><button class="ppc-wish"></button><button class="ppc-quick">Notify me</button></div><div class="ppc-body"><div class="ppc-brand">Marrow</div><h3 class="ppc-name">Vinyl Headset</h3><div class="ppc-price"><span class="ppc-now">$240</span></div></div></article>
+          <article class="ppc"><div class="ppc-media"><span class="ppc-badge ppc-badge-eco">Eco</span><button class="ppc-wish"></button><button class="ppc-quick">Quick add +</button></div><div class="ppc-body"><div class="ppc-brand">Verdant</div><h3 class="ppc-name">Bamboo Earbuds</h3><div class="ppc-rating"><span class="ppc-stars" style="--r:4.5"></span><span>(1.1k)</span></div><div class="ppc-price"><span class="ppc-now">$74</span><span class="ppc-was">$99</span></div></div></article>
+        </div>
+        <button class="shf-more">Load more products</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trust strip -->
+<section class="s-section s-section-tight s-section--alt">
+  <div class="s-container">
+    <div class="shx" style="display:flex;justify-content:center;"><div class="shx-trust" style="gap:2.5rem;">
+      <span class="shx-trust-item"><span class="shx-trust-ico">✓</span> Free 2-day shipping</span>
+      <span class="shx-trust-item"><span class="shx-trust-ico">✓</span> 30-day returns</span>
+      <span class="shx-trust-item"><span class="shx-trust-ico">✓</span> 2-year warranty</span>
+      <span class="shx-trust-item"><span class="shx-trust-ico">✓</span> Secure checkout</span>
+    </div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="s-footer">
+  <div class="s-container">
+    <div class="s-footer-grid">
+      <div><a class="s-brand"><span class="s-brand-dot"></span> Aura</a><p style="color:var(--muted);margin-top:0.8rem;max-width:30ch;">Sound, simplified.</p>
+        <div class="shx" style="margin-top:1rem;"><div class="shx-pay"><span>VISA</span><span>MC</span><span>AMEX</span><span>Apple Pay</span><span>Shop Pay</span></div></div></div>
+      <div class="s-footer-col"><h4>Shop</h4><a href="#">Headphones</a><a href="#">Earbuds</a><a href="#">Speakers</a><a href="#">Sale</a></div>
+      <div class="s-footer-col"><h4>Support</h4><a href="#">Shipping</a><a href="#">Returns</a><a href="#">Warranty</a><a href="#">Contact</a></div>
+      <div class="s-footer-col"><h4>Company</h4><a href="#">About</a><a href="#">Sustainability</a><a href="#">Careers</a></div>
+    </div>
+    <div class="s-footer-bottom"><span>© 2026 Aura Audio</span><span>Built from the e-shop component kit</span></div>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cartx" id="store-cart" hidden>
+  <div class="cartx-scrim" data-cart-close></div>
+  <aside class="cartx-panel">
+    <header class="cartx-head"><h3>Your cart</h3><button data-cart-close>×</button></header>
+    <div class="cartx-ship"><div class="cartx-ship-msg"></div><div class="cartx-ship-bar"><i></i></div></div>
+    <div class="cartx-items">
+      <div class="cartx-item" data-price="349"><div class="cartx-thumb"></div><div><div class="cartx-item-name">Gen 3 Headphones</div><div class="cartx-item-variant">Midnight</div><div class="cartx-qty"><button>−</button><span>1</span><button>+</button></div></div><div><div class="cartx-item-price">$349</div><button class="cartx-item-remove">Remove</button></div></div>
+      <div class="cartx-item" data-price="129"><div class="cartx-thumb"></div><div><div class="cartx-item-name">Air Buds Pro</div><div class="cartx-item-variant">White</div><div class="cartx-qty"><button>−</button><span>1</span><button>+</button></div></div><div><div class="cartx-item-price">$129</div><button class="cartx-item-remove">Remove</button></div></div>
+      <div class="cartx-item" data-price="29"><div class="cartx-thumb"></div><div><div class="cartx-item-name">Travel Case</div><div class="cartx-item-variant">Black</div><div class="cartx-qty"><button>−</button><span>1</span><button>+</button></div></div><div><div class="cartx-item-price">$29</div><button class="cartx-item-remove">Remove</button></div></div>
+    </div>
+    <footer class="cartx-foot">
+      <div class="cartx-line"><span>Subtotal</span><span data-cart-subtotal>$507</span></div>
+      <div class="cartx-line"><span>Shipping</span><span>Free</span></div>
+      <div class="cartx-total"><span>Total</span><span data-cart-subtotal>$507</span></div>
+      <button class="cartx-checkout">Checkout</button>
+      <div class="cartx-note">Shipping &amp; taxes calculated at checkout</div>
+    </footer>
+  </aside>
+</div>
+
+<script src="../components/cart-pro.js"></script>
+<script>CartPro.init('#store-cart', { freeShip: 75, currency: '$' });</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cleaning service — structure reference</title>
+<link rel="stylesheet" href="structure.css">
+<link rel="stylesheet" href="section-transitions.css">
+<link rel="stylesheet" href="section-frames.css">
+<link rel="stylesheet" href="../blocks/button-groups.css">
+<style>
+  /* Fresh teal + lime — clean, bright, trustworthy */
+  .struct {
+    --accent: #06b6a4; --accent-2: #84cc16;
+    --bg: #f7fbfa; --bg-alt: #e9f6f3; --surface: #ffffff;
+    --fg: #0f2a27; --muted: #4a6b66; --faint: #8fa8a3;
+    --border: rgba(15,42,39,0.1); --on-accent: #ffffff;
+    --radius: 18px;
+  }
+  .cl-hero { background: linear-gradient(135deg,#06b6a4,#0891b2); color:#fff; }
+  .cl-hero .s-eyebrow { color: rgba(255,255,255,0.85); }
+  .cl-hero .s-lead { color: rgba(255,255,255,0.9); }
+  .cl-quote-card { background: var(--surface); border-radius: 18px; padding: 1.6rem; box-shadow: 0 20px 50px -24px rgba(8,145,178,0.4); }
+  .cl-svc { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 1.6rem; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .cl-svc:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -22px rgba(6,182,164,0.5); }
+  .cl-ico { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg,var(--accent),var(--accent-2)); margin-bottom: 1rem; }
+  .cl-plan { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 1.8rem; text-align: center; }
+  .cl-plan.is-popular { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); position: relative; }
+  .cl-plan.is-popular::before { content: 'Most booked'; position: absolute; top: -0.8rem; left: 50%; transform: translateX(-50%); background: var(--accent); color:#fff; font-size: 0.7rem; font-weight: 700; padding: 0.25rem 0.8rem; border-radius: 999px; }
+  .cl-price { font-size: 2.4rem; font-weight: 800; }
+  .cl-step { text-align: center; }
+  .cl-step-n { width: 48px; height: 48px; border-radius: 50%; background: var(--bg-alt); color: var(--accent); display: grid; place-items: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 0.8rem; }
+</style>
+</head>
+<body class="struct">
+
+<header class="s-nav" style="--bg:#f7fbfa;">
+  <div class="s-nav-inner">
+    <a class="s-brand">✦ SparkleHome</a>
+    <nav class="s-nav-links"><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#how">How it works</a><a href="#reviews">Reviews</a></nav>
+    <a class="s-btn" href="#quote">Get a free quote</a>
+  </div>
+</header>
+
+<!-- HERO with inline quote card -->
+<section class="s-hero s-hero--split cl-hero">
+  <div class="s-container">
+    <div class="s-hero-inner">
+      <div>
+        <span class="s-eyebrow">Trusted by 4,000+ homes</span>
+        <h1>A spotless home,<br>without lifting a finger</h1>
+        <p class="s-lead">Vetted, insured cleaners. Flat upfront pricing. Book in 60 seconds.</p>
+        <div class="s-cluster" style="margin-top:1.6rem;">
+          <a class="s-btn s-btn--lg" href="#quote" style="background:#fff;color:var(--accent);">Get a free quote</a>
+          <a class="s-btn s-btn--lg s-btn--ghost" href="#how" style="border-color:rgba(255,255,255,0.4);color:#fff;">How it works</a>
+        </div>
+      </div>
+      <div class="cl-quote-card" id="quote">
+        <h3 style="margin-bottom:1rem;color:var(--fg);">Instant quote</h3>
+        <div class="s-stack s-stack--sm">
+          <div class="bgrp bgrp-segmented" style="background:var(--bg-alt);"><button class="bgrp-item is-on" style="color:var(--fg)">Apartment</button><button class="bgrp-item" style="color:var(--muted)">House</button><button class="bgrp-item" style="color:var(--muted)">Office</button></div>
+          <div style="display:flex;gap:0.6rem;color:var(--muted);font-size:0.85rem;">Bedrooms: <strong style="color:var(--fg)">2</strong> · Baths: <strong style="color:var(--fg)">1</strong></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:0.6rem;border-top:1px solid var(--border);"><span style="color:var(--muted)">Estimated</span><strong style="font-size:1.6rem;color:var(--fg)">$119</strong></div>
+          <button class="s-btn" style="width:100%;justify-content:center;">Book this clean</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<section class="s-section s-section-tight">
+  <div class="s-container"><div class="s-cluster s-cluster--center" style="gap:2.5rem;color:var(--muted);font-weight:600;">
+    <span>★ 4.9/5 · 2,800 reviews</span><span>✓ Insured &amp; bonded</span><span>✓ 100% satisfaction guarantee</span><span>✓ Eco-friendly products</span>
+  </div></div>
+</section>
+
+<!-- SERVICES -->
+<section class="s-section s-section--alt" id="services">
+  <div class="s-container">
+    <div class="s-section-head"><span class="s-eyebrow">What we offer</span><h2 class="s-title">Cleaning, done right</h2></div>
+    <div class="s-grid s-grid--3">
+      <div class="cl-svc"><div class="cl-ico"></div><h3>Standard clean</h3><p>Dusting, vacuuming, mopping, kitchen &amp; baths — the weekly refresh.</p></div>
+      <div class="cl-svc"><div class="cl-ico"></div><h3>Deep clean</h3><p>Baseboards, inside appliances, grout, and the spots that get missed.</p></div>
+      <div class="cl-svc"><div class="cl-ico"></div><h3>Move in / out</h3><p>Top-to-bottom so you get the deposit back — or start fresh.</p></div>
+      <div class="cl-svc"><div class="cl-ico"></div><h3>Office cleaning</h3><p>After-hours commercial cleaning on a schedule that fits.</p></div>
+      <div class="cl-svc"><div class="cl-ico"></div><h3>Carpet &amp; upholstery</h3><p>Steam extraction that lifts stains and odors.</p></div>
+      <div class="cl-svc"><div class="cl-ico"></div><h3>Windows</h3><p>Streak-free interior &amp; exterior glass, screens included.</p></div>
+    </div>
+  </div>
+  <div class="st st-wave" style="--st-fill:var(--bg);"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 60 C 200 110 400 10 600 50 C 800 90 1000 20 1200 60 L1200 120 L0 120 Z"/></svg></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="s-section" id="how">
+  <div class="s-container">
+    <div class="s-section-head"><span class="s-eyebrow">Easy as 1-2-3</span><h2 class="s-title">How it works</h2></div>
+    <div class="s-grid s-grid--3">
+      <div class="cl-step"><div class="cl-step-n">1</div><h3>Get your quote</h3><p>Tell us about your space — instant flat price, no walkthroughs.</p></div>
+      <div class="cl-step"><div class="cl-step-n">2</div><h3>Pick a time</h3><p>Choose a slot that works. Same-day often available.</p></div>
+      <div class="cl-step"><div class="cl-step-n">3</div><h3>Relax</h3><p>A vetted pro arrives and your home sparkles. Pay after.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="s-section s-section--alt" id="pricing">
+  <div class="s-container">
+    <div class="s-section-head"><span class="s-eyebrow">Simple pricing</span><h2 class="s-title">Plans that fit your home</h2></div>
+    <div class="s-grid s-grid--3">
+      <div class="cl-plan"><h3>One-time</h3><div class="cl-price">$119</div><p class="s-lead" style="font-size:0.9rem;">Standard clean, billed once</p><a class="s-btn s-btn--ghost" href="#quote" style="margin-top:1rem;">Book once</a></div>
+      <div class="cl-plan is-popular"><h3>Bi-weekly</h3><div class="cl-price">$99<span style="font-size:1rem;">/visit</span></div><p class="s-lead" style="font-size:0.9rem;">Most popular — save 17%</p><a class="s-btn" href="#quote" style="margin-top:1rem;">Start plan</a></div>
+      <div class="cl-plan"><h3>Weekly</h3><div class="cl-price">$89<span style="font-size:1rem;">/visit</span></div><p class="s-lead" style="font-size:0.9rem;">Best value, always fresh</p><a class="s-btn s-btn--ghost" href="#quote" style="margin-top:1rem;">Start plan</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="s-section" id="reviews">
+  <div class="s-container">
+    <div class="s-section-head"><h2 class="s-title">Loved by neighbors</h2></div>
+    <div class="s-grid s-grid--3">
+      <div class="cl-svc"><div style="color:#f5a623;">★★★★★</div><p style="margin:0.6rem 0;">“Came back to a home that smelled amazing. Booking took a minute.”</p><strong>— Jenna M.</strong></div>
+      <div class="cl-svc"><div style="color:#f5a623;">★★★★★</div><p style="margin:0.6rem 0;">“Same cleaner every visit, always on time. Worth every penny.”</p><strong>— Theo R.</strong></div>
+      <div class="cl-svc"><div style="color:#f5a623;">★★★★★</div><p style="margin:0.6rem 0;">“Move-out clean got our full deposit back. Highly recommend.”</p><strong>— Sam &amp; Ava</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="s-section s-section--accent">
+  <div class="s-container-narrow" style="text-align:center;">
+    <h2 style="font-size:var(--t-h1);margin-bottom:1rem;">Ready for a spotless home?</h2>
+    <p style="font-size:1.1rem;margin-bottom:1.8rem;opacity:0.9;">Get your free quote in under a minute.</p>
+    <a class="s-btn s-btn--lg" href="#quote" style="background:#fff;color:var(--accent);">Get my free quote</a>
+  </div>
+</section>
+
+<footer class="s-footer">
+  <div class="s-container">
+    <div class="s-footer-grid">
+      <div><a class="s-brand">✦ SparkleHome</a><p style="color:var(--muted);margin-top:0.8rem;max-width:30ch;">Insured home &amp; office cleaning across the metro area.</p></div>
+      <div class="s-footer-col"><h4>Services</h4><a href="#">Standard</a><a href="#">Deep clean</a><a href="#">Move in/out</a><a href="#">Office</a></div>
+      <div class="s-footer-col"><h4>Company</h4><a href="#">About</a><a href="#">Careers</a><a href="#">Gift cards</a></div>
+      <div class="s-footer-col"><h4>Contact</h4><a href="#">(415) 555-0142</a><a href="#">hello@sparklehome.co</a><a href="#">Service areas</a></div>
+    </div>
+    <div class="s-footer-bottom"><span>© 2026 SparkleHome Cleaning</span><span>Satisfaction guaranteed or we re-clean free</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gym / fitness — structure reference</title>
+<link rel="stylesheet" href="structure.css">
+<link rel="stylesheet" href="section-transitions.css">
+<link rel="stylesheet" href="section-frames.css">
+<style>
+  /* Bold black + electric lime — high energy */
+  .struct {
+    --accent: #d4ff3f; --accent-2: #a3e600;
+    --bg: #0a0a0a; --bg-alt: #111; --surface: #161616;
+    --fg: #fafafa; --muted: rgba(250,250,250,0.6); --faint: rgba(250,250,250,0.4);
+    --border: rgba(255,255,255,0.1); --on-accent: #0a0a0a;
+    --font-head: system-ui, sans-serif;
+    --radius: 12px;
+  }
+  .gy-hero h1 { font-size: clamp(2.8rem,8vw,6rem); line-height: 0.95; text-transform: uppercase; font-weight: 900; letter-spacing: -0.02em; }
+  .gy-hero { background: radial-gradient(70% 60% at 50% 0%, rgba(212,255,63,0.12), transparent 70%); }
+  .gy-class { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface); transition: transform 0.2s ease; }
+  .gy-class:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .gy-class-img { aspect-ratio: 4/3; background: linear-gradient(135deg,#1a1a1a,#0c0c0c); display: grid; place-items: end start; padding: 1rem; }
+  .gy-class-body { padding: 1.1rem; }
+  .gy-tag { display: inline-block; background: var(--accent); color: var(--on-accent); font-size: 0.68rem; font-weight: 800; text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 5px; }
+  .gy-plan { border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
+  .gy-plan.is-popular { background: var(--accent); color: var(--on-accent); }
+  .gy-plan.is-popular .s-lead, .gy-plan.is-popular .gy-price small { color: rgba(10,10,10,0.7); }
+  .gy-price { font-size: 3rem; font-weight: 900; letter-spacing: -0.03em; }
+  .gy-trainer { text-align: center; }
+  .gy-trainer-photo { aspect-ratio: 1; border-radius: 16px; background: linear-gradient(160deg,#1c1c1c,#0c0c0c); margin-bottom: 0.8rem; }
+</style>
+</head>
+<body class="struct">
+
+<header class="s-nav">
+  <div class="s-nav-inner">
+    <a class="s-brand">⚡ IRONWORKS</a>
+    <nav class="s-nav-links"><a href="#classes">Classes</a><a href="#trainers">Trainers</a><a href="#pricing">Membership</a><a href="#results">Results</a></nav>
+    <a class="s-btn" href="#pricing">Join now</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="s-hero s-hero--center gy-hero">
+  <div class="s-container">
+    <div class="s-hero-inner">
+      <span class="s-eyebrow">Strength · Conditioning · Community</span>
+      <h1>Stronger<br>starts here</h1>
+      <p class="s-lead">Coached group training, 24/7 access, and a community that shows up. First class free.</p>
+      <div class="s-cluster s-cluster--center">
+        <a class="s-btn s-btn--lg" href="#pricing">Claim your free class</a>
+        <a class="s-btn s-btn--ghost s-btn--lg" href="#classes">See the schedule</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="s-section s-section-tight s-section--alt">
+  <div class="s-container"><div class="s-stats">
+    <div><div class="s-stat-num">24/7</div><div class="s-stat-label">gym access</div></div>
+    <div><div class="s-stat-num">60+</div><div class="s-stat-label">classes a week</div></div>
+    <div><div class="s-stat-num">12</div><div class="s-stat-label">expert coaches</div></div>
+    <div><div class="s-stat-num">3k+</div><div class="s-stat-label">members strong</div></div>
+  </div></div>
+</section>
+
+<!-- CLASSES -->
+<section class="s-section" id="classes">
+  <div class="s-container">
+    <div class="s-section-head s-section-head--left"><span class="s-eyebrow">Train your way</span><h2 class="s-title">Classes for every goal</h2></div>
+    <div class="s-grid s-grid--4">
+      <div class="gy-class"><div class="gy-class-img"><span class="gy-tag">HIIT</span></div><div class="gy-class-body"><h3>Burnout</h3><p style="color:var(--muted);font-size:0.85rem;">45 min · all levels</p></div></div>
+      <div class="gy-class"><div class="gy-class-img"><span class="gy-tag">Strength</span></div><div class="gy-class-body"><h3>Barbell Club</h3><p style="color:var(--muted);font-size:0.85rem;">60 min · intermediate</p></div></div>
+      <div class="gy-class"><div class="gy-class-img"><span class="gy-tag">Conditioning</span></div><div class="gy-class-body"><h3>Engine</h3><p style="color:var(--muted);font-size:0.85rem;">50 min · all levels</p></div></div>
+      <div class="gy-class"><div class="gy-class-img"><span class="gy-tag">Mobility</span></div><div class="gy-class-body"><h3>Reset</h3><p style="color:var(--muted);font-size:0.85rem;">40 min · recovery</p></div></div>
+    </div>
+  </div>
+  <div class="st st-diagonal-rev" style="--st-fill:var(--bg-alt);"></div>
+</section>
+
+<!-- TRAINERS -->
+<section class="s-section s-section--alt" id="trainers">
+  <div class="s-container">
+    <div class="s-section-head"><span class="s-eyebrow">Your coaches</span><h2 class="s-title">Trained to push you</h2></div>
+    <div class="s-grid s-grid--4">
+      <div class="gy-trainer"><div class="gy-trainer-photo"></div><h3 style="font-size:1.05rem;">Jess Cole</h3><p class="s-lead" style="font-size:0.85rem;">Strength · CSCS</p></div>
+      <div class="gy-trainer"><div class="gy-trainer-photo"></div><h3 style="font-size:1.05rem;">Marcus Vale</h3><p class="s-lead" style="font-size:0.85rem;">HIIT · Conditioning</p></div>
+      <div class="gy-trainer"><div class="gy-trainer-photo"></div><h3 style="font-size:1.05rem;">Dre Lawson</h3><p class="s-lead" style="font-size:0.85rem;">Olympic lifting</p></div>
+      <div class="gy-trainer"><div class="gy-trainer-photo"></div><h3 style="font-size:1.05rem;">Nina Park</h3><p class="s-lead" style="font-size:0.85rem;">Mobility · Yoga</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="s-section" id="pricing">
+  <div class="s-container">
+    <div class="s-section-head"><span class="s-eyebrow">Membership</span><h2 class="s-title">No contracts. Cancel anytime.</h2></div>
+    <div class="s-grid s-grid--3">
+      <div class="gy-plan"><h3>Off-peak</h3><div class="gy-price">$39<small style="font-size:1rem;">/mo</small></div><p class="s-lead">Access 10am–4pm · all classes</p><a class="s-btn s-btn--ghost" href="#" style="margin-top:1.2rem;">Choose</a></div>
+      <div class="gy-plan is-popular"><h3>Unlimited</h3><div class="gy-price">$79<small style="font-size:1rem;">/mo</small></div><p class="s-lead">24/7 access · all classes · guest passes</p><a class="s-btn" href="#" style="margin-top:1.2rem;background:var(--on-accent);color:var(--accent);">Join now</a></div>
+      <div class="gy-plan"><h3>Annual</h3><div class="gy-price">$59<small style="font-size:1rem;">/mo</small></div><p class="s-lead">Billed yearly · best value · free kit</p><a class="s-btn s-btn--ghost" href="#" style="margin-top:1.2rem;">Choose</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="s-section s-section--alt" id="results">
+  <div class="s-container-narrow" style="text-align:center;">
+    <span class="s-eyebrow">Real members</span>
+    <p style="font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.3;font-weight:800;margin:1rem 0;">“Down 30 lbs and the strongest I've ever been. The coaches actually know your name.”</p>
+    <p class="s-lead">— Tom B. · member since 2024</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="s-section s-section--accent">
+  <div class="s-container" style="text-align:center;">
+    <h2 style="font-size:clamp(2.4rem,6vw,4.5rem);text-transform:uppercase;font-weight:900;line-height:1;margin-bottom:1.2rem;">Your first class<br>is on us</h2>
+    <a class="s-btn s-btn--lg" href="#" style="background:var(--on-accent);color:var(--accent);">Claim free class →</a>
+  </div>
+</section>
+
+<footer class="s-footer">
+  <div class="s-container">
+    <div class="s-footer-grid">
+      <div><a class="s-brand">⚡ IRONWORKS</a><p style="color:var(--muted);margin-top:0.8rem;max-width:30ch;">Coached training &amp; 24/7 access. Downtown.</p></div>
+      <div class="s-footer-col"><h4>Train</h4><a href="#">Classes</a><a href="#">Personal training</a><a href="#">Schedule</a></div>
+      <div class="s-footer-col"><h4>Gym</h4><a href="#">Membership</a><a href="#">Trainers</a><a href="#">Tour</a></div>
+      <div class="s-footer-col"><h4>Visit</h4><a href="#">200 Mill St</a><a href="#">(312) 555-0190</a><a href="#">Hours: 24/7</a></div>
+    </div>
+    <div class="s-footer-bottom"><span>© 2026 Ironworks Gym</span><span><a href="#">Instagram</a> · <a href="#">TikTok</a></span></div>
+  </div>
+</footer>
+
+</body>
+</html>

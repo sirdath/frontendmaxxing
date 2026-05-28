@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Law firm / legal — structure reference</title>
+<link rel="stylesheet" href="structure.css">
+<link rel="stylesheet" href="section-transitions.css">
+<link rel="stylesheet" href="section-frames.css">
+<style>
+  /* Navy + serif + gold — trust, authority, tradition */
+  .struct {
+    --accent: #b9975b; --accent-2: #d4b87a;
+    --bg: #0c1322; --bg-alt: #111a2e; --surface: #16203a;
+    --fg: #eef2fa; --muted: rgba(238,242,250,0.62); --faint: rgba(238,242,250,0.4);
+    --border: rgba(185,151,91,0.22); --on-accent: #0c1322;
+    --font-head: Georgia, 'Times New Roman', serif;
+    --radius: 6px;
+  }
+  .lg-stat { border-left: 3px solid var(--accent); padding-left: 1rem; }
+  .lg-area { border: 1px solid var(--border); border-radius: 6px; padding: 1.6rem; transition: background 0.2s ease; }
+  .lg-area:hover { background: var(--surface); }
+  .lg-area h3 { font-family: var(--font-head); margin-bottom: 0.6rem; }
+  .lg-atty { text-align: center; }
+  .lg-photo { aspect-ratio: 3/4; border-radius: 6px; background: linear-gradient(160deg,#22304f,#101a30); margin-bottom: 0.9rem; }
+</style>
+</head>
+<body class="struct">
+
+<header class="s-nav">
+  <div class="s-nav-inner">
+    <a class="s-brand" style="font-family:var(--font-head);">Sterling &amp; Hale</a>
+    <nav class="s-nav-links"><a href="#practice">Practice areas</a><a href="#attorneys">Attorneys</a><a href="#results">Results</a><a href="#contact">Contact</a></nav>
+    <a class="s-btn" href="#contact">Free consultation</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="s-hero s-hero--split">
+  <div class="s-container">
+    <div class="s-hero-inner">
+      <div>
+        <span class="s-eyebrow">Trial attorneys · est. 1986</span>
+        <h1>When the stakes are high, experience matters.</h1>
+        <p class="s-lead">For nearly four decades, Sterling &amp; Hale has represented individuals and businesses in their most consequential legal matters.</p>
+        <div class="s-cluster" style="margin-top:1.6rem;">
+          <a class="s-btn s-btn--lg" href="#contact">Request a free consultation</a>
+          <a class="s-btn s-btn--ghost s-btn--lg" href="tel:+10000000000">(212) 555-0100</a>
+        </div>
+      </div>
+      <div class="sf sf-inset" style="--sf-bg:var(--surface);--sf-line:var(--border);min-height:300px;display:grid;place-items:center;color:var(--faint);font-family:var(--font-head);">firm imagery</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STATS -->
+<section class="s-section s-section-tight s-section--alt">
+  <div class="s-container">
+    <div class="s-grid s-grid--4">
+      <div class="lg-stat"><div class="s-stat-num">$500M+</div><div class="s-stat-label">recovered for clients</div></div>
+      <div class="lg-stat"><div class="s-stat-num">38</div><div class="s-stat-label">years in practice</div></div>
+      <div class="lg-stat"><div class="s-stat-num">2,000+</div><div class="s-stat-label">cases handled</div></div>
+      <div class="lg-stat"><div class="s-stat-num">98%</div><div class="s-stat-label">success rate</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICE AREAS -->
+<section class="s-section" id="practice">
+  <div class="s-container">
+    <div class="s-section-head"><span class="s-eyebrow">How we help</span><h2 class="s-title">Practice areas</h2></div>
+    <div class="s-grid s-grid--3">
+      <div class="lg-area"><h3>Personal Injury</h3><p>Auto accidents, medical malpractice, wrongful death. No fee unless we win.</p></div>
+      <div class="lg-area"><h3>Business Litigation</h3><p>Contract disputes, partnership conflicts, and commercial trials.</p></div>
+      <div class="lg-area"><h3>Estate Planning</h3><p>Wills, trusts, and probate that protect your family's future.</p></div>
+      <div class="lg-area"><h3>Criminal Defense</h3><p>Aggressive defense for state and federal charges.</p></div>
+      <div class="lg-area"><h3>Family Law</h3><p>Divorce, custody, and support handled with discretion.</p></div>
+      <div class="lg-area"><h3>Real Estate</h3><p>Transactions, zoning, and landlord–tenant disputes.</p></div>
+    </div>
+  </div>
+  <div class="st st-diagonal" style="--st-fill:var(--bg-alt);"></div>
+</section>
+
+<!-- WHY US -->
+<section class="s-section s-section--alt">
+  <div class="s-container">
+    <div class="s-split">
+      <div>
+        <span class="s-eyebrow">Why Sterling &amp; Hale</span>
+        <h2 class="s-title" style="margin-bottom:1rem;">A firm built on results and discretion</h2>
+        <div class="s-stack s-stack--sm">
+          <p>✓ &nbsp;Direct access to a senior partner on every case</p>
+          <p>✓ &nbsp;Transparent, contingency-based fees</p>
+          <p>✓ &nbsp;Recognized by Super Lawyers &amp; Chambers</p>
+          <p>✓ &nbsp;Multilingual team, available 24/7</p>
+        </div>
+      </div>
+      <div class="sf sf-brackets" style="--sf-accent:var(--accent);min-height:240px;display:grid;place-items:center;color:var(--faint);font-family:var(--font-head);">accolades / press</div>
+    </div>
+  </div>
+</section>
+
+<!-- ATTORNEYS -->
+<section class="s-section" id="attorneys">
+  <div class="s-container">
+    <div class="s-section-head"><span class="s-eyebrow">Our team</span><h2 class="s-title">Meet the partners</h2></div>
+    <div class="s-grid s-grid--4">
+      <div class="lg-atty"><div class="lg-photo"></div><h3 style="font-family:var(--font-head);font-size:1.05rem;">Margaret Sterling</h3><p class="s-lead" style="font-size:0.85rem;">Founding Partner</p></div>
+      <div class="lg-atty"><div class="lg-photo"></div><h3 style="font-family:var(--font-head);font-size:1.05rem;">David Hale</h3><p class="s-lead" style="font-size:0.85rem;">Managing Partner</p></div>
+      <div class="lg-atty"><div class="lg-photo"></div><h3 style="font-family:var(--font-head);font-size:1.05rem;">Priya Anand</h3><p class="s-lead" style="font-size:0.85rem;">Litigation</p></div>
+      <div class="lg-atty"><div class="lg-photo"></div><h3 style="font-family:var(--font-head);font-size:1.05rem;">Marcus Webb</h3><p class="s-lead" style="font-size:0.85rem;">Estate Planning</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS / TESTIMONIAL -->
+<section class="s-section s-section--alt" id="results">
+  <div class="s-container-narrow" style="text-align:center;">
+    <span class="s-eyebrow">Client outcomes</span>
+    <p style="font-family:var(--font-head);font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.4;margin:1rem 0;">“They treated my case like it was the only one that mattered. The settlement changed my family's life.”</p>
+    <p class="s-lead">— Former client, personal injury · $2.4M settlement</p>
+  </div>
+</section>
+
+<!-- CONSULTATION CTA -->
+<section class="s-section s-section--accent" id="contact">
+  <div class="s-container-narrow" style="text-align:center;">
+    <h2 style="font-family:var(--font-head);font-size:var(--t-h1);margin-bottom:1rem;">Speak with an attorney today</h2>
+    <p style="font-size:1.1rem;margin-bottom:1.8rem;opacity:0.85;">Free, confidential consultation. No obligation.</p>
+    <div class="s-cluster s-cluster--center">
+      <a class="s-btn s-btn--lg" href="#" style="background:var(--on-accent);color:var(--accent);">Request consultation</a>
+      <a class="s-btn s-btn--lg s-btn--ghost" href="tel:+10000000000" style="border-color:rgba(12,19,34,0.3);color:var(--on-accent);">(212) 555-0100</a>
+    </div>
+  </div>
+</section>
+
+<footer class="s-footer">
+  <div class="s-container">
+    <div class="s-footer-grid">
+      <div><a class="s-brand" style="font-family:var(--font-head);">Sterling &amp; Hale</a><p style="color:var(--muted);margin-top:0.8rem;max-width:32ch;">Trial attorneys serving the tri-state area since 1986.</p></div>
+      <div class="s-footer-col"><h4>Practice</h4><a href="#">Personal Injury</a><a href="#">Business Litigation</a><a href="#">Estate Planning</a></div>
+      <div class="s-footer-col"><h4>Firm</h4><a href="#">Attorneys</a><a href="#">Results</a><a href="#">Careers</a></div>
+      <div class="s-footer-col"><h4>Contact</h4><a href="#">100 Park Ave, NY</a><a href="#">(212) 555-0100</a><a href="#">hello@sterlinghale.com</a></div>
+    </div>
+    <div class="s-footer-bottom"><span>© 2026 Sterling &amp; Hale LLP · Attorney advertising</span><span>Prior results do not guarantee outcomes</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

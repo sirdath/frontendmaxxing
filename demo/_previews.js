@@ -1476,11 +1476,10 @@
         '<section class="s-section s-section--alt s-section-tight"><div class="s-container"><div class="s-grid s-grid--3" style="--gap:0.7rem;"><div class="s-card"><h3 style="font-size:1rem;">Feature</h3><p style="font-size:0.85rem;">One job per card.</p></div><div class="s-card"><h3 style="font-size:1rem;">Feature</h3><p style="font-size:0.85rem;">Threes read as a set.</p></div><div class="s-card"><h3 style="font-size:1rem;">Feature</h3><p style="font-size:0.85rem;">Consistent rhythm.</p></div></div></div></section>' +
         '<section class="s-section s-section-tight"><div class="s-container"><div class="s-stats"><div><div class="s-stat-num">12k</div><div class="s-stat-label">teams</div></div><div><div class="s-stat-num">99.9%</div><div class="s-stat-label">uptime</div></div><div><div class="s-stat-num">3.2s</div><div class="s-stat-label">speed</div></div></div></div></section>' +
       '</div>' +
-      '<div style="text-align:center;margin-top:1rem;font-family:ui-monospace,monospace;font-size:0.78rem;color:rgba(255,255,255,0.55);">Full genre pages → ' +
-        '<a href="../structure/saas.html" target="_blank" style="color:#7c5cff;">saas</a> · ' +
-        '<a href="../structure/agency.html" target="_blank" style="color:#7c5cff;">agency</a> · ' +
-        '<a href="../structure/restaurant.html" target="_blank" style="color:#7c5cff;">restaurant</a> · ' +
-        '<a href="../structure/ecommerce.html" target="_blank" style="color:#7c5cff;">ecommerce</a></div>';
+      '<div style="text-align:center;margin-top:1rem;font-family:ui-monospace,monospace;font-size:0.78rem;color:rgba(255,255,255,0.55);line-height:1.8;">Full openable pages → ' +
+        ['saas','agency','restaurant','ecommerce','shop-store','legal','cleaning','gym','coffee'].map(function (p) {
+          return '<a href="../structure/' + p + '.html" target="_blank" style="color:#7c5cff;">' + p + '</a>';
+        }).join(' · ') + '</div>';
   };
 
   P['structure/section-transitions.css'] = function (target) {
