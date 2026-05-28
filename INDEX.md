@@ -3071,3 +3071,20 @@ Ports of the most-requested Aceternity UI patterns the vault was missing. All va
 
 **status-page.css** `components/status-page.css` (CSS) — tags: status-page uptime statuspage instatus betterstack incident operational degraded down maintenance 90-day-bars component metrics timeline pulse themeable
   Service status page (`.sts`): overall banner (ok/degraded/down/maintenance + pulse), metrics strip, component rows with 90-day uptime bar strips, and an incident timeline (resolved/ongoing/monitoring pills). Generate the uptime `<i>` bars in markup/JS.
+
+**Phase data-org — data/org visuals: Gantt timeline, org chart, media library (5 files). Inspired by Linear/Asana timeline, classic CSS org-tree, Google Drive/Dropbox**
+
+**gantt.css** `components/gantt.css` (CSS) — tags: gantt timeline project schedule roadmap task-bar date-grid milestone progress today-marker linear asana monday css-grid themeable
+  CSS-grid Gantt (`.gantt`): period header + task rows with bars placed by `--c` (start col) / `--span`, bar colors (accent/accent2/ok/warn/danger), in-bar `--progress` fill, diamond milestones, and a `--today` marker line. Pairs with gantt.js.
+
+**gantt.js** `components/gantt.js` (JS, global: `Gantt`) — tags: gantt timeline build data tasks periods milestone progress today onTask css-grid
+  `Gantt.init('#g', {periods, today, tasks:[{name,start,span,color,progress,milestone}], onTask})`. Renders the period header + positioned task bars / milestones from data.
+
+**org-chart.css** `components/org-chart.css` (CSS) — tags: org-chart hierarchy tree org-tree nodes connectors reporting structure team company pure-css nested-ul themeable
+  Pure-CSS top-down org/hierarchy tree (`.org` + nested `<ul>/<li>` + `.org-node`): pseudo-element connector lines (canonical CSS-tree technique), avatar + title + subtitle nodes, `.org-node-accent` highlight. No JS.
+
+**media-library.css** `components/media-library.css` (CSS) — tags: media-library file-manager asset grid thumbnails folder image video doc select toolbar breadcrumb view-toggle search list-view selection-bar google-drive dropbox figma themeable
+  File-manager / asset grid (`.mlib`): toolbar (breadcrumb + search + grid/list view), thumbnail items (folder/image/video/doc), multi-select with check overlay, list view, and a slide-up selection action bar. Pairs with media-library.js.
+
+**media-library.js** `components/media-library.js` (JS, global: `MediaLibrary`) — tags: media-library select multi-select view-toggle grid list search filter open folder onSelect onOpen google-drive
+  `MediaLibrary.init('#lib', {multi, onOpen, onSelect})`. Click-select (ctrl/cmd for multi), grid/list toggle, search-filter by name, dbl-click opens. Methods: selected(), clear().

@@ -1,0 +1,72 @@
+/* ============================================
+   GANTT — Project timeline / schedule (task bars across a date grid)
+   Inspired by Linear cycles, Asana/Monday timeline, GitHub Projects roadmap
+   ============================================
+   A lightweight CSS-grid Gantt: rows of task bars positioned across a
+   column-per-period grid. Pairs with gantt.js to place bars from data, or
+   author bars by hand with --c (start column) / --span (column span).
+   Themeable via structure/palette tokens.
+
+   Usage (manual):
+     <div class="gantt" style="--cols:12;">
+       <div class="gantt-head"><div class="gantt-row-label">Task</div><div class="gantt-periods"><span>Jan</span>…<span>Dec</span></div></div>
+       <div class="gantt-row"><div class="gantt-row-label">Research</div>
+         <div class="gantt-track"><div class="gantt-bar" style="--c:1;--span:3;">Research</div></div></div>
+     </div>
+
+   Usage (JS): Gantt.init('#g', {periods:['Jan',…], tasks:[{name,start,span,color,progress}]});
+   Bar modifiers: gantt-bar-accent2 / -ok / -warn / -danger · .gantt-bar with --progress 0..1
+   ============================================ */
+
+.gantt {
+  --g-bg: var(--surface, #16161f);
+  --g-fg: var(--fg, #f2f3f7);
+  --g-muted: var(--muted, rgba(242,243,247,.6));
+  --g-faint: var(--faint, rgba(242,243,247,.4));
+  --g-border: var(--border, rgba(255,255,255,.1));
+  --g-accent: var(--accent, #7c5cff);
+  --g-label-w: 160px;
+  --cols: 12;
+
+  background: var(--g-bg); border: 1px solid var(--g-border); border-radius: 14px;
+  overflow: hidden; color: var(--g-fg);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+.gantt-head, .gantt-row { display: grid; grid-template-columns: var(--g-label-w) 1fr; align-items: stretch; }
+.gantt-head { border-bottom: 1px solid var(--g-border); background: color-mix(in srgb, var(--g-fg) 3%, transparent); }
+.gantt-row-label { padding: .7rem 1rem; font-size: .85rem; font-weight: 500; display: flex; align-items: center; border-right: 1px solid var(--g-border); }
+.gantt-head .gantt-row-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--g-faint); }
+
+.gantt-periods { display: grid; grid-template-columns: repeat(var(--cols), 1fr); }
+.gantt-periods span { padding: .7rem 0; text-align: center; font-size: .72rem; color: var(--g-faint); border-left: 1px solid var(--g-border); }
+
+/* Track = the period grid for one row; bars are placed by grid-column */
+.gantt-track { position: relative; display: grid; grid-template-columns: repeat(var(--cols), 1fr); align-items: center; min-height: 46px;
+  background-image: repeating-linear-gradient(90deg, transparent 0, transparent calc(100% / var(--cols) - 1px), var(--g-border) calc(100% / var(--cols) - 1px), var(--g-border) calc(100% / var(--cols))); }
+.gantt-row { border-bottom: 1px solid var(--g-border); }
+.gantt-row:last-child { border-bottom: 0; }
+
+.gantt-bar {
+  grid-column: var(--c) / span var(--span);
+  position: relative; height: 28px; margin: 0 4px; border-radius: 7px;
+  background: var(--g-accent); color: var(--on-accent, #0a0a12);
+  display: flex; align-items: center; padding: 0 .6rem; font-size: .76rem; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer;
+  box-shadow: 0 2px 8px -3px rgba(0,0,0,.4); transition: filter .15s ease, transform .15s ease;
+}
+.gantt-bar:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.gantt-bar-accent2 { background: var(--accent-2, #22d3ee); }
+.gantt-bar-ok { background: var(--ok, #34d399); } .gantt-bar-warn { background: var(--warn, #fbbf24); } .gantt-bar-danger { background: var(--danger, #f87171); }
+
+/* Progress fill inside a bar (set --progress 0..1) */
+.gantt-bar[style*="--progress"]::before { content: ''; position: absolute; inset: 0; width: calc(var(--progress) * 100%); background: rgba(0,0,0,.22); border-radius: inherit; }
+.gantt-bar > * { position: relative; z-index: 1; }
+
+/* Milestone (diamond) */
+.gantt-milestone { grid-column: var(--c); justify-self: center; width: 16px; height: 16px; background: var(--g-accent); transform: rotate(45deg); border-radius: 3px; box-shadow: 0 0 0 3px var(--g-bg); cursor: pointer; }
+
+/* Today marker (set --today as a column number) */
+.gantt-track.has-today::after { content: ''; position: absolute; top: 0; bottom: 0; left: calc((var(--today) - .5) * (100% / var(--cols))); width: 2px; background: var(--danger, #f87171); opacity: .7; }
+
+@media (max-width: 600px){ .gantt { --g-label-w: 110px; } .gantt-bar { font-size: 0; padding: 0; } }

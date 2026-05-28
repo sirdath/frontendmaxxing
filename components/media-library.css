@@ -1,0 +1,80 @@
+/* ============================================
+   MEDIA LIBRARY — File manager / asset grid
+   Inspired by Google Drive, Dropbox, WordPress media library, Figma assets
+   ============================================
+   A thumbnail grid of files/folders with selection, a toolbar (search, view,
+   sort), breadcrumb path, and a details sidebar. Pairs with media-library.js
+   for select + view toggle + (optional) details. Themeable via tokens.
+
+   Usage:
+     <div class="mlib" id="lib">
+       <div class="mlib-bar">
+         <nav class="mlib-crumb"><a>Files</a><span>/</span><b>Marketing</b></nav>
+         <div class="mlib-tools"><input class="mlib-search" placeholder="Search…"><div class="mlib-view"><button class="is-on" data-view="grid">▦</button><button data-view="list">☰</button></div></div>
+       </div>
+       <div class="mlib-grid">
+         <div class="mlib-item" data-type="folder"><div class="mlib-thumb mlib-folder"></div><div class="mlib-name">Brand assets</div><div class="mlib-meta">24 items</div></div>
+         <div class="mlib-item" data-type="image"><div class="mlib-thumb"></div><div class="mlib-name">hero.jpg</div><div class="mlib-meta">2.4 MB</div></div>
+       </div>
+       <div class="mlib-selbar"><span class="mlib-selcount">0 selected</span><div><button>Move</button><button class="mlib-danger">Delete</button></div></div>
+     </div>
+   ============================================ */
+
+.mlib {
+  --m-bg: var(--bg, #0a0a12);
+  --m-surface: var(--surface, #16161f);
+  --m-fg: var(--fg, #f2f3f7);
+  --m-muted: var(--muted, rgba(242,243,247,.6));
+  --m-faint: var(--faint, rgba(242,243,247,.4));
+  --m-border: var(--border, rgba(255,255,255,.1));
+  --m-accent: var(--accent, #7c5cff);
+
+  background: var(--m-bg); color: var(--m-fg); border: 1px solid var(--m-border);
+  border-radius: 14px; overflow: hidden; position: relative;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Toolbar */
+.mlib-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: .9rem 1.1rem; border-bottom: 1px solid var(--m-border); }
+.mlib-crumb { font-size: .85rem; color: var(--m-muted); display: flex; gap: .4rem; align-items: center; }
+.mlib-crumb a { color: var(--m-muted); text-decoration: none; cursor: pointer; } .mlib-crumb a:hover { color: var(--m-fg); } .mlib-crumb b { color: var(--m-fg); } .mlib-crumb span { color: var(--m-faint); }
+.mlib-tools { display: flex; gap: .6rem; align-items: center; }
+.mlib-search { background: var(--m-surface); border: 1px solid var(--m-border); color: var(--m-fg); border-radius: 9px; padding: .45rem .8rem; font: inherit; font-size: .85rem; outline: none; }
+.mlib-search:focus { border-color: var(--m-accent); }
+.mlib-view { display: inline-flex; border: 1px solid var(--m-border); border-radius: 9px; overflow: hidden; }
+.mlib-view button { width: 34px; height: 32px; border: 0; background: var(--m-surface); color: var(--m-muted); cursor: pointer; }
+.mlib-view button.is-on { background: color-mix(in srgb, var(--m-fg) 10%, transparent); color: var(--m-fg); }
+
+/* Grid */
+.mlib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .8rem; padding: 1.1rem; }
+.mlib-item { border: 1px solid var(--m-border); border-radius: 12px; padding: .7rem; cursor: pointer; transition: border-color .15s ease, background .15s ease; position: relative; }
+.mlib-item:hover { border-color: var(--m-accent); }
+.mlib-item.is-sel { border-color: var(--m-accent); background: color-mix(in srgb, var(--m-accent) 10%, transparent); }
+.mlib-item.is-sel::after { content: '✓'; position: absolute; top: .5rem; right: .5rem; width: 20px; height: 20px; border-radius: 50%; background: var(--m-accent); color: var(--on-accent, #0a0a12); display: grid; place-items: center; font-size: .7rem; font-weight: 700; }
+.mlib-thumb { aspect-ratio: 4/3; border-radius: 8px; background: linear-gradient(135deg, #2a2a3a, #14141d); margin-bottom: .6rem; display: grid; place-items: center; color: var(--m-faint); font-size: 1.6rem; }
+.mlib-thumb.mlib-folder { background: linear-gradient(135deg, color-mix(in srgb, var(--m-accent) 28%, transparent), color-mix(in srgb, var(--m-accent) 8%, transparent)); }
+.mlib-thumb.mlib-folder::after { content: '📁'; } .mlib-thumb.mlib-doc::after { content: '📄'; } .mlib-thumb.mlib-video::after { content: '🎬'; } .mlib-thumb.mlib-audio::after { content: '🎵'; }
+.mlib-name { font-size: .85rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mlib-meta { font-size: .74rem; color: var(--m-faint); margin-top: .15rem; }
+
+/* List view */
+.mlib.is-list .mlib-grid { grid-template-columns: 1fr; gap: 0; padding: .4rem; }
+.mlib.is-list .mlib-item { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: .9rem; border: 0; border-bottom: 1px solid var(--m-border); border-radius: 0; padding: .6rem .7rem; }
+.mlib.is-list .mlib-item:last-child { border-bottom: 0; }
+.mlib.is-list .mlib-thumb { aspect-ratio: 1; width: 40px; margin: 0; font-size: 1.1rem; }
+.mlib.is-list .mlib-meta { margin: 0; }
+.mlib.is-list .mlib-item.is-sel::after { top: 50%; transform: translateY(-50%); }
+
+/* Selection action bar */
+.mlib-selbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .8rem 1.1rem; border-top: 1px solid var(--m-border); background: var(--m-surface);
+  transform: translateY(100%); position: sticky; bottom: 0; transition: transform .25s ease; }
+.mlib.has-sel .mlib-selbar { transform: translateY(0); }
+.mlib-selcount { font-size: .85rem; color: var(--m-muted); }
+.mlib-selbar button { border: 1px solid var(--m-border); background: var(--m-bg); color: var(--m-fg); border-radius: 9px; padding: .45rem .9rem; font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; margin-left: .5rem; }
+.mlib-selbar button:hover { border-color: var(--m-accent); }
+.mlib-selbar .mlib-danger { color: var(--danger, #f87171); } .mlib-selbar .mlib-danger:hover { border-color: var(--danger, #f87171); }
+
+/* Empty / dropzone */
+.mlib-empty { padding: 3rem; text-align: center; color: var(--m-muted); }
+.mlib-drop { margin: 1.1rem; border: 2px dashed var(--m-border); border-radius: 12px; padding: 2rem; text-align: center; color: var(--m-muted); font-size: .9rem; }
+.mlib-drop.is-over { border-color: var(--m-accent); background: color-mix(in srgb, var(--m-accent) 8%, transparent); }

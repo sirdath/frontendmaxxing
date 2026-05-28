@@ -1357,6 +1357,46 @@
     document.head.appendChild(s);
   };
 
+  // ===== Phase data-org previews =====
+  P['components/gantt.js'] = function (target) {
+    target.innerHTML = '<div class="pal-saas-indigo" style="width:100%;"><div class="gantt" id="gantt-demo"></div></div>';
+    if (window.Gantt) window.Gantt.init('#gantt-demo', { periods:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], today:6, tasks:[
+      { name:'Research', start:1, span:2, color:'accent2', progress:1 },
+      { name:'Design', start:2, span:3, progress:.6 },
+      { name:'Build', start:4, span:5, color:'ok', progress:.3 },
+      { name:'QA', start:8, span:2, color:'warn' },
+      { name:'Launch', start:10, milestone:true, color:'danger' }
+    ]});
+  };
+
+  P['components/org-chart.css'] = function (target) {
+    function n(t, s, accent) { return '<div class="org-node' + (accent ? ' org-node-accent' : '') + '"><span class="org-av"></span><div><b>' + t + '</b><small>' + s + '</small></div></div>'; }
+    target.innerHTML = '<div class="pal-saas-indigo" style="width:100%;"><div class="org">' +
+      '<ul><li>' + n('CEO', 'Dana Okafor', true) +
+        '<ul>' +
+          '<li>' + n('VP Eng', 'A. Rivera') + '<ul><li>' + n('Frontend', '3 reports') + '</li><li>' + n('Backend', '4 reports') + '</li></ul></li>' +
+          '<li>' + n('VP Sales', 'M. Webb') + '<ul><li>' + n('AE Team', '6 reports') + '</li></ul></li>' +
+          '<li>' + n('VP Design', 'P. Anand') + '</li>' +
+        '</ul>' +
+      '</li></ul></div></div>';
+  };
+
+  P['components/media-library.js'] = function (target) {
+    target.innerHTML = '<div class="pal-saas-indigo" style="width:100%;max-width:760px;">' +
+      '<div class="mlib" id="mlib-demo">' +
+        '<div class="mlib-bar"><nav class="mlib-crumb"><a>Files</a><span>/</span><b>Marketing</b></nav><div class="mlib-tools"><input class="mlib-search" placeholder="Search…"><div class="mlib-view"><button class="is-on" data-view="grid">▦</button><button data-view="list">☰</button></div></div></div>' +
+        '<div class="mlib-grid">' +
+          '<div class="mlib-item"><div class="mlib-thumb mlib-folder"></div><div class="mlib-name">Brand assets</div><div class="mlib-meta">24 items</div></div>' +
+          '<div class="mlib-item"><div class="mlib-thumb"></div><div class="mlib-name">hero-banner.jpg</div><div class="mlib-meta">2.4 MB</div></div>' +
+          '<div class="mlib-item"><div class="mlib-thumb mlib-video"></div><div class="mlib-name">promo.mp4</div><div class="mlib-meta">18 MB</div></div>' +
+          '<div class="mlib-item"><div class="mlib-thumb mlib-doc"></div><div class="mlib-name">brief.pdf</div><div class="mlib-meta">340 KB</div></div>' +
+          '<div class="mlib-item"><div class="mlib-thumb"></div><div class="mlib-name">logo-dark.png</div><div class="mlib-meta">88 KB</div></div>' +
+        '</div>' +
+        '<div class="mlib-selbar"><span class="mlib-selcount">0 selected</span><div><button>Move</button><button class="mlib-danger">Delete</button></div></div>' +
+      '</div><div style="margin-top:0.6rem;font-size:0.72rem;color:rgba(255,255,255,0.45);font-family:ui-monospace,monospace;">click to select · Ctrl/Cmd-click multi · ▦/☰ toggle · search filters</div></div>';
+    if (window.MediaLibrary) window.MediaLibrary.init('#mlib-demo');
+  };
+
   // ===== Phase saas-pages previews =====
   P['components/docs-layout.css'] = function (target) {
     target.innerHTML = '<div class="pal-saas-indigo" style="width:100%;background:var(--bg);border-radius:12px;overflow:hidden;border:1px solid var(--border);">' +

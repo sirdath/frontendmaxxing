@@ -1,0 +1,71 @@
+/* ============================================
+   ORG CHART — Hierarchy / org tree (connected node diagram)
+   Inspired by the classic pure-CSS tree technique (Thomas Park / CSS-Tricks)
+   ============================================
+   Top-down hierarchy using nested <ul>/<li> with connector lines drawn via
+   pseudo-elements. No JS. Themeable via structure/palette tokens.
+
+   Usage:
+     <div class="org">
+       <ul>
+         <li>
+           <div class="org-node org-node-accent"><span class="org-av"></span><div><b>CEO</b><small>Dana Okafor</small></div></div>
+           <ul>
+             <li><div class="org-node"><span class="org-av"></span><div><b>VP Eng</b><small>A. Rivera</small></div></div>
+               <ul><li><div class="org-node">…</div></li><li><div class="org-node">…</div></li></ul>
+             </li>
+             <li><div class="org-node">…VP Sales…</div></li>
+           </ul>
+         </li>
+       </ul>
+     </div>
+
+   Node modifier: org-node-accent
+   ============================================ */
+
+.org {
+  --o-bg: var(--surface, #16161f);
+  --o-fg: var(--fg, #f2f3f7);
+  --o-muted: var(--muted, rgba(242,243,247,.6));
+  --o-border: var(--border, rgba(255,255,255,.16));
+  --o-accent: var(--accent, #7c5cff);
+  --o-line: color-mix(in srgb, var(--fg, #fff) 24%, transparent);
+  --o-gap: 22px;
+
+  overflow-x: auto; padding: 1rem 1rem 1.5rem; color: var(--o-fg);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+.org ul { position: relative; display: flex; justify-content: center; padding-top: var(--o-gap); margin: 0; list-style: none; }
+.org li { position: relative; text-align: center; padding: var(--o-gap) .55rem 0; list-style: none; }
+
+/* Horizontal connectors across siblings + down-stalk into each node */
+.org li::before, .org li::after {
+  content: ''; position: absolute; top: 0; right: 50%;
+  width: 50%; height: var(--o-gap); border-top: 2px solid var(--o-line);
+}
+.org li::after { right: auto; left: 50%; border-left: 2px solid var(--o-line); }
+/* Single child: just a straight stalk, no elbows */
+.org li:only-child::before, .org li:only-child::after { display: none; }
+.org li:only-child { padding-top: var(--o-gap); }
+/* Trim the outer edges + round the elbows */
+.org li:first-child::before, .org li:last-child::after { border: 0; }
+.org li:last-child::before { border-right: 2px solid var(--o-line); border-radius: 0 6px 0 0; }
+.org li:first-child::after { border-radius: 6px 0 0 0; }
+/* Vertical stalk from a parent node down to its children row */
+.org ul ul::before { content: ''; position: absolute; top: 0; left: 50%; width: 0; height: var(--o-gap); border-left: 2px solid var(--o-line); }
+/* Root node has no connector above it */
+.org > ul { padding-top: 0; }
+
+.org-node {
+  position: relative; display: inline-flex; align-items: center; gap: .6rem;
+  background: var(--o-bg); border: 1px solid var(--o-border); border-radius: 12px;
+  padding: .6rem .9rem; text-align: left; min-width: 150px;
+  box-shadow: 0 4px 14px -8px rgba(0,0,0,.5);
+  transition: border-color .15s ease, transform .15s ease;
+}
+.org-node:hover { border-color: var(--o-accent); transform: translateY(-2px); }
+.org-node-accent { border-color: var(--o-accent); background: color-mix(in srgb, var(--o-accent) 12%, var(--o-bg)); }
+.org-av { width: 30px; height: 30px; border-radius: 50%; flex: 0 0 auto; background: linear-gradient(135deg, var(--o-accent), var(--accent-2, #22d3ee)); }
+.org-node b { display: block; font-size: .85rem; }
+.org-node small { color: var(--o-muted); font-size: .74rem; }
