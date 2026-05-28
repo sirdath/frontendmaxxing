@@ -1357,6 +1357,82 @@
     document.head.appendChild(s);
   };
 
+  // ===== Phase essentials previews =====
+  P['components/toc.css'] = function (target) {
+    target.innerHTML =
+      '<nav class="toc" style="position:static;max-width:240px;">' +
+        '<div class="toc-title">On this page</div>' +
+        '<ul class="toc-list">' +
+          '<li><a class="toc-link" href="#">Getting started</a></li>' +
+          '<li><a class="toc-link is-active" href="#">Installation</a><ul class="toc-list"><li><a class="toc-link" href="#">Requirements</a></li><li><a class="toc-link" href="#">Setup</a></li></ul></li>' +
+          '<li><a class="toc-link" href="#">Configuration</a></li>' +
+          '<li><a class="toc-link" href="#">API reference</a></li>' +
+        '</ul>' +
+      '</nav>' +
+      '<div style="margin-top:1rem;font-size:0.72rem;color:rgba(255,255,255,0.45);font-family:ui-monospace,monospace;">Toc.init scrolls + highlights live on a real page</div>';
+  };
+
+  P['components/reading-aids.css'] = function (target) {
+    target.innerHTML =
+      '<div style="position:relative;width:100%;max-width:520px;height:200px;background:#0e0e16;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;">' +
+        '<div class="ra-bar ra-bar-glow" style="position:absolute;"><i style="--p:0.42"></i></div>' +
+        '<div style="padding:1.6rem;color:rgba(255,255,255,0.6);font-size:0.85rem;">Article body… the bar at the top fills as you scroll; the button appears bottom-right after scrolling.</div>' +
+        '<button class="ra-top is-on" style="position:absolute;">↑</button>' +
+      '</div>';
+  };
+
+  P['components/share-buttons.js'] = function (target) {
+    var X = '<svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8 9.1 9.4 12.5h-7.4l-5.8-7.6-6.6 7.6H.5l8.5-9.8L0 1.2h7.6l5.2 6.9z"/></svg>';
+    var FB = '<svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-2.2 0-4 1.8-4 4v2H7v4h3v8h4v-8h3l1-4h-4V8c0-.6.4-1 1-1z"/></svg>';
+    var LI = '<svg viewBox="0 0 24 24"><path d="M4 4h4v16H4zM6 2a2 2 0 100 4 2 2 0 000-4zM10 9h4v2c.6-1 2-2 4-2 3 0 4 2 4 5v6h-4v-5c0-1.5-.5-2.5-2-2.5S14 14 14 15.5V20h-4z"/></svg>';
+    var WA = '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2z"/></svg>';
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;gap:1rem;align-items:center;">' +
+        '<div class="shb shb-round" id="shb-a"><button class="shb-btn shb-x" data-share="x">' + X + '</button><button class="shb-btn shb-facebook" data-share="facebook">' + FB + '</button><button class="shb-btn shb-linkedin" data-share="linkedin">' + LI + '</button><button class="shb-btn shb-whatsapp" data-share="whatsapp">' + WA + '</button></div>' +
+        '<div class="shb shb-labeled shb-pill" id="shb-b"><button class="shb-btn shb-copy" data-share="copy"><span class="shb-label">Copy link</span></button><button class="shb-btn shb-email" data-share="email"><span class="shb-label">Email</span></button><button class="shb-btn shb-native" data-share="native"><span class="shb-label">Share</span></button></div>' +
+      '</div>';
+    if (window.ShareButtons) window.ShareButtons.init('#shb-a'), window.ShareButtons.init('#shb-b');
+  };
+
+  P['components/dialog.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center;">' +
+        '<button class="dapp-btn" id="dlg-confirm">Dialog.confirm</button>' +
+        '<button class="dapp-btn" id="dlg-alert">Dialog.alert</button>' +
+        '<button class="dapp-btn" id="dlg-prompt">Dialog.prompt</button>' +
+        '<button class="dapp-btn" id="dlg-danger">Danger confirm</button>' +
+      '</div><div id="dlg-out" style="text-align:center;margin-top:1rem;font-family:ui-monospace,monospace;font-size:0.8rem;color:rgba(255,255,255,0.55);">resolved value appears here →</div>';
+    var out = target.querySelector('#dlg-out');
+    function show(v) { out.textContent = 'resolved: ' + JSON.stringify(v); }
+    if (window.Dialog) {
+      target.querySelector('#dlg-confirm').onclick = function () { Dialog.confirm({ title: 'Publish changes?', message: 'They go live immediately.' }).then(show); };
+      target.querySelector('#dlg-alert').onclick = function () { Dialog.alert({ title: 'Saved', message: 'Your changes are live.' }).then(function(){ show('(ok)'); }); };
+      target.querySelector('#dlg-prompt').onclick = function () { Dialog.prompt({ title: 'Rename', value: 'untitled', placeholder: 'New name' }).then(show); };
+      target.querySelector('#dlg-danger').onclick = function () { Dialog.confirm({ title: 'Delete project?', message: "This can't be undone.", danger: true, okText: 'Delete' }).then(show); };
+    }
+  };
+
+  P['components/menubar.js'] = function (target) {
+    target.innerHTML =
+      '<div class="mbar" id="mbar-demo">' +
+        '<div class="mbar-menu"><button class="mbar-trigger">File</button><div class="mbar-dropdown"><button class="mbar-item">New<span class="mbar-kbd">⌘N</span></button><button class="mbar-item">Open…<span class="mbar-kbd">⌘O</span></button><button class="mbar-item mbar-checked" data-toggle>Auto-save</button><div class="mbar-sep"></div><button class="mbar-item mbar-danger">Delete project</button></div></div>' +
+        '<div class="mbar-menu"><button class="mbar-trigger">Edit</button><div class="mbar-dropdown"><button class="mbar-item">Undo<span class="mbar-kbd">⌘Z</span></button><button class="mbar-item">Redo<span class="mbar-kbd">⇧⌘Z</span></button><div class="mbar-sep"></div><button class="mbar-item">Cut</button><button class="mbar-item">Copy</button><button class="mbar-item">Paste</button></div></div>' +
+        '<div class="mbar-menu"><button class="mbar-trigger">View</button><div class="mbar-dropdown"><button class="mbar-item mbar-checked" data-toggle>Sidebar</button><button class="mbar-item">Zoom in<span class="mbar-kbd">⌘+</span></button><button class="mbar-item">Zoom out<span class="mbar-kbd">⌘−</span></button></div></div>' +
+        '<div class="mbar-menu"><button class="mbar-trigger">Help</button><div class="mbar-dropdown"><button class="mbar-item">Docs</button><button class="mbar-item">Shortcuts</button></div></div>' +
+      '</div><div style="margin-top:0.8rem;font-size:0.72rem;color:rgba(255,255,255,0.45);font-family:ui-monospace,monospace;text-align:center;">click File, then hover Edit/View · arrow keys navigate</div>';
+    if (window.Menubar) window.Menubar.init('#mbar-demo');
+  };
+
+  P['components/scroll-area.js'] = function (target) {
+    function lines(n) { var s = ''; for (var i = 1; i <= n; i++) s += '<p style="margin:0 0 10px;color:rgba(255,255,255,0.7);">Item ' + i + ' — scrollable row</p>'; return s; }
+    target.innerHTML =
+      '<div style="display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;">' +
+        '<div><div style="font-size:0.7rem;color:rgba(255,255,255,0.45);font-family:ui-monospace,monospace;margin-bottom:0.4rem;">.sa-thin .sa-fade</div><div class="sa sa-thin sa-fade" id="sa-a" style="height:220px;width:240px;background:#14141d;border:1px solid #2a2a3a;border-radius:12px;padding:14px;">' + lines(14) + '</div></div>' +
+        '<div><div style="font-size:0.7rem;color:rgba(255,255,255,0.45);font-family:ui-monospace,monospace;margin-bottom:0.4rem;">.sa-accent (always-on bar)</div><div class="sa sa-accent" style="height:220px;width:240px;background:#14141d;border:1px solid #2a2a3a;border-radius:12px;padding:14px;">' + lines(14) + '</div></div>' +
+      '</div>';
+    if (window.ScrollArea) window.ScrollArea.init('#sa-a');
+  };
+
   // ===== Phase wave2-uiverse previews =====
   P['blocks/loaders-uiverse.css'] = function (target) {
     var v = ['conic-glow','gradient-orbit','neon-bars','dual-conic','comet','ripple-radar','glow-orb','segment-clock','three-body','liquid-circle','infinity','square-morph','gradient-trail','pulse-grid','helix-dots'];

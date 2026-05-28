@@ -1,0 +1,83 @@
+/* ============================================
+   TOC — Table of contents / scrollspy (in-page nav that tracks the section in view)
+   Inspired by docs themes (Stripe, Tailwind, Radix docs)
+   ============================================
+   A sticky sidebar list of headings that highlights the one currently in
+   view and smooth-scrolls on click. Pairs with toc.js (IntersectionObserver
+   + optional auto-generate from your article's headings).
+
+   Usage:
+     <nav class="toc">
+       <div class="toc-title">On this page</div>
+       <ul class="toc-list"></ul>   <!-- toc.js fills this when generate:true -->
+     </nav>
+     <script>Toc.init('.toc', { content: '.article', headings: 'h2, h3', generate: true });</script>
+
+   Variants: toc-bar (left active bar, default), toc-dots (dot rail), toc-plain
+   ============================================ */
+
+.toc {
+  --toc-fg: rgba(242,243,247,0.6);
+  --toc-active: #f2f3f7;
+  --toc-accent: #7c5cff;
+  --toc-line: rgba(255,255,255,0.12);
+
+  position: sticky;
+  top: 2rem;
+  align-self: start;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 0.85rem;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+}
+
+.toc-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(242,243,247,0.45);
+  margin-bottom: 0.9rem;
+}
+
+.toc-list { list-style: none; margin: 0; padding: 0; position: relative; }
+.toc-list .toc-list { margin-left: 0.9rem; }   /* nested h3 indent */
+
+.toc-link {
+  display: block;
+  padding: 0.32rem 0 0.32rem 0.9rem;
+  color: var(--toc-fg);
+  text-decoration: none;
+  border-left: 2px solid var(--toc-line);
+  line-height: 1.4;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.toc-link:hover { color: var(--toc-active); }
+.toc-link.is-active { color: var(--toc-active); border-color: var(--toc-accent); font-weight: 600; }
+
+/* Sub-level (h3) slightly smaller/dimmer */
+.toc-list .toc-list .toc-link { font-size: 0.8rem; padding-left: 0.9rem; }
+
+/* ── Variant: dot rail ── */
+.toc-dots .toc-link { border-left: 0; padding-left: 1.4rem; position: relative; }
+.toc-dots .toc-link::before {
+  content: ''; position: absolute; left: 2px; top: 0.7em;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--toc-line); transition: background 0.15s ease, transform 0.15s ease;
+}
+.toc-dots .toc-link.is-active::before { background: var(--toc-accent); transform: scale(1.35); box-shadow: 0 0 0 3px color-mix(in srgb, var(--toc-accent) 25%, transparent); }
+
+/* ── Variant: plain (no rail) ── */
+.toc-plain .toc-link { border-left: 0; padding-left: 0; }
+
+/* Light theme */
+.toc-light { --toc-fg: rgba(20,20,30,0.55); --toc-active: #14141e; --toc-line: rgba(0,0,0,0.12); }
+
+/* Reading progress mini-fill on the rail (set --toc-progress 0..1 via JS, optional) */
+.toc-list::after {
+  content: ''; position: absolute; left: 0; top: 0; width: 2px;
+  height: calc(var(--toc-progress, 0) * 100%);
+  background: linear-gradient(var(--toc-accent), transparent);
+  opacity: 0.4; pointer-events: none;
+}
+.toc-dots .toc-list::after, .toc-plain .toc-list::after { display: none; }

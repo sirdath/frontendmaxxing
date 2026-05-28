@@ -1,0 +1,68 @@
+/* ============================================
+   READING AIDS — Top reading-progress bar + back-to-top button
+   Inspired by Medium, docs themes, every CMS blog
+   ============================================
+   Two tiny long-form helpers. reading-aids.js can inject both for you, or
+   you can place the markup yourself and just call init.
+
+   Usage (auto-inject):
+     <script>ReadingAids.init({ target: '.article' });</script>
+
+   Usage (manual markup):
+     <div class="ra-bar"><i></i></div>
+     <button class="ra-top" aria-label="Back to top">↑</button>
+
+   Vars: --ra-accent / --ra-accent-2 (bar gradient), --ra-size (top btn)
+   Variants: ra-bar-glow, ra-top-pill (label), ra-top-left
+   ============================================ */
+
+.ra-bar {
+  --ra-accent: #7c5cff;
+  --ra-accent-2: #22d3ee;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 300;
+  background: transparent;
+  pointer-events: none;
+}
+.ra-bar > i {
+  display: block;
+  height: 100%;
+  width: calc(var(--p, 0) * 100%);
+  background: linear-gradient(90deg, var(--ra-accent), var(--ra-accent-2));
+  transition: width 0.1s linear;
+}
+.ra-bar-glow > i { box-shadow: 0 0 8px var(--ra-accent); }
+
+.ra-top {
+  --ra-accent: #7c5cff;
+  --ra-size: 46px;
+  position: fixed;
+  right: 1.4rem; bottom: 1.4rem;
+  width: var(--ra-size); height: var(--ra-size);
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 50%;
+  background: var(--ra-accent); color: #fff;
+  font-size: 1.1rem; cursor: pointer;
+  z-index: 300;
+  box-shadow: 0 8px 24px -8px rgba(0,0,0,0.5);
+  opacity: 0; visibility: hidden; transform: translateY(12px) scale(0.9);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s, filter 0.15s ease;
+}
+.ra-top.is-on { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+.ra-top:hover { filter: brightness(1.1); }
+.ra-top:active { transform: scale(0.94); }
+
+.ra-top-left { right: auto; left: 1.4rem; }
+.ra-top-pill { width: auto; border-radius: 999px; padding: 0 1rem; gap: 0.4rem; font-size: 0.85rem; font-weight: 600; }
+
+/* Circular progress ring around the back-to-top button (set --p 0..1) */
+.ra-top-ring { background: var(--ra-accent); position: relative; }
+.ra-top-ring::before {
+  content: ''; position: absolute; inset: -3px; border-radius: 50%;
+  background: conic-gradient(var(--ra-accent-2, #22d3ee) calc(var(--p, 0) * 360deg), rgba(255,255,255,0.15) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 0);
+          mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 0);
+  z-index: -1;
+}

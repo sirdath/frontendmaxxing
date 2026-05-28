@@ -1,0 +1,90 @@
+/* ============================================
+   MENUBAR — Desktop-app menu bar (File / Edit / View …) with dropdowns
+   Inspired by macOS menu bar, Radix Menubar, VS Code
+   ============================================
+   Horizontal top-level menus that open dropdowns; once one is open, hovering
+   siblings switches between them (classic menubar). Pairs with menubar.js for
+   keyboard nav + open/switch/close.
+
+   Usage:
+     <div class="mbar">
+       <div class="mbar-menu">
+         <button class="mbar-trigger">File</button>
+         <div class="mbar-dropdown">
+           <button class="mbar-item">New<span class="mbar-kbd">⌘N</span></button>
+           <button class="mbar-item">Open<span class="mbar-kbd">⌘O</span></button>
+           <div class="mbar-sep"></div>
+           <button class="mbar-item mbar-danger">Delete</button>
+         </div>
+       </div>
+       <div class="mbar-menu"> … Edit … </div>
+     </div>
+     <script>Menubar.init('.mbar', { onSelect: (label) => {} });</script>
+
+   Item modifiers: mbar-danger, mbar-disabled, mbar-checked, mbar-submenu (with nested .mbar-dropdown)
+   ============================================ */
+
+.mbar {
+  --mbar-bg: #14141d;
+  --mbar-fg: #e9eaee;
+  --mbar-muted: rgba(233,234,238,0.5);
+  --mbar-hover: rgba(255,255,255,0.08);
+  --mbar-accent: #7c5cff;
+  --mbar-border: rgba(255,255,255,0.1);
+  --mbar-danger: #ef4444;
+
+  display: inline-flex;
+  align-items: stretch;
+  background: var(--mbar-bg);
+  border: 1px solid var(--mbar-border);
+  border-radius: 10px;
+  padding: 3px;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+}
+
+.mbar-menu { position: relative; }
+
+.mbar-trigger {
+  background: transparent; border: 0; cursor: pointer;
+  color: var(--mbar-fg); font: inherit; font-size: 0.85rem; font-weight: 500;
+  padding: 0.4rem 0.8rem; border-radius: 7px;
+  transition: background 0.12s ease;
+}
+.mbar-trigger:hover, .mbar-menu.is-open .mbar-trigger { background: var(--mbar-hover); }
+
+.mbar-dropdown {
+  position: absolute; top: calc(100% + 5px); left: 0; min-width: 200px;
+  background: var(--mbar-bg); border: 1px solid var(--mbar-border);
+  border-radius: 10px; padding: 4px;
+  box-shadow: 0 16px 40px -12px rgba(0,0,0,0.6);
+  opacity: 0; visibility: hidden; transform: translateY(-4px);
+  transition: opacity 0.14s ease, transform 0.14s ease, visibility 0.14s;
+  z-index: 60;
+}
+.mbar-menu.is-open > .mbar-dropdown { opacity: 1; visibility: visible; transform: none; }
+
+.mbar-item {
+  display: flex; align-items: center; gap: 0.7rem; width: 100%;
+  background: transparent; border: 0; cursor: pointer; text-align: left;
+  color: var(--mbar-fg); font: inherit; font-size: 0.85rem;
+  padding: 0.5rem 0.7rem; border-radius: 7px;
+  transition: background 0.1s ease;
+}
+.mbar-item:hover, .mbar-item.is-focus { background: var(--mbar-hover); }
+.mbar-item .mbar-kbd { margin-left: auto; color: var(--mbar-muted); font-size: 0.75rem; font-family: ui-monospace, monospace; }
+.mbar-item.mbar-danger { color: var(--mbar-danger); }
+.mbar-item.mbar-disabled { color: var(--mbar-muted); pointer-events: none; opacity: 0.6; }
+.mbar-item.mbar-checked::before { content: '✓'; color: var(--mbar-accent); margin-right: -0.3rem; }
+.mbar-item.mbar-submenu::after { content: '›'; margin-left: auto; color: var(--mbar-muted); }
+
+.mbar-sep { height: 1px; background: var(--mbar-border); margin: 4px 6px; }
+.mbar-section { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mbar-muted); padding: 0.5rem 0.7rem 0.3rem; }
+
+/* Submenu (nested dropdown opens to the right) */
+.mbar-item.mbar-submenu { position: relative; }
+.mbar-item.mbar-submenu > .mbar-dropdown { top: -5px; left: calc(100% + 4px); }
+.mbar-item.mbar-submenu:hover > .mbar-dropdown { opacity: 1; visibility: visible; transform: none; }
+
+/* Light theme */
+.mbar-light { --mbar-bg: #fff; --mbar-fg: #14141e; --mbar-muted: #8a8a96; --mbar-hover: rgba(0,0,0,0.06); --mbar-border: rgba(0,0,0,0.1); }

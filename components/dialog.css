@@ -1,0 +1,85 @@
+/* ============================================
+   DIALOG — Promise-based confirm / alert / prompt
+   Inspired by Radix AlertDialog + window.confirm done right
+   ============================================
+   Replaces native confirm()/alert()/prompt() with styled, awaitable dialogs.
+   dialog.js injects all DOM — you usually never write this markup yourself;
+   it's documented so you can theme it.
+
+   Usage (JS):
+     const ok = await Dialog.confirm({ title: 'Delete file?', message: 'This can\'t be undone.', danger: true });
+     await Dialog.alert({ title: 'Saved', message: 'Your changes are live.' });
+     const name = await Dialog.prompt({ title: 'Rename', value: 'untitled', placeholder: 'New name' });
+
+   Vars on .dlg-box: --dlg-bg / --dlg-fg / --dlg-accent / --dlg-danger
+   ============================================ */
+
+.dlg {
+  --dlg-bg: #16161f;
+  --dlg-fg: #f2f3f7;
+  --dlg-muted: rgba(242,243,247,0.62);
+  --dlg-border: rgba(255,255,255,0.12);
+  --dlg-accent: #7c5cff;
+  --dlg-danger: #ef4444;
+
+  position: fixed; inset: 0; z-index: 400;
+  display: grid; place-items: center;
+  padding: 1.2rem;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+.dlg-scrim {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.55);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+  opacity: 0; transition: opacity 0.2s ease;
+}
+.dlg.is-open .dlg-scrim { opacity: 1; }
+
+.dlg-box {
+  position: relative;
+  width: min(420px, 100%);
+  background: var(--dlg-bg);
+  color: var(--dlg-fg);
+  border: 1px solid var(--dlg-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 30px 70px -20px rgba(0,0,0,0.6);
+  transform: translateY(10px) scale(0.97); opacity: 0;
+  transition: transform 0.22s cubic-bezier(0.2,0.8,0.2,1), opacity 0.18s ease;
+}
+.dlg.is-open .dlg-box { transform: none; opacity: 1; }
+
+.dlg-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: grid; place-items: center; font-size: 1.3rem; margin-bottom: 1rem;
+  background: color-mix(in srgb, var(--dlg-accent) 18%, transparent); color: var(--dlg-accent);
+}
+.dlg-danger .dlg-icon { background: color-mix(in srgb, var(--dlg-danger) 18%, transparent); color: var(--dlg-danger); }
+
+.dlg-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 0.5rem; }
+.dlg-msg { color: var(--dlg-muted); font-size: 0.92rem; line-height: 1.55; margin: 0; }
+
+.dlg-input {
+  width: 100%; margin-top: 1rem;
+  background: rgba(255,255,255,0.05); color: var(--dlg-fg);
+  border: 1px solid var(--dlg-border); border-radius: 10px;
+  padding: 0.7rem 0.9rem; font: inherit; font-size: 0.95rem; outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.dlg-input:focus { border-color: var(--dlg-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--dlg-accent) 22%, transparent); }
+
+.dlg-actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 1.4rem; }
+.dlg-btn {
+  border: 1px solid transparent; border-radius: 10px; cursor: pointer;
+  padding: 0.6rem 1.1rem; font: inherit; font-size: 0.9rem; font-weight: 600;
+  transition: filter 0.15s ease, background 0.15s ease;
+}
+.dlg-cancel { background: transparent; border-color: var(--dlg-border); color: var(--dlg-fg); }
+.dlg-cancel:hover { background: rgba(255,255,255,0.06); }
+.dlg-ok { background: var(--dlg-accent); color: #fff; }
+.dlg-ok:hover { filter: brightness(1.08); }
+.dlg-danger .dlg-ok { background: var(--dlg-danger); }
+
+/* Light theme */
+.dlg-light .dlg-box { --dlg-bg: #fff; --dlg-fg: #14141e; --dlg-muted: #5b5b66; --dlg-border: rgba(0,0,0,0.1); }

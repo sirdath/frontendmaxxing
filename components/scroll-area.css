@@ -1,0 +1,74 @@
+/* ============================================
+   SCROLL AREA — Custom styled scrollbar + edge-fade overflow container
+   Inspired by Radix ScrollArea, macOS overlay scrollbars
+   ============================================
+   A wrapper that gives an overflowing region a thin, themeable scrollbar
+   (WebKit + Firefox) and optional fade masks at the scrollable edges.
+   Edge fades need scroll-area.js (it toggles .is-top/.is-bottom); the
+   scrollbar styling is pure CSS.
+
+   Usage:
+     <div class="sa sa-fade" style="max-height: 300px;"> …long content… </div>
+     <script>ScrollArea.init('.sa-fade');</script>   <!-- only needed for fades -->
+
+   Variants: sa-thin, sa-overlay (gutterless), sa-fade (edge masks),
+             sa-x (horizontal), sa-accent (colored thumb), sa-light
+   ============================================ */
+
+.sa {
+  --sa-track: transparent;
+  --sa-thumb: rgba(255,255,255,0.18);
+  --sa-thumb-hover: rgba(255,255,255,0.32);
+  --sa-size: 10px;
+  --sa-fade: 28px;
+
+  overflow: auto;
+  scrollbar-width: thin;                       /* Firefox */
+  scrollbar-color: var(--sa-thumb) var(--sa-track);
+}
+
+.sa::-webkit-scrollbar { width: var(--sa-size); height: var(--sa-size); }
+.sa::-webkit-scrollbar-track { background: var(--sa-track); border-radius: 999px; }
+.sa::-webkit-scrollbar-thumb {
+  background: var(--sa-thumb); border-radius: 999px;
+  border: 2px solid transparent; background-clip: padding-box;
+  transition: background 0.15s ease;
+}
+.sa::-webkit-scrollbar-thumb:hover { background: var(--sa-thumb-hover); background-clip: padding-box; }
+.sa::-webkit-scrollbar-corner { background: transparent; }
+
+/* Thin */
+.sa-thin { --sa-size: 6px; }
+
+/* Overlay (scrollbar floats over content, only on hover) */
+.sa-overlay { scrollbar-width: none; }
+.sa-overlay::-webkit-scrollbar { width: 8px; height: 8px; }
+.sa-overlay::-webkit-scrollbar-thumb { background: transparent; }
+.sa-overlay:hover::-webkit-scrollbar-thumb { background: var(--sa-thumb); }
+.sa-overlay:hover { scrollbar-color: var(--sa-thumb) transparent; }
+
+/* Accent thumb */
+.sa-accent { --sa-thumb: #7c5cff; --sa-thumb-hover: #8f72ff; }
+
+/* Light theme */
+.sa-light { --sa-thumb: rgba(0,0,0,0.22); --sa-thumb-hover: rgba(0,0,0,0.4); }
+
+/* Edge fade — masks appear only when there's content to scroll to.
+   scroll-area.js toggles .is-top / .is-bottom (vertical) or .is-start/.is-end (x). */
+.sa-fade {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 var(--sa-fade), #000 calc(100% - var(--sa-fade)), transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 var(--sa-fade), #000 calc(100% - var(--sa-fade)), transparent 100%);
+}
+.sa-fade.is-top    { -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - var(--sa-fade)), transparent 100%); mask-image: linear-gradient(180deg, #000 calc(100% - var(--sa-fade)), transparent 100%); }
+.sa-fade.is-bottom { -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 var(--sa-fade)); mask-image: linear-gradient(180deg, transparent 0, #000 var(--sa-fade)); }
+.sa-fade.is-top.is-bottom { -webkit-mask-image: none; mask-image: none; }   /* fits, no scroll */
+
+/* Horizontal */
+.sa-x { overflow-x: auto; overflow-y: hidden; white-space: nowrap; }
+.sa-x.sa-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--sa-fade), #000 calc(100% - var(--sa-fade)), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 var(--sa-fade), #000 calc(100% - var(--sa-fade)), transparent 100%);
+}
+.sa-x.sa-fade.is-start { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - var(--sa-fade)), transparent 100%); mask-image: linear-gradient(90deg, #000 calc(100% - var(--sa-fade)), transparent 100%); }
+.sa-x.sa-fade.is-end   { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--sa-fade)); mask-image: linear-gradient(90deg, transparent 0, #000 var(--sa-fade)); }
+.sa-x.sa-fade.is-start.is-end { -webkit-mask-image: none; mask-image: none; }

@@ -2961,3 +2961,41 @@ Ports of the most-requested Aceternity UI patterns the vault was missing. All va
 
 **cards-uiverse.css** `blocks/cards-uiverse.css` (CSS) — tags: card uiverse glow-border conic-border shine glow-hover neon glass spotlight reveal flip corner-peel holo holographic lift hover exotic
   12 exotic cards (`.ucard-*`): glow-border, conic-border (rotating), shine (sweep on hover), glow-hover (radial), neon, glass, spotlight, reveal (content slides up on hover), flip (front/back), corner-peel, holo (animated foil), lift. Pure CSS. Distinct from cards-pack (UI), cards-3d (tilt), gradient-cards (fills).
+
+**Phase essentials — missing-primitive sweep: scrollspy / reading aids / share / dialog / menubar / scroll-area (6 components, 12 files). Inspired by Radix, docs themes, publishers**
+
+**toc.css** `components/toc.css` (CSS) — tags: toc table-of-contents scrollspy in-page-nav docs sidebar sticky active-section bar dots stripe radix
+  Sticky in-page nav (`.toc`) that highlights the section in view. `.toc-link`/`.is-active`, nested h2/h3 indent. Variants: toc-bar (left active bar), toc-dots (dot rail), toc-plain, toc-light. Pairs with toc.js.
+
+**toc.js** `components/toc.js` (JS, global: `Toc`) — tags: toc scrollspy intersection-observer auto-generate headings smooth-scroll docs active-section slugify
+  `Toc.init('.toc', {content, headings, generate, offset, smooth, hash})`. Auto-generates the list from an article's headings (assigns ids) or binds existing links; IntersectionObserver sets the active item; smooth-scrolls on click.
+
+**reading-aids.css** `components/reading-aids.css` (CSS) — tags: reading-progress scroll-progress bar back-to-top scroll-to-top fab blog article medium docs progress-ring
+  Top reading-progress bar (`.ra-bar > i`, width via `--p`) + back-to-top FAB (`.ra-top`, appears on scroll). Variants: ra-bar-glow, ra-top-pill, ra-top-left, ra-top-ring (progress ring around button).
+
+**reading-aids.js** `components/reading-aids.js` (JS, global: `ReadingAids`) — tags: reading-progress back-to-top scroll percentage inject article target showAfter ring
+  `ReadingAids.init({target, bar, top, ring, showAfter, smooth})`. Injects bar + button if absent; tracks page (or an element's) scroll-through %, toggles the back-to-top button, optional progress ring.
+
+**share-buttons.css** `components/share-buttons.css` (CSS) — tags: share social-share buttons twitter x facebook linkedin whatsapp telegram reddit pinterest email copy-link native web-share addtoany publisher round pill labeled
+  Social share row (`.shb` + `.shb-btn`) with brand colors for x/facebook/linkedin/whatsapp/telegram/reddit/pinterest/email/copy/native. Variants: round (icon circles), pill, labeled, lg, vertical, ghost. Copied-flash state. Pairs with share-buttons.js.
+
+**share-buttons.js** `components/share-buttons.js` (JS, global: `ShareButtons`) — tags: share intent-url window-open clipboard copy-link navigator-share web-share-api data-share twitter facebook linkedin whatsapp email
+  `ShareButtons.init('.shb', {url, title, text})`. Opens each network's share-intent popup, copies the link via Clipboard API (with flash), uses `navigator.share` for the native button (auto-hidden on desktop). Reads url/title/text from data-attrs or document.
+
+**dialog.css** `components/dialog.css` (CSS) — tags: dialog confirm alert prompt modal alertdialog promise styled-confirm danger radix overlay scrim focus
+  Styles for the promise-based Dialog (`.dlg` overlay + `.dlg-box`): icon, title, message, prompt input, cancel/ok actions, danger variant, light theme. Used by dialog.js (you rarely write this markup).
+
+**dialog.js** `components/dialog.js` (JS, global: `Dialog`) — tags: dialog confirm alert prompt promise async await replace-native-confirm focus-trap escape enter danger radix-alertdialog
+  Promise-based replacements for native dialogs: `Dialog.confirm({title,message,danger,okText,cancelText})`→bool, `Dialog.alert(...)`→void, `Dialog.prompt({value,placeholder})`→string|null. Injects DOM, focus-trap, Esc=cancel / Enter=ok, restores focus on close.
+
+**menubar.css** `components/menubar.css` (CSS) — tags: menubar menu-bar app-menu file-edit-view desktop macos vscode radix-menubar dropdown shortcut kbd submenu checked danger separator section
+  Desktop-app menu bar (`.mbar` → `.mbar-menu > .mbar-trigger` + `.mbar-dropdown > .mbar-item`). Item modifiers: kbd shortcut, danger, disabled, checked, submenu, separator, section. Light theme. Pairs with menubar.js.
+
+**menubar.js** `components/menubar.js` (JS, global: `Menubar`) — tags: menubar open switch-on-hover keyboard arrow-keys escape click-outside onSelect macos radix
+  `Menubar.init('.mbar', {onSelect})`. Click a trigger to open; while open, hovering siblings switches menus; ←/→ between menus, ↑/↓ items, Enter selects, Esc/click-outside closes.
+
+**scroll-area.css** `components/scroll-area.css` (CSS) — tags: scroll-area scrollbar custom-scrollbar styled thin overlay edge-fade mask radix overflow horizontal accent
+  Custom themeable scrollbar (WebKit + Firefox) + optional edge-fade masks (`.sa`). Variants: sa-thin, sa-overlay (hover-only), sa-accent, sa-fade (top/bottom masks), sa-x (horizontal), sa-light. Scrollbar is pure CSS; fades need scroll-area.js.
+
+**scroll-area.js** `components/scroll-area.js` (JS, global: `ScrollArea`) — tags: scroll-area edge-fade is-top is-bottom is-start is-end resize-observer mutation-observer overflow
+  `ScrollArea.init('.sa-fade')`. Toggles `.is-top`/`.is-bottom` (or `.is-start`/`.is-end` for `.sa-x`) so the fade mask only shows where there's more to scroll. Re-checks on scroll/resize/content change.
