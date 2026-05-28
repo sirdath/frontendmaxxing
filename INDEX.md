@@ -789,6 +789,16 @@
 
 ---
 
+### Colors (palettes & scales) — read `color.skill.md` first
+
+> Picking & combining colors. The decision tree lives in [`color.skill.md`](color.skill.md) — color theory, harmony schemes, the 60-30-10 role model, WCAG/APCA contrast, **industry→palette and mood→palette tables**, building a palette from one brand hue, and a catalog of 50 vetted combos. Two CSS files: theme presets (`palettes.css`) and raw ramps (`scales.css`).
+
+**palettes.css** `colors/palettes.css` (CSS) — tags: color palette theme preset combo scheme vetted industry mood fintech saas luxury medical food coffee fitness eco legal travel crypto gaming dark light brand accent semantic tokens themeable structure
+  50 named theme presets as `.pal-*` classes (e.g. `pal-fintech-navy`, `pal-luxe-black-gold`, `pal-wellness-teal`, `pal-energy-volt`, `pal-espresso-cream`, `pal-web3-violet`, `pal-cyberpunk`). Each sets the full token set used by the structure backbone — `--bg/--bg-alt/--surface/--border/--fg/--muted/--faint/--accent/--accent-2/--on-accent` + semantic `--ok/--warn/--danger/--info`. Apply on a `.struct` page (or any token-driven block) to re-theme instantly. Grouped by industry + mood; light + dark.
+
+**scales.css** `colors/scales.css` (CSS) — tags: color scale ramp tailwind oklch hue neutral slate zinc stone red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose 50-900 semantic swatch building-block
+  Raw building blocks: 17 accent-hue ramps + 3 neutral ramps (slate/zinc/stone), 50→900/950, as `:root` CSS vars (`--blue-600`, `--slate-100`, …). Tailwind-vetted (OKLCH in v4). Plus semantic role tokens (`--c-ok/-warn/-danger/-info` + `-bg`/`-600` variants) with a `.c-dark` brightener for dark UIs. Use to build a custom palette; `palettes.css` for ready-made themes.
+
 ### Structure (page architecture) — read `structure.skill.md` first
 
 > The page-skeleton layer: *which* sections a site needs, in what order, and how to connect them. The decision tree lives in [`structure.skill.md`](structure.skill.md) (genre → section sequence → which snippets fill each slot). **Nine full openable reference pages** in `structure/` — open directly in a browser: `saas.html`, `agency.html`, `restaurant.html`, `ecommerce.html`, `shop-store.html` (complete store wiring the e-shop kit), and the local-business set `legal.html`, `cleaning.html`, `gym.html`, `coffee.html`. All built on one themeable backbone (`structure.css`).

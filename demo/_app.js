@@ -22,6 +22,7 @@
     'backgrounds': { icon: '🌌', desc: 'Aurora, mesh gradients, orbs, world map, sky presets, particles' },
     'blocks':      { icon: '🧩', desc: 'Buttons, loaders, toasts, tooltips, badges, inputs, sliders, JSON editor' },
     'borders':     { icon: '🔲', desc: 'Animated gradient borders' },
+    'colors':      { icon: '🎨', desc: '50 vetted theme palettes (.pal-*) + raw hue/neutral ramps — see color.skill.md' },
     'components':  { icon: '🎛', desc: 'Full UI: heroes, navbars, cards, modals, kanban, calendar, infinite canvas…' },
     'data-viz':    { icon: '📊', desc: 'Charts (bar, line, pie, area, radar, funnel, sankey, treemap, network), sparklines, count-up' },
     'effects':     { icon: '✨', desc: 'Gradients, glitch, parallax, cursors, holo, fire, smoke, caustics, watercolor…' },

@@ -1,0 +1,358 @@
+/* ============================================
+   PALETTES — 50 vetted, named color themes (read color.skill.md first)
+   ============================================
+   Each .pal-* sets the SAME tokens the structure/ backbone uses, so applying
+   a palette class re-themes a whole page (or any token-driven component) at
+   once — bg, surfaces, text, borders, accent + semantic states.
+
+   Usage:
+     <body class="struct pal-fintech-navy"> … </body>
+     <div class="pal-luxe-black-gold"> …scoped theme… </div>
+
+   Token set (per palette):
+     --bg --bg-alt --surface --border --fg --muted --faint
+     --accent --accent-2 --on-accent --ok --warn --danger --info
+
+   Tag (light)  = light-background palette · everything else is dark.
+   Grouped: Foundations · Finance · Health · Tech · Luxury · Beauty ·
+            Food · Coffee · Fitness · Kids · Eco · Legal/RE · Travel ·
+            Entertainment · Crypto/Gaming · Soft/Events · Retro · Mono.
+   ============================================ */
+
+/* Shared semantic defaults (dark-tuned); light palettes override below */
+[class*="pal-"] {
+  --ok: #34d399; --warn: #fbbf24; --danger: #f87171; --info: #60a5fa;
+}
+
+/* ── FOUNDATIONS ───────────────────────────── */
+.pal-clean-light { /* (light) */
+  --bg:#ffffff; --bg-alt:#f6f7f9; --surface:#ffffff; --border:rgba(15,23,42,.10);
+  --fg:#0f172a; --muted:#475569; --faint:#94a3b8;
+  --accent:#6366f1; --accent-2:#22d3ee; --on-accent:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#2563eb;
+}
+.pal-paper { /* (light) */
+  --bg:#faf8f3; --bg-alt:#f2ede3; --surface:#fffdf8; --border:rgba(60,50,35,.12);
+  --fg:#2a241b; --muted:#6b5f4d; --faint:#a99c86;
+  --accent:#9a6b3f; --accent-2:#c89b6a; --on-accent:#ffffff;
+  --ok:#3f7d4e; --warn:#c2840f; --danger:#c0392b; --info:#2f6f9e;
+}
+.pal-cool-gray { /* (light) */
+  --bg:#f8fafc; --bg-alt:#eef2f6; --surface:#ffffff; --border:rgba(2,6,23,.10);
+  --fg:#1e293b; --muted:#64748b; --faint:#94a3b8;
+  --accent:#0ea5e9; --accent-2:#6366f1; --on-accent:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#2563eb;
+}
+.pal-midnight {
+  --bg:#0a0a12; --bg-alt:#11111b; --surface:#16161f; --border:rgba(255,255,255,.10);
+  --fg:#f2f3f7; --muted:rgba(242,243,247,.62); --faint:rgba(242,243,247,.40);
+  --accent:#7c5cff; --accent-2:#22d3ee; --on-accent:#0a0a12;
+}
+.pal-charcoal {
+  --bg:#141416; --bg-alt:#1b1b1e; --surface:#212125; --border:rgba(255,255,255,.09);
+  --fg:#ededf0; --muted:rgba(237,237,240,.6); --faint:rgba(237,237,240,.38);
+  --accent:#f5f5f7; --accent-2:#a1a1aa; --on-accent:#141416;
+}
+.pal-ink {
+  --bg:#0b1020; --bg-alt:#111733; --surface:#18203f; --border:rgba(148,163,184,.18);
+  --fg:#e6ebf5; --muted:#9fb0cc; --faint:#647089;
+  --accent:#38bdf8; --accent-2:#818cf8; --on-accent:#04122a;
+}
+.pal-slate-dark {
+  --bg:#0f172a; --bg-alt:#15203a; --surface:#1e293b; --border:rgba(255,255,255,.10);
+  --fg:#f1f5f9; --muted:#94a3b8; --faint:#64748b;
+  --accent:#38bdf8; --accent-2:#34d399; --on-accent:#0f172a;
+}
+
+/* ── FINANCE / BANKING ─────────────────────── */
+.pal-fintech-navy {
+  --bg:#0a0f1e; --bg-alt:#0f1730; --surface:#16203c; --border:rgba(120,150,200,.18);
+  --fg:#eaf0fb; --muted:#9fb2d4; --faint:#5d7099;
+  --accent:#3b82f6; --accent-2:#22d3ee; --on-accent:#06122e;
+}
+.pal-fintech-light { /* (light) */
+  --bg:#f7f9fc; --bg-alt:#eef2f9; --surface:#ffffff; --border:rgba(15,40,90,.10);
+  --fg:#0f1f3d; --muted:#4a5b7a; --faint:#8fa0bd;
+  --accent:#2563eb; --accent-2:#0891b2; --on-accent:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#2563eb;
+}
+.pal-wealth-emerald {
+  --bg:#07140f; --bg-alt:#0c1f17; --surface:#112a20; --border:rgba(80,160,120,.18);
+  --fg:#e6f4ec; --muted:#9ccbb3; --faint:#5b8770;
+  --accent:#10b981; --accent-2:#d4b15a; --on-accent:#04130c;
+}
+.pal-banking-azure {
+  --bg:#061427; --bg-alt:#0a2038; --surface:#102b49; --border:rgba(90,140,190,.20);
+  --fg:#e8f1fb; --muted:#9bb6d4; --faint:#5c7793;
+  --accent:#0ea5e9; --accent-2:#38bdf8; --on-accent:#03101f;
+}
+
+/* ── HEALTHCARE / WELLNESS ─────────────────── */
+.pal-medical-blue { /* (light) */
+  --bg:#f4f9ff; --bg-alt:#e7f1fb; --surface:#ffffff; --border:rgba(20,70,130,.12);
+  --fg:#0e2746; --muted:#41648c; --faint:#8aa3c0;
+  --accent:#1e88e5; --accent-2:#26c6da; --on-accent:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#1e88e5;
+}
+.pal-wellness-teal {
+  --bg:#06201d; --bg-alt:#0a2c28; --surface:#103a35; --border:rgba(80,180,165,.18);
+  --fg:#e3f5f1; --muted:#93cabf; --faint:#56897f;
+  --accent:#14b8a6; --accent-2:#5eead4; --on-accent:#04140f;
+}
+.pal-care-mint { /* (light) */
+  --bg:#f3fbf7; --bg-alt:#e6f5ee; --surface:#ffffff; --border:rgba(16,90,70,.12);
+  --fg:#103128; --muted:#3f6b5c; --faint:#8bb3a4;
+  --accent:#10b981; --accent-2:#34d399; --on-accent:#ffffff;
+  --ok:#0e9f6e; --warn:#d97706; --danger:#dc2626; --info:#2563eb;
+}
+
+/* ── TECH / SAAS ───────────────────────────── */
+.pal-saas-indigo {
+  --bg:#0a0a14; --bg-alt:#11111f; --surface:#16162a; --border:rgba(140,130,255,.16);
+  --fg:#ecebff; --muted:#a6a3cf; --faint:#645f93;
+  --accent:#6366f1; --accent-2:#a855f7; --on-accent:#0a0a14;
+}
+.pal-saas-light { /* (light) */
+  --bg:#ffffff; --bg-alt:#f5f5fb; --surface:#ffffff; --border:rgba(30,20,80,.10);
+  --fg:#18181b; --muted:#52525b; --faint:#a1a1aa;
+  --accent:#6366f1; --accent-2:#ec4899; --on-accent:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#4f46e5;
+}
+.pal-linear-violet {
+  --bg:#08080c; --bg-alt:#101017; --surface:#16161d; --border:rgba(255,255,255,.09);
+  --fg:#f4f4f6; --muted:#a0a0ab; --faint:#5f5f6b;
+  --accent:#8b7cff; --accent-2:#c4b5fd; --on-accent:#0a0a12;
+}
+.pal-vercel-mono {
+  --bg:#000000; --bg-alt:#0a0a0a; --surface:#111111; --border:#2a2a2a;
+  --fg:#ededed; --muted:#a1a1a1; --faint:#666666;
+  --accent:#ffffff; --accent-2:#888888; --on-accent:#000000;
+}
+
+/* ── LUXURY / PREMIUM ──────────────────────── */
+.pal-luxe-black-gold {
+  --bg:#0c0a07; --bg-alt:#14110b; --surface:#1b1710; --border:rgba(200,161,75,.22);
+  --fg:#f3ecdd; --muted:#b9ac90; --faint:#7a6f55;
+  --accent:#c8a14b; --accent-2:#e6cf94; --on-accent:#1a1408;
+}
+.pal-luxe-cream { /* (light) */
+  --bg:#faf6ee; --bg-alt:#f0e8d8; --surface:#fffdf8; --border:rgba(60,45,20,.14);
+  --fg:#221c12; --muted:#6a5d45; --faint:#a89878;
+  --accent:#b08d3f; --accent-2:#1a1a1a; --on-accent:#ffffff;
+  --ok:#3f7d4e; --warn:#c2840f; --danger:#b3402f; --info:#2f6f9e;
+}
+.pal-royal-purple {
+  --bg:#120a1f; --bg-alt:#1b1030; --surface:#241640; --border:rgba(180,130,255,.20);
+  --fg:#f0e8ff; --muted:#c0aae0; --faint:#7e6aa0;
+  --accent:#a855f7; --accent-2:#e0b64f; --on-accent:#15082b;
+}
+
+/* ── BEAUTY / SPA ──────────────────────────── */
+.pal-blush-rose { /* (light) */
+  --bg:#fdf3f5; --bg-alt:#f9e6ea; --surface:#ffffff; --border:rgba(150,60,90,.12);
+  --fg:#3a1f29; --muted:#80586a; --faint:#c69aaa;
+  --accent:#e36a8b; --accent-2:#f0a6bd; --on-accent:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#2563eb;
+}
+.pal-spa-sage { /* (light) */
+  --bg:#f4f7f1; --bg-alt:#e8efe2; --surface:#ffffff; --border:rgba(60,90,50,.12);
+  --fg:#26331f; --muted:#5c7150; --faint:#9db58f;
+  --accent:#7da55f; --accent-2:#b7cda3; --on-accent:#ffffff;
+  --ok:#3f7d4e; --warn:#c2840f; --danger:#c0392b; --info:#2f6f9e;
+}
+.pal-nude-elegant { /* (light) */
+  --bg:#f7f2ee; --bg-alt:#ede2d9; --surface:#fffdfb; --border:rgba(80,55,40,.13);
+  --fg:#33271f; --muted:#75614f; --faint:#b6a18f;
+  --accent:#b08968; --accent-2:#d8c3ae; --on-accent:#ffffff;
+  --ok:#3f7d4e; --warn:#c2840f; --danger:#b3402f; --info:#2f6f9e;
+}
+
+/* ── FOOD / RESTAURANT ─────────────────────── */
+.pal-appetite-red {
+  --bg:#1a0c0a; --bg-alt:#25110d; --surface:#2f1813; --border:rgba(230,120,90,.20);
+  --fg:#fbe9e3; --muted:#d9a392; --faint:#9c6857;
+  --accent:#ef4444; --accent-2:#f59e0b; --on-accent:#1a0805;
+}
+.pal-warm-bistro {
+  --bg:#1c130d; --bg-alt:#261a11; --surface:#312418; --border:rgba(210,160,90,.20);
+  --fg:#f6ecdc; --muted:#cdb190; --faint:#8f7757;
+  --accent:#e0892f; --accent-2:#c0392b; --on-accent:#1a1006;
+}
+.pal-fresh-citrus { /* (light) */
+  --bg:#fffdf0; --bg-alt:#fbf6dc; --surface:#ffffff; --border:rgba(120,110,20,.14);
+  --fg:#2c2a10; --muted:#6b6630; --faint:#ada874;
+  --accent:#f59e0b; --accent-2:#84cc16; --on-accent:#1a1400;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#2563eb;
+}
+
+/* ── COFFEE / CAFÉ ─────────────────────────── */
+.pal-espresso-cream { /* (light) */
+  --bg:#fbf6ee; --bg-alt:#f1e7d6; --surface:#fffdf9; --border:rgba(60,40,25,.14);
+  --fg:#2c1d12; --muted:#6f5949; --faint:#a3917d;
+  --accent:#b06a3b; --accent-2:#d99a63; --on-accent:#fffaf3;
+  --ok:#3f7d4e; --warn:#c2840f; --danger:#b3402f; --info:#2f6f9e;
+}
+.pal-mocha {
+  --bg:#1a120c; --bg-alt:#241811; --surface:#2f2016; --border:rgba(190,140,95,.20);
+  --fg:#f1e4d6; --muted:#c4a98f; --faint:#8a715a;
+  --accent:#c08552; --accent-2:#e0b07a; --on-accent:#1a1009;
+}
+
+/* ── FITNESS / SPORTS ──────────────────────── */
+.pal-energy-volt {
+  --bg:#0a0a0a; --bg-alt:#111111; --surface:#161616; --border:rgba(255,255,255,.10);
+  --fg:#fafafa; --muted:rgba(250,250,250,.6); --faint:rgba(250,250,250,.4);
+  --accent:#d4ff3f; --accent-2:#a3e600; --on-accent:#0a0a0a;
+}
+.pal-power-orange {
+  --bg:#140b06; --bg-alt:#1f120a; --surface:#2a1910; --border:rgba(255,140,60,.20);
+  --fg:#fdede0; --muted:#d6a886; --faint:#9a6f50;
+  --accent:#f97316; --accent-2:#ef4444; --on-accent:#1a0c03;
+}
+.pal-electric-night {
+  --bg:#07080f; --bg-alt:#0d0f1c; --surface:#141728; --border:rgba(120,180,255,.18);
+  --fg:#e9eefb; --muted:#9fb0d0; --faint:#5e6f93;
+  --accent:#3b82f6; --accent-2:#06b6d4; --on-accent:#050b1c;
+}
+
+/* ── KIDS / EDUCATION ──────────────────────── */
+.pal-playful-bright { /* (light) */
+  --bg:#fffdf7; --bg-alt:#fff3e0; --surface:#ffffff; --border:rgba(20,20,40,.10);
+  --fg:#1f2440; --muted:#5a608a; --faint:#9aa0c5;
+  --accent:#ff5d8f; --accent-2:#4dd4ff; --on-accent:#ffffff;
+  --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444; --info:#3b82f6;
+}
+.pal-crayon { /* (light) */
+  --bg:#f6fbff; --bg-alt:#e9f4ff; --surface:#ffffff; --border:rgba(20,40,80,.10);
+  --fg:#1b2b4a; --muted:#4f6488; --faint:#93a6c8;
+  --accent:#ffb020; --accent-2:#ff5d8f; --on-accent:#1b2b4a;
+  --ok:#22c55e; --warn:#f59e0b; --danger:#ef4444; --info:#3b82f6;
+}
+
+/* ── ECO / SUSTAINABILITY ──────────────────── */
+.pal-forest {
+  --bg:#08140d; --bg-alt:#0d2014; --surface:#122b1b; --border:rgba(90,170,110,.18);
+  --fg:#e6f3ea; --muted:#98c4a6; --faint:#5a8268;
+  --accent:#22c55e; --accent-2:#a3e635; --on-accent:#05130b;
+}
+.pal-earth-organic { /* (light) */
+  --bg:#f6f3ea; --bg-alt:#ebe4d4; --surface:#fffdf6; --border:rgba(70,60,30,.14);
+  --fg:#2c2a1c; --muted:#67614a; --faint:#a59c7e;
+  --accent:#6b8e23; --accent-2:#b08d3f; --on-accent:#ffffff;
+  --ok:#3f7d4e; --warn:#c2840f; --danger:#b3402f; --info:#2f6f9e;
+}
+.pal-solar-green {
+  --bg:#0a1410; --bg-alt:#102018; --surface:#162b20; --border:rgba(150,200,80,.18);
+  --fg:#eaf4e4; --muted:#b0c79a; --faint:#6f885a;
+  --accent:#84cc16; --accent-2:#facc15; --on-accent:#0a1407;
+}
+
+/* ── LEGAL / REAL ESTATE ───────────────────── */
+.pal-law-navy-gold {
+  --bg:#0c1322; --bg-alt:#111a2e; --surface:#16203a; --border:rgba(185,151,91,.22);
+  --fg:#eef2fa; --muted:#a7b4c9; --faint:#5d6b85;
+  --accent:#b9975b; --accent-2:#d4b87a; --on-accent:#0c1322;
+}
+.pal-corporate-slate { /* (light) */
+  --bg:#f7f8fa; --bg-alt:#eceef2; --surface:#ffffff; --border:rgba(20,30,50,.10);
+  --fg:#1c2533; --muted:#54607a; --faint:#9aa3b5;
+  --accent:#334155; --accent-2:#2563eb; --on-accent:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#2563eb;
+}
+.pal-property-navy {
+  --bg:#0c1726; --bg-alt:#122236; --surface:#182e47; --border:rgba(120,160,200,.18);
+  --fg:#e9f0f8; --muted:#9fb4cc; --faint:#5e7390;
+  --accent:#2dd4bf; --accent-2:#f59e0b; --on-accent:#06121f;
+}
+.pal-terracotta-home { /* (light) */
+  --bg:#fbf5f0; --bg-alt:#f2e4d8; --surface:#fffdfa; --border:rgba(120,60,40,.13);
+  --fg:#34211a; --muted:#75584b; --faint:#b39888;
+  --accent:#c2622d; --accent-2:#2a9d8f; --on-accent:#ffffff;
+  --ok:#3f7d4e; --warn:#c2840f; --danger:#b3402f; --info:#2f6f9e;
+}
+
+/* ── TRAVEL ────────────────────────────────── */
+.pal-ocean-sky { /* (light) */
+  --bg:#f2fbff; --bg-alt:#e0f3fb; --surface:#ffffff; --border:rgba(10,80,120,.12);
+  --fg:#0c2a3a; --muted:#3f6678; --faint:#8bb0c2;
+  --accent:#0891b2; --accent-2:#f59e0b; --on-accent:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#0891b2;
+}
+.pal-sunset-coast {
+  --bg:#1a0f1a; --bg-alt:#261426; --surface:#311a30; --border:rgba(255,140,150,.18);
+  --fg:#fbe9ef; --muted:#d6a3b4; --faint:#9a6b7e;
+  --accent:#fb7185; --accent-2:#fbbf24; --on-accent:#1a0810;
+}
+
+/* ── MUSIC / ENTERTAINMENT ─────────────────── */
+.pal-neon-night {
+  --bg:#0a0612; --bg-alt:#120a20; --surface:#1a0f2e; --border:rgba(200,100,255,.20);
+  --fg:#f3e9ff; --muted:#c2a6e0; --faint:#7e64a0;
+  --accent:#d946ef; --accent-2:#22d3ee; --on-accent:#12001f;
+}
+.pal-festival {
+  --bg:#110a1f; --bg-alt:#1b1030; --surface:#241640; --border:rgba(255,150,80,.20);
+  --fg:#fdeede; --muted:#d3aebf; --faint:#8f6f80;
+  --accent:#fb7185; --accent-2:#facc15; --on-accent:#1a0a12;
+}
+
+/* ── CRYPTO / WEB3 / GAMING ────────────────── */
+.pal-web3-violet {
+  --bg:#0c0820; --bg-alt:#140c2e; --surface:#1c1240; --border:rgba(160,120,255,.22);
+  --fg:#ece4ff; --muted:#b9a6e6; --faint:#7a68a8;
+  --accent:#7c3aed; --accent-2:#06b6d4; --on-accent:#0c0620;
+}
+.pal-neon-cyber {
+  --bg:#04080f; --bg-alt:#07101f; --surface:#0b1a2e; --border:rgba(0,220,255,.20);
+  --fg:#d6f7ff; --muted:#86c5d6; --faint:#4d7e8e;
+  --accent:#00e0ff; --accent-2:#d946ef; --on-accent:#02121a;
+}
+.pal-cyberpunk {
+  --bg:#07060a; --bg-alt:#0f0b14; --surface:#16101f; --border:rgba(252,238,10,.18);
+  --fg:#f6f3e6; --muted:#b9b39a; --faint:#7a755f;
+  --accent:#fcee0a; --accent-2:#00f0ff; --on-accent:#0a0900;
+}
+.pal-arcade-dark {
+  --bg:#0a0a18; --bg-alt:#11112a; --surface:#18183a; --border:rgba(120,120,255,.20);
+  --fg:#eaeaff; --muted:#a6a6d6; --faint:#6262a0;
+  --accent:#ff2e88; --accent-2:#2ee6ff; --on-accent:#0a0a18;
+}
+
+/* ── SOFT / EVENTS / NONPROFIT ─────────────── */
+.pal-romantic-blush { /* (light) */
+  --bg:#fdf4f3; --bg-alt:#f8e7e6; --surface:#fffdfc; --border:rgba(150,80,80,.12);
+  --fg:#382326; --muted:#7e5b60; --faint:#c49aa0;
+  --accent:#d98da0; --accent-2:#c8a14b; --on-accent:#ffffff;
+  --ok:#3f7d4e; --warn:#c2840f; --danger:#b3402f; --info:#2f6f9e;
+}
+.pal-hope-warm { /* (light) */
+  --bg:#fffaf2; --bg-alt:#fdeede; --surface:#ffffff; --border:rgba(120,70,20,.12);
+  --fg:#2f2316; --muted:#6e5b42; --faint:#ab9576;
+  --accent:#f59e0b; --accent-2:#ef4444; --on-accent:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#2563eb;
+}
+
+/* ── RETRO ─────────────────────────────────── */
+.pal-vaporwave {
+  --bg:#0f0a1f; --bg-alt:#1a1033; --surface:#241546; --border:rgba(255,120,220,.20);
+  --fg:#f0e6ff; --muted:#c4a6e0; --faint:#8266a8;
+  --accent:#ff77e1; --accent-2:#5ee7ff; --on-accent:#12002a;
+}
+.pal-retro-70s {
+  --bg:#1e120a; --bg-alt:#2a1a0e; --surface:#352213; --border:rgba(220,160,70,.20);
+  --fg:#f6e8d4; --muted:#cdac82; --faint:#927450;
+  --accent:#e08e3c; --accent-2:#c75b39; --on-accent:#1a1006;
+}
+
+/* ── MONOCHROME ────────────────────────────── */
+.pal-mono-noir {
+  --bg:#0b0b0c; --bg-alt:#131314; --surface:#1a1a1c; --border:rgba(255,255,255,.10);
+  --fg:#f4f4f5; --muted:#a1a1aa; --faint:#5b5b63;
+  --accent:#f4f4f5; --accent-2:#a1a1aa; --on-accent:#0b0b0c;
+}
+.pal-mono-snow { /* (light) */
+  --bg:#ffffff; --bg-alt:#f4f4f5; --surface:#ffffff; --border:rgba(0,0,0,.10);
+  --fg:#18181b; --muted:#52525b; --faint:#a1a1aa;
+  --accent:#18181b; --accent-2:#71717a; --on-accent:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#2563eb;
+}

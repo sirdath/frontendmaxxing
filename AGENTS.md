@@ -16,6 +16,7 @@ This folder is a **vanilla CSS+JS snippet vault** — 765 standalone, copy-paste
 | --- | --- | --- |
 | `AGENTS.md` (this file) | Entry point + conventions | First time landing in folder |
 | `INDEX.md` | Tagged inventory of every file (~1800 lines) | Whenever finding/adding a snippet |
+| `color.skill.md` | Color-selection decision tree (harmony schemes, 60-30-10, WCAG, industry→palette + mood→palette, 50 vetted combos) | Choosing/combining solid colors, "what colors for a <business/mood>", theming a page, `colors/*` palettes & scales |
 | `gradients.skill.md` | Gradient-specific decision tree | Anything involving color blends, holo, mesh, brand recreations |
 | `gsap.skill.md` | GSAP/JS-animation decision tree (CSS vs GSAP, free-plugin fact, ScrollTrigger/timeline/Flip) | Any JavaScript animation, scroll-driven motion, timelines, `gsap/*` snippets |
 | `structure.skill.md` | Page-architecture decision tree (genre → section sequence → which snippets fill each slot) | Structuring a whole page/site, "what sections do I need for a SaaS/agency/restaurant/store", initial scaffolding from a reference or business type, `structure/*` snippets |
@@ -33,6 +34,7 @@ animations/     Keyframes, transitions, spring, stagger, AOS, anime-recipes
 backgrounds/    Hero/page backgrounds (aurora, mesh, orbs, world map, sky, …)
 blocks/         Buttons, loaders, toasts, tooltips, badges, inputs, sliders, …
 borders/        Animated/gradient borders
+colors/         Color system: 50 vetted theme presets (palettes.css) + raw hue/neutral ramps (scales.css) — see color.skill.md
 components/     Full UI components (heroes, navbars, cards, modals, kanban, …)
 data-viz/       Charts, sparklines, treemap, sankey, network, count-up, …
 effects/        Visual effects (gradients, glitch, parallax, cursors, holo, …)

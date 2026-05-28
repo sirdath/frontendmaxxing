@@ -1357,6 +1357,42 @@
     document.head.appendChild(s);
   };
 
+  // ===== Colors previews =====
+  P['colors/palettes.css'] = function (target) {
+    var pals = ['pal-fintech-navy','pal-saas-indigo','pal-luxe-black-gold','pal-wealth-emerald','pal-wellness-teal','pal-energy-volt','pal-web3-violet','pal-cyberpunk','pal-neon-night','pal-forest','pal-sunset-coast','pal-mocha','pal-clean-light','pal-medical-blue','pal-espresso-cream','pal-blush-rose','pal-spa-sage','pal-fresh-citrus'];
+    target.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.8rem;width:100%;max-width:1100px;">' +
+      pals.map(function (p) {
+        return '<div class="' + p + '" style="background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:12px;padding:0.9rem;">' +
+          '<div style="font:600 0.68rem ui-monospace;color:var(--faint);letter-spacing:.04em;margin-bottom:0.6rem;">.' + p + '</div>' +
+          '<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.6rem 0.7rem;margin-bottom:0.6rem;"><div style="font-weight:600;font-size:0.85rem;">Aa Headline</div><div style="color:var(--muted);font-size:0.72rem;">Secondary copy</div></div>' +
+          '<div style="display:flex;gap:0.4rem;align-items:center;">' +
+            '<span style="background:var(--accent);color:var(--on-accent);font-size:0.7rem;font-weight:600;padding:0.3rem 0.6rem;border-radius:7px;">Primary</span>' +
+            '<span style="width:13px;height:13px;border-radius:50%;background:var(--accent-2);"></span>' +
+            '<span style="width:11px;height:11px;border-radius:50%;background:var(--ok);"></span>' +
+            '<span style="width:11px;height:11px;border-radius:50%;background:var(--warn);"></span>' +
+            '<span style="width:11px;height:11px;border-radius:50%;background:var(--danger);"></span>' +
+            '<span style="width:11px;height:11px;border-radius:50%;background:var(--info);"></span>' +
+          '</div>' +
+        '</div>';
+      }).join('') +
+      '</div><div style="margin-top:1rem;font-size:0.75rem;color:rgba(255,255,255,0.5);font-family:ui-monospace,monospace;">50 total · apply any <b>.pal-*</b> on a <b>.struct</b> page to re-theme · see color.skill.md for industry/mood mapping</div>';
+  };
+
+  P['colors/scales.css'] = function (target) {
+    var hues = ['slate','zinc','stone','red','orange','amber','yellow','lime','green','emerald','teal','cyan','sky','blue','indigo','violet','purple','fuchsia','pink','rose'];
+    var steps = ['50','100','200','300','400','500','600','700','800','900'];
+    target.innerHTML = '<div style="width:100%;max-width:900px;font-family:ui-monospace,monospace;">' +
+      hues.map(function (h) {
+        return '<div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.35rem;">' +
+          '<span style="width:62px;font-size:0.72rem;color:rgba(255,255,255,0.6);">' + h + '</span>' +
+          '<div style="display:flex;flex:1;border-radius:6px;overflow:hidden;">' +
+            steps.map(function (s) { return '<div style="flex:1;height:26px;background:var(--' + h + '-' + s + ');"></div>'; }).join('') +
+          '</div></div>';
+      }).join('') +
+      '<div style="margin-top:0.8rem;font-size:0.72rem;color:rgba(255,255,255,0.5);">17 hue ramps + slate/zinc/stone neutrals · 50→900 · use <b>var(--blue-600)</b> etc. to build a palette</div>' +
+      '</div>';
+  };
+
   // ===== Phase essentials previews =====
   P['components/toc.css'] = function (target) {
     target.innerHTML =
