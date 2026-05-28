@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard / analytics — structure reference</title>
+<link rel="stylesheet" href="structure.css">
+<link rel="stylesheet" href="../colors/palettes.css">
+<link rel="stylesheet" href="../components/dashboard-widgets.css">
+<style>
+  /* App shell: fixed sidebar + topbar + scrollable main */
+  body { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+  .db-side { background: var(--bg-alt); border-right: 1px solid var(--border); padding: 1.2rem 0.9rem; position: sticky; top: 0; height: 100vh; }
+  .db-side .s-brand { padding: 0 0.4rem 1.2rem; }
+  .db-nav { display: flex; flex-direction: column; gap: 0.15rem; }
+  .db-nav a { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.7rem; border-radius: 9px; color: var(--muted); font-size: 0.88rem; font-weight: 500; }
+  .db-nav a:hover { color: var(--fg); background: var(--surface); }
+  .db-nav a.is-on { color: var(--fg); background: var(--surface); }
+  .db-nav-ico { width: 18px; height: 18px; border-radius: 5px; background: currentColor; opacity: 0.5; flex: 0 0 auto; }
+  .db-main { min-width: 0; }
+  .db-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.6rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px); z-index: 10; }
+  .db-top h1 { font-size: 1.2rem; }
+  .db-body { padding: 1.6rem; display: grid; gap: 1.1rem; grid-template-columns: repeat(4, 1fr); }
+  .col-2 { grid-column: span 2; } .col-3 { grid-column: span 3; } .col-4 { grid-column: span 4; }
+  @media (max-width: 900px){ body{grid-template-columns:1fr} .db-side{display:none} .db-body{grid-template-columns:repeat(2,1fr)} .col-3,.col-4{grid-column:span 2} }
+  .chart-area { height: 200px; display: flex; align-items: flex-end; gap: 6px; padding-top: 1rem; }
+  .chart-area .bar { flex: 1; background: linear-gradient(180deg, var(--accent), color-mix(in srgb,var(--accent) 40%, transparent)); border-radius: 5px 5px 0 0; }
+</style>
+</head>
+<body class="struct pal-saas-indigo">
+
+<!-- SIDEBAR -->
+<aside class="db-side">
+  <div class="s-brand"><span class="s-brand-dot"></span> Nimbus</div>
+  <nav class="db-nav">
+    <a class="is-on"><span class="db-nav-ico"></span> Overview</a>
+    <a><span class="db-nav-ico"></span> Analytics</a>
+    <a><span class="db-nav-ico"></span> Customers</a>
+    <a><span class="db-nav-ico"></span> Revenue</a>
+    <a><span class="db-nav-ico"></span> Reports</a>
+    <a><span class="db-nav-ico"></span> Settings</a>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="db-main">
+  <header class="db-top">
+    <h1>Overview</h1>
+    <div class="s-cluster">
+      <div class="dw-tabs" id="range"><button class="dw-tab">7d</button><button class="dw-tab is-on">30d</button><button class="dw-tab">90d</button></div>
+      <a class="s-btn" style="padding:0.5rem 1rem;">Export</a>
+    </div>
+  </header>
+
+  <div class="db-body">
+    <!-- KPI row -->
+    <div class="dw dw-metric"><div class="dw-metric-label">Revenue</div><div class="dw-metric-row"><div class="dw-metric-value" data-countup data-prefix="$">128400</div><div class="dw-spark" data-spark="8,9,7,11,10,13,12,15,14,18"></div></div><div style="margin-top:0.5rem;"><span class="dw-delta dw-delta-up">24%</span></div></div>
+    <div class="dw dw-metric"><div class="dw-metric-label">New users</div><div class="dw-metric-row"><div class="dw-metric-value" data-countup>3120</div><div class="dw-spark" data-spark="5,6,6,8,7,9,11,10,12,13"></div></div><div style="margin-top:0.5rem;"><span class="dw-delta dw-delta-up">12%</span></div></div>
+    <div class="dw dw-metric"><div class="dw-metric-label">Churn</div><div class="dw-metric-row"><div class="dw-metric-value" data-countup data-suffix="%">2.1</div><div class="dw-spark" data-spark="4,4,3,4,3,2,3,2,2,2"></div></div><div style="margin-top:0.5rem;"><span class="dw-delta dw-delta-down">0.4pts</span></div></div>
+    <div class="dw dw-live"><div class="dw-live-pulse"></div><div><div class="dw-live-num" data-countup>284</div><div class="dw-live-label">active right now</div></div></div>
+
+    <!-- Main chart -->
+    <div class="dw col-3">
+      <div class="dw-head"><h3 class="dw-title">Revenue over time</h3><span class="dw-link">View report →</span></div>
+      <div class="chart-area">
+        <div class="bar" style="height:42%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:48%"></div><div class="bar" style="height:67%"></div><div class="bar" style="height:60%"></div><div class="bar" style="height:78%"></div><div class="bar" style="height:71%"></div><div class="bar" style="height:88%"></div><div class="bar" style="height:82%"></div><div class="bar" style="height:96%"></div><div class="bar" style="height:90%"></div><div class="bar" style="height:100%"></div>
+      </div>
+    </div>
+
+    <!-- Goal ring -->
+    <div class="dw dw-goal-ring"><div class="dw-head"><h3 class="dw-title">Quarter goal</h3></div><div class="dw-ring" data-p="72"><div class="dw-ring-label">72%</div></div><div style="color:var(--muted);font-size:0.82rem;">$128k of $180k target</div></div>
+
+    <!-- Breakdown -->
+    <div class="dw col-2"><div class="dw-head"><h3 class="dw-title">Traffic sources</h3></div><div class="dw-breakdown"><div class="dw-donut" style="--a:140deg;--b:240deg;--c:320deg;"></div><div class="dw-legend"><div class="dw-legend-row"><span class="dw-legend-dot" style="background:var(--accent)"></span>Organic<span>39%</span></div><div class="dw-legend-row"><span class="dw-legend-dot" style="background:var(--accent-2)"></span>Direct<span>28%</span></div><div class="dw-legend-row"><span class="dw-legend-dot" style="background:var(--ok)"></span>Referral<span>22%</span></div><div class="dw-legend-row"><span class="dw-legend-dot" style="background:var(--border)"></span>Other<span>11%</span></div></div></div></div>
+
+    <!-- Top list -->
+    <div class="dw col-2"><div class="dw-head"><h3 class="dw-title">Top pages</h3></div><div class="dw-toplist">
+      <div class="dw-top"><span class="dw-top-name">/pricing</span><span class="dw-top-val">8,240</span><span class="dw-top-bar"><i style="--p:100%"></i></span></div>
+      <div class="dw-top"><span class="dw-top-name">/features</span><span class="dw-top-val">6,110</span><span class="dw-top-bar"><i style="--p:74%"></i></span></div>
+      <div class="dw-top"><span class="dw-top-name">/blog/launch</span><span class="dw-top-val">4,530</span><span class="dw-top-bar"><i style="--p:55%"></i></span></div>
+      <div class="dw-top"><span class="dw-top-name">/docs</span><span class="dw-top-val">3,200</span><span class="dw-top-bar"><i style="--p:39%"></i></span></div>
+    </div></div>
+
+    <!-- Leaderboard -->
+    <div class="dw col-2"><div class="dw-head"><h3 class="dw-title">Top accounts</h3></div><div class="dw-leaderboard">
+      <div class="dw-rank"><span class="dw-rank-n">1</span><span class="dw-rank-name"><span class="dw-rank-av"></span>Ramp</span><span class="dw-rank-val">$24.1k</span></div>
+      <div class="dw-rank"><span class="dw-rank-n">2</span><span class="dw-rank-name"><span class="dw-rank-av"></span>Linear</span><span class="dw-rank-val">$19.8k</span></div>
+      <div class="dw-rank"><span class="dw-rank-n">3</span><span class="dw-rank-name"><span class="dw-rank-av"></span>Vercel</span><span class="dw-rank-val">$17.2k</span></div>
+      <div class="dw-rank"><span class="dw-rank-n">4</span><span class="dw-rank-name"><span class="dw-rank-av"></span>Notion</span><span class="dw-rank-val">$12.6k</span></div>
+    </div></div>
+
+    <!-- Activity feed -->
+    <div class="dw col-2"><div class="dw-head"><h3 class="dw-title">Recent activity</h3></div><div class="dw-activity">
+      <div class="dw-act"><span class="dw-act-dot ok"></span><div class="dw-act-body"><b>Maria O.</b> upgraded to Team<div class="dw-act-time">2 min ago</div></div></div>
+      <div class="dw-act"><span class="dw-act-dot"></span><div class="dw-act-body"><b>New signup</b> from acme.com<div class="dw-act-time">14 min ago</div></div></div>
+      <div class="dw-act"><span class="dw-act-dot warn"></span><div class="dw-act-body">Payment retry for <b>globex</b><div class="dw-act-time">38 min ago</div></div></div>
+      <div class="dw-act"><span class="dw-act-dot danger"></span><div class="dw-act-body"><b>initech</b> cancelled<div class="dw-act-time">1 h ago</div></div></div>
+    </div></div>
+
+    <!-- Status + usage + quick -->
+    <div class="dw dw-status col-2"><div class="dw-head"><h3 class="dw-title">System status</h3><span class="dw-link">All systems</span></div><div class="dw-status-grid">
+      <div class="dw-svc up"><span class="dw-svc-dot"></span>API <small>99.99%</small></div>
+      <div class="dw-svc up"><span class="dw-svc-dot"></span>Web <small>100%</small></div>
+      <div class="dw-svc deg"><span class="dw-svc-dot"></span>Email <small>degraded</small></div>
+      <div class="dw-svc up"><span class="dw-svc-dot"></span>CDN <small>99.9%</small></div>
+    </div></div>
+    <div class="dw dw-usage"><div class="dw-head"><h3 class="dw-title">Plan usage</h3></div><div class="dw-usage-head"><span class="dw-usage-now">3.8M</span><span class="dw-usage-max">/ 5M events</span></div><div class="dw-usage-bar"><i style="--p:76%"></i></div><div class="dw-usage-note">76% used · resets in 8 days</div></div>
+    <div class="dw dw-quick"><div class="dw-head"><h3 class="dw-title">Quick actions</h3></div><div class="dw-quick-grid"><div class="dw-action"><div class="dw-action-ico">+</div>Invite</div><div class="dw-action"><div class="dw-action-ico">↑</div>Export</div><div class="dw-action"><div class="dw-action-ico">⚙</div>Settings</div></div></div>
+
+    <!-- Insight -->
+    <div class="dw dw-insight ok col-4"><div class="dw-insight-ico">✨</div><div class="dw-insight-body"><b>Insight:</b> Revenue from <b>referral</b> traffic grew 41% this month — your new affiliate program is paying off. Consider doubling the payout tier.</div></div>
+  </div>
+</main>
+
+<script src="../components/dashboard-widgets.js"></script>
+<script>
+  DashboardWidgets.initAll();
+  DashboardWidgets.ring('.dw-ring', 72);
+</script>
+</body>
+</html>

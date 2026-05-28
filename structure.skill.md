@@ -8,10 +8,12 @@ site needs, their sequence, pacing, and how to connect them.
 > Pair: the **`structure/`** folder. `structure.css` is the backbone (tokens +
 > section rhythm + nav/hero/grid/split/footer shells). `section-transitions.css`
 > connects sections (wave/diagonal/curve…). `section-frames.css` frames a block.
-> Nine full openable reference pages live there — open them to *see* the
+> Ten full openable reference pages live there — open them to *see* the
 > architecture: `saas.html`, `agency.html`, `restaurant.html`, `ecommerce.html`,
-> `shop-store.html` (a complete store wiring the e-shop component kit), and the
-> **local-business** set: `legal.html`, `cleaning.html`, `gym.html`, `coffee.html`.
+> `shop-store.html` (a complete store wiring the e-shop component kit),
+> `dashboard.html` (an analytics/admin app built from `dashboard-widgets` +
+> a color palette), and the **local-business** set: `legal.html`, `cleaning.html`,
+> `gym.html`, `coffee.html`.
 
 ## How to use this skill
 

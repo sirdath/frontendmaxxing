@@ -1357,6 +1357,25 @@
     document.head.appendChild(s);
   };
 
+  // ===== Dashboard widgets preview =====
+  P['components/dashboard-widgets.js'] = function (target) {
+    target.innerHTML =
+      '<div class="struct pal-saas-indigo" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;width:100%;max-width:840px;background:var(--bg);padding:1rem;border-radius:14px;">' +
+        '<div class="dw dw-metric"><div class="dw-metric-label">Revenue</div><div class="dw-metric-row"><div class="dw-metric-value" data-countup data-prefix="$">128400</div><div class="dw-spark" data-spark="8,9,7,11,10,13,12,15,14,18"></div></div><div style="margin-top:0.5rem;"><span class="dw-delta dw-delta-up">24%</span></div></div>' +
+        '<div class="dw dw-goal-ring"><div class="dw-head"><h3 class="dw-title">Goal</h3></div><div class="dw-ring" data-p="72"><div class="dw-ring-label">72%</div></div></div>' +
+        '<div class="dw dw-live"><div class="dw-live-pulse"></div><div><div class="dw-live-num" data-countup>284</div><div class="dw-live-label">active now</div></div></div>' +
+        '<div class="dw dw-toplist" style="grid-column:span 2;"><div class="dw-head"><h3 class="dw-title">Top pages</h3></div>' +
+          '<div class="dw-top"><span class="dw-top-name">/pricing</span><span class="dw-top-val">8,240</span><span class="dw-top-bar"><i style="--p:100%"></i></span></div>' +
+          '<div class="dw-top"><span class="dw-top-name">/features</span><span class="dw-top-val">6,110</span><span class="dw-top-bar"><i style="--p:74%"></i></span></div>' +
+          '<div class="dw-top"><span class="dw-top-name">/docs</span><span class="dw-top-val">3,200</span><span class="dw-top-bar"><i style="--p:39%"></i></span></div>' +
+        '</div>' +
+        '<div class="dw dw-status"><div class="dw-head"><h3 class="dw-title">Status</h3></div><div class="dw-status-grid" style="grid-template-columns:1fr;">' +
+          '<div class="dw-svc up"><span class="dw-svc-dot"></span>API <small>99.9%</small></div><div class="dw-svc deg"><span class="dw-svc-dot"></span>Email</div></div></div>' +
+      '</div>' +
+      '<div style="margin-top:0.8rem;font-size:0.75rem;color:rgba(255,255,255,0.5);font-family:ui-monospace,monospace;">full page → <a href="../structure/dashboard.html" target="_blank" style="color:#7c5cff;">structure/dashboard.html</a></div>';
+    if (window.DashboardWidgets) window.DashboardWidgets.initAll();
+  };
+
   // ===== Colors previews =====
   P['colors/palettes.css'] = function (target) {
     var pals = ['pal-fintech-navy','pal-saas-indigo','pal-luxe-black-gold','pal-wealth-emerald','pal-wellness-teal','pal-energy-volt','pal-web3-violet','pal-cyberpunk','pal-neon-night','pal-forest','pal-sunset-coast','pal-mocha','pal-clean-light','pal-medical-blue','pal-espresso-cream','pal-blush-rose','pal-spa-sage','pal-fresh-citrus'];
@@ -1589,7 +1608,7 @@
         '<section class="s-section s-section-tight"><div class="s-container"><div class="s-stats"><div><div class="s-stat-num">12k</div><div class="s-stat-label">teams</div></div><div><div class="s-stat-num">99.9%</div><div class="s-stat-label">uptime</div></div><div><div class="s-stat-num">3.2s</div><div class="s-stat-label">speed</div></div></div></div></section>' +
       '</div>' +
       '<div style="text-align:center;margin-top:1rem;font-family:ui-monospace,monospace;font-size:0.78rem;color:rgba(255,255,255,0.55);line-height:1.8;">Full openable pages → ' +
-        ['saas','agency','restaurant','ecommerce','shop-store','legal','cleaning','gym','coffee'].map(function (p) {
+        ['saas','agency','restaurant','ecommerce','shop-store','dashboard','legal','cleaning','gym','coffee'].map(function (p) {
           return '<a href="../structure/' + p + '.html" target="_blank" style="color:#7c5cff;">' + p + '</a>';
         }).join(' · ') + '</div>';
   };

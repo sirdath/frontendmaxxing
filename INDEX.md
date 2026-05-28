@@ -801,7 +801,7 @@
 
 ### Structure (page architecture) — read `structure.skill.md` first
 
-> The page-skeleton layer: *which* sections a site needs, in what order, and how to connect them. The decision tree lives in [`structure.skill.md`](structure.skill.md) (genre → section sequence → which snippets fill each slot). **Nine full openable reference pages** in `structure/` — open directly in a browser: `saas.html`, `agency.html`, `restaurant.html`, `ecommerce.html`, `shop-store.html` (complete store wiring the e-shop kit), and the local-business set `legal.html`, `cleaning.html`, `gym.html`, `coffee.html`. All built on one themeable backbone (`structure.css`).
+> The page-skeleton layer: *which* sections a site needs, in what order, and how to connect them. The decision tree lives in [`structure.skill.md`](structure.skill.md) (genre → section sequence → which snippets fill each slot). **Ten full openable reference pages** in `structure/` — open directly in a browser: `saas.html`, `agency.html`, `restaurant.html`, `ecommerce.html`, `shop-store.html` (complete store wiring the e-shop kit), `dashboard.html` (analytics/admin app from dashboard-widgets + a palette), and the local-business set `legal.html`, `cleaning.html`, `gym.html`, `coffee.html`. All built on one themeable backbone (`structure.css`).
 
 **structure.css** `structure/structure.css` (CSS) — tags: structure layout backbone skeleton page-architecture tokens section rhythm container hero nav footer grid split stack cluster section-head eyebrow stats themeable design-system spacing-scale fluid-type
   Page-architecture backbone the genre demos are built on. Token system (`--accent`, fluid type scale, `--section-y` rhythm, container widths) + structural primitives: `.s-nav`, `.s-hero` (center/split), `.s-section` (+`--alt`/`--accent`), `.s-section-head`, `.s-container`(-narrow/-wide), `.s-grid`(-2/3/4/auto), `.s-split`, `.s-stack`, `.s-cluster`, `.s-card`, `.s-btn`, `.s-footer`, `.s-stats`, `.s-logos`. Re-theme any archetype by overriding tokens on `.struct`.
@@ -2971,6 +2971,14 @@ Ports of the most-requested Aceternity UI patterns the vault was missing. All va
 
 **cards-uiverse.css** `blocks/cards-uiverse.css` (CSS) — tags: card uiverse glow-border conic-border shine glow-hover neon glass spotlight reveal flip corner-peel holo holographic lift hover exotic
   12 exotic cards (`.ucard-*`): glow-border, conic-border (rotating), shine (sweep on hover), glow-hover (radial), neon, glass, spotlight, reveal (content slides up on hover), flip (front/back), corner-peel, holo (animated foil), lift. Pure CSS. Distinct from cards-pack (UI), cards-3d (tilt), gradient-cards (fills).
+
+**Phase dashboard-pro — analytics/admin dashboard widget set + full demo page (2 files + structure/dashboard.html). Inspired by Vercel, Linear, Stripe, Posthog**
+
+**dashboard-widgets.css** `components/dashboard-widgets.css` (CSS) — tags: dashboard widget analytics admin metric kpi sparkline delta goal-ring goal-bar activity-feed leaderboard status-grid quick-actions usage-meter top-list breakdown donut live-counter insight stat-row metric-tabs themeable tokens vercel linear stripe
+  Cohesive dashboard widget set (`.dw-*`), themeable via structure/palette tokens: metric card (delta + sparkline slot), goal-ring (conic), goal-bar, activity-feed (colored dots), leaderboard (gold/silver/bronze ranks), status-grid (up/deg/down), quick-actions, usage-meter, top-list (proportion bars), breakdown (donut + legend), live tile (pulse), insight banner, mini stat-row, metric tabs. Pairs with dashboard-widgets.js. See `structure/dashboard.html` for a full composed page.
+
+**dashboard-widgets.js** `components/dashboard-widgets.js` (JS, global: `DashboardWidgets`) — tags: dashboard sparkline svg goal-ring conic count-up animate metric-tabs initAll data-spark data-countup zero-dep
+  `DashboardWidgets.sparkline(sel, data)` (inline-SVG line+area, or `data-spark="…"`), `.ring(sel, pct)` (animated conic goal ring), `.countUp(sel)` (animates a number, reads prefix/suffix), `.tabs(sel, onChange)` (metric switch), `.initAll()` (auto-wire all `data-*`). Zero deps.
 
 **Phase essentials — missing-primitive sweep: scrollspy / reading aids / share / dialog / menubar / scroll-area (6 components, 12 files). Inspired by Radix, docs themes, publishers**
 
