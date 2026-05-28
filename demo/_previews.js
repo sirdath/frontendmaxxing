@@ -1357,6 +1357,68 @@
     document.head.appendChild(s);
   };
 
+  // ===== Phase chrome-pro previews =====
+  P['components/headers-pro.js'] = function (target) {
+    target.innerHTML =
+      '<div class="struct pal-saas-indigo" style="width:100%;max-width:900px;background:var(--bg);border:1px solid var(--border);border-radius:12px;position:relative;overflow:hidden;">' +
+        '<header class="hdr hdr-blur hdr-shrink is-scrolled" style="position:relative;">' +
+          '<div class="hdr-inner"><a class="hdr-brand"><span class="hdr-dot"></span> Nimbus</a>' +
+          '<nav class="hdr-nav"><a class="hdr-link is-active">Features</a>' +
+          '<div class="hdr-mega is-open"><button class="hdr-link">Products ▾</button><div class="hdr-mega-panel" style="top:60px;">' +
+            '<a class="hdr-mega-item"><span class="hdr-mega-ico">▦</span><span><b>Analytics</b><span>Real-time funnels</span></span></a>' +
+            '<a class="hdr-mega-item"><span class="hdr-mega-ico">◷</span><span><b>Automations</b><span>No-code flows</span></span></a>' +
+            '<a class="hdr-mega-item"><span class="hdr-mega-ico">✦</span><span><b>AI</b><span>Ask anything</span></span></a>' +
+          '</div></div><a class="hdr-link">Pricing</a></nav>' +
+          '<div class="hdr-actions"><button class="hdr-cmdk">Search <kbd>⌘K</kbd></button><a class="hdr-btn">Sign up</a></div></div>' +
+          '<div class="hdr-progress"><i style="--p:.4"></i></div>' +
+        '</header>' +
+        '<div style="padding:1.4rem;color:var(--muted);font-size:0.82rem;font-family:ui-monospace,monospace;">scroll-aware: hide-on-scroll · shrink · blur · scroll-spy · ⌘K — see structure/dashboard or saas pages for live scroll behavior</div>' +
+      '</div>';
+    if (window.HeaderKit) window.HeaderKit.init(target.querySelector('.hdr'), { blurAt: 9999 });
+  };
+
+  P['components/footers-pro.css'] = function (target) {
+    target.innerHTML =
+      '<div class="struct pal-saas-indigo" style="width:100%;max-width:900px;display:flex;flex-direction:column;gap:1rem;">' +
+        '<footer class="ftx ftx-giant" style="border-radius:12px;overflow:hidden;border:1px solid var(--border);"><div class="ftx-in"><div class="ftx-word">Nimbus</div><div class="ftx-bottom" style="margin-top:0.5rem;"><span>© 2026 Nimbus, Inc.</span><div class="ftx-social"><a>x</a><a>in</a><a>gh</a></div></div></div></footer>' +
+        '<footer class="ftx ftx-bento" style="border-radius:12px;overflow:hidden;border:1px solid var(--border);"><div class="ftx-in"><div class="ftx-grid">' +
+          '<div class="ftx-tile span-2"><h4>Newsletter</h4><div style="font-size:.9rem;color:var(--muted);">Product news, monthly.</div><div class="ftx-input"><input placeholder="you@email.com"><button>Join</button></div></div>' +
+          '<div class="ftx-tile"><h4>Product</h4><a style="display:block;color:var(--muted);font-size:.85rem;">Features</a><a style="display:block;color:var(--muted);font-size:.85rem;">Pricing</a></div>' +
+          '<div class="ftx-tile"><h4>Social</h4><div class="ftx-social"><a>x</a><a>in</a></div></div>' +
+        '</div></div></footer>' +
+        '<div style="font-size:0.75rem;color:rgba(255,255,255,0.5);font-family:ui-monospace,monospace;">also: .ftx-reveal (sticky scroll-to-uncover), .ftx-marquee, .ftx-aurora, .ftx-contact, .ftx-minimal</div>' +
+      '</div>';
+  };
+
+  P['components/sidebar-nav.js'] = function (target) {
+    target.innerHTML =
+      '<div class="struct pal-saas-indigo" style="width:100%;max-width:560px;border:1px solid var(--border);border-radius:12px;overflow:hidden;">' +
+        '<aside class="snav" id="snav-demo" style="position:relative;height:340px;">' +
+          '<div class="snav-header"><span class="snav-brand"><span class="snav-dot"></span><span class="snav-label">Nimbus</span></span><button class="snav-toggle">«</button></div>' +
+          '<nav class="snav-body"><div class="snav-section"><span class="snav-label">Main</span></div>' +
+            '<a class="snav-item is-active" data-tip="Overview"><span class="snav-ico"></span><span class="snav-label">Overview</span></a>' +
+            '<a class="snav-item" data-tip="Analytics"><span class="snav-ico"></span><span class="snav-label">Analytics</span></a>' +
+            '<a class="snav-item" data-tip="Customers"><span class="snav-ico"></span><span class="snav-label">Customers</span></a>' +
+            '<div class="snav-group is-open"><button class="snav-item snav-group-trigger" data-tip="Settings"><span class="snav-ico"></span><span class="snav-label">Settings</span><span class="snav-caret">›</span></button><div class="snav-group-items"><a class="snav-item snav-sub"><span class="snav-label">Profile</span></a><a class="snav-item snav-sub"><span class="snav-label">Billing</span></a></div></div>' +
+          '</nav>' +
+          '<div class="snav-footer"><a class="snav-item"><span class="snav-ico snav-av"></span><span class="snav-label">Maria O.</span></a></div>' +
+        '</aside>' +
+      '</div><div style="margin-top:0.6rem;font-size:0.75rem;color:rgba(255,255,255,0.5);font-family:ui-monospace,monospace;">click « to collapse to icon-rail (hover icons for tooltips)</div>';
+    if (window.SidebarNav) window.SidebarNav.init('#snav-demo');
+  };
+
+  P['components/page-header.css'] = function (target) {
+    target.innerHTML =
+      '<div class="struct pal-saas-indigo" style="width:100%;max-width:820px;background:var(--bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;">' +
+        '<header class="pgh pgh-bordered">' +
+          '<nav class="pgh-breadcrumb"><a>Projects</a><span>/</span><a>Acme</a><span>/</span><b>Settings</b></nav>' +
+          '<div class="pgh-bar"><div class="pgh-titlewrap"><span class="pgh-avatar"></span><div><h1 class="pgh-title">Acme Inc. <span class="pgh-badge">Pro</span></h1><p class="pgh-sub">Manage your team and billing</p></div></div>' +
+          '<div class="pgh-actions"><button class="pgh-btn pgh-btn-ghost">Invite</button><button class="pgh-btn">New project</button></div></div>' +
+          '<nav class="pgh-tabs"><a class="is-active">Overview</a><a>Activity</a><a>Members</a><a>Settings</a></nav>' +
+        '</header>' +
+      '</div>';
+  };
+
   // ===== Dashboard widgets preview =====
   P['components/dashboard-widgets.js'] = function (target) {
     target.innerHTML =

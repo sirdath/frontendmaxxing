@@ -1,0 +1,87 @@
+/* ============================================
+   FOOTERS PRO — Cool / creative footers
+   Inspired by the sticky "reveal" footer (CSS-Tricks "Slideout Footer" +
+   sticky-positioning technique), Wix Studio "big footers", footer.design
+   large-type trend, Flowbite/Tailwind footer anatomy
+   ============================================
+   Themeable via structure/palette tokens. Variants are independent — pick one.
+
+   Usage: <footer class="ftx ftx-giant"> … </footer>
+
+   Variants: ftx-giant (oversized wordmark), ftx-reveal (sticky reveal),
+             ftx-marquee, ftx-aurora, ftx-bento, ftx-contact, ftx-mega,
+             ftx-minimal · Modifier: ftx-light
+   ============================================ */
+
+.ftx {
+  --ftx-bg: var(--bg-alt, #0f0f1b);
+  --ftx-fg: var(--fg, #f2f3f7);
+  --ftx-muted: var(--muted, rgba(242,243,247,.6));
+  --ftx-faint: var(--faint, rgba(242,243,247,.4));
+  --ftx-border: var(--border, rgba(255,255,255,.1));
+  --ftx-accent: var(--accent, #7c5cff);
+
+  background: var(--ftx-bg); color: var(--ftx-fg);
+  border-top: 1px solid var(--ftx-border);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+.ftx-in { max-width: 1200px; margin-inline: auto; padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.2rem, 4vw, 2rem) 2rem; }
+.ftx-cols { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 2rem; }
+@media (max-width: 760px){ .ftx-cols { grid-template-columns: 1fr 1fr; } }
+.ftx h4 { font-size: .74rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ftx-faint); margin: 0 0 .9rem; }
+.ftx-col a { display: block; color: var(--ftx-muted); font-size: .9rem; padding: .25rem 0; text-decoration: none; }
+.ftx-col a:hover { color: var(--ftx-fg); }
+.ftx-brand { font-weight: 800; font-size: 1.3rem; letter-spacing: -.02em; display: inline-flex; align-items: center; gap: .5rem; }
+.ftx-dot { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(135deg, var(--ftx-accent), var(--accent-2, #22d3ee)); }
+.ftx-bottom { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--ftx-border); color: var(--ftx-faint); font-size: .82rem; }
+.ftx-social { display: flex; gap: .6rem; }
+.ftx-social a { width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--ftx-border); display: grid; place-items: center; color: var(--ftx-muted); }
+.ftx-social a:hover { color: var(--ftx-fg); border-color: var(--ftx-accent); }
+.ftx-back-top { display: inline-flex; align-items: center; gap: .4rem; color: var(--ftx-muted); font-size: .82rem; cursor: pointer; text-decoration: none; }
+.ftx-back-top:hover { color: var(--ftx-fg); }
+
+/* ── GIANT wordmark ── */
+.ftx-giant .ftx-word { font-size: clamp(3rem, 16vw, 13rem); font-weight: 900; letter-spacing: -.04em; line-height: .85; margin: 0 0 1.5rem; background: linear-gradient(180deg, var(--ftx-fg), color-mix(in srgb, var(--ftx-fg) 30%, transparent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.ftx-giant .ftx-in { overflow: hidden; }
+
+/* ── REVEAL (content scrolls up to uncover a fixed footer) ──
+   REQUIRES: footer is .ftx-reveal; the page content wrapper before it must have
+   an opaque background + position:relative + z-index:2 + margin-bottom:var(--ftx-h). */
+.ftx-reveal { position: sticky; bottom: 0; z-index: 1; min-height: var(--ftx-h, 380px); display: grid; place-content: center; }
+.ftx-reveal .ftx-word { font-size: clamp(2.5rem, 12vw, 9rem); font-weight: 900; letter-spacing: -.03em; opacity: .9; }
+
+/* ── MARQUEE strip ── */
+.ftx-marquee { overflow: hidden; }
+.ftx-marquee-track { display: inline-flex; gap: 2.5rem; white-space: nowrap; padding-block: clamp(1.5rem, 4vw, 3rem); font-size: clamp(2rem, 6vw, 4.5rem); font-weight: 800; letter-spacing: -.02em; color: var(--ftx-fg); animation: ftx-marq 24s linear infinite; }
+.ftx-marquee:hover .ftx-marquee-track { animation-play-state: paused; }
+.ftx-marquee-track span { color: var(--ftx-accent); }
+@keyframes ftx-marq { to { transform: translateX(-50%); } }
+
+/* ── AURORA / gradient ── */
+.ftx-aurora { border-top: 0; position: relative; isolation: isolate; }
+.ftx-aurora::before { content: ''; position: absolute; inset: 0; z-index: -1; opacity: .5;
+  background: radial-gradient(50% 60% at 20% 0%, var(--ftx-accent), transparent 70%), radial-gradient(50% 60% at 80% 20%, var(--accent-2, #22d3ee), transparent 70%); }
+
+/* ── BENTO (modular tiles) ── */
+.ftx-bento .ftx-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .8rem; }
+@media (max-width: 760px){ .ftx-bento .ftx-grid { grid-template-columns: repeat(2, 1fr); } }
+.ftx-tile { background: color-mix(in srgb, var(--ftx-fg) 4%, transparent); border: 1px solid var(--ftx-border); border-radius: 14px; padding: 1.2rem; }
+.ftx-tile.span-2 { grid-column: span 2; }
+.ftx-tile .ftx-input { display: flex; gap: .5rem; margin-top: .8rem; }
+.ftx-tile input { flex: 1; background: var(--bg, #0a0a12); border: 1px solid var(--ftx-border); border-radius: 9px; padding: .55rem .8rem; color: var(--ftx-fg); font: inherit; }
+.ftx-tile button { background: var(--ftx-accent); color: var(--on-accent, #0a0a12); border: 0; border-radius: 9px; padding: 0 1rem; font: inherit; font-weight: 600; cursor: pointer; }
+
+/* ── CONTACT (info + map slot) ── */
+.ftx-contact .ftx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
+@media (max-width: 760px){ .ftx-contact .ftx-grid { grid-template-columns: 1fr; } }
+.ftx-map { min-height: 200px; border-radius: 14px; border: 1px solid var(--ftx-border); background: linear-gradient(135deg, color-mix(in srgb, var(--ftx-accent) 14%, transparent), transparent); display: grid; place-items: center; color: var(--ftx-faint); }
+
+/* ── MINIMAL centered ── */
+.ftx-minimal .ftx-in { text-align: center; padding-block: 2.5rem; }
+.ftx-minimal .ftx-links { display: flex; gap: 1.4rem; justify-content: center; flex-wrap: wrap; margin: 1rem 0; }
+.ftx-minimal .ftx-links a { color: var(--ftx-muted); font-size: .9rem; text-decoration: none; }
+.ftx-minimal .ftx-links a:hover { color: var(--ftx-fg); }
+
+/* Light theme */
+.ftx-light { --ftx-bg: #f6f7f9; --ftx-fg: #14141e; --ftx-muted: #52525b; --ftx-faint: #9aa3b5; --ftx-border: rgba(0,0,0,.1); }
+@media (prefers-reduced-motion: reduce){ .ftx-marquee-track { animation: none; } }

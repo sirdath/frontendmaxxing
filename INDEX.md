@@ -2980,6 +2980,26 @@ Ports of the most-requested Aceternity UI patterns the vault was missing. All va
 **dashboard-widgets.js** `components/dashboard-widgets.js` (JS, global: `DashboardWidgets`) — tags: dashboard sparkline svg goal-ring conic count-up animate metric-tabs initAll data-spark data-countup zero-dep
   `DashboardWidgets.sparkline(sel, data)` (inline-SVG line+area, or `data-spark="…"`), `.ring(sel, pct)` (animated conic goal ring), `.countUp(sel)` (animates a number, reads prefix/suffix), `.tabs(sel, onChange)` (metric switch), `.initAll()` (auto-wire all `data-*`). Zero deps.
 
+**Phase chrome-pro — smart/animated site chrome: headers, footers, sidebar, page-header (6 files). Inspired by Headroom.js, Radix NavigationMenu, shadcn Sidebar, Tailwind UI Page Headings, the sticky-reveal footer technique**
+
+**headers-pro.css** `components/headers-pro.css` (CSS) — tags: header navbar smart animated hide-on-scroll shrink blur translucent mega-menu flyout mobile-overlay scroll-spy command-bar cmdk reading-progress floating pill headroom aceternity radix sticky backdrop-filter
+  Smart/animated header (`.hdr`): Headroom-style class behaviors (`.is-top/.is-scrolled/.is-pinned/.is-unpinned`) for hide-on-scroll-down, shrink-on-scroll, translucent→blur. Plus animated underline links, Radix-style mega-menu flyout (`.hdr-mega-panel`), full-screen mobile overlay with staggered links, ⌘K command pill, reading-progress bar, floating-pill variant, and a CSS-only scroll-driven fallback (`.hdr-auto`). Pairs with headers-pro.js.
+
+**headers-pro.js** `components/headers-pro.js` (JS, global: `HeaderKit`) — tags: header scroll-direction headroom class-toggle hide pin blur shrink scroll-spy intersection-observer mega-menu mobile-overlay cmdk reading-progress
+  `HeaderKit.init('.hdr', {hideOnScroll, blurAt, tolerance, offset, scrollSpy, progress})`. Toggles classes on scroll (Headroom approach), wires mega-menu (click/keyboard/outside-close), burger→overlay (scroll-lock + Esc), ⌘K (focuses `[data-command-palette]`, fires `cmdk` event), and IntersectionObserver scroll-spy for `.hdr-link[href^="#"]`.
+
+**footers-pro.css** `components/footers-pro.css` (CSS) — tags: footer creative cool reveal sticky giant-wordmark oversized-type marquee aurora gradient bento contact map mega minimal back-to-top newsletter social slideout-footer wix
+  Cool footers (`.ftx-*`): giant (oversized wordmark), reveal (sticky scroll-to-uncover footer), marquee (looping big type), aurora (gradient glow), bento (modular tiles + newsletter), contact (info + map slot), minimal (centered). Shared brand/cols/social/back-to-top parts. Light variant. Mostly CSS (reveal + marquee need only markup structure).
+
+**sidebar-nav.css** `components/sidebar-nav.css` (CSS) — tags: sidebar nav app collapsible icon-rail expanded rail tooltip nested-group section active mobile drawer off-canvas shadcn vscode linear notion
+  Collapsible app sidebar (`.snav`): expanded ⇄ icon-rail (`.is-collapsed`, labels hide, hover tooltips via `data-tip`), sections, active item, nested groups (`.snav-group.is-open`, chevron rotate), sticky header/footer, mobile off-canvas drawer + scrim. Pairs with sidebar-nav.js.
+
+**sidebar-nav.js** `components/sidebar-nav.js` (JS, global: `SidebarNav`) — tags: sidebar collapse toggle persist localstorage nested-group expand mobile drawer scrim escape onNavigate shadcn
+  `SidebarNav.init('.snav', {collapsed, persistKey, onNavigate})`. Toggle collapse (persists to localStorage), expand nested groups (auto-expands rail first), active-on-click, mobile drawer via `.snav-burger` + scrim + Esc. Methods: collapse/expand/toggle/open/close.
+
+**page-header.css** `components/page-header.css` (CSS) — tags: page-header app dashboard heading breadcrumb title subtitle avatar badge actions tabs sub-nav sticky search gradient compact tailwind-ui github linear
+  App/dashboard page-header band (`.pgh`): breadcrumb → title (+ avatar/badge/meta) → right-aligned actions → optional tab strip (Tailwind UI Page Headings anatomy). Variants: bordered, sticky, gradient, compact, with-search, center. CSS-only.
+
 **Phase essentials — missing-primitive sweep: scrollspy / reading aids / share / dialog / menubar / scroll-area (6 components, 12 files). Inspired by Radix, docs themes, publishers**
 
 **toc.css** `components/toc.css` (CSS) — tags: toc table-of-contents scrollspy in-page-nav docs sidebar sticky active-section bar dots stripe radix

@@ -1,0 +1,151 @@
+/* ============================================
+   HEADERS PRO — Smart / animated site headers
+   Inspired by Headroom.js (class-toggle scroll), Aceternity resizable/floating
+   navbar, Radix NavigationMenu (mega flyout), Awwwards fullscreen overlay menus
+   ============================================
+   Behaviors are driven by classes HeaderKit.js toggles (Headroom approach:
+   toggle classes, you own the transition) — `.is-top`, `.is-scrolled`,
+   `.is-pinned`, `.is-unpinned`. Themeable via structure/palette tokens.
+
+   Usage:
+     <header class="hdr hdr-blur hdr-hide hdr-shrink">
+       <div class="hdr-inner">
+         <a class="hdr-brand"><span class="hdr-dot"></span> Brand</a>
+         <nav class="hdr-nav">
+           <a class="hdr-link" href="#features">Features</a>
+           <div class="hdr-mega"><button class="hdr-link">Products ▾</button>
+             <div class="hdr-mega-panel"> …columns… </div></div>
+           <a class="hdr-link" href="#pricing">Pricing</a>
+         </nav>
+         <div class="hdr-actions">
+           <button class="hdr-cmdk">Search <kbd>⌘K</kbd></button>
+           <a class="hdr-btn">Sign up</a>
+           <button class="hdr-burger" aria-label="Menu"><span></span></button>
+         </div>
+       </div>
+       <div class="hdr-progress"><i></i></div>
+       <div class="hdr-mobile"><a href="#">Features</a><a href="#">Pricing</a>…</div>
+     </header>
+     <script>HeaderKit.init('.hdr', {hideOnScroll:true, shrink:true, blurAt:40, scrollSpy:true, progress:true});</script>
+
+   Modifiers: hdr-blur (translucent→blur on scroll), hdr-shrink (compact on scroll),
+              hdr-hide (Headroom hide-down/show-up), hdr-floating (pill), hdr-light
+   ============================================ */
+
+.hdr {
+  --hdr-bg: var(--bg, #0a0a12);
+  --hdr-fg: var(--fg, #f2f3f7);
+  --hdr-muted: var(--muted, rgba(242,243,247,.62));
+  --hdr-border: var(--border, rgba(255,255,255,.1));
+  --hdr-accent: var(--accent, #7c5cff);
+  --hdr-on-accent: var(--on-accent, #0a0a12);
+  --hdr-h: 64px;
+
+  position: sticky; top: 0; z-index: 100;
+  background: var(--hdr-bg);
+  border-bottom: 1px solid var(--hdr-border);
+  color: var(--hdr-fg);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease, box-shadow .25s ease, height .25s ease;
+}
+.hdr-inner {
+  max-width: 1280px; margin-inline: auto; height: var(--hdr-h);
+  padding-inline: clamp(1rem, 4vw, 2rem);
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  transition: height .25s ease;
+}
+.hdr-brand { display: inline-flex; align-items: center; gap: .55rem; font-weight: 800; font-size: 1.12rem; letter-spacing: -.02em; }
+.hdr-dot { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(135deg, var(--hdr-accent), var(--accent-2, #22d3ee)); transition: transform .25s ease; }
+
+.hdr-nav { display: flex; align-items: center; gap: 1.5rem; }
+@media (max-width: 860px) { .hdr-nav { display: none; } }
+.hdr-link {
+  position: relative; background: 0; border: 0; cursor: pointer;
+  color: var(--hdr-muted); font: inherit; font-size: .92rem; font-weight: 500; padding: .3rem 0;
+  transition: color .15s ease;
+}
+.hdr-link::after { content: ''; position: absolute; left: 0; right: 100%; bottom: -2px; height: 2px; background: var(--hdr-accent); transition: right .25s ease; border-radius: 2px; }
+.hdr-link:hover { color: var(--hdr-fg); }
+.hdr-link:hover::after, .hdr-link.is-active::after { right: 0; }
+.hdr-link.is-active { color: var(--hdr-fg); }
+
+.hdr-actions { display: flex; align-items: center; gap: .7rem; }
+.hdr-cmdk { display: inline-flex; align-items: center; gap: .5rem; background: color-mix(in srgb, var(--hdr-fg) 6%, transparent); border: 1px solid var(--hdr-border); color: var(--hdr-muted); border-radius: 9px; padding: .4rem .7rem; font: inherit; font-size: .82rem; cursor: pointer; }
+.hdr-cmdk kbd { font-family: ui-monospace, monospace; font-size: .72rem; background: var(--hdr-border); border-radius: 4px; padding: 1px 5px; }
+@media (max-width: 600px) { .hdr-cmdk { display: none; } }
+.hdr-btn { background: var(--hdr-accent); color: var(--hdr-on-accent); border: 0; border-radius: 999px; padding: .55rem 1.1rem; font: inherit; font-weight: 600; font-size: .9rem; cursor: pointer; text-decoration: none; }
+
+/* ── Behaviors (classes toggled by HeaderKit) ── */
+/* Blur: transparent + borderless at top, solid+blur after scroll */
+.hdr-blur.is-top { background: transparent; border-color: transparent; box-shadow: none; }
+.hdr-blur.is-scrolled { background: color-mix(in srgb, var(--hdr-bg) 72%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 1px 0 var(--hdr-border); }
+/* Shrink: shorter + smaller logo after scroll */
+.hdr-shrink.is-scrolled { --hdr-h: 52px; }
+.hdr-shrink.is-scrolled .hdr-dot { transform: scale(.85); }
+/* Hide on scroll-down, show on scroll-up (Headroom) */
+.hdr-hide.is-unpinned { transform: translateY(-100%); }
+.hdr-hide.is-pinned { transform: translateY(0); }
+/* Floating pill */
+.hdr-floating { top: 1rem; max-width: 1100px; margin-inline: auto; left: 0; right: 0; border: 1px solid var(--hdr-border); border-radius: 999px; background: color-mix(in srgb, var(--hdr-bg) 80%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.hdr-floating .hdr-inner { --hdr-h: 56px; }
+
+/* ── Mega-menu flyout (Radix NavigationMenu-style) ── */
+.hdr-mega { position: static; }
+.hdr-mega-panel {
+  position: absolute; left: 50%; transform: translateX(-50%) translateY(8px);
+  top: var(--hdr-h); width: min(720px, 92vw);
+  background: var(--surface, #16161f); border: 1px solid var(--hdr-border); border-radius: 16px;
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,.6);
+  padding: 1.2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem;
+  opacity: 0; visibility: hidden; transition: opacity .2s ease, transform .2s ease, visibility .2s; z-index: 120;
+}
+.hdr-mega:hover .hdr-mega-panel, .hdr-mega.is-open .hdr-mega-panel,
+.hdr-mega:focus-within .hdr-mega-panel { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+.hdr-mega-item { display: flex; gap: .7rem; padding: .7rem; border-radius: 10px; text-decoration: none; color: var(--hdr-fg); transition: background .15s ease; }
+.hdr-mega-item:hover { background: color-mix(in srgb, var(--hdr-accent) 10%, transparent); }
+.hdr-mega-ico { width: 34px; height: 34px; border-radius: 9px; background: color-mix(in srgb, var(--hdr-accent) 16%, transparent); color: var(--hdr-accent); display: grid; place-items: center; flex: 0 0 auto; }
+.hdr-mega-item b { display: block; font-size: .9rem; }
+.hdr-mega-item span { font-size: .78rem; color: var(--hdr-muted); }
+
+/* ── Burger + full-screen mobile overlay (staggered links) ── */
+.hdr-burger { display: none; width: 40px; height: 40px; border: 0; background: 0; cursor: pointer; position: relative; }
+.hdr-burger span, .hdr-burger::before, .hdr-burger::after { content: ''; position: absolute; left: 9px; right: 9px; height: 2px; background: var(--hdr-fg); border-radius: 2px; transition: transform .3s ease, opacity .2s ease; }
+.hdr-burger span { top: 19px; } .hdr-burger::before { top: 13px; } .hdr-burger::after { top: 25px; }
+.hdr.is-menu-open .hdr-burger span { opacity: 0; }
+.hdr.is-menu-open .hdr-burger::before { transform: translateY(6px) rotate(45deg); }
+.hdr.is-menu-open .hdr-burger::after { transform: translateY(-6px) rotate(-45deg); }
+@media (max-width: 860px) { .hdr-burger { display: block; } }
+
+.hdr-mobile {
+  position: fixed; inset: 0; z-index: 90;
+  background: var(--hdr-bg); padding: calc(var(--hdr-h) + 2rem) 2rem 2rem;
+  display: flex; flex-direction: column; gap: .5rem;
+  opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s;
+}
+.hdr.is-menu-open .hdr-mobile { opacity: 1; visibility: visible; }
+.hdr-mobile a { color: var(--hdr-fg); text-decoration: none; font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em; padding: .5rem 0; opacity: 0; transform: translateY(14px); transition: opacity .4s ease, transform .4s ease; }
+.hdr.is-menu-open .hdr-mobile a { opacity: 1; transform: none; }
+.hdr.is-menu-open .hdr-mobile a:nth-child(1) { transition-delay: .08s; }
+.hdr.is-menu-open .hdr-mobile a:nth-child(2) { transition-delay: .14s; }
+.hdr.is-menu-open .hdr-mobile a:nth-child(3) { transition-delay: .2s; }
+.hdr.is-menu-open .hdr-mobile a:nth-child(4) { transition-delay: .26s; }
+.hdr.is-menu-open .hdr-mobile a:nth-child(5) { transition-delay: .32s; }
+.hdr.is-menu-open .hdr-mobile a:nth-child(6) { transition-delay: .38s; }
+
+/* ── Reading-progress bar pinned to header bottom ── */
+.hdr-progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: transparent; }
+.hdr-progress > i { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: linear-gradient(90deg, var(--hdr-accent), var(--accent-2, #22d3ee)); transition: width .1s linear; }
+
+/* Light theme */
+.hdr-light { --hdr-bg: #ffffff; --hdr-fg: #14141e; --hdr-muted: #52525b; --hdr-border: rgba(0,0,0,.1); }
+
+/* ── CSS-only fallback: shrink + blur via scroll-driven animation (no JS) ──
+   Use .hdr-auto (instead of JS) where supported. Progressive-enhancement. */
+@supports (animation-timeline: scroll()) {
+  .hdr-auto { animation: hdr-solidify linear both; animation-timeline: scroll(root); animation-range: 0 120px; }
+  @keyframes hdr-solidify {
+    from { background: transparent; border-color: transparent; }
+    to { background: color-mix(in srgb, var(--hdr-bg) 75%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-color: var(--hdr-border); }
+  }
+}
+@media (prefers-reduced-motion: reduce) { .hdr, .hdr-mobile a { transition: none; } }
