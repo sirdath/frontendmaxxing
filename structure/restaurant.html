@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant / local — structure reference</title>
+<link rel="stylesheet" href="structure.css">
+<link rel="stylesheet" href="section-transitions.css">
+<link rel="stylesheet" href="section-frames.css">
+<style>
+  /* Warm, light, editorial-cozy */
+  .struct {
+    --accent: #c2622d; --accent-2: #e0954a;
+    --bg: #faf5ee; --bg-alt: #f1e7d8; --surface: #ffffff;
+    --fg: #2a2018; --muted: #6e5f4f; --faint: #a3917d;
+    --border: rgba(42,32,24,0.12); --on-accent: #fffaf3;
+    --font-head: Georgia, 'Times New Roman', serif;
+    --radius: 10px;
+  }
+  .rest-hero { min-height: 78vh; display: grid; place-items: center; text-align: center;
+    background: linear-gradient(rgba(30,20,12,0.45), rgba(30,20,12,0.55)),
+      linear-gradient(135deg,#7a4a22,#3d2410); color: #fff8ef; }
+  .rest-hero h1 { font-size: clamp(2.8rem,7vw,5.5rem); }
+  .rest-hero .s-lead { color: rgba(255,248,239,0.85); }
+  .menu-item { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem 1rem; padding: 1rem 0; border-bottom: 1px dashed var(--border); }
+  .menu-item .dots { border-bottom: 1px dotted var(--faint); align-self: end; margin-bottom: 0.35rem; }
+  .menu-name { font-family: var(--font-head); font-size: 1.15rem; }
+  .menu-desc { color: var(--muted); font-size: 0.9rem; grid-column: 1 / -1; }
+  .menu-price { font-weight: 700; color: var(--accent); white-space: nowrap; }
+  .gal { aspect-ratio: 1; border-radius: 10px; background: linear-gradient(135deg,#d9b98f,#b07f4d); }
+  .stars { color: var(--accent); letter-spacing: 2px; }
+</style>
+</head>
+<body class="struct">
+
+<header class="s-nav" style="--bg:#faf5ee;">
+  <div class="s-nav-inner">
+    <a class="s-brand" style="font-family:var(--font-head);">Olea &amp; Vine</a>
+    <nav class="s-nav-links"><a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#visit">Visit</a></nav>
+    <a class="s-btn" href="#book">Book a table</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="rest-hero">
+  <div class="s-container-narrow">
+    <span class="s-eyebrow" style="color:var(--accent-2);">Mediterranean · since 1998</span>
+    <h1>A table by the sea,<br>wherever you are</h1>
+    <p class="s-lead" style="margin:1.2rem auto 1.8rem;">Wood-fired plates, natural wine, and a room that hums on a Friday night.</p>
+    <a class="s-btn s-btn--lg" href="#book">Reserve your table</a>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="s-section s-section-tight">
+  <div class="s-container-narrow" style="text-align:center;">
+    <p style="font-size:1.3rem;line-height:1.6;font-family:var(--font-head);">We cook the way our grandmothers did — slowly, generously, and with whatever the market gave us that morning. Sit down, stay a while.</p>
+  </div>
+  <div class="st st-curve" style="--st-fill:var(--bg-alt);"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 0 C 400 120 800 120 1200 0 L1200 120 L0 120 Z"/></svg></div>
+</section>
+
+<!-- MENU -->
+<section class="s-section s-section--alt" id="menu">
+  <div class="s-container">
+    <div class="s-section-head"><span class="s-eyebrow">From the kitchen</span><h2 class="s-title">Menu highlights</h2></div>
+    <div class="s-split" style="align-items:start;">
+      <div>
+        <h3 style="font-family:var(--font-head);margin-bottom:0.5rem;">To start</h3>
+        <div class="menu-item"><span class="menu-name">Charred octopus</span><span class="dots"></span><span class="menu-price">$18</span><span class="menu-desc">Smoked paprika, fingerling, lemon</span></div>
+        <div class="menu-item"><span class="menu-name">Burrata &amp; peach</span><span class="dots"></span><span class="menu-price">$15</span><span class="menu-desc">Basil oil, toasted sourdough</span></div>
+        <div class="menu-item"><span class="menu-name">Marinated olives</span><span class="dots"></span><span class="menu-price">$7</span><span class="menu-desc">Citrus, chili, rosemary</span></div>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-head);margin-bottom:0.5rem;">Mains</h3>
+        <div class="menu-item"><span class="menu-name">Wood-fired branzino</span><span class="dots"></span><span class="menu-price">$34</span><span class="menu-desc">Whole, herbs, salsa verde</span></div>
+        <div class="menu-item"><span class="menu-name">Lamb shoulder</span><span class="dots"></span><span class="menu-price">$38</span><span class="menu-desc">Slow-roasted, white beans</span></div>
+        <div class="menu-item"><span class="menu-name">Saffron risotto</span><span class="dots"></span><span class="menu-price">$26</span><span class="menu-desc">Aged parmesan, brown butter</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="s-section" id="gallery">
+  <div class="s-container">
+    <div class="s-section-head"><h2 class="s-title">The room &amp; the plates</h2></div>
+    <div class="s-grid s-grid--4" style="--gap:0.8rem;">
+      <div class="gal"></div><div class="gal"></div><div class="gal"></div><div class="gal"></div>
+    </div>
+  </div>
+</section>
+
+<!-- VISIT — hours + location -->
+<section class="s-section s-section--alt" id="visit">
+  <div class="s-container">
+    <div class="s-split">
+      <div>
+        <span class="s-eyebrow">Find us</span>
+        <h2 class="s-title" style="margin-bottom:1rem;">Hours &amp; location</h2>
+        <div class="s-stack s-stack--sm">
+          <p><strong>Mon–Thu</strong> · 5pm – 10pm</p>
+          <p><strong>Fri–Sat</strong> · 5pm – 12am</p>
+          <p><strong>Sunday</strong> · 11am – 9pm (brunch)</p>
+          <p style="margin-top:1rem;color:var(--muted);">14 Harbour Lane, Old Town<br>+30 210 000 0000</p>
+        </div>
+      </div>
+      <div class="sf sf-outline" style="--sf-bg:var(--surface);min-height:280px;display:grid;place-items:center;color:var(--faint);">map slot — components/maps-pack</div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="s-section">
+  <div class="s-container">
+    <div class="s-section-head"><div class="stars">★★★★★</div><h2 class="s-title">What guests say</h2></div>
+    <div class="s-grid s-grid--3">
+      <div class="s-card"><div class="stars">★★★★★</div><p style="margin:0.6rem 0;">“The branzino alone is worth the trip. Perfect evening.”</p><p class="s-lead" style="font-size:0.85rem;">— Elena P.</p></div>
+      <div class="s-card"><div class="stars">★★★★★</div><p style="margin:0.6rem 0;">“Felt like eating at a friend's house in Crete.”</p><p class="s-lead" style="font-size:0.85rem;">— Marcus T.</p></div>
+      <div class="s-card"><div class="stars">★★★★★</div><p style="margin:0.6rem 0;">“Natural wine list is unreal. We'll be back weekly.”</p><p class="s-lead" style="font-size:0.85rem;">— Sofia R.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK CTA -->
+<section class="s-section s-section--accent" id="book">
+  <div class="s-container-narrow" style="text-align:center;">
+    <h2 style="font-family:var(--font-head);font-size:var(--t-h1);margin-bottom:1rem;">Join us for dinner</h2>
+    <p style="font-size:1.1rem;margin-bottom:1.8rem;opacity:0.9;">Reservations open 30 days out. Walk-ins welcome at the bar.</p>
+    <a class="s-btn s-btn--lg" href="#" style="background:var(--on-accent);color:var(--accent);">Book a table</a>
+  </div>
+</section>
+
+<footer class="s-footer">
+  <div class="s-container">
+    <div class="s-footer-bottom" style="border:0;"><span>© 2026 Olea &amp; Vine · 14 Harbour Lane</span><span><a href="#">Instagram</a> · <a href="#">Maps</a></span></div>
+  </div>
+</footer>
+
+</body>
+</html>

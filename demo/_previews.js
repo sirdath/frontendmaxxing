@@ -1357,6 +1357,51 @@
     document.head.appendChild(s);
   };
 
+  // ===== Structure (page architecture) previews =====
+  P['structure/structure.css'] = function (target) {
+    target.innerHTML =
+      '<div class="struct" style="width:100%;max-width:760px;border:1px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden;">' +
+        '<header class="s-nav" style="position:static;"><div class="s-nav-inner" style="padding:0.7rem 1rem;"><span class="s-brand"><span class="s-brand-dot"></span>Brand</span><nav class="s-nav-links"><a>Features</a><a>Pricing</a></nav><a class="s-btn" style="padding:0.5rem 1rem;">Start</a></div></header>' +
+        '<section class="s-hero s-hero--center" style="padding-block:2.4rem;"><div class="s-container"><div class="s-hero-inner"><span class="s-eyebrow">Eyebrow label</span><h1 style="font-size:1.9rem;">A page skeleton you compose</h1><p class="s-lead" style="font-size:0.95rem;">Tokens + section rhythm + nav/hero/grid/footer shells.</p><div class="s-cluster s-cluster--center"><a class="s-btn">Primary</a><a class="s-btn s-btn--ghost">Ghost</a></div></div></div></section>' +
+        '<section class="s-section s-section--alt s-section-tight"><div class="s-container"><div class="s-grid s-grid--3" style="--gap:0.7rem;"><div class="s-card"><h3 style="font-size:1rem;">Feature</h3><p style="font-size:0.85rem;">One job per card.</p></div><div class="s-card"><h3 style="font-size:1rem;">Feature</h3><p style="font-size:0.85rem;">Threes read as a set.</p></div><div class="s-card"><h3 style="font-size:1rem;">Feature</h3><p style="font-size:0.85rem;">Consistent rhythm.</p></div></div></div></section>' +
+        '<section class="s-section s-section-tight"><div class="s-container"><div class="s-stats"><div><div class="s-stat-num">12k</div><div class="s-stat-label">teams</div></div><div><div class="s-stat-num">99.9%</div><div class="s-stat-label">uptime</div></div><div><div class="s-stat-num">3.2s</div><div class="s-stat-label">speed</div></div></div></div></section>' +
+      '</div>' +
+      '<div style="text-align:center;margin-top:1rem;font-family:ui-monospace,monospace;font-size:0.78rem;color:rgba(255,255,255,0.55);">Full genre pages → ' +
+        '<a href="../structure/saas.html" target="_blank" style="color:#7c5cff;">saas</a> · ' +
+        '<a href="../structure/agency.html" target="_blank" style="color:#7c5cff;">agency</a> · ' +
+        '<a href="../structure/restaurant.html" target="_blank" style="color:#7c5cff;">restaurant</a> · ' +
+        '<a href="../structure/ecommerce.html" target="_blank" style="color:#7c5cff;">ecommerce</a></div>';
+  };
+
+  P['structure/section-transitions.css'] = function (target) {
+    function block(color, label) { return '<div style="background:' + color + ';padding:1.4rem;text-align:center;color:rgba(255,255,255,0.7);font-family:ui-monospace,monospace;font-size:0.75rem;">' + label + '</div>'; }
+    target.innerHTML =
+      '<div style="width:100%;max-width:720px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);">' +
+        block('#11111b', 'section A') +
+        '<div class="st st-wave" style="--st-fill:#0b0b12;"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 60 C 200 110 400 10 600 50 C 800 90 1000 20 1200 60 L1200 120 L0 120 Z"/></svg></div>' +
+        block('#0b0b12', 'wave ↑') +
+        '<div class="st st-diagonal" style="--st-fill:#1b1030;"></div>' +
+        block('#1b1030', 'diagonal ↑') +
+        '<div class="st st-curve" style="--st-fill:#0b1530;"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 0 C 400 120 800 120 1200 0 L1200 120 L0 120 Z"/></svg></div>' +
+        block('#0b1530', 'curve ↑') +
+        '<div class="st st-zigzag" style="--st-fill:#102015;"></div>' +
+        block('#102015', 'zigzag ↑') +
+        '<div class="st st-layered" style="--st-fill:#2a0f12;"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 40 C 300 90 900 0 1200 50 L1200 120 L0 120 Z"/><path d="M0 60 C 300 100 900 20 1200 70 L1200 120 L0 120 Z"/><path d="M0 80 C 300 110 900 40 1200 90 L1200 120 L0 120 Z"/></svg></div>' +
+        block('#2a0f12', 'layered ↑') +
+      '</div>';
+  };
+
+  P['structure/section-frames.css'] = function (target) {
+    var v = ['outline','inset','window','brackets','ticket','notch','ruled','gradient-edge','grid-guides','label','spotlight'];
+    target.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;width:100%;max-width:760px;">' +
+      v.map(function (x) {
+        var inner = x === 'window'
+          ? '<div class="sf-bar"><span></span><span></span><span></span></div><div class="sf-body" style="color:rgba(255,255,255,0.6);font-size:0.8rem;">.sf-window</div>'
+          : (x === 'label' ? '<span class="sf-tag">label</span><span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">.sf-label</span>' : '<span style="color:rgba(255,255,255,0.6);font-size:0.8rem;font-family:ui-monospace,monospace;">.sf-' + x + '</span>');
+        return '<div class="sf sf-' + x + '" style="--sf-bg:#15151f;min-height:96px;display:grid;place-items:center;">' + inner + '</div>';
+      }).join('') + '</div>';
+  };
+
   // ===== Phase buttons-mega previews =====
   function btnWrap(inner, opts) {
     opts = opts || {};

@@ -1,0 +1,122 @@
+/* ============================================
+   SECTION FRAMES — Structural wrappers that "frame" a section or block
+   Inspired by editorial / brutalist / dashboard layout systems
+   ============================================
+   Where section-transitions.css connects sections, this FRAMES them —
+   gives a block a deliberate boundary so structure reads at a glance.
+
+   Usage:
+     <section class="s-section">
+       <div class="s-container">
+         <div class="sf sf-window">
+           <div class="sf-bar"><span></span><span></span><span></span></div>
+           <div class="sf-body"> … </div>
+         </div>
+       </div>
+     </section>
+
+   Variants: outline, inset, window, brackets, ticket, notch, ruled,
+             gradient-edge, grid-guides, label, spotlight
+   --sf-accent themes the frame.
+   ============================================ */
+
+.sf {
+  --sf-accent: #7c5cff;
+  --sf-line: rgba(255,255,255,0.14);
+  --sf-bg: #16161f;
+  position: relative;
+  border-radius: 16px;
+  padding: clamp(1.4rem, 3vw, 2.4rem);
+}
+
+/* Outline — simple deliberate border */
+.sf-outline { border: 1px solid var(--sf-line); }
+
+/* Inset — double-line inset border (editorial) */
+.sf-inset {
+  border: 1px solid var(--sf-line);
+  box-shadow: inset 0 0 0 6px var(--sf-bg), inset 0 0 0 7px var(--sf-line);
+  padding: clamp(1.8rem, 4vw, 3rem);
+}
+
+/* Window — browser/app chrome wrapper */
+.sf-window { border: 1px solid var(--sf-line); background: var(--sf-bg); padding: 0; overflow: hidden; }
+.sf-window .sf-bar { display: flex; gap: 7px; align-items: center; padding: 0.8rem 1rem; border-bottom: 1px solid var(--sf-line); background: rgba(255,255,255,0.03); }
+.sf-window .sf-bar span { width: 11px; height: 11px; border-radius: 50%; background: var(--sf-line); }
+.sf-window .sf-bar span:nth-child(1) { background: #ff5f57; }
+.sf-window .sf-bar span:nth-child(2) { background: #febc2e; }
+.sf-window .sf-bar span:nth-child(3) { background: #28c840; }
+.sf-window .sf-body { padding: clamp(1.4rem, 3vw, 2.4rem); }
+
+/* Brackets — corner brackets only (HUD / technical) */
+.sf-brackets { border: 0; }
+.sf-brackets::before, .sf-brackets::after {
+  content: ''; position: absolute; width: 26px; height: 26px; border: 2px solid var(--sf-accent);
+}
+.sf-brackets::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.sf-brackets::after  { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+/* Ticket — perforated-edge card */
+.sf-ticket {
+  background: var(--sf-bg);
+  border: 1px dashed var(--sf-line);
+  -webkit-mask:
+    radial-gradient(circle 10px at 0 50%, transparent 98%, #000) left,
+    radial-gradient(circle 10px at 100% 50%, transparent 98%, #000) right;
+  -webkit-mask-size: 51% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask:
+    radial-gradient(circle 10px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 10px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+}
+
+/* Notch — cut corner (sci-fi / modern) */
+.sf-notch {
+  background: var(--sf-bg);
+  border: 1px solid var(--sf-line);
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+}
+
+/* Ruled — top accent rule (section marker) */
+.sf-ruled { border-top: 3px solid var(--sf-accent); padding-top: clamp(1.4rem, 3vw, 2.2rem); border-radius: 0; }
+
+/* Gradient edge — gradient left border */
+.sf-gradient-edge {
+  background: var(--sf-bg);
+  border: 1px solid var(--sf-line);
+  border-left: 4px solid transparent;
+  border-image: linear-gradient(180deg, var(--sf-accent), #ec4899) 1;
+}
+
+/* Grid guides — faint blueprint grid behind content */
+.sf-grid-guides {
+  background:
+    linear-gradient(var(--sf-line) 1px, transparent 1px) 0 0 / 100% 40px,
+    linear-gradient(90deg, var(--sf-line) 1px, transparent 1px) 0 0 / 40px 100%,
+    var(--sf-bg);
+  border: 1px solid var(--sf-line);
+}
+
+/* Label — frame with a notched title tab on the top-left */
+.sf-label { border: 1px solid var(--sf-line); margin-top: 0.9rem; }
+.sf-label > .sf-tag {
+  position: absolute; top: -0.9rem; left: 1.2rem;
+  background: var(--sf-accent); color: #0b0b12;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.3rem 0.7rem; border-radius: 6px;
+}
+
+/* Spotlight — radial focus framing the block */
+.sf-spotlight {
+  border: 1px solid var(--sf-line);
+  background:
+    radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--sf-accent) 18%, transparent), transparent 60%),
+    var(--sf-bg);
+}
+
+/* Full-bleed section guides — drop on .s-section to show column rails */
+.s-section.sf-rails::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent calc(50% - 0.5px), var(--sf-line) calc(50% - 0.5px), var(--sf-line) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+  pointer-events: none; opacity: 0.4;
+}

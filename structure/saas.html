@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS landing — structure reference</title>
+<link rel="stylesheet" href="structure.css">
+<link rel="stylesheet" href="section-transitions.css">
+<link rel="stylesheet" href="section-frames.css">
+<style>
+  /* Page theme — cool indigo SaaS */
+  .struct {
+    --accent: #7c5cff; --accent-2: #22d3ee;
+    --bg: #0a0a12; --bg-alt: #0f0f1b; --surface: #15151f;
+  }
+  .saas-hero-bg {
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(60% 50% at 50% 0%, rgba(124,92,255,0.25), transparent 70%),
+      radial-gradient(40% 40% at 80% 10%, rgba(34,211,238,0.15), transparent 70%);
+  }
+  .saas-shot { aspect-ratio: 16/9; border-radius: 12px; background:
+      linear-gradient(135deg, #1b1b2e, #0e0e18);
+    border: 1px solid var(--border); display: grid; place-items: center; color: var(--faint); font-size: 0.85rem; }
+  .price-featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 20px 50px -20px rgba(124,92,255,0.5); position: relative; }
+  .price-featured::before { content: 'Most popular'; position: absolute; top: -0.8rem; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--on-accent); font-size: 0.7rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 999px; letter-spacing: 0.04em; }
+  .price-num { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; }
+  .feat-ico { width: 44px; height: 44px; border-radius: 11px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); margin-bottom: 1rem; }
+</style>
+</head>
+<body class="struct">
+
+<!-- NAV -->
+<header class="s-nav">
+  <div class="s-nav-inner">
+    <a class="s-brand"><span class="s-brand-dot"></span> Nimbus</a>
+    <nav class="s-nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="s-cluster">
+      <a class="s-btn s-btn--ghost" href="#">Log in</a>
+      <a class="s-btn" href="#">Start free</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="s-hero s-hero--center">
+  <div class="saas-hero-bg"></div>
+  <div class="s-container">
+    <div class="s-hero-inner">
+      <span class="s-eyebrow">Now with AI workflows</span>
+      <h1>Ship product analytics<br>your whole team trusts</h1>
+      <p class="s-lead">Nimbus turns raw events into clear answers in seconds — no SQL, no data team bottleneck. Just ask.</p>
+      <div class="s-cluster s-cluster--center">
+        <a class="s-btn s-btn--lg" href="#">Start free — no card</a>
+        <a class="s-btn s-btn--ghost s-btn--lg" href="#">Book a demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO CLOUD -->
+<section class="s-section s-section-tight s-section--alt">
+  <div class="s-container">
+    <p style="text-align:center;color:var(--faint);font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1.6rem;">Trusted by teams at</p>
+    <div class="s-logos">
+      <span>Vercel</span><span>Linear</span><span>Ramp</span><span>Notion</span><span>Stripe</span><span>Figma</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES TRIO -->
+<section class="s-section" id="features">
+  <div class="s-container">
+    <div class="s-section-head">
+      <span class="s-eyebrow">Why Nimbus</span>
+      <h2 class="s-title">Everything you need to understand your users</h2>
+      <p class="s-lead">Three pillars, zero setup.</p>
+    </div>
+    <div class="s-grid s-grid--3">
+      <div class="s-card"><div class="feat-ico"></div><h3>Ask in plain English</h3><p>Type a question, get a chart. Our model writes the query so you don't have to.</p></div>
+      <div class="s-card"><div class="feat-ico"></div><h3>Real-time funnels</h3><p>Watch conversion shift live as you ship. Alerts when a step drops.</p></div>
+      <div class="s-card"><div class="feat-ico"></div><h3>Share anywhere</h3><p>Every answer is a link. Drop it in Slack, embed it in a doc, pin it to a dashboard.</p></div>
+    </div>
+  </div>
+  <div class="st st-wave" style="--st-fill:var(--bg-alt);"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 60 C 200 110 400 10 600 50 C 800 90 1000 20 1200 60 L1200 120 L0 120 Z"/></svg></div>
+</section>
+
+<!-- PRODUCT BENTO -->
+<section class="s-section s-section--alt" id="how">
+  <div class="s-container">
+    <div class="s-section-head">
+      <span class="s-eyebrow">A closer look</span>
+      <h2 class="s-title">One canvas for the whole funnel</h2>
+    </div>
+    <div class="sf sf-window">
+      <div class="sf-bar"><span></span><span></span><span></span></div>
+      <div class="sf-body"><div class="saas-shot">product screenshot / bento slot</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="s-section">
+  <div class="s-container">
+    <div class="s-stats">
+      <div><div class="s-stat-num">12k+</div><div class="s-stat-label">teams onboarded</div></div>
+      <div><div class="s-stat-num">3.2s</div><div class="s-stat-label">avg. answer time</div></div>
+      <div><div class="s-stat-num">99.99%</div><div class="s-stat-label">uptime</div></div>
+      <div><div class="s-stat-num">40%</div><div class="s-stat-label">faster decisions</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="s-section s-section--alt">
+  <div class="s-container-narrow" style="text-align:center;">
+    <p style="font-size:clamp(1.4rem,2.6vw,2rem);line-height:1.4;font-weight:600;">“We replaced three internal tools and a weekly data pull with Nimbus. Now anyone can answer their own question.”</p>
+    <p class="s-lead" style="margin-top:1.2rem;">— Dana Okafor, VP Product at Ramp</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="s-section" id="pricing">
+  <div class="s-container">
+    <div class="s-section-head">
+      <span class="s-eyebrow">Pricing</span>
+      <h2 class="s-title">Start free. Scale when you're ready.</h2>
+    </div>
+    <div class="s-grid s-grid--3">
+      <div class="s-card"><h3>Starter</h3><p class="price-num">$0</p><p>Up to 3 seats · 50k events/mo</p><a class="s-btn s-btn--ghost" href="#" style="margin-top:1rem;">Get started</a></div>
+      <div class="s-card price-featured"><h3>Team</h3><p class="price-num">$49</p><p>Unlimited seats · 5M events/mo · AI queries</p><a class="s-btn" href="#" style="margin-top:1rem;">Start 14-day trial</a></div>
+      <div class="s-card"><h3>Enterprise</h3><p class="price-num">Custom</p><p>SSO · SOC2 · dedicated support</p><a class="s-btn s-btn--ghost" href="#" style="margin-top:1rem;">Contact sales</a></div>
+    </div>
+  </div>
+  <div class="st st-diagonal" style="--st-fill:var(--bg-alt);"></div>
+</section>
+
+<!-- FAQ -->
+<section class="s-section s-section--alt" id="faq">
+  <div class="s-container-narrow">
+    <div class="s-section-head"><h2 class="s-title">Questions, answered</h2></div>
+    <div class="s-stack">
+      <details class="s-card"><summary style="cursor:pointer;font-weight:600;">Do I need a data team?</summary><p style="margin-top:0.7rem;">No. Nimbus writes the queries; you ask in plain English.</p></details>
+      <details class="s-card"><summary style="cursor:pointer;font-weight:600;">Can I self-host?</summary><p style="margin-top:0.7rem;">Enterprise plans support VPC and on-prem deployment.</p></details>
+      <details class="s-card"><summary style="cursor:pointer;font-weight:600;">How does billing work?</summary><p style="margin-top:0.7rem;">Per active seat, billed monthly or annually. Cancel anytime.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="s-section s-section--accent">
+  <div class="s-container-narrow" style="text-align:center;">
+    <h2 style="font-size:var(--t-h1);margin-bottom:1rem;">Stop guessing. Start asking.</h2>
+    <p style="font-size:1.15rem;margin-bottom:1.8rem;opacity:0.85;">Free forever for small teams. Set up in under five minutes.</p>
+    <a class="s-btn s-btn--lg" href="#" style="background:var(--on-accent);color:var(--accent);">Start free</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="s-footer">
+  <div class="s-container">
+    <div class="s-footer-grid">
+      <div><a class="s-brand"><span class="s-brand-dot"></span> Nimbus</a><p style="color:var(--muted);margin-top:0.8rem;max-width:30ch;">Analytics anyone on the team can use.</p></div>
+      <div class="s-footer-col"><h4>Product</h4><a href="#">Features</a><a href="#">Pricing</a><a href="#">Changelog</a><a href="#">Docs</a></div>
+      <div class="s-footer-col"><h4>Company</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Contact</a></div>
+      <div class="s-footer-col"><h4>Legal</h4><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a></div>
+    </div>
+    <div class="s-footer-bottom"><span>© 2026 Nimbus, Inc.</span><span>Built on the structure/ skeleton</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agency / studio — structure reference</title>
+<link rel="stylesheet" href="structure.css">
+<link rel="stylesheet" href="section-transitions.css">
+<link rel="stylesheet" href="section-frames.css">
+<style>
+  /* Editorial, high-contrast, lots of whitespace */
+  .struct {
+    --accent: #e8ff4f; --accent-2: #b6ff00;
+    --bg: #0a0a0a; --bg-alt: #101010; --surface: #141414;
+    --on-accent: #0a0a0a;
+    --section-y: clamp(4.5rem, 10vw, 9rem);
+  }
+  .ag-hero h1 { font-size: clamp(3rem, 9vw, 7rem); line-height: 0.95; }
+  .ag-work { aspect-ratio: 4/3; border-radius: 14px; background: linear-gradient(135deg,#1a1a1a,#0c0c0c); border: 1px solid var(--border); display: grid; place-items: end start; padding: 1.2rem; color: var(--muted); font-size: 0.8rem; transition: transform 0.3s ease; }
+  .ag-work:hover { transform: translateY(-6px); }
+  .ag-work.tall { aspect-ratio: 3/4; }
+  .ag-work.wide { aspect-ratio: 16/9; }
+  .ag-num { font-family: monospace; color: var(--accent); font-size: 0.8rem; }
+  .ag-service { border-top: 1px solid var(--border); padding: 1.6rem 0; display: grid; grid-template-columns: 60px 1fr auto; gap: 1rem; align-items: baseline; }
+  .ag-service:hover h3 { color: var(--accent); }
+  .ag-service h3 { font-size: clamp(1.4rem, 3vw, 2.2rem); transition: color 0.2s ease; }
+</style>
+</head>
+<body class="struct">
+
+<header class="s-nav">
+  <div class="s-nav-inner">
+    <a class="s-brand">FORMWORK©</a>
+    <nav class="s-nav-links">
+      <a href="#work">Work</a><a href="#services">Services</a><a href="#studio">Studio</a>
+    </nav>
+    <a class="s-btn" href="#contact">Start a project</a>
+  </div>
+</header>
+
+<!-- HERO — type statement -->
+<section class="s-hero s-hero--center ag-hero">
+  <div class="s-container-wide">
+    <div class="s-hero-inner">
+      <span class="s-eyebrow">Brand &amp; digital studio · est. 2014</span>
+      <h1>We build brands<br>that refuse<br>to be ignored.</h1>
+      <p class="s-lead">A small studio for ambitious companies. Strategy, identity, and websites that do the heavy lifting.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SELECTED WORK — asymmetric grid -->
+<section class="s-section" id="work">
+  <div class="s-container-wide">
+    <div class="s-section-head s-section-head--left"><h2 class="s-title">Selected work</h2></div>
+    <div class="s-grid s-grid--2" style="--gap:1.4rem;">
+      <div class="ag-work wide"><span><span class="ag-num">01</span> &nbsp; Helio — rebrand + site</span></div>
+      <div class="ag-work wide"><span><span class="ag-num">02</span> &nbsp; Marrow — packaging</span></div>
+      <div class="ag-work tall"><span><span class="ag-num">03</span> &nbsp; Atlas Bank — identity</span></div>
+      <div class="ag-work tall"><span><span class="ag-num">04</span> &nbsp; Verdant — campaign</span></div>
+    </div>
+  </div>
+  <div class="st st-diagonal-rev" style="--st-fill:var(--bg-alt);"></div>
+</section>
+
+<!-- SERVICES — numbered rows -->
+<section class="s-section s-section--alt" id="services">
+  <div class="s-container">
+    <div class="s-section-head s-section-head--left"><span class="s-eyebrow">What we do</span><h2 class="s-title">Capabilities</h2></div>
+    <div>
+      <div class="ag-service"><span class="ag-num">(01)</span><h3>Brand strategy</h3><span class="s-lead">Positioning, naming, voice</span></div>
+      <div class="ag-service"><span class="ag-num">(02)</span><h3>Visual identity</h3><span class="s-lead">Logo, system, guidelines</span></div>
+      <div class="ag-service"><span class="ag-num">(03)</span><h3>Web design &amp; build</h3><span class="s-lead">Sites, stores, products</span></div>
+      <div class="ag-service"><span class="ag-num">(04)</span><h3>Art direction</h3><span class="s-lead">Photography, motion, campaign</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="s-section">
+  <div class="s-container">
+    <div class="s-section-head s-section-head--left"><span class="s-eyebrow">How we work</span><h2 class="s-title">Four phases, no surprises</h2></div>
+    <div class="s-grid s-grid--4">
+      <div class="s-card"><div class="ag-num">01</div><h3>Discover</h3><p>Workshops, audit, positioning.</p></div>
+      <div class="s-card"><div class="ag-num">02</div><h3>Define</h3><p>Strategy, naming, territory.</p></div>
+      <div class="s-card"><div class="ag-num">03</div><h3>Design</h3><p>Identity, system, screens.</p></div>
+      <div class="s-card"><div class="ag-num">04</div><h3>Deliver</h3><p>Build, launch, guidelines.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="s-section s-section--alt">
+  <div class="s-container">
+    <div class="s-stats">
+      <div><div class="s-stat-num">120+</div><div class="s-stat-label">brands shipped</div></div>
+      <div><div class="s-stat-num">9</div><div class="s-stat-label">awwwards</div></div>
+      <div><div class="s-stat-num">12</div><div class="s-stat-label">people, one studio</div></div>
+      <div><div class="s-stat-num">∞</div><div class="s-stat-label">opinions</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO QUOTE -->
+<section class="s-section">
+  <div class="s-container-narrow" style="text-align:center;">
+    <p style="font-size:clamp(1.8rem,4vw,3rem);line-height:1.25;font-weight:700;letter-spacing:-0.02em;">“Good design is obvious. Great design is invisible until it's gone.”</p>
+  </div>
+</section>
+
+<!-- CONTACT CTA -->
+<section class="s-section s-section--accent" id="contact">
+  <div class="s-container" style="text-align:center;">
+    <h2 style="font-size:clamp(2.5rem,6vw,5rem);margin-bottom:1.2rem;line-height:1;">Let's make<br>something.</h2>
+    <a class="s-btn s-btn--lg" href="mailto:hi@formwork.studio" style="background:var(--on-accent);color:var(--accent);">hi@formwork.studio →</a>
+  </div>
+</section>
+
+<footer class="s-footer">
+  <div class="s-container">
+    <div class="s-footer-bottom" style="border:0;"><span>© 2026 Formwork Studio</span><span><a href="#">Instagram</a> · <a href="#">LinkedIn</a> · <a href="#">Are.na</a></span></div>
+  </div>
+</footer>
+
+</body>
+</html>

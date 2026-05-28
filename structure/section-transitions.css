@@ -1,0 +1,134 @@
+/* ============================================
+   SECTION TRANSITIONS — Shape dividers that connect one section to the next
+   Inspired by shapedivider.app + Tailwind hero patterns
+   ============================================
+   The "borders between sections" — wave, diagonal, curve, etc. Put a
+   transition element at the BOTTOM of a section; its fill color should
+   match the NEXT section's background so the shape reads as a hand-off.
+
+   Usage:
+     <section style="background:#11111b;">
+       … content …
+       <div class="st st-wave" style="--st-fill:#0b0b12;"></div>
+     </section>
+     <section style="background:#0b0b12;"> … </section>
+
+   --st-fill   = color of the shape (usually the next section's bg)
+   --st-height = transition height (default 80px)
+
+   Variants: wave, wave-soft, diagonal, diagonal-rev, curve, curve-down,
+             tilt, zigzag, arrow, triangle, layered, book, drip, steps
+   ============================================ */
+
+.st {
+  --st-fill: #0b0b12;
+  --st-height: 80px;
+  position: relative;
+  width: 100%;
+  height: var(--st-height);
+  display: block;
+  line-height: 0;
+  pointer-events: none;
+}
+.st svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; display: block; }
+.st svg path, .st svg polygon { fill: var(--st-fill); }
+
+/* For CSS-shape variants (no SVG) we use a clip/pseudo approach */
+.st-css { background: var(--st-fill); }
+
+/* ── Diagonal (CSS clip, no markup needed inside) ── */
+.st-diagonal      { background: var(--st-fill); clip-path: polygon(0 100%, 100% 0, 100% 100%); }
+.st-diagonal-rev  { background: var(--st-fill); clip-path: polygon(0 0, 100% 100%, 0 100%); }
+
+/* ── Tilt (whole next section angled) — apply to the section, not divider ── */
+/* helper kept here for discoverability; see .s-tilt below */
+
+/* ── Triangle notch pointing down into next section ── */
+.st-triangle { background: transparent; }
+.st-triangle::after {
+  content: '';
+  position: absolute; left: 50%; top: 0;
+  transform: translateX(-50%);
+  border-left: 28px solid transparent;
+  border-right: 28px solid transparent;
+  border-top: 28px solid var(--st-fill);
+}
+
+/* ── Zigzag (CSS gradients) ── */
+.st-zigzag {
+  background:
+    linear-gradient(-45deg, var(--st-fill) 50%, transparent 50%) 0 0 / 28px 28px repeat-x,
+    linear-gradient(45deg,  var(--st-fill) 50%, transparent 50%) 0 0 / 28px 28px repeat-x;
+  background-position: bottom;
+}
+
+/* ── Steps (stair-step) ── */
+.st-steps {
+  background:
+    linear-gradient(to bottom right, transparent 50%, var(--st-fill) 50%) 0 0/33.33% 100%,
+    linear-gradient(to bottom right, transparent 50%, var(--st-fill) 50%) 33.33% 0/33.33% 100%,
+    linear-gradient(to bottom right, transparent 50%, var(--st-fill) 50%) 66.66% 0/33.34% 100%;
+  background-repeat: no-repeat;
+}
+
+/* The SVG-based variants (wave/curve/arrow/layered/book/drip) expect this markup:
+   <div class="st st-wave" style="--st-fill:#0b0b12;">
+     <svg viewBox="0 0 1200 120" preserveAspectRatio="none">…paths…</svg>
+   </div>
+   Ready-made <svg> bodies are listed at the bottom of this file's comment so
+   you can paste them. The classes below just tune height/scale per shape. */
+
+.st-wave      { --st-height: 90px; }
+.st-wave-soft { --st-height: 70px; }
+.st-curve     { --st-height: 80px; }
+.st-curve-down{ --st-height: 80px; }
+.st-arrow     { --st-height: 60px; }
+.st-layered   { --st-height: 110px; }
+.st-book      { --st-height: 70px; }
+.st-drip      { --st-height: 60px; }
+
+/* Layered waves use lowered opacity on the back layers */
+.st-layered svg path:nth-child(1) { opacity: 0.35; }
+.st-layered svg path:nth-child(2) { opacity: 0.6; }
+
+/* ── Tilted section helper (skew the whole next block) ── */
+.s-tilt { position: relative; }
+.s-tilt::before {
+  content: '';
+  position: absolute; inset: -3rem 0 auto 0; height: 6rem;
+  background: inherit;
+  transform: skewY(-3deg);
+  transform-origin: top left;
+  z-index: -1;
+}
+
+/*  PASTE-READY SVG BODIES (drop inside the .st element)
+
+    WAVE:
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 60 C 200 110 400 10 600 50 C 800 90 1000 20 1200 60 L1200 120 L0 120 Z"/></svg>
+
+    WAVE-SOFT:
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 80 C 300 40 900 120 1200 70 L1200 120 L0 120 Z"/></svg>
+
+    CURVE (concave up):
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 0 C 400 120 800 120 1200 0 L1200 120 L0 120 Z"/></svg>
+
+    CURVE-DOWN (convex):
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 120 C 400 0 800 0 1200 120 Z"/></svg>
+
+    ARROW (down chevron):
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><polygon points="0,0 600,120 1200,0 1200,120 0,120"/></svg>
+
+    LAYERED (3 waves):
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0 40 C 300 90 900 0 1200 50 L1200 120 L0 120 Z"/>
+      <path d="M0 60 C 300 100 900 20 1200 70 L1200 120 L0 120 Z"/>
+      <path d="M0 80 C 300 110 900 40 1200 90 L1200 120 L0 120 Z"/>
+    </svg>
+
+    BOOK (split fold):
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 0 L600 80 L1200 0 L1200 120 L0 120 Z"/></svg>
+
+    DRIP (organic blobs hanging):
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 0 H1200 V40 C 1100 40 1100 100 1000 100 C 900 100 900 50 820 50 C 740 50 740 90 660 90 C 560 90 560 30 460 30 C 360 30 360 80 260 80 C 160 80 160 40 60 40 C 30 40 10 45 0 45 Z"/></svg>
+*/

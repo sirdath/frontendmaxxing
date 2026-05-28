@@ -33,6 +33,7 @@
     'responsive':  { icon: '📱', desc: 'Breakpoints, dark mode, mobile patterns, skip-link' },
     'scroll':      { icon: '📜', desc: 'Pin, scrub, snap, horizontal-pin, text-reveal' },
     'shaders':     { icon: '🌈', desc: 'Pure-WebGL fullscreen-quad shaders — voronoi, mesh, godrays, plasma, fluid' },
+    'structure':   { icon: '🏗', desc: 'Page architecture — backbone, section transitions/frames + 4 full genre demo pages (see structure.skill.md)' },
     'svg':         { icon: '✏️', desc: 'SVG animations, gradient definitions' },
     'transitions': { icon: '🎞', desc: 'Page transitions: fade, curtain, morph, View Transitions API' },
     'typography':  { icon: '🔤', desc: 'Fluid type, variable fonts, gradient numbers, text effects, Greek-font pack' },

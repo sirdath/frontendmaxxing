@@ -789,6 +789,19 @@
 
 ---
 
+### Structure (page architecture) — read `structure.skill.md` first
+
+> The page-skeleton layer: *which* sections a site needs, in what order, and how to connect them. The decision tree lives in [`structure.skill.md`](structure.skill.md) (genre → section sequence → which snippets fill each slot). Four full openable reference pages: `structure/saas.html`, `structure/agency.html`, `structure/restaurant.html`, `structure/ecommerce.html` — open them directly in a browser to see the architecture.
+
+**structure.css** `structure/structure.css` (CSS) — tags: structure layout backbone skeleton page-architecture tokens section rhythm container hero nav footer grid split stack cluster section-head eyebrow stats themeable design-system spacing-scale fluid-type
+  Page-architecture backbone the genre demos are built on. Token system (`--accent`, fluid type scale, `--section-y` rhythm, container widths) + structural primitives: `.s-nav`, `.s-hero` (center/split), `.s-section` (+`--alt`/`--accent`), `.s-section-head`, `.s-container`(-narrow/-wide), `.s-grid`(-2/3/4/auto), `.s-split`, `.s-stack`, `.s-cluster`, `.s-card`, `.s-btn`, `.s-footer`, `.s-stats`, `.s-logos`. Re-theme any archetype by overriding tokens on `.struct`.
+
+**section-transitions.css** `structure/section-transitions.css` (CSS) — tags: section-transition shape-divider wave diagonal curve zigzag arrow triangle layered book drip steps tilt connector between-sections shapedivider hero-pattern svg clip-path
+  Shape dividers that connect one section to the next ("borders between sections"). `.st` base + `--st-fill` (set to next section's bg). CSS-shape variants: diagonal, diagonal-rev, triangle, zigzag, steps. SVG variants (paste-ready bodies in file): wave, wave-soft, curve, curve-down, arrow, layered (3-wave), book, drip. Plus `.s-tilt` skewed-section helper. Use 1–3 per page at real topic shifts.
+
+**section-frames.css** `structure/section-frames.css` (CSS) — tags: section-frame wrapper bordered window browser-chrome brackets ticket notch ruled gradient-edge grid-guides label spotlight editorial brutalist hud structural container
+  Structural wrappers that frame a block so structure reads at a glance. `.sf` base + variants: outline, inset (double-line editorial), window (mac chrome bar), brackets (HUD corners), ticket (perforated), notch (cut corner), ruled (top accent rule), gradient-edge (gradient left border), grid-guides (blueprint grid), label (notched title tab), spotlight. `--sf-accent` themes them.
+
 ### Layout
 
 **grid-systems.css** `layout/grid-systems.css` (CSS) — tags: grid columns 12-col layout responsive

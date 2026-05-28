@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-commerce / product — structure reference</title>
+<link rel="stylesheet" href="structure.css">
+<link rel="stylesheet" href="section-transitions.css">
+<link rel="stylesheet" href="section-frames.css">
+<style>
+  /* Clean, light, product-forward */
+  .struct {
+    --accent: #111118; --accent-2: #3a3a4a;
+    --bg: #ffffff; --bg-alt: #f5f5f7; --surface: #ffffff;
+    --fg: #111118; --muted: #5b5b66; --faint: #9a9aa6;
+    --border: rgba(17,17,24,0.12); --on-accent: #ffffff;
+    --radius: 14px;
+  }
+  .ec-shot { aspect-ratio: 1; border-radius: 18px; background: linear-gradient(135deg,#ececed,#dadae0); display:grid; place-items:center; color:var(--faint); }
+  .ec-thumbs { display:flex; gap:0.6rem; margin-top:0.8rem; }
+  .ec-thumb { width:64px; height:64px; border-radius:10px; background:linear-gradient(135deg,#ececed,#dadae0); border:1px solid var(--border); }
+  .ec-thumb.is-on { border-color: var(--fg); }
+  .ec-price { font-size: 2rem; font-weight: 800; letter-spacing:-0.02em; }
+  .ec-bene { width:40px;height:40px;border-radius:10px;background:var(--bg-alt);margin-bottom:0.8rem; }
+  .ec-spec { display:flex; justify-content:space-between; padding:0.8rem 0; border-bottom:1px solid var(--border); }
+  .stars { color:#f5a623; letter-spacing:1px; }
+  /* sticky buy bar */
+  .ec-buybar { position: sticky; bottom: 0; z-index: 40; background: color-mix(in srgb, var(--bg) 88%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-top: 1px solid var(--border); }
+  .ec-buybar-inner { max-width: var(--container); margin-inline:auto; padding:0.8rem var(--gutter); display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+</style>
+</head>
+<body class="struct">
+
+<header class="s-nav">
+  <div class="s-nav-inner">
+    <a class="s-brand">AUR·A</a>
+    <nav class="s-nav-links"><a href="#features">Features</a><a href="#details">Details</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a></nav>
+    <div class="s-cluster"><a href="#" style="color:var(--muted);">Cart (0)</a><a class="s-btn" href="#buy">Buy now</a></div>
+  </div>
+</header>
+
+<!-- HERO — product + buy -->
+<section class="s-hero s-hero--split">
+  <div class="s-container">
+    <div class="s-hero-inner">
+      <div>
+        <span class="s-eyebrow">New · Gen 3</span>
+        <h1>The last pair of<br>headphones you'll buy</h1>
+        <p class="s-lead">40 hours of battery. Adaptive noise cancellation. A sound stage your old pair can't touch.</p>
+        <div class="s-cluster" style="margin-top:1.4rem;">
+          <span class="ec-price">$349</span>
+          <a class="s-btn s-btn--lg" href="#buy">Add to cart</a>
+        </div>
+        <p style="color:var(--muted);font-size:0.85rem;margin-top:0.8rem;">Free 2-day shipping · 30-day returns</p>
+      </div>
+      <div>
+        <div class="ec-shot">product shot</div>
+        <div class="ec-thumbs"><div class="ec-thumb is-on"></div><div class="ec-thumb"></div><div class="ec-thumb"></div><div class="ec-thumb"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFIT ICONS -->
+<section class="s-section s-section--alt">
+  <div class="s-container">
+    <div class="s-grid s-grid--4">
+      <div class="s-card"><div class="ec-bene"></div><h3>40h battery</h3><p>A week of commutes on one charge.</p></div>
+      <div class="s-card"><div class="ec-bene"></div><h3>Adaptive ANC</h3><p>Reads the room and adjusts in real time.</p></div>
+      <div class="s-card"><div class="ec-bene"></div><h3>Multipoint</h3><p>Phone and laptop, connected at once.</p></div>
+      <div class="s-card"><div class="ec-bene"></div><h3>USB-C fast charge</h3><p>5 min = 4 hours of playback.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DETAIL SPLIT ROWS -->
+<section class="s-section" id="details">
+  <div class="s-container s-stack" style="--gap:clamp(3rem,7vw,5rem);">
+    <div class="s-split">
+      <div class="ec-shot" style="aspect-ratio:4/3;"></div>
+      <div><span class="s-eyebrow">Sound</span><h2 class="s-title" style="margin-bottom:0.8rem;">Tuned by people who listen</h2><p class="s-lead">Custom 40mm drivers and a sealed chamber deliver a flat, honest response — then let you shape it in the app.</p></div>
+    </div>
+    <div class="s-split s-split--media-left">
+      <div class="ec-shot" style="aspect-ratio:4/3;"></div>
+      <div><span class="s-eyebrow">Comfort</span><h2 class="s-title" style="margin-bottom:0.8rem;">Built to disappear</h2><p class="s-lead">Memory-foam cushions and a 248g frame you'll forget you're wearing on hour six.</p></div>
+    </div>
+  </div>
+  <div class="st st-wave-soft" style="--st-fill:var(--bg-alt);"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0 80 C 300 40 900 120 1200 70 L1200 120 L0 120 Z"/></svg></div>
+</section>
+
+<!-- GALLERY -->
+<section class="s-section s-section--alt">
+  <div class="s-container">
+    <div class="s-section-head"><h2 class="s-title">In the wild</h2></div>
+    <div class="s-grid s-grid--3" style="--gap:0.9rem;">
+      <div class="ec-shot" style="border-radius:14px;"></div>
+      <div class="ec-shot" style="border-radius:14px;"></div>
+      <div class="ec-shot" style="border-radius:14px;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section class="s-section" id="specs">
+  <div class="s-container-narrow">
+    <div class="s-section-head s-section-head--left"><h2 class="s-title">What's in the box</h2></div>
+    <div class="ec-spec"><span>Driver</span><strong>40mm dynamic</strong></div>
+    <div class="ec-spec"><span>Battery</span><strong>40h (ANC on)</strong></div>
+    <div class="ec-spec"><span>Weight</span><strong>248g</strong></div>
+    <div class="ec-spec"><span>Connectivity</span><strong>BT 5.3 · multipoint</strong></div>
+    <div class="ec-spec"><span>In box</span><strong>Case, USB-C, 3.5mm cable</strong></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="s-section s-section--alt" id="reviews">
+  <div class="s-container">
+    <div class="s-section-head"><div class="stars">★★★★★</div><h2 class="s-title">4.8 from 2,400 reviews</h2></div>
+    <div class="s-grid s-grid--3">
+      <div class="s-card"><div class="stars">★★★★★</div><p style="margin:0.6rem 0;">“Returned my $500 pair after a week with these.”</p><p class="s-lead" style="font-size:0.85rem;">— Verified buyer</p></div>
+      <div class="s-card"><div class="stars">★★★★★</div><p style="margin:0.6rem 0;">“ANC on a plane is genuinely silent. Wild.”</p><p class="s-lead" style="font-size:0.85rem;">— Verified buyer</p></div>
+      <div class="s-card"><div class="stars">★★★★☆</div><p style="margin:0.6rem 0;">“Battery claim is real. App could be simpler.”</p><p class="s-lead" style="font-size:0.85rem;">— Verified buyer</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="s-section" id="faq">
+  <div class="s-container-narrow">
+    <div class="s-section-head"><h2 class="s-title">Before you buy</h2></div>
+    <div class="s-stack">
+      <details class="s-card"><summary style="cursor:pointer;font-weight:600;">What's the return policy?</summary><p style="margin-top:0.7rem;color:var(--muted);">30 days, free returns, no questions.</p></details>
+      <details class="s-card"><summary style="cursor:pointer;font-weight:600;">Is there a warranty?</summary><p style="margin-top:0.7rem;color:var(--muted);">2 years, covers everything but lost units.</p></details>
+      <details class="s-card"><summary style="cursor:pointer;font-weight:600;">Do they work wired?</summary><p style="margin-top:0.7rem;color:var(--muted);">Yes — 3.5mm cable included for zero-latency listening.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer class="s-footer">
+  <div class="s-container">
+    <div class="s-footer-grid">
+      <div><a class="s-brand">AUR·A</a><p style="color:var(--muted);margin-top:0.8rem;max-width:30ch;">Sound, simplified.</p></div>
+      <div class="s-footer-col"><h4>Shop</h4><a href="#">Headphones</a><a href="#">Earbuds</a><a href="#">Accessories</a></div>
+      <div class="s-footer-col"><h4>Support</h4><a href="#">Shipping</a><a href="#">Returns</a><a href="#">Warranty</a></div>
+      <div class="s-footer-col"><h4>Pay with</h4><a href="#">Visa · MC · Amex</a><a href="#">Apple Pay</a><a href="#">Shop Pay</a></div>
+    </div>
+    <div class="s-footer-bottom"><span>© 2026 Aura Audio</span><span>Secure checkout</span></div>
+  </div>
+</footer>
+
+<!-- STICKY BUY BAR -->
+<div class="ec-buybar">
+  <div class="ec-buybar-inner">
+    <div><strong>Aura Gen 3</strong> · <span style="color:var(--muted);">$349</span></div>
+    <a class="s-btn" href="#buy" id="buy">Add to cart</a>
+  </div>
+</div>
+
+</body>
+</html>

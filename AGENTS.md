@@ -18,6 +18,7 @@ This folder is a **vanilla CSS+JS snippet vault** — 765 standalone, copy-paste
 | `INDEX.md` | Tagged inventory of every file (~1800 lines) | Whenever finding/adding a snippet |
 | `gradients.skill.md` | Gradient-specific decision tree | Anything involving color blends, holo, mesh, brand recreations |
 | `gsap.skill.md` | GSAP/JS-animation decision tree (CSS vs GSAP, free-plugin fact, ScrollTrigger/timeline/Flip) | Any JavaScript animation, scroll-driven motion, timelines, `gsap/*` snippets |
+| `structure.skill.md` | Page-architecture decision tree (genre → section sequence → which snippets fill each slot) | Structuring a whole page/site, "what sections do I need for a SaaS/agency/restaurant/store", initial scaffolding from a reference or business type, `structure/*` snippets |
 | `demo/index.html` | Live preview of every snippet | When adding a new file (must register) |
 | `MEMORY.md` (separate, in user memory dir) | Phase summaries | Already loaded for Claude — auto-consulted |
 
@@ -43,6 +44,7 @@ micro/          Tiny micro-interactions (toggle, like, copy, counter)
 responsive/     Breakpoints, dark mode, mobile patterns, skip-link
 scroll/         Pin, scrub, snap, horizontal-pin, text-reveal
 shaders/        Pure-WebGL fullscreen-quad shaders (noise, mesh, voronoi, godrays, …)
+structure/      Page-architecture: backbone CSS + section transitions/frames + 4 full genre demo pages (see structure.skill.md)
 svg/            SVG animations, gradient defs
 transitions/    Page transitions (fade, curtain, morph, View Transitions API)
 typography/     Fluid type, variable fonts, gradient numbers, text effects
