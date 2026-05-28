@@ -1357,6 +1357,35 @@
     document.head.appendChild(s);
   };
 
+  // ===== Phase wave2-uiverse previews =====
+  P['blocks/loaders-uiverse.css'] = function (target) {
+    var v = ['conic-glow','gradient-orbit','neon-bars','dual-conic','comet','ripple-radar','glow-orb','segment-clock','three-body','liquid-circle','infinity','square-morph','gradient-trail','pulse-grid','helix-dots'];
+    target.innerHTML = '<div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:center;justify-content:center;padding:1.5rem;background:#0a0a12;border-radius:12px;">' +
+      v.map(function (x) {
+        var inner = x === 'pulse-grid' ? '<span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>'
+                  : (x === 'neon-bars' || x === 'three-body' || x === 'helix-dots') ? '<i></i>' : '';
+        return '<div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;width:80px;"><div class="uload uload-' + x + '">' + inner + '</div><span style="font-size:0.6rem;color:rgba(255,255,255,0.4);font-family:ui-monospace,monospace;">' + x + '</span></div>';
+      }).join('') + '</div>';
+  };
+
+  P['blocks/inputs-uiverse.css'] = function (target) {
+    target.innerHTML = '<div style="display:flex;flex-direction:column;gap:1rem;width:100%;max-width:360px;padding:1rem;background:#0a0a12;border-radius:12px;">' +
+      '<label class="uinp uinp-neon" style="width:100%;"><input placeholder="Neon focus — click me"></label>' +
+      '<div class="uinp uinp-gradient-border" style="width:100%;"><input placeholder="Gradient border (focus)"></div>' +
+      '<label class="uinp uinp-underline-grow" style="width:100%;"><input placeholder="Underline grows from center"></label>' +
+      '<label class="uinp uinp-float-glow" style="width:100%;"><input placeholder=" "><span>Floating label</span></label>' +
+      '<label class="uinp uinp-glass" style="width:100%;"><input placeholder="Glass"></label>' +
+      '<label class="uinp uinp-pill-glow" style="width:100%;"><input placeholder="Pill glow"></label>' +
+    '</div>';
+  };
+
+  P['blocks/cards-uiverse.css'] = function (target) {
+    var v = [['glow-border','Glow border','Gradient ring.'],['conic-border','Conic border','Rotating outline.'],['shine','Shine','Sweep on hover.'],['glow-hover','Glow hover','Radial glow.'],['neon','Neon','Outlined glow.'],['glass','Glass','Frosted.'],['spotlight','Spotlight','Top focus.'],['holo','Holo foil','Animated.'],['corner-peel','Corner peel','Folded corner.'],['lift','Lift','Deep shadow.']];
+    target.innerHTML = '<div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;padding:1rem;">' +
+      v.map(function (c) { return '<article class="ucard ucard-' + c[0] + '" style="width:200px;min-height:120px;"><h3>' + c[1] + '</h3><p>' + c[2] + '</p></article>'; }).join('') +
+    '</div>';
+  };
+
   // ===== Phase eshop-pro previews =====
   P['components/product-cards-pro.css'] = function (target) {
     function card(opts) {

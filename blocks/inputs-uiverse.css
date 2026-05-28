@@ -1,0 +1,98 @@
+/* ============================================
+   INPUTS UIVERSE — Exotic neon / animated-border / glow text inputs
+   Inspired by uiverse.io community inputs (MIT/CC0)
+   ============================================
+   A third input set, distinct from inputs.css (baseline) and inputs-pro.css
+   (premium). These lean uiverse: glowing focus, animated gradient borders,
+   draw-on-focus underlines, glass. Wrap in `.uinp` and pick a variant.
+
+   Usage:
+     <label class="uinp uinp-neon"><input placeholder="Email"><span>Email</span></label>
+     <div class="uinp uinp-gradient-border"><input placeholder="Search…"></div>
+
+   Variants: neon, gradient-border, underline-grow, float-glow, glass,
+             icon-glow, search-expand, ring-focus, slot-fill, pill-glow
+   ============================================ */
+
+.uinp {
+  --ui-c1: #7c5cff;
+  --ui-c2: #22d3ee;
+  --ui-bg: #14141d;
+  --ui-fg: #f2f3f7;
+  --ui-muted: rgba(242,243,247,0.5);
+  --ui-border: rgba(255,255,255,0.14);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+.uinp input {
+  width: 100%;
+  background: var(--ui-bg);
+  color: var(--ui-fg);
+  border: 1px solid var(--ui-border);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  font: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.uinp input::placeholder { color: var(--ui-muted); }
+
+/* Neon glow on focus */
+.uinp-neon input:focus { border-color: var(--ui-c1); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-c1) 25%, transparent), 0 0 16px color-mix(in srgb, var(--ui-c1) 45%, transparent); }
+
+/* Animated gradient border (rotates on focus) */
+.uinp-gradient-border { padding: 2px; border-radius: 12px; background: var(--ui-border); }
+.uinp-gradient-border input { border: 0; border-radius: 10px; width: 100%; }
+.uinp-gradient-border:focus-within { background: conic-gradient(from var(--a,0deg), var(--ui-c1), var(--ui-c2), var(--ui-c1)); animation: ui-rotate 3s linear infinite; }
+@property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes ui-rotate { to { --a: 360deg; } }
+
+/* Underline grows from center on focus */
+.uinp-underline-grow { display: block; }
+.uinp-underline-grow input { background: transparent; border: 0; border-bottom: 2px solid var(--ui-border); border-radius: 0; padding-inline: 0.2rem; }
+.uinp-underline-grow::after { content: ''; position: absolute; left: 50%; right: 50%; bottom: 0; height: 2px; background: linear-gradient(90deg, var(--ui-c1), var(--ui-c2)); transition: left 0.3s ease, right 0.3s ease; }
+.uinp-underline-grow:focus-within::after { left: 0; right: 0; }
+
+/* Floating label with glow */
+.uinp-float-glow { display: block; }
+.uinp-float-glow input { padding-top: 1.2rem; padding-bottom: 0.4rem; }
+.uinp-float-glow span { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--ui-muted); pointer-events: none; transition: all 0.2s ease; }
+.uinp-float-glow input:focus + span,
+.uinp-float-glow input:not(:placeholder-shown) + span { top: 0.5rem; transform: none; font-size: 0.68rem; color: var(--ui-c1); }
+.uinp-float-glow input:focus { border-color: var(--ui-c1); box-shadow: 0 0 12px color-mix(in srgb, var(--ui-c1) 35%, transparent); }
+
+/* Glass */
+.uinp-glass input { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.2); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.uinp-glass input:focus { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.4); }
+
+/* Icon glow (left icon brightens on focus) */
+.uinp-icon-glow { }
+.uinp-icon-glow input { padding-left: 2.6rem; }
+.uinp-icon-glow .uinp-ico { position: absolute; left: 0.9rem; color: var(--ui-muted); transition: color 0.2s ease, filter 0.2s ease; pointer-events: none; }
+.uinp-icon-glow input:focus ~ .uinp-ico { color: var(--ui-c1); filter: drop-shadow(0 0 6px var(--ui-c1)); }
+
+/* Search that expands on focus */
+.uinp-search-expand input { width: 180px; border-radius: 999px; padding-left: 2.4rem; transition: width 0.3s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+.uinp-search-expand input:focus { width: 280px; border-color: var(--ui-c1); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-c1) 22%, transparent); }
+.uinp-search-expand .uinp-ico { position: absolute; left: 0.85rem; color: var(--ui-muted); pointer-events: none; }
+
+/* Ring focus (offset ring) */
+.uinp-ring-focus input:focus { border-color: transparent; box-shadow: 0 0 0 2px var(--ui-bg), 0 0 0 4px var(--ui-c1); }
+
+/* Slot fill (label tab slides up + bg tints) */
+.uinp-slot-fill { display: block; }
+.uinp-slot-fill input { background: transparent; }
+.uinp-slot-fill input:focus { background: color-mix(in srgb, var(--ui-c1) 10%, var(--ui-bg)); border-color: var(--ui-c1); }
+
+/* Pill glow */
+.uinp-pill-glow input { border-radius: 999px; }
+.uinp-pill-glow input:focus { border-color: var(--ui-c2); box-shadow: 0 0 18px color-mix(in srgb, var(--ui-c2) 40%, transparent); }
+
+/* Shared state helpers */
+.uinp.is-error input { border-color: #ef4444; animation: ui-shake 0.35s ease; }
+.uinp.is-success input { border-color: #10b981; }
+@keyframes ui-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }

@@ -2950,3 +2950,14 @@ Ports of the most-requested Aceternity UI patterns the vault was missing. All va
 
 **buttons-toggle.js** `blocks/buttons-toggle.js` (JS, global: `ButtonToggle`) — tags: button toggle two-state like follow bookmark aria-pressed count-bump onToggle driver
   `ButtonToggle.init('.tgbtn', {onToggle})` toggles `.is-on` + `aria-pressed`, auto-bumps a `.tg-count` (formats ≥1000 as `1.2k`). Instance: toggle(), set(on), isOn().
+
+**Phase wave2-uiverse — exotic loaders / inputs / cards in the uiverse aesthetic (3 files). Source: uiverse.io (MIT/CC0)**
+
+**loaders-uiverse.css** `blocks/loaders-uiverse.css` (CSS) — tags: loader spinner uiverse glow neon gradient conic comet orbit ripple radar segment-clock three-body liquid infinity square-morph pulse-grid helix dual-conic exotic
+  15 glow/gradient/neon loaders (`.uload-*`): conic-glow, gradient-orbit, neon-bars, dual-conic, comet, ripple-radar, glow-orb, segment-clock, three-body, liquid-circle, infinity, square-morph, gradient-trail, pulse-grid (3×3), helix-dots. `--u-c1/--u-c2` colors, `--u-size`/`--u-speed`, sm/lg. Distinct from loaders-pack (flat) + loaders-fancy (illustrative).
+
+**inputs-uiverse.css** `blocks/inputs-uiverse.css` (CSS) — tags: input uiverse neon glow animated-gradient-border underline-grow floating-label glass icon-glow search-expand ring-focus pill-glow focus exotic
+  10 exotic text inputs (`.uinp-*`): neon (glow focus), gradient-border (conic-rotate on focus via @property), underline-grow (center-out), float-glow (floating label + glow), glass, icon-glow, search-expand (width grows on focus), ring-focus, slot-fill, pill-glow. + is-error shake / is-success states. Distinct from inputs.css + inputs-pro.css.
+
+**cards-uiverse.css** `blocks/cards-uiverse.css` (CSS) — tags: card uiverse glow-border conic-border shine glow-hover neon glass spotlight reveal flip corner-peel holo holographic lift hover exotic
+  12 exotic cards (`.ucard-*`): glow-border, conic-border (rotating), shine (sweep on hover), glow-hover (radial), neon, glass, spotlight, reveal (content slides up on hover), flip (front/back), corner-peel, holo (animated foil), lift. Pure CSS. Distinct from cards-pack (UI), cards-3d (tilt), gradient-cards (fills).

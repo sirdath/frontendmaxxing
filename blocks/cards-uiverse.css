@@ -1,0 +1,129 @@
+/* ============================================
+   CARDS UIVERSE — Exotic glow / shine / conic-border / flip / reveal cards
+   Inspired by uiverse.io community cards (MIT/CC0)
+   ============================================
+   A card set leaning into uiverse signatures (animated borders, glow, shine),
+   distinct from cards-pack.css (UI styles), cards-3d.css (tilt), and
+   gradient-cards.css (gradient fills). Pure CSS.
+
+   Usage:
+     <article class="ucard ucard-glow-border"><h3>Title</h3><p>Body…</p></article>
+     <article class="ucard ucard-flip"><div class="ucard-front">…</div><div class="ucard-back">…</div></article>
+
+   Variants: glow-border, conic-border, shine, glow-hover, neon, glass,
+             spotlight, reveal, flip, corner-peel, holo, lift
+   ============================================ */
+
+.ucard {
+  --uc-c1: #7c5cff;
+  --uc-c2: #ec4899;
+  --uc-bg: #14141d;
+  --uc-fg: #f2f3f7;
+  --uc-muted: rgba(242,243,247,0.6);
+  --uc-border: rgba(255,255,255,0.1);
+
+  position: relative;
+  width: 260px;
+  min-height: 150px;
+  padding: 1.4rem;
+  border-radius: 16px;
+  background: var(--uc-bg);
+  border: 1px solid var(--uc-border);
+  color: var(--uc-fg);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.ucard h3 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+.ucard p { margin: 0; color: var(--uc-muted); font-size: 0.88rem; line-height: 1.5; }
+
+/* Glow border — static gradient ring that brightens on hover */
+.ucard-glow-border { border: 0; }
+.ucard-glow-border::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+  background: linear-gradient(135deg, var(--uc-c1), var(--uc-c2));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; z-index: -1;
+  transition: filter 0.25s ease;
+}
+.ucard-glow-border:hover::before { filter: drop-shadow(0 0 10px var(--uc-c1)); }
+
+/* Conic rotating border */
+.ucard-conic-border { border: 0; background: var(--uc-bg); }
+.ucard-conic-border::before {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; z-index: -2;
+  background: conic-gradient(from 0deg, var(--uc-c1), var(--uc-c2), var(--uc-c1));
+  animation: uc-spin 4s linear infinite;
+}
+.ucard-conic-border::after { content: ''; position: absolute; inset: 1px; border-radius: 15px; background: var(--uc-bg); z-index: -1; }
+
+/* Shine sweep on hover */
+.ucard-shine::after {
+  content: ''; position: absolute; top: 0; left: 0; width: 60%; height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: translateX(-180%) skewX(-20deg); z-index: 1;
+}
+.ucard-shine:hover::after { transition: transform 0.7s ease; transform: translateX(280%) skewX(-20deg); }
+
+/* Glow-hover — radial glow follows toward center, brightens on hover */
+.ucard-glow-hover::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; z-index: -1;
+  background: radial-gradient(150px circle at 50% 0%, color-mix(in srgb, var(--uc-c1) 35%, transparent), transparent 60%);
+  opacity: 0; transition: opacity 0.3s ease;
+}
+.ucard-glow-hover:hover::before { opacity: 1; }
+.ucard-glow-hover:hover { border-color: color-mix(in srgb, var(--uc-c1) 50%, transparent); }
+
+/* Neon outline */
+.ucard-neon { border-color: var(--uc-c1); box-shadow: 0 0 10px color-mix(in srgb, var(--uc-c1) 35%, transparent), inset 0 0 10px color-mix(in srgb, var(--uc-c1) 18%, transparent); }
+.ucard-neon h3 { color: var(--uc-c1); text-shadow: 0 0 8px color-mix(in srgb, var(--uc-c1) 60%, transparent); }
+.ucard-neon:hover { box-shadow: 0 0 22px color-mix(in srgb, var(--uc-c1) 55%, transparent), inset 0 0 16px color-mix(in srgb, var(--uc-c1) 30%, transparent); }
+
+/* Glass */
+.ucard-glass { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.18); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.25); }
+
+/* Spotlight top */
+.ucard-spotlight { background: radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--uc-c1) 20%, transparent), transparent 60%), var(--uc-bg); }
+
+/* Reveal — hidden content slides up on hover */
+.ucard-reveal { padding-bottom: 1.4rem; }
+.ucard-reveal .ucard-more { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease; margin-top: 0; }
+.ucard-reveal:hover .ucard-more { max-height: 80px; opacity: 1; margin-top: 0.8rem; }
+
+/* Flip (front/back) */
+.ucard-flip { background: transparent; border: 0; padding: 0; perspective: 1000px; overflow: visible; }
+.ucard-flip .ucard-front, .ucard-flip .ucard-back {
+  position: absolute; inset: 0; padding: 1.4rem; border-radius: 16px;
+  backface-visibility: hidden; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  background: var(--uc-bg); border: 1px solid var(--uc-border);
+}
+.ucard-flip { position: relative; }
+.ucard-flip .ucard-back { transform: rotateY(180deg); background: linear-gradient(135deg, var(--uc-c1), var(--uc-c2)); border: 0; }
+.ucard-flip:hover .ucard-front { transform: rotateY(180deg); }
+.ucard-flip:hover .ucard-back  { transform: rotateY(360deg); }
+
+/* Corner peel */
+.ucard-corner-peel::after {
+  content: ''; position: absolute; top: 0; right: 0; width: 0; height: 0;
+  border-style: solid; border-width: 0 28px 28px 0;
+  border-color: transparent var(--uc-c1) transparent transparent;
+  transition: border-width 0.25s ease; box-shadow: -2px 2px 4px rgba(0,0,0,0.3);
+}
+.ucard-corner-peel:hover::after { border-width: 0 44px 44px 0; }
+
+/* Holographic foil */
+.ucard-holo {
+  background:
+    linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.22) 45%, transparent 60%),
+    linear-gradient(60deg, #ff6ec4, #7873f5, #4ade80, #fcd34d);
+  background-size: 200% 200%, 300% 300%;
+  border: 0; color: #1a1a2e; animation: uc-holo 5s linear infinite;
+}
+.ucard-holo h3 { color: #14142b; } .ucard-holo p { color: rgba(20,20,43,0.7); }
+
+/* Lift (deep shadow on hover) */
+.ucard-lift:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -20px rgba(0,0,0,0.7); }
+
+@keyframes uc-spin { to { transform: rotate(1turn); } }
+@keyframes uc-holo { to { background-position: 200% 0, 300% 0; } }

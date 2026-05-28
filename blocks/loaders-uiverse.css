@@ -1,0 +1,163 @@
+/* ============================================
+   LOADERS UIVERSE — Exotic glow / gradient / neon spinners
+   Inspired by uiverse.io community loaders (MIT/CC0)
+   ============================================
+   A third loader set, distinct from loaders-pack.css (flat) and
+   loaders-fancy.css (illustrative). These lean into the uiverse aesthetic:
+   glow, conic gradients, neon, liquid. Each is a single element unless noted.
+
+   Usage:
+     <div class="uload uload-conic-glow"></div>
+
+   Variants: conic-glow, gradient-orbit, neon-bars, dual-conic, comet,
+             ripple-radar, glow-orb, segment-clock, three-body,
+             liquid-circle, infinity, square-morph, gradient-trail,
+             pulse-grid, helix-dots
+   Sizes: uload-sm / uload-lg · Color via --u-c1 / --u-c2
+   ============================================ */
+
+.uload {
+  --u-c1: #7c5cff;
+  --u-c2: #22d3ee;
+  --u-size: 48px;
+  --u-speed: 1s;
+  width: var(--u-size); height: var(--u-size);
+  display: inline-block; position: relative;
+}
+.uload-sm { --u-size: 32px; }
+.uload-lg { --u-size: 72px; }
+
+/* Conic glow ring */
+.uload-conic-glow {
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent, var(--u-c1));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 0);
+          mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 0);
+  animation: u-spin var(--u-speed) linear infinite;
+  filter: drop-shadow(0 0 6px var(--u-c1));
+}
+
+/* Gradient orbit dots */
+.uload-gradient-orbit::before, .uload-gradient-orbit::after {
+  content: ''; position: absolute; width: 28%; height: 28%; border-radius: 50%; top: 0; left: 36%;
+  background: var(--u-c1); box-shadow: 0 0 10px var(--u-c1);
+  animation: u-orbit var(--u-speed) linear infinite;
+}
+.uload-gradient-orbit::after { background: var(--u-c2); box-shadow: 0 0 10px var(--u-c2); animation-delay: calc(var(--u-speed) / -2); }
+
+/* Neon bars equalizer */
+.uload-neon-bars { display: flex; gap: 14%; align-items: flex-end; }
+.uload-neon-bars::before, .uload-neon-bars::after,
+.uload-neon-bars { }
+.uload-neon-bars i, .uload-neon-bars::before, .uload-neon-bars::after {
+  content: ''; flex: 1; width: 18%; background: linear-gradient(var(--u-c1), var(--u-c2)); border-radius: 3px;
+  box-shadow: 0 0 8px var(--u-c1); animation: u-eq 0.9s ease-in-out infinite;
+}
+.uload-neon-bars::after { animation-delay: 0.3s; }
+.uload-neon-bars i { animation-delay: 0.15s; }
+
+/* Dual conic counter-rotating */
+.uload-dual-conic, .uload-dual-conic::after {
+  border-radius: 50%; position: absolute; inset: 0;
+  background: conic-gradient(from 0deg, transparent 60%, var(--u-c1));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 0);
+          mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 0);
+  animation: u-spin 1.2s linear infinite;
+}
+.uload-dual-conic::after { content: ''; inset: 22%; background: conic-gradient(from 180deg, transparent 60%, var(--u-c2)); animation-direction: reverse; animation-duration: 0.8s; }
+
+/* Comet (trail dot orbit) */
+.uload-comet { border-radius: 50%; }
+.uload-comet::before {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--u-c1), transparent 40%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 0);
+          mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 0);
+  animation: u-spin var(--u-speed) linear infinite;
+}
+.uload-comet::after { content: ''; position: absolute; top: -1px; left: 50%; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--u-c1); box-shadow: 0 0 12px var(--u-c1); animation: u-spin-pt var(--u-speed) linear infinite; }
+
+/* Ripple radar */
+.uload-ripple-radar::before, .uload-ripple-radar::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid var(--u-c1); animation: u-ripple 1.4s ease-out infinite;
+}
+.uload-ripple-radar::after { animation-delay: 0.7s; }
+
+/* Glow orb (breathing) */
+.uload-glow-orb { border-radius: 50%; background: radial-gradient(circle at 35% 30%, var(--u-c2), var(--u-c1)); animation: u-breathe 1.3s ease-in-out infinite; }
+
+/* Segment clock (12 ticks fading) */
+.uload-segment-clock { border-radius: 50%; }
+.uload-segment-clock::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    repeating-conic-gradient(var(--u-c1) 0deg 6deg, transparent 6deg 30deg);
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 0);
+          mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 0);
+  animation: u-step 1s steps(12) infinite;
+}
+
+/* Three-body rotating triangle */
+.uload-three-body { animation: u-spin 1.5s linear infinite; }
+.uload-three-body::before, .uload-three-body::after, .uload-three-body i {
+  content: ''; position: absolute; width: 30%; height: 30%; border-radius: 50%;
+  background: var(--u-c1); box-shadow: 0 0 8px var(--u-c1);
+}
+.uload-three-body::before { top: 0; left: 35%; }
+.uload-three-body::after  { bottom: 0; left: 0; background: var(--u-c2); box-shadow: 0 0 8px var(--u-c2); }
+.uload-three-body i       { bottom: 0; right: 0; background: #fff; }
+
+/* Liquid fill circle */
+.uload-liquid-circle { border-radius: 50%; border: 2px solid var(--u-c1); overflow: hidden; }
+.uload-liquid-circle::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: linear-gradient(var(--u-c1), var(--u-c2)); animation: u-fill 1.8s ease-in-out infinite; }
+
+/* Infinity loop */
+.uload-infinity { width: calc(var(--u-size) * 1.6); }
+.uload-infinity::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(circle 6px at 30% 50%, var(--u-c1) 95%, transparent),
+    radial-gradient(circle 6px at 70% 50%, var(--u-c2) 95%, transparent);
+  animation: u-infinity 1.4s ease-in-out infinite;
+}
+
+/* Square morph */
+.uload-square-morph { background: var(--u-c1); box-shadow: 0 0 12px var(--u-c1); animation: u-morph 1.4s ease-in-out infinite; }
+
+/* Gradient trail spinner */
+.uload-gradient-trail { border-radius: 50%; padding: 3px;
+  background: conic-gradient(var(--u-c1), var(--u-c2), var(--u-c1)) border-box;
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 0);
+          mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 0);
+  animation: u-spin var(--u-speed) linear infinite; }
+
+/* Pulse grid (3x3) */
+.uload-pulse-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12%; }
+.uload-pulse-grid span { background: var(--u-c1); border-radius: 2px; animation: u-pulse 1.2s ease-in-out infinite; }
+.uload-pulse-grid span:nth-child(2){animation-delay:.1s} .uload-pulse-grid span:nth-child(3){animation-delay:.2s}
+.uload-pulse-grid span:nth-child(4){animation-delay:.1s} .uload-pulse-grid span:nth-child(5){animation-delay:.2s} .uload-pulse-grid span:nth-child(6){animation-delay:.3s}
+.uload-pulse-grid span:nth-child(7){animation-delay:.2s} .uload-pulse-grid span:nth-child(8){animation-delay:.3s} .uload-pulse-grid span:nth-child(9){animation-delay:.4s}
+
+/* Helix dots */
+.uload-helix-dots { display: flex; gap: 10%; align-items: center; }
+.uload-helix-dots i, .uload-helix-dots::before, .uload-helix-dots::after {
+  content: ''; width: 18%; aspect-ratio: 1; border-radius: 50%; background: var(--u-c1); box-shadow: 0 0 8px var(--u-c1);
+  animation: u-helix 1s ease-in-out infinite;
+}
+.uload-helix-dots::after { animation-delay: 0.2s; background: var(--u-c2); box-shadow: 0 0 8px var(--u-c2); }
+.uload-helix-dots i { animation-delay: 0.1s; }
+
+@keyframes u-spin { to { transform: rotate(1turn); } }
+@keyframes u-spin-pt { from { transform: rotate(0) translateY(0); } to { transform: rotate(1turn); } }
+@keyframes u-orbit { from { transform: rotate(0) translateX(140%) ; } to { transform: rotate(1turn) translateX(140%); } }
+@keyframes u-eq { 0%,100% { height: 30%; } 50% { height: 100%; } }
+@keyframes u-ripple { 0% { transform: scale(0.4); opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
+@keyframes u-breathe { 0%,100% { transform: scale(0.7); filter: brightness(0.8); } 50% { transform: scale(1); filter: brightness(1.3); } }
+@keyframes u-step { to { transform: rotate(1turn); } }
+@keyframes u-fill { 0% { height: 0; } 50% { height: 100%; } 100% { height: 0; } }
+@keyframes u-infinity { 0%,100% { transform: translateX(-12%); } 50% { transform: translateX(12%); } }
+@keyframes u-morph { 0%,100% { border-radius: 0; transform: rotate(0); } 50% { border-radius: 50%; transform: rotate(180deg); } }
+@keyframes u-pulse { 0%,100% { opacity: 0.25; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } }
+@keyframes u-helix { 0%,100% { transform: translateY(-40%); } 50% { transform: translateY(40%); } }
