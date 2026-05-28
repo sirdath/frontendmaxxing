@@ -1312,6 +1312,26 @@
 **checkout-flow.css** `components/checkout-flow.css` (CSS) — tags: checkout multi-step shipping payment review order-summary stripe shopify apple
   Multi-step checkout layout (`.chk-*`). Stepper, sections, summary sidebar (sticky), payment-method tiles, address grid.
 
+**Phase eshop-pro — Rich e-commerce component set (6 files). Sources: Shopify Dawn, Nike, SSENSE, ASOS, Gymshark, uiverse.io**
+
+**product-cards-pro.css** `components/product-cards-pro.css` (CSS) — tags: product-card ecommerce eshop shop grid quick-add hover image-swap wishlist heart badge sale new bestseller low-stock soldout swatch rating stars price-strike overlay horizontal compact minimal feature skeleton shopify nike ssense
+  Rich product-card system (`.ppc`) beyond product-card.css. Hover image-swap + slide-up quick-add, wishlist heart toggle, badges (sale/new/hot/best/low/eco/soldout, stackable), star rating via `--r`, price + strike, color swatches, stock-urgency line. Layout variants: overlay, horizontal (list), compact, minimal, feature. Plus sold-out treatment + skeleton-loading card.
+
+**product-detail.css** `components/product-detail.css` (CSS) — tags: product-detail pdp ecommerce eshop gallery thumbs variant size-selector out-of-stock color-swatch quantity add-to-cart sticky-buy trust delivery-estimate stock-urgency breadcrumb accordion apple nike allbirds
+  Product-detail-page building blocks (`.pdt`): 2-col gallery+thumbs / info, breadcrumb, title+rating+price (with strike + off badge), named color swatches, size grid with out-of-stock cross-out, qty stepper + add-to-cart + wishlist row, delivery-estimate banner, trust checklist, stock-urgency bar, description/shipping/returns accordion.
+
+**cart-pro.css** `components/cart-pro.css` (CSS) — tags: cart drawer slide-out mini-cart free-shipping-progress line-item quantity remove subtotal upsell empty-state checkout shopify gymshark ecommerce eshop
+  Self-contained slide-out cart drawer (`.cartx`, no external drawer dep): scrim + right/left panel, free-shipping progress bar, scrollable line items with mini qty steppers + remove, totals, checkout CTA, upsell row, empty state, and a `.cartx-mini` nav popover. Pairs with cart-pro.js.
+
+**cart-pro.js** `components/cart-pro.js` (JS, global: `CartPro`) — tags: cart drawer open close escape free-shipping progress subtotal quantity remove delegation shopify
+  `CartPro.init('#cart', {freeShip, subtotal, currency, onCheckout})`. Opens via any `[data-cart-open]`, closes via `[data-cart-close]`/Esc/scrim. Delegated qty +/− and line remove; recomputes subtotal + free-shipping bar live; fills `[data-cart-subtotal]`.
+
+**shop-filters.css** `components/shop-filters.css` (CSS) — tags: shop-filters plp collection facets filter-sidebar price-range checkbox color-swatch size rating-filter active-chips sort-dropdown view-toggle results-count load-more pagination mobile-sheet asos amazon ssense ecommerce eshop
+  Product-listing-page chrome (`.shf-*`): results toolbar (count + sort select + grid/list view toggle), active-filter chips with clear-all, collapsible facet sidebar (checkbox facets with counts, color swatches, size grid, price-range visual, star-rating filter), load-more + numbered pagination, mobile filter-sheet.
+
+**shop-extras.css** `components/shop-extras.css` (CSS) — tags: shop-extras ecommerce eshop badge free-shipping-bar coupon-reveal frequently-bought-together bundle review-breakdown rating-bars trust-row order-tracking timeline recently-viewed payment-icons size-chart countdown urgency conversion gymshark allbirds
+  Conversion + trust kit (`.shx-*`): inline badges, free-shipping announcement bar w/ progress, copyable coupon, frequently-bought-together bundle (+ total + add-all), review-score breakdown bars, trust-checklist row, order-tracking timeline (done/active steps), recently-viewed scroll strip, payment-icon row, size-chart table, countdown urgency boxes.
+
 ### Social / messaging
 
 **chat-bubble.css** `components/chat-bubble.css` (CSS) — tags: chat bubble message imessage whatsapp sent received typing system bordered tail reactions

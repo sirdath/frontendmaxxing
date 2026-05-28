@@ -1,0 +1,121 @@
+/* ============================================
+   PRODUCT DETAIL — Product-detail-page (PDP) building blocks
+   Inspired by Apple, Nike, Allbirds, Shopify PDP
+   ============================================
+   The pieces of a product page: gallery + thumbs, variant/size selector
+   with out-of-stock states, color swatches with names, quantity, sticky
+   add-to-cart bar, trust/delivery row, stock urgency, breadcrumb.
+
+   Usage (compose what you need):
+     <div class="pdt">
+       <div class="pdt-gallery"> … </div>
+       <div class="pdt-info"> … </div>
+     </div>
+
+   Class map: pdt-gallery / pdt-thumbs / pdt-info / pdt-title / pdt-price /
+              pdt-swatch / pdt-sizes / pdt-qty / pdt-buy / pdt-trust /
+              pdt-delivery / pdt-urgency / pdt-accordion / pdt-breadcrumb
+   ============================================ */
+
+.pdt {
+  --pdt-bg: #0e0e16;
+  --pdt-surface: #16161f;
+  --pdt-fg: #f2f3f7;
+  --pdt-muted: rgba(242,243,247,0.58);
+  --pdt-border: rgba(255,255,255,0.1);
+  --pdt-accent: #7c5cff;
+  --pdt-ok: #10b981;
+
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  color: var(--pdt-fg);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+@media (max-width: 820px) { .pdt { grid-template-columns: 1fr; } }
+
+/* Breadcrumb */
+.pdt-breadcrumb { grid-column: 1 / -1; display: flex; gap: 0.5rem; font-size: 0.8rem; color: var(--pdt-muted); }
+.pdt-breadcrumb a:hover { color: var(--pdt-fg); }
+.pdt-breadcrumb span { color: var(--pdt-border); }
+
+/* Gallery */
+.pdt-gallery { display: flex; flex-direction: column; gap: 0.7rem; }
+.pdt-main { aspect-ratio: 1; border-radius: 16px; overflow: hidden; background: linear-gradient(135deg,#1c1c28,#101018); display: grid; place-items: center; color: var(--pdt-muted); }
+.pdt-main img { width: 100%; height: 100%; object-fit: cover; }
+.pdt-thumbs { display: flex; gap: 0.6rem; }
+.pdt-thumb { width: 72px; height: 72px; border-radius: 10px; overflow: hidden; background: #1c1c28; border: 2px solid transparent; cursor: pointer; transition: border-color 0.15s ease; }
+.pdt-thumb.is-on { border-color: var(--pdt-accent); }
+.pdt-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Info column */
+.pdt-info { display: flex; flex-direction: column; gap: 1.1rem; }
+.pdt-brand { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pdt-muted); }
+.pdt-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin: 0; }
+.pdt-rating { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--pdt-muted); }
+.pdt-rating .stars { color: #f5a623; }
+
+/* Price */
+.pdt-price { display: flex; align-items: baseline; gap: 0.6rem; }
+.pdt-price-now { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; }
+.pdt-price-was { font-size: 1.1rem; color: var(--pdt-muted); text-decoration: line-through; }
+.pdt-price-off { font-size: 0.8rem; font-weight: 700; color: #fff; background: #ec4899; padding: 0.2rem 0.5rem; border-radius: 6px; align-self: center; }
+
+/* Color swatches with name */
+.pdt-swatch-label { font-size: 0.85rem; color: var(--pdt-muted); margin-bottom: 0.5rem; }
+.pdt-swatch-label b { color: var(--pdt-fg); font-weight: 600; }
+.pdt-swatch { display: flex; gap: 0.6rem; }
+.pdt-swatch i { width: 30px; height: 30px; border-radius: 50%; background: var(--c); cursor: pointer; box-shadow: 0 0 0 1px var(--pdt-border); transition: box-shadow 0.15s ease, transform 0.15s ease; }
+.pdt-swatch i:hover { transform: scale(1.08); }
+.pdt-swatch i.is-on { box-shadow: 0 0 0 2px var(--pdt-bg), 0 0 0 4px var(--pdt-accent); }
+
+/* Size selector (grid; .is-oos = out of stock) */
+.pdt-sizes-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.pdt-sizes-head a { font-size: 0.8rem; color: var(--pdt-accent); cursor: pointer; }
+.pdt-sizes { display: grid; grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); gap: 0.5rem; }
+.pdt-size {
+  padding: 0.7rem 0.5rem; text-align: center; border-radius: 10px; cursor: pointer;
+  background: var(--pdt-surface); border: 1px solid var(--pdt-border); color: var(--pdt-fg);
+  font: inherit; font-size: 0.9rem; font-weight: 600;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.pdt-size:hover { border-color: var(--pdt-fg); }
+.pdt-size.is-on { background: var(--pdt-fg); color: var(--pdt-bg); border-color: var(--pdt-fg); }
+.pdt-size.is-oos { color: var(--pdt-muted); cursor: not-allowed; position: relative; overflow: hidden; opacity: 0.6; }
+.pdt-size.is-oos::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 47%, var(--pdt-border) 47% 53%, transparent 53%); }
+
+/* Quantity + buy row */
+.pdt-buy-row { display: flex; gap: 0.7rem; align-items: stretch; }
+.pdt-qty { display: inline-flex; align-items: center; border: 1px solid var(--pdt-border); border-radius: 12px; overflow: hidden; }
+.pdt-qty button { width: 44px; border: 0; background: var(--pdt-surface); color: var(--pdt-fg); font-size: 1.2rem; cursor: pointer; }
+.pdt-qty button:hover { background: rgba(255,255,255,0.08); }
+.pdt-qty input { width: 44px; text-align: center; border: 0; background: transparent; color: var(--pdt-fg); font: inherit; font-weight: 600; -moz-appearance: textfield; }
+.pdt-qty input::-webkit-outer-spin-button, .pdt-qty input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.pdt-buy {
+  flex: 1; border: 0; border-radius: 12px; cursor: pointer;
+  background: var(--pdt-accent); color: #fff; font: inherit; font-weight: 700; font-size: 1rem;
+  transition: filter 0.15s ease;
+}
+.pdt-buy:hover { filter: brightness(1.08); }
+.pdt-buy-alt { background: transparent; border: 1px solid var(--pdt-border); color: var(--pdt-fg); flex: 0 0 52px; border-radius: 12px; cursor: pointer; }
+
+/* Delivery + trust row */
+.pdt-delivery { display: flex; gap: 0.6rem; align-items: center; font-size: 0.88rem; color: var(--pdt-muted); padding: 0.8rem 1rem; border: 1px dashed var(--pdt-border); border-radius: 12px; }
+.pdt-delivery b { color: var(--pdt-fg); }
+.pdt-trust { display: flex; flex-wrap: wrap; gap: 1.2rem; font-size: 0.8rem; color: var(--pdt-muted); }
+.pdt-trust span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.pdt-trust span::before { content: '✓'; color: var(--pdt-ok); font-weight: 700; }
+
+/* Stock urgency bar */
+.pdt-urgency { font-size: 0.82rem; color: #f97316; }
+.pdt-urgency-bar { height: 6px; border-radius: 3px; background: var(--pdt-surface); overflow: hidden; margin-top: 0.4rem; }
+.pdt-urgency-bar i { display: block; height: 100%; width: var(--left, 25%); background: linear-gradient(90deg, #f97316, #ef4444); border-radius: 3px; }
+
+/* Accordion (description / shipping / returns) */
+.pdt-accordion { border-top: 1px solid var(--pdt-border); }
+.pdt-accordion details { border-bottom: 1px solid var(--pdt-border); }
+.pdt-accordion summary { cursor: pointer; padding: 1rem 0; font-weight: 600; display: flex; justify-content: space-between; list-style: none; }
+.pdt-accordion summary::-webkit-details-marker { display: none; }
+.pdt-accordion summary::after { content: '+'; color: var(--pdt-muted); font-size: 1.2rem; }
+.pdt-accordion details[open] summary::after { content: '−'; }
+.pdt-accordion p { padding-bottom: 1rem; color: var(--pdt-muted); font-size: 0.9rem; margin: 0; }

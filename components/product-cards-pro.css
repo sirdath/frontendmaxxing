@@ -1,0 +1,178 @@
+/* ============================================
+   PRODUCT CARDS PRO — Rich e-commerce product cards
+   Inspired by Shopify Dawn, Nike, SSENSE, uiverse.io
+   ============================================
+   A self-contained product-card system richer than components/product-card.css.
+   Drop a `.ppc` and add a layout variant + badges/swatches as needed.
+
+   Usage:
+     <article class="ppc">
+       <div class="ppc-media">
+         <img src="a.jpg" class="ppc-img"><img src="a-alt.jpg" class="ppc-img ppc-img-alt">
+         <span class="ppc-badge ppc-badge-sale">-30%</span>
+         <button class="ppc-wish" aria-label="Save"></button>
+         <button class="ppc-quick">Quick add +</button>
+       </div>
+       <div class="ppc-body">
+         <div class="ppc-brand">Aura</div>
+         <h3 class="ppc-name">Gen 3 Headphones</h3>
+         <div class="ppc-rating"><span class="ppc-stars" style="--r:4.5"></span><span class="ppc-rating-n">(2.4k)</span></div>
+         <div class="ppc-price"><span class="ppc-now">$349</span><span class="ppc-was">$499</span></div>
+         <div class="ppc-swatches"><i style="--c:#111"></i><i style="--c:#c44" class="is-on"></i><i style="--c:#46a"></i></div>
+       </div>
+     </article>
+
+   Layout variants: ppc-overlay, ppc-horizontal, ppc-compact, ppc-minimal, ppc-feature
+   Badges: ppc-badge-sale / -new / -hot / -best / -low / -eco / -soldout
+   States: add .is-soldout to .ppc for the sold-out treatment
+   ============================================ */
+
+.ppc {
+  --ppc-bg: #14141d;
+  --ppc-fg: #f2f3f7;
+  --ppc-muted: rgba(242,243,247,0.55);
+  --ppc-border: rgba(255,255,255,0.09);
+  --ppc-accent: #7c5cff;
+  --ppc-sale: #ec4899;
+  --ppc-radius: 16px;
+
+  display: flex;
+  flex-direction: column;
+  background: var(--ppc-bg);
+  border: 1px solid var(--ppc-border);
+  border-radius: var(--ppc-radius);
+  overflow: hidden;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--ppc-fg);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.ppc:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -20px rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.16); }
+
+/* Media */
+.ppc-media { position: relative; aspect-ratio: 1; overflow: hidden; background: linear-gradient(135deg,#1c1c28,#101018); }
+.ppc-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.4s ease, transform 0.5s ease; }
+.ppc-img-alt { opacity: 0; }
+.ppc:hover .ppc-img       { transform: scale(1.05); }
+.ppc:hover .ppc-img-alt   { opacity: 1; }      /* image-swap on hover */
+
+/* Badges */
+.ppc-badge {
+  position: absolute; top: 0.7rem; left: 0.7rem; z-index: 2;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 0.28rem 0.55rem; border-radius: 6px; color: #fff;
+}
+.ppc-badge-sale { background: var(--ppc-sale); }
+.ppc-badge-new  { background: #10b981; }
+.ppc-badge-hot  { background: #f97316; }
+.ppc-badge-best { background: #f59e0b; color: #1a1205; }
+.ppc-badge-low  { background: #ef4444; }
+.ppc-badge-eco  { background: #65a30d; }
+.ppc-badge-soldout { background: #44444f; }
+.ppc-badge + .ppc-badge { top: 2.4rem; }   /* stack a second badge */
+
+/* Wishlist heart (CSS-only toggle via :focus/aria, JS optional) */
+.ppc-wish {
+  position: absolute; top: 0.6rem; right: 0.6rem; z-index: 2;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 0; cursor: pointer;
+  background: rgba(0,0,0,0.45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  display: grid; place-items: center;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.ppc-wish::before { content: '♥'; color: rgba(255,255,255,0.7); font-size: 1rem; transition: color 0.2s ease, transform 0.2s ease; }
+.ppc-wish:hover { transform: scale(1.1); }
+.ppc-wish.is-on::before, .ppc-wish[aria-pressed="true"]::before { color: var(--ppc-sale); transform: scale(1.2); }
+
+/* Quick-add — slides up from the bottom of media on hover */
+.ppc-quick {
+  position: absolute; left: 0.7rem; right: 0.7rem; bottom: 0.7rem; z-index: 2;
+  padding: 0.65rem; border: 0; border-radius: 10px; cursor: pointer;
+  background: #fff; color: #111; font: inherit; font-weight: 600; font-size: 0.85rem;
+  transform: translateY(calc(100% + 0.8rem)); opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1), opacity 0.25s ease, filter 0.15s ease;
+}
+.ppc:hover .ppc-quick { transform: translateY(0); opacity: 1; }
+.ppc-quick:hover { filter: brightness(0.92); }
+
+/* Body */
+.ppc-body { padding: 0.9rem 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.ppc-brand { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ppc-muted); }
+.ppc-name { font-size: 0.98rem; font-weight: 600; line-height: 1.3; margin: 0; }
+.ppc-desc { font-size: 0.82rem; color: var(--ppc-muted); }
+
+/* Rating — star fill via --r (0..5) */
+.ppc-rating { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--ppc-muted); }
+.ppc-stars { --r: 5; --pct: calc(var(--r) / 5 * 100%); width: 80px; height: 14px;
+  background: linear-gradient(90deg, #f5a623 var(--pct), rgba(255,255,255,0.18) var(--pct));
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 12px, transparent 12px 16px);
+          mask: repeating-linear-gradient(90deg, #000 0 12px, transparent 12px 16px);
+  -webkit-mask-size: 16px 14px; mask-size: 16px 14px;
+}
+/* simple 5-star glyph mask fallback */
+.ppc-stars::before { content: ''; }
+
+/* Price */
+.ppc-price { display: flex; align-items: baseline; gap: 0.5rem; margin-top: 0.15rem; }
+.ppc-now { font-size: 1.05rem; font-weight: 700; }
+.ppc-was { font-size: 0.85rem; color: var(--ppc-muted); text-decoration: line-through; }
+.ppc-off { font-size: 0.78rem; color: var(--ppc-sale); font-weight: 700; }
+
+/* Color swatches */
+.ppc-swatches { display: flex; gap: 0.4rem; margin-top: 0.3rem; }
+.ppc-swatches i {
+  width: 16px; height: 16px; border-radius: 50%; background: var(--c); cursor: pointer;
+  box-shadow: 0 0 0 1px var(--ppc-border); transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.ppc-swatches i:hover { transform: scale(1.15); }
+.ppc-swatches i.is-on { box-shadow: 0 0 0 2px var(--ppc-bg), 0 0 0 4px var(--ppc-accent); }
+
+/* ── Variant: overlay (text over image, editorial) ── */
+.ppc-overlay .ppc-body {
+  position: absolute; inset: auto 0 0 0; z-index: 2;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.85));
+  padding-top: 3rem;
+}
+.ppc-overlay { position: relative; }
+.ppc-overlay .ppc-media { aspect-ratio: 3/4; }
+
+/* ── Variant: horizontal (cart line / list view) ── */
+.ppc-horizontal { flex-direction: row; align-items: stretch; }
+.ppc-horizontal .ppc-media { width: 130px; aspect-ratio: auto; flex: 0 0 130px; }
+.ppc-horizontal .ppc-body { flex: 1; justify-content: center; }
+.ppc-horizontal .ppc-quick { display: none; }
+
+/* ── Variant: compact (dense grid) ── */
+.ppc-compact .ppc-body { padding: 0.6rem 0.7rem 0.8rem; gap: 0.25rem; }
+.ppc-compact .ppc-name { font-size: 0.88rem; }
+.ppc-compact .ppc-brand, .ppc-compact .ppc-rating { display: none; }
+
+/* ── Variant: minimal (no border/bg, gallery feel) ── */
+.ppc-minimal { background: transparent; border: 0; }
+.ppc-minimal:hover { box-shadow: none; transform: translateY(-2px); }
+.ppc-minimal .ppc-media { border-radius: 12px; }
+.ppc-minimal .ppc-body { padding: 0.8rem 0.2rem 0; }
+
+/* ── Variant: feature (large hero product) ── */
+.ppc-feature .ppc-media { aspect-ratio: 16/10; }
+.ppc-feature .ppc-name { font-size: 1.3rem; }
+.ppc-feature .ppc-now { font-size: 1.3rem; }
+
+/* ── Sold-out treatment ── */
+.ppc.is-soldout .ppc-media { filter: grayscale(0.7) brightness(0.7); }
+.ppc.is-soldout .ppc-quick { background: #44444f; color: rgba(255,255,255,0.7); pointer-events: none; }
+.ppc.is-soldout:hover .ppc-quick { transform: translateY(0); opacity: 1; }
+.ppc.is-soldout .ppc-now { color: var(--ppc-muted); }
+
+/* ── Stock urgency line ── */
+.ppc-stock { font-size: 0.74rem; color: #f97316; display: flex; align-items: center; gap: 0.4rem; margin-top: 0.2rem; }
+.ppc-stock::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: ppc-pulse 1.4s ease-in-out infinite; }
+@keyframes ppc-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* ── Skeleton loading card ── */
+.ppc-skeleton .ppc-media,
+.ppc-skeleton .ppc-name::after,
+.ppc-skeleton .ppc-price::after {
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.12) 37%, rgba(255,255,255,0.05) 63%);
+  background-size: 400% 100%; animation: ppc-shimmer 1.4s ease infinite;
+}
+@keyframes ppc-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }

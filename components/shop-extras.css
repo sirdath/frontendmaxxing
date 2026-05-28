@@ -1,0 +1,106 @@
+/* ============================================
+   SHOP EXTRAS — Conversion + trust components for an e-shop
+   Inspired by Gymshark, Allbirds, Amazon, Shopify apps
+   ============================================
+   The "everything else" that makes a store convert: badges, free-shipping
+   bar, coupon reveal, frequently-bought-together bundle, review breakdown,
+   trust row, order-tracking timeline, recently-viewed strip, payment icons,
+   size-chart table, countdown urgency.
+
+   Class map: shx-badge / shx-shipbar / shx-coupon / shx-fbt / shx-reviews /
+              shx-trust / shx-track / shx-recent / shx-pay / shx-sizechart /
+              shx-countdown
+   ============================================ */
+
+.shx {
+  --shx-bg: #14141d;
+  --shx-fg: #f2f3f7;
+  --shx-muted: rgba(242,243,247,0.58);
+  --shx-border: rgba(255,255,255,0.1);
+  --shx-accent: #7c5cff;
+  --shx-ok: #10b981;
+}
+.shx, .shx * { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box; }
+
+/* ── Badges (inline labels) ── */
+.shx-badge { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.25rem 0.55rem; border-radius: 6px; color: #fff; }
+.shx-badge-sale { background: #ec4899; }
+.shx-badge-new  { background: #10b981; }
+.shx-badge-best { background: #f59e0b; color: #1a1205; }
+.shx-badge-low  { background: #ef4444; }
+.shx-badge-eco  { background: #65a30d; }
+.shx-badge-ship { background: #0ea5e9; }
+.shx-badge-outline { background: transparent; border: 1px solid currentColor; color: var(--shx-accent); }
+
+/* ── Free-shipping announcement bar ── */
+.shx-shipbar { display: flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 0.7rem 1rem; background: linear-gradient(90deg, var(--shx-accent), #22d3ee); color: #fff; font-size: 0.85rem; font-weight: 600; text-align: center; }
+.shx-shipbar .shx-shipbar-bar { width: 120px; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.3); overflow: hidden; }
+.shx-shipbar .shx-shipbar-bar i { display: block; height: 100%; width: var(--p, 60%); background: #fff; border-radius: 3px; }
+
+/* ── Coupon reveal ── */
+.shx-coupon { display: inline-flex; align-items: stretch; border: 1px dashed var(--shx-accent); border-radius: 10px; overflow: hidden; background: rgba(124,92,255,0.08); }
+.shx-coupon code { padding: 0.6rem 1rem; font-family: ui-monospace, monospace; font-weight: 700; letter-spacing: 0.05em; color: var(--shx-fg); }
+.shx-coupon button { border: 0; border-left: 1px dashed var(--shx-accent); background: var(--shx-accent); color: #fff; padding: 0 1rem; font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+.shx-coupon.is-copied button { background: var(--shx-ok); }
+
+/* ── Frequently bought together ── */
+.shx-fbt { background: var(--shx-bg); border: 1px solid var(--shx-border); border-radius: 16px; padding: 1.4rem; color: var(--shx-fg); }
+.shx-fbt h3 { margin: 0 0 1rem; font-size: 1.05rem; }
+.shx-fbt-row { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+.shx-fbt-item { width: 86px; text-align: center; }
+.shx-fbt-thumb { width: 86px; height: 86px; border-radius: 10px; background: linear-gradient(135deg,#1c1c28,#101018); border: 1px solid var(--shx-border); }
+.shx-fbt-item small { display: block; margin-top: 0.4rem; font-size: 0.72rem; color: var(--shx-muted); }
+.shx-fbt-plus { font-size: 1.4rem; color: var(--shx-muted); }
+.shx-fbt-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.2rem; flex-wrap: wrap; }
+.shx-fbt-total b { font-size: 1.2rem; }
+.shx-fbt-add { border: 0; border-radius: 10px; background: var(--shx-accent); color: #fff; padding: 0.7rem 1.4rem; font: inherit; font-weight: 700; cursor: pointer; }
+
+/* ── Review breakdown (rating bars) ── */
+.shx-reviews { background: var(--shx-bg); border: 1px solid var(--shx-border); border-radius: 16px; padding: 1.4rem; color: var(--shx-fg); display: grid; grid-template-columns: auto 1fr; gap: 1.4rem; align-items: center; }
+.shx-reviews-score { text-align: center; }
+.shx-reviews-score b { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; }
+.shx-reviews-score .stars { color: #f5a623; display: block; margin: 0.2rem 0; }
+.shx-reviews-score small { color: var(--shx-muted); font-size: 0.8rem; }
+.shx-bar-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8rem; color: var(--shx-muted); margin-bottom: 0.35rem; }
+.shx-bar-row .lbl { width: 36px; }
+.shx-bar { flex: 1; height: 7px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.shx-bar i { display: block; height: 100%; width: var(--p, 50%); background: #f5a623; border-radius: 4px; }
+.shx-bar-row .cnt { width: 36px; text-align: right; }
+
+/* ── Trust row (badges under buy button) ── */
+.shx-trust { display: flex; flex-wrap: wrap; gap: 1.2rem; }
+.shx-trust-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--shx-muted); }
+.shx-trust-ico { width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.06); display: grid; place-items: center; color: var(--shx-ok); }
+
+/* ── Order tracking timeline ── */
+.shx-track { display: flex; justify-content: space-between; position: relative; color: var(--shx-fg); }
+.shx-track::before { content: ''; position: absolute; top: 13px; left: 7%; right: 7%; height: 2px; background: var(--shx-border); }
+.shx-track-step { position: relative; z-index: 1; text-align: center; flex: 1; }
+.shx-track-dot { width: 28px; height: 28px; border-radius: 50%; margin: 0 auto 0.5rem; background: var(--shx-bg); border: 2px solid var(--shx-border); display: grid; place-items: center; font-size: 0.85rem; }
+.shx-track-step.is-done .shx-track-dot { background: var(--shx-ok); border-color: var(--shx-ok); color: #fff; }
+.shx-track-step.is-active .shx-track-dot { border-color: var(--shx-accent); color: var(--shx-accent); box-shadow: 0 0 0 4px rgba(124,92,255,0.2); }
+.shx-track-step small { font-size: 0.75rem; color: var(--shx-muted); }
+.shx-track-step.is-done small, .shx-track-step.is-active small { color: var(--shx-fg); }
+
+/* ── Recently-viewed strip ── */
+.shx-recent { color: var(--shx-fg); }
+.shx-recent h3 { font-size: 1rem; margin: 0 0 0.9rem; }
+.shx-recent-row { display: flex; gap: 0.9rem; overflow-x: auto; padding-bottom: 0.6rem; scrollbar-width: thin; }
+.shx-recent-item { flex: 0 0 130px; }
+.shx-recent-thumb { width: 130px; height: 130px; border-radius: 12px; background: linear-gradient(135deg,#1c1c28,#101018); border: 1px solid var(--shx-border); }
+.shx-recent-item small { display: block; margin-top: 0.4rem; font-size: 0.78rem; }
+
+/* ── Payment icons row ── */
+.shx-pay { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.shx-pay span { padding: 0.3rem 0.6rem; border: 1px solid var(--shx-border); border-radius: 6px; font-size: 0.7rem; font-weight: 700; color: var(--shx-muted); background: var(--shx-bg); }
+
+/* ── Size chart table ── */
+.shx-sizechart { width: 100%; border-collapse: collapse; color: var(--shx-fg); font-size: 0.85rem; }
+.shx-sizechart th, .shx-sizechart td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid var(--shx-border); }
+.shx-sizechart th { color: var(--shx-muted); font-weight: 600; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; }
+.shx-sizechart tr:hover td { background: rgba(255,255,255,0.03); }
+
+/* ── Countdown urgency ── */
+.shx-countdown { display: inline-flex; align-items: center; gap: 0.6rem; color: var(--shx-fg); font-size: 0.85rem; }
+.shx-countdown .shx-cd-box { background: var(--shx-bg); border: 1px solid var(--shx-border); border-radius: 8px; padding: 0.4rem 0.55rem; font-variant-numeric: tabular-nums; font-weight: 700; min-width: 38px; text-align: center; }
+.shx-countdown .shx-cd-box small { display: block; font-size: 0.6rem; color: var(--shx-muted); font-weight: 400; }

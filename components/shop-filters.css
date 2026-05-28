@@ -1,0 +1,117 @@
+/* ============================================
+   SHOP FILTERS — Product-listing-page (PLP) filtering + sort + toolbar
+   Inspired by ASOS, SSENSE, Amazon, Shopify collection pages
+   ============================================
+   The PLP chrome: filter sidebar (facets, price range, color/size swatches,
+   rating), active-filter chips, sort dropdown, results toolbar, view toggle,
+   load-more / pagination, and a mobile filter sheet.
+
+   Usage:
+     <div class="shf-toolbar"> … </div>
+     <div class="shf-layout">
+       <aside class="shf-sidebar"> … .shf-group … </aside>
+       <div class="shf-results"> …product grid… </div>
+     </div>
+
+   Class map: shf-toolbar / shf-count / shf-sort / shf-view / shf-chips /
+              shf-sidebar / shf-group / shf-check / shf-swatch / shf-size /
+              shf-range / shf-rating / shf-more / shf-pagination / shf-sheet
+   ============================================ */
+
+.shf-toolbar, .shf-sidebar, .shf-chips {
+  --shf-bg: #14141d;
+  --shf-fg: #f2f3f7;
+  --shf-muted: rgba(242,243,247,0.58);
+  --shf-border: rgba(255,255,255,0.1);
+  --shf-accent: #7c5cff;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--shf-fg);
+}
+
+/* Toolbar */
+.shf-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding: 0.8rem 0; border-bottom: 1px solid var(--shf-border); }
+.shf-count { font-size: 0.88rem; color: var(--shf-muted); }
+.shf-count b { color: var(--shf-fg); }
+.shf-toolbar-right { display: flex; align-items: center; gap: 0.8rem; }
+
+/* Sort dropdown (styled native select) */
+.shf-sort { position: relative; }
+.shf-sort select {
+  appearance: none; -webkit-appearance: none;
+  background: var(--shf-bg); color: var(--shf-fg); border: 1px solid var(--shf-border);
+  border-radius: 10px; padding: 0.55rem 2.2rem 0.55rem 0.9rem; font: inherit; font-size: 0.85rem; cursor: pointer;
+}
+.shf-sort::after { content: '▾'; position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%); color: var(--shf-muted); pointer-events: none; }
+
+/* View toggle (grid / list) */
+.shf-view { display: inline-flex; border: 1px solid var(--shf-border); border-radius: 10px; overflow: hidden; }
+.shf-view button { width: 38px; height: 36px; border: 0; background: var(--shf-bg); color: var(--shf-muted); cursor: pointer; display: grid; place-items: center; }
+.shf-view button.is-on { background: rgba(255,255,255,0.1); color: var(--shf-fg); }
+
+/* Active filter chips */
+.shf-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.9rem 0; }
+.shf-chip { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(124,92,255,0.16); border: 1px solid rgba(124,92,255,0.4); color: var(--shf-fg); border-radius: 999px; padding: 0.3rem 0.75rem; font-size: 0.8rem; }
+.shf-chip button { background: 0; border: 0; color: var(--shf-muted); cursor: pointer; font-size: 0.9rem; line-height: 1; }
+.shf-chip button:hover { color: var(--shf-fg); }
+.shf-chip-clear { background: 0; border: 0; color: var(--shf-accent); font-size: 0.8rem; cursor: pointer; font-weight: 600; }
+
+/* Layout */
+.shf-layout { display: grid; grid-template-columns: 260px 1fr; gap: clamp(1.2rem, 3vw, 2.5rem); align-items: start; }
+@media (max-width: 820px) { .shf-layout { grid-template-columns: 1fr; } .shf-sidebar { display: none; } }
+
+/* Sidebar groups */
+.shf-sidebar { display: flex; flex-direction: column; gap: 0.4rem; }
+.shf-group { border-bottom: 1px solid var(--shf-border); padding: 0.4rem 0 1rem; }
+.shf-group > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; font-weight: 600; font-size: 0.92rem; }
+.shf-group > summary::-webkit-details-marker { display: none; }
+.shf-group > summary::after { content: '−'; color: var(--shf-muted); }
+.shf-group:not([open]) > summary::after { content: '+'; }
+.shf-group-body { display: flex; flex-direction: column; gap: 0.55rem; padding-top: 0.3rem; }
+
+/* Checkbox facet rows */
+.shf-check { display: flex; align-items: center; gap: 0.6rem; font-size: 0.88rem; color: var(--shf-fg); cursor: pointer; }
+.shf-check input { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; border: 1px solid var(--shf-border); border-radius: 5px; background: var(--shf-bg); cursor: pointer; flex: 0 0 auto; transition: background 0.15s ease, border-color 0.15s ease; }
+.shf-check input:checked { background: var(--shf-accent); border-color: var(--shf-accent); }
+.shf-check input:checked::after { content: '✓'; color: #fff; font-size: 0.72rem; display: grid; place-items: center; height: 100%; }
+.shf-check .shf-cnt { margin-left: auto; color: var(--shf-muted); font-size: 0.8rem; }
+
+/* Color swatch facets */
+.shf-swatch { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.shf-swatch i { width: 26px; height: 26px; border-radius: 50%; background: var(--c); cursor: pointer; box-shadow: 0 0 0 1px var(--shf-border); transition: box-shadow 0.15s ease, transform 0.15s ease; }
+.shf-swatch i:hover { transform: scale(1.1); }
+.shf-swatch i.is-on { box-shadow: 0 0 0 2px var(--shf-bg), 0 0 0 4px var(--shf-accent); }
+
+/* Size facets */
+.shf-size { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 0.5rem; }
+.shf-size button { padding: 0.5rem; border: 1px solid var(--shf-border); border-radius: 8px; background: var(--shf-bg); color: var(--shf-fg); font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+.shf-size button.is-on { background: var(--shf-fg); color: var(--shf-bg); border-color: var(--shf-fg); }
+.shf-size button:disabled { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+
+/* Price range (dual visual; pair with blocks/range-slider.js for logic) */
+.shf-range { padding-top: 0.4rem; }
+.shf-range-track { position: relative; height: 4px; background: var(--shf-border); border-radius: 2px; margin: 1.2rem 0.4rem; }
+.shf-range-fill { position: absolute; height: 100%; left: 20%; right: 25%; background: var(--shf-accent); border-radius: 2px; }
+.shf-range-knob { position: absolute; top: 50%; width: 16px; height: 16px; border-radius: 50%; background: #fff; transform: translate(-50%, -50%); box-shadow: 0 1px 4px rgba(0,0,0,0.4); cursor: grab; }
+.shf-range-vals { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--shf-muted); }
+
+/* Rating filter */
+.shf-rating { display: flex; flex-direction: column; gap: 0.4rem; }
+.shf-rating label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.85rem; color: var(--shf-muted); }
+.shf-rating .stars { color: #f5a623; letter-spacing: 1px; }
+.shf-rating label:hover { color: var(--shf-fg); }
+
+/* Load more + pagination */
+.shf-more { display: block; margin: 2rem auto 0; padding: 0.85rem 2rem; border: 1px solid var(--shf-border); border-radius: 999px; background: var(--shf-bg); color: var(--shf-fg); font: inherit; font-weight: 600; cursor: pointer; }
+.shf-more:hover { border-color: var(--shf-fg); }
+.shf-pagination { display: flex; justify-content: center; gap: 0.4rem; margin-top: 2rem; }
+.shf-pagination button { min-width: 38px; height: 38px; border: 1px solid var(--shf-border); border-radius: 9px; background: var(--shf-bg); color: var(--shf-fg); font: inherit; cursor: pointer; }
+.shf-pagination button.is-on { background: var(--shf-accent); border-color: var(--shf-accent); color: #fff; }
+
+/* Mobile filter sheet trigger + sheet */
+.shf-filter-btn { display: none; }
+@media (max-width: 820px) {
+  .shf-filter-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1rem; border: 1px solid var(--shf-border); border-radius: 10px; background: var(--shf-bg); color: var(--shf-fg); font: inherit; font-weight: 600; cursor: pointer; }
+}
+.shf-sheet { position: fixed; inset: 0; z-index: 150; background: rgba(0,0,0,0.5); display: none; }
+.shf-sheet.is-open { display: block; }
+.shf-sheet-panel { position: absolute; inset: 0 0 0 auto; width: min(360px, 90vw); background: var(--shf-bg); padding: 1.2rem; overflow-y: auto; }

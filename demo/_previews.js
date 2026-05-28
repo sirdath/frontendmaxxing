@@ -1357,6 +1357,87 @@
     document.head.appendChild(s);
   };
 
+  // ===== Phase eshop-pro previews =====
+  P['components/product-cards-pro.css'] = function (target) {
+    function card(opts) {
+      return '<article class="ppc ' + (opts.cls || '') + '" style="width:230px;">' +
+        '<div class="ppc-media">' + (opts.badge || '') + '<button class="ppc-wish ' + (opts.wish ? 'is-on' : '') + '"></button><button class="ppc-quick">' + (opts.quick || 'Quick add +') + '</button></div>' +
+        '<div class="ppc-body"><div class="ppc-brand">' + opts.brand + '</div><h3 class="ppc-name">' + opts.name + '</h3>' +
+        (opts.rating ? '<div class="ppc-rating"><span class="ppc-stars" style="--r:' + opts.rating + '"></span><span>' + opts.rev + '</span></div>' : '') +
+        '<div class="ppc-price"><span class="ppc-now">' + opts.now + '</span>' + (opts.was ? '<span class="ppc-was">' + opts.was + '</span>' : '') + '</div>' +
+        (opts.swatch ? '<div class="ppc-swatches"><i style="--c:#111" class="is-on"></i><i style="--c:#c44"></i><i style="--c:#46a"></i></div>' : '') +
+        (opts.stock ? '<div class="ppc-stock">Only 3 left</div>' : '') +
+        '</div></article>';
+    }
+    target.innerHTML = '<div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">' +
+      card({ brand: 'Aura', name: 'Gen 3 Headphones', rating: 4.5, rev: '(2.4k)', now: '$349', was: '$499', swatch: 1, wish: 1, badge: '<span class="ppc-badge ppc-badge-sale">-30%</span>' }) +
+      card({ brand: 'Lumen', name: 'Desk Lamp Pro', rating: 5, rev: '(311)', now: '$89', stock: 1, badge: '<span class="ppc-badge ppc-badge-new">New</span>' }) +
+      card({ cls: 'is-soldout', brand: 'Marrow', name: 'Leather Tote', now: '$220', quick: 'Notify me', badge: '<span class="ppc-badge ppc-badge-soldout">Sold out</span>' }) +
+    '</div>';
+  };
+
+  P['components/product-detail.css'] = function (target) {
+    target.innerHTML =
+      '<div class="pdt" style="background:#0e0e16;padding:1.4rem;border-radius:16px;max-width:860px;">' +
+        '<div class="pdt-gallery"><div class="pdt-main">main image</div><div class="pdt-thumbs"><div class="pdt-thumb is-on"></div><div class="pdt-thumb"></div><div class="pdt-thumb"></div></div></div>' +
+        '<div class="pdt-info">' +
+          '<div class="pdt-brand">Aura Audio</div><h1 class="pdt-title">Gen 3 Headphones</h1>' +
+          '<div class="pdt-rating"><span class="stars">★★★★★</span> 4.8 · 2,400 reviews</div>' +
+          '<div class="pdt-price"><span class="pdt-price-now">$349</span><span class="pdt-price-was">$499</span><span class="pdt-price-off">-30%</span></div>' +
+          '<div><div class="pdt-swatch-label">Color: <b>Midnight</b></div><div class="pdt-swatch"><i style="--c:#111" class="is-on"></i><i style="--c:#c0392b"></i><i style="--c:#2e5aa8"></i></div></div>' +
+          '<div><div class="pdt-sizes-head"><span>Size</span><a>Size guide</a></div><div class="pdt-sizes"><div class="pdt-size">S</div><div class="pdt-size is-on">M</div><div class="pdt-size">L</div><div class="pdt-size is-oos">XL</div></div></div>' +
+          '<div class="pdt-buy-row"><div class="pdt-qty"><button>−</button><input value="1"><button>+</button></div><button class="pdt-buy">Add to cart · $349</button><button class="pdt-buy-alt">♥</button></div>' +
+          '<div class="pdt-delivery">🚚 <span>Free delivery by <b>Thu</b> · order within <b>4h 12m</b></span></div>' +
+          '<div class="pdt-trust"><span>2-yr warranty</span><span>30-day returns</span><span>Secure checkout</span></div>' +
+        '</div>' +
+      '</div>';
+  };
+
+  P['components/cart-pro.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.8rem;">' +
+        '<button class="dapp-btn" data-cart-open>Open cart drawer →</button>' +
+        '<div style="font-size:0.72rem;color:rgba(255,255,255,0.45);font-family:ui-monospace,monospace;">slides in from the right · free-ship bar updates on qty change</div>' +
+        '<div class="cartx" id="demo-cart" hidden>' +
+          '<div class="cartx-scrim" data-cart-close></div>' +
+          '<aside class="cartx-panel">' +
+            '<header class="cartx-head"><h3>Your cart</h3><button data-cart-close>×</button></header>' +
+            '<div class="cartx-ship"><div class="cartx-ship-msg"></div><div class="cartx-ship-bar"><i></i></div></div>' +
+            '<div class="cartx-items">' +
+              '<div class="cartx-item" data-price="349"><div class="cartx-thumb"></div><div><div class="cartx-item-name">Gen 3 Headphones</div><div class="cartx-item-variant">Midnight</div><div class="cartx-qty"><button>−</button><span>1</span><button>+</button></div></div><div><div class="cartx-item-price">$349</div><button class="cartx-item-remove">Remove</button></div></div>' +
+              '<div class="cartx-item" data-price="29"><div class="cartx-thumb"></div><div><div class="cartx-item-name">Travel Case</div><div class="cartx-item-variant">Black</div><div class="cartx-qty"><button>−</button><span>1</span><button>+</button></div></div><div><div class="cartx-item-price">$29</div><button class="cartx-item-remove">Remove</button></div></div>' +
+            '</div>' +
+            '<footer class="cartx-foot"><div class="cartx-line"><span>Subtotal</span><span data-cart-subtotal>$378</span></div><div class="cartx-total"><span>Total</span><span data-cart-subtotal>$378</span></div><button class="cartx-checkout">Checkout</button><div class="cartx-note">Shipping &amp; taxes at checkout</div></footer>' +
+          '</aside>' +
+        '</div>' +
+      '</div>';
+    if (window.CartPro) window.CartPro.init('#demo-cart', { freeShip: 500, currency: '$' });
+  };
+
+  P['components/shop-filters.css'] = function (target) {
+    target.innerHTML =
+      '<div style="width:100%;max-width:820px;">' +
+        '<div class="shf-toolbar"><span class="shf-count"><b>248</b> products</span><div class="shf-toolbar-right"><div class="shf-sort"><select><option>Featured</option><option>Price ↑</option><option>Newest</option></select></div><div class="shf-view"><button class="is-on">▦</button><button>☰</button></div></div></div>' +
+        '<div class="shf-chips"><span class="shf-chip">Under $100 <button>×</button></span><span class="shf-chip">Black <button>×</button></span><span class="shf-chip">In stock <button>×</button></span><button class="shf-chip-clear">Clear all</button></div>' +
+        '<div class="shf-layout" style="margin-top:0.6rem;"><aside class="shf-sidebar">' +
+          '<details class="shf-group" open><summary>Category</summary><div class="shf-group-body"><label class="shf-check"><input type="checkbox" checked>Headphones<span class="shf-cnt">84</span></label><label class="shf-check"><input type="checkbox">Earbuds<span class="shf-cnt">52</span></label><label class="shf-check"><input type="checkbox">Speakers<span class="shf-cnt">31</span></label></div></details>' +
+          '<details class="shf-group" open><summary>Color</summary><div class="shf-group-body"><div class="shf-swatch"><i style="--c:#111" class="is-on"></i><i style="--c:#c0392b"></i><i style="--c:#2e5aa8"></i><i style="--c:#dcdcdc"></i><i style="--c:#16a34a"></i></div></div></details>' +
+          '<details class="shf-group" open><summary>Price</summary><div class="shf-group-body"><div class="shf-range"><div class="shf-range-track"><div class="shf-range-fill"></div><div class="shf-range-knob" style="left:20%"></div><div class="shf-range-knob" style="left:75%"></div></div><div class="shf-range-vals"><span>$20</span><span>$350</span></div></div></div></details>' +
+        '</aside><div class="shf-results" style="display:grid;place-items:center;min-height:200px;color:rgba(255,255,255,0.4);font-family:ui-monospace,monospace;font-size:0.8rem;border:1px dashed rgba(255,255,255,0.12);border-radius:12px;">product grid →</div></div>' +
+      '</div>';
+  };
+
+  P['components/shop-extras.css'] = function (target) {
+    target.innerHTML = '<div class="shx" style="display:flex;flex-direction:column;gap:1rem;width:100%;max-width:720px;">' +
+      '<div class="shx-shipbar">🚚 You\'re <b style="margin:0 .2rem">$22</b> away from free shipping <div class="shx-shipbar-bar"><i style="--p:72%"></i></div></div>' +
+      '<div class="shx-reviews"><div class="shx-reviews-score"><b>4.8</b><span class="stars">★★★★★</span><small>2,400 reviews</small></div><div>' +
+        ['5★|82','4★|12','3★|4','2★|1','1★|1'].map(function (r) { var p = r.split('|'); return '<div class="shx-bar-row"><span class="lbl">' + p[0] + '</span><div class="shx-bar"><i style="--p:' + p[1] + '%"></i></div><span class="cnt">' + p[1] + '%</span></div>'; }).join('') +
+      '</div></div>' +
+      '<div style="background:#14141d;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.4rem;"><div class="shx-track"><div class="shx-track-step is-done"><div class="shx-track-dot">✓</div><small>Ordered</small></div><div class="shx-track-step is-done"><div class="shx-track-dot">✓</div><small>Packed</small></div><div class="shx-track-step is-active"><div class="shx-track-dot">●</div><small>Shipped</small></div><div class="shx-track-step"><div class="shx-track-dot"></div><small>Delivered</small></div></div></div>' +
+      '<div class="s-cluster" style="display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;"><span class="shx-badge shx-badge-sale">-30%</span><span class="shx-badge shx-badge-new">New</span><span class="shx-badge shx-badge-best">Bestseller</span><span class="shx-badge shx-badge-low">Low stock</span><span class="shx-badge shx-badge-eco">Eco</span><span class="shx-coupon"><code>SAVE20</code><button>Copy</button></span></div>' +
+    '</div>';
+  };
+
   // ===== Structure (page architecture) previews =====
   P['structure/structure.css'] = function (target) {
     target.innerHTML =
