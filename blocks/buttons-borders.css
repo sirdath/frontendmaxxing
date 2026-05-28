@@ -1,0 +1,199 @@
+/* ============================================
+   BUTTONS BORDERS — Animated-border buttons (button-sized border tricks)
+   Inspired by uiverse.io + effects/borders-pack-2.css techniques
+   ============================================
+   Usage:
+     <button class="bdbtn bdbtn-marching">Deploy</button>
+
+   Variants: marching, conic, snake, draw, double, dashed-spin,
+             beam, glow-pulse, gradient-flow, brackets, neon-trace, sweep
+   Color presets: bdbtn-violet, bdbtn-cyan, bdbtn-emerald, bdbtn-rose
+   ============================================ */
+
+.bdbtn {
+  --bd-c1: #a855f7;
+  --bd-c2: #ec4899;
+  --bd-bg: #0e0e16;
+  --bd-fg: #f1f5f9;
+  --bd-w: 2px;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1.6rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--bd-fg);
+  background: var(--bd-bg);
+  border: var(--bd-w) solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+.bdbtn > * { position: relative; z-index: 2; }
+
+.bdbtn-violet  { --bd-c1: #a855f7; --bd-c2: #ec4899; }
+.bdbtn-cyan    { --bd-c1: #06b6d4; --bd-c2: #3b82f6; }
+.bdbtn-emerald { --bd-c1: #10b981; --bd-c2: #6ee7b7; }
+.bdbtn-rose    { --bd-c1: #f43f5e; --bd-c2: #f97316; }
+
+/* Marching ants — dashed border scrolls around */
+.bdbtn-marching {
+  border: 0;
+  background:
+    linear-gradient(var(--bd-bg), var(--bd-bg)) padding-box,
+    repeating-linear-gradient(90deg, var(--bd-c1) 0 8px, transparent 8px 16px) border-box;
+  border: var(--bd-w) solid transparent;
+  animation: bd-march 0.6s linear infinite;
+}
+@keyframes bd-march { to { background-position: 16px 0, 16px 0; } }
+
+/* Conic rotating border */
+.bdbtn-conic {
+  border: 0;
+  padding: calc(0.7rem + var(--bd-w)) calc(1.6rem + var(--bd-w));
+}
+.bdbtn-conic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--bd-w);
+  background: conic-gradient(from 0deg, var(--bd-c1), var(--bd-c2), var(--bd-c1));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: bd-spin 3s linear infinite;
+  z-index: 1;
+}
+@keyframes bd-spin { to { transform: rotate(1turn); } }
+
+/* Snake trace — a light segment runs the perimeter */
+.bdbtn-snake {
+  border: 0;
+  background: var(--bd-bg);
+}
+.bdbtn-snake::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--bd-w);
+  background: conic-gradient(from var(--a, 0deg), transparent 0 75%, var(--bd-c1) 90%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: bd-spin 2.2s linear infinite;
+  z-index: 1;
+}
+
+/* Draw on hover — two lines draw from corners to meet */
+.bdbtn-draw { border-color: transparent; }
+.bdbtn-draw::before,
+.bdbtn-draw::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+.bdbtn-draw::before { border-top: var(--bd-w) solid var(--bd-c1); border-right: var(--bd-w) solid var(--bd-c1); transform: scale(0) translate(50%, -50%); transform-origin: top right; }
+.bdbtn-draw::after  { border-bottom: var(--bd-w) solid var(--bd-c1); border-left: var(--bd-w) solid var(--bd-c1); transform: scale(0) translate(-50%, 50%); transform-origin: bottom left; }
+.bdbtn-draw:hover::before,
+.bdbtn-draw:hover::after { transform: scale(1) translate(0, 0); }
+
+/* Double line */
+.bdbtn-double {
+  border-color: var(--bd-c1);
+  box-shadow: 0 0 0 var(--bd-w) var(--bd-bg), 0 0 0 calc(var(--bd-w) * 2) var(--bd-c2);
+  transition: box-shadow 0.2s ease;
+}
+.bdbtn-double:hover { box-shadow: 0 0 0 var(--bd-w) var(--bd-bg), 0 0 0 calc(var(--bd-w) * 3) var(--bd-c2); }
+
+/* Dashed spin (the whole dashed ring rotates via stroke offset feel) */
+.bdbtn-dashed-spin {
+  border: var(--bd-w) dashed var(--bd-c1);
+  animation: bd-rotate-hue 4s linear infinite;
+}
+@keyframes bd-rotate-hue { to { filter: hue-rotate(360deg); } }
+
+/* Beam trail — gradient sweeps along top + bottom edges */
+.bdbtn-beam { border-color: rgba(255,255,255,0.12); overflow: hidden; }
+.bdbtn-beam::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--bd-c1), transparent);
+  width: 50%;
+  transform: translateX(-150%);
+  animation: bd-beam 2s linear infinite;
+  z-index: 1;
+  opacity: 0.6;
+}
+@keyframes bd-beam { to { transform: translateX(300%); } }
+
+/* Glow pulse border */
+.bdbtn-glow-pulse {
+  border-color: var(--bd-c1);
+  animation: bd-glow 1.6s ease-in-out infinite;
+}
+@keyframes bd-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--bd-c1) 60%, transparent); }
+  50%      { box-shadow: 0 0 14px 2px color-mix(in srgb, var(--bd-c1) 60%, transparent); }
+}
+
+/* Gradient flow — animated gradient border position */
+.bdbtn-gradient-flow {
+  border: 0;
+  background:
+    linear-gradient(var(--bd-bg), var(--bd-bg)) padding-box,
+    linear-gradient(90deg, var(--bd-c1), var(--bd-c2), var(--bd-c1)) border-box;
+  border: var(--bd-w) solid transparent;
+  background-size: 100% 100%, 200% 100%;
+  animation: bd-flow 3s linear infinite;
+}
+@keyframes bd-flow { to { background-position: 0 0, 200% 0; } }
+
+/* Corner brackets — only corners drawn, expand on hover */
+.bdbtn-brackets {
+  border: 0;
+  background: var(--bd-bg);
+  --br: 10px;
+}
+.bdbtn-brackets::before,
+.bdbtn-brackets::after {
+  content: '';
+  position: absolute;
+  width: var(--br); height: var(--br);
+  border: var(--bd-w) solid var(--bd-c1);
+  z-index: 1;
+  transition: width 0.25s ease, height 0.25s ease;
+}
+.bdbtn-brackets::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+.bdbtn-brackets::after  { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+.bdbtn-brackets:hover::before,
+.bdbtn-brackets:hover::after { width: 60%; height: 60%; }
+
+/* Neon trace — bright animated border + glow */
+.bdbtn-neon-trace {
+  border-color: var(--bd-c1);
+  color: var(--bd-c1);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--bd-c1) 70%, transparent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--bd-c1) 40%, transparent), inset 0 0 8px color-mix(in srgb, var(--bd-c1) 25%, transparent);
+  transition: box-shadow 0.2s ease;
+}
+.bdbtn-neon-trace:hover {
+  box-shadow: 0 0 18px color-mix(in srgb, var(--bd-c1) 70%, transparent), inset 0 0 14px color-mix(in srgb, var(--bd-c1) 40%, transparent);
+}
+
+/* Sweep — border color sweeps L→R on hover */
+.bdbtn-sweep {
+  border-image: linear-gradient(90deg, var(--bd-c1), var(--bd-c2)) 1;
+  background-size: 200% 100%;
+  transition: filter 0.3s ease;
+}
+.bdbtn-sweep:hover { filter: brightness(1.3); }

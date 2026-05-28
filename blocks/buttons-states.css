@@ -1,0 +1,136 @@
+/* ============================================
+   BUTTONS STATES — Stateful action buttons (loading / success / error / progress)
+   Inspired by uiverse.io + Stripe/Vercel submit buttons
+   ============================================
+   Drive states with the data-state attribute (or buttons-states.js).
+   Pairs with buttons-states.js for click→async→success flows, hold-to-
+   confirm, slide-to-confirm and download progress.
+
+   Usage:
+     <button class="sbtn sbtn-async" data-state="idle">
+       <span class="sbtn-label">Save changes</span>
+       <span class="sbtn-spinner"></span>
+       <svg class="sbtn-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+       <svg class="sbtn-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+     </button>
+     <script>ButtonStates.init('.sbtn-async');</script>
+
+   Variants: async, progress, download, hold, slide, multistep, copy
+   States (data-state): idle, loading, success, error
+   ============================================ */
+
+.sbtn {
+  --sbtn-bg: #6d28d9;
+  --sbtn-fg: #fff;
+  --sbtn-ok: #16a34a;
+  --sbtn-err: #dc2626;
+  --sbtn-track: rgba(255,255,255,0.25);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 160px;
+  padding: 0.7rem 1.4rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--sbtn-fg);
+  background: var(--sbtn-bg);
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition: background 0.25s ease, color 0.2s ease, min-width 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.sbtn:disabled { cursor: default; }
+
+.sbtn-label { transition: opacity 0.2s ease, transform 0.2s ease; }
+
+.sbtn-spinner, .sbtn-check, .sbtn-x { position: absolute; opacity: 0; pointer-events: none; }
+
+.sbtn-spinner {
+  width: 18px; height: 18px;
+  border: 2px solid var(--sbtn-track);
+  border-top-color: var(--sbtn-fg);
+  border-radius: 50%;
+}
+.sbtn-check, .sbtn-x { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* State transitions */
+.sbtn[data-state="loading"] { min-width: 56px; }
+.sbtn[data-state="loading"] .sbtn-label { opacity: 0; }
+.sbtn[data-state="loading"] .sbtn-spinner { opacity: 1; animation: sbtn-spin 0.7s linear infinite; }
+
+.sbtn[data-state="success"] { background: var(--sbtn-ok); min-width: 56px; }
+.sbtn[data-state="success"] .sbtn-label { opacity: 0; }
+.sbtn[data-state="success"] .sbtn-check { opacity: 1; stroke-dasharray: 30; stroke-dashoffset: 30; animation: sbtn-draw 0.4s ease forwards; }
+
+.sbtn[data-state="error"] { background: var(--sbtn-err); min-width: 56px; animation: sbtn-shake 0.4s ease; }
+.sbtn[data-state="error"] .sbtn-label { opacity: 0; }
+.sbtn[data-state="error"] .sbtn-x { opacity: 1; }
+
+@keyframes sbtn-spin { to { transform: rotate(1turn); } }
+@keyframes sbtn-draw { to { stroke-dashoffset: 0; } }
+@keyframes sbtn-shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 75%{transform:translateX(5px);} }
+
+/* Progress / download — fill bar grows behind the label */
+.sbtn-progress, .sbtn-download { --p: 0; }
+.sbtn-progress::before, .sbtn-download::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: calc(var(--p) * 1%);
+  background: rgba(255,255,255,0.22);
+  z-index: 0;
+  transition: width 0.2s ease;
+}
+.sbtn-progress > *, .sbtn-download > * { position: relative; z-index: 1; }
+.sbtn-download[data-state="success"]::before { width: 100%; background: rgba(255,255,255,0.15); }
+
+/* Hold-to-confirm — a ring/fill grows while pressed */
+.sbtn-hold { --p: 0; background: var(--sbtn-err); }
+.sbtn-hold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: calc(var(--p) * 1%);
+  background: rgba(0,0,0,0.28);
+  z-index: 0;
+  transition: width 0.05s linear;
+}
+.sbtn-hold > * { position: relative; z-index: 1; }
+.sbtn-hold[data-state="success"] { background: var(--sbtn-ok); }
+
+/* Slide-to-confirm — drag the knob to the right */
+.sbtn-slide {
+  --p: 0;
+  justify-content: flex-start;
+  padding: 4px;
+  background: #1f2230;
+  color: rgba(255,255,255,0.6);
+  min-width: 240px;
+  user-select: none;
+}
+.sbtn-slide .sbtn-label { width: 100%; text-align: center; pointer-events: none; }
+.sbtn-slide .sbtn-knob {
+  position: absolute;
+  left: 4px; top: 4px; bottom: 4px;
+  width: 46px;
+  border-radius: 8px;
+  background: var(--sbtn-bg);
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  cursor: grab;
+  transition: left 0.15s ease;
+}
+.sbtn-slide .sbtn-knob:active { cursor: grabbing; }
+.sbtn-slide[data-state="success"] { background: var(--sbtn-ok); color: #fff; }
+.sbtn-slide[data-state="success"] .sbtn-knob { background: rgba(255,255,255,0.25); }
+
+/* Multistep — label cycles through steps */
+.sbtn-multistep .sbtn-label { display: inline-block; }

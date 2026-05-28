@@ -1,0 +1,125 @@
+/* ============================================
+   BUTTONS HOVER-FILL — Background fills in from a direction on hover
+   Inspired by hover.css (IanLunn) + getCSSScan
+   ============================================
+   The label sits above a ::before fill layer that animates in on hover.
+   Swap fill/text colors via CSS vars.
+
+   Usage:
+     <button class="hfbtn hfbtn-left">Hover me</button>
+
+   Variants: left, right, top, bottom, center-h, center-v, circle,
+             diagonal, split-v, corner, stripe, center-out
+   Color presets: hfbtn-violet, hfbtn-emerald, hfbtn-rose, hfbtn-amber, hfbtn-sky
+   ============================================ */
+
+.hfbtn {
+  --hf-fg: #e9eaee;          /* idle text */
+  --hf-fg-hover: #0b0b12;    /* text once filled */
+  --hf-line: #a855f7;        /* outline + fill color */
+  --hf-bg: transparent;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1.6rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--hf-fg);
+  background: var(--hf-bg);
+  border: 2px solid var(--hf-line);
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 0.35s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hfbtn > * { position: relative; z-index: 1; }
+
+.hfbtn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--hf-line);
+  z-index: 0;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease, clip-path 0.4s ease;
+}
+
+.hfbtn:hover { color: var(--hf-fg-hover); }
+
+/* Color presets */
+.hfbtn-violet  { --hf-line: #a855f7; }
+.hfbtn-emerald { --hf-line: #10b981; }
+.hfbtn-rose    { --hf-line: #f43f5e; }
+.hfbtn-amber   { --hf-line: #f59e0b; --hf-fg-hover: #0b0b12; }
+.hfbtn-sky     { --hf-line: #0ea5e9; }
+
+/* Directional fills ------------------------------------------------ */
+.hfbtn-left::before    { transform: scaleX(0); transform-origin: left; }
+.hfbtn-left:hover::before { transform: scaleX(1); }
+
+.hfbtn-right::before   { transform: scaleX(0); transform-origin: right; }
+.hfbtn-right:hover::before { transform: scaleX(1); }
+
+.hfbtn-top::before     { transform: scaleY(0); transform-origin: top; }
+.hfbtn-top:hover::before { transform: scaleY(1); }
+
+.hfbtn-bottom::before  { transform: scaleY(0); transform-origin: bottom; }
+.hfbtn-bottom:hover::before { transform: scaleY(1); }
+
+.hfbtn-center-h::before { transform: scaleX(0); transform-origin: center; }
+.hfbtn-center-h:hover::before { transform: scaleX(1); }
+
+.hfbtn-center-v::before { transform: scaleY(0); transform-origin: center; }
+.hfbtn-center-v:hover::before { transform: scaleY(1); }
+
+/* Circle expand from center */
+.hfbtn-circle::before {
+  border-radius: 50%;
+  transform: scale(0);
+  transform-origin: center;
+}
+.hfbtn-circle:hover::before { transform: scale(1.6); border-radius: 0; }
+
+/* Center-out box (grows from a dot) */
+.hfbtn-center-out::before {
+  transform: scale(0);
+  transform-origin: center;
+}
+.hfbtn-center-out:hover::before { transform: scale(1); }
+
+/* Diagonal wipe */
+.hfbtn-diagonal::before {
+  transform: translateX(-100%) skewX(-18deg);
+  transform-origin: left;
+  width: 140%;
+  left: -20%;
+}
+.hfbtn-diagonal:hover::before { transform: translateX(0) skewX(-18deg); }
+
+/* Split vertical — two halves meet in the middle */
+.hfbtn-split-v::before {
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+}
+.hfbtn-split-v:hover::before {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Corner sweep (TL → BR) */
+.hfbtn-corner::before {
+  clip-path: polygon(0 0, 0 0, 0 0);
+}
+.hfbtn-corner:hover::before {
+  clip-path: polygon(0 0, 200% 0, 0 200%);
+}
+
+/* Stripe wipe — diagonal stripes sweep across */
+.hfbtn-stripe::before {
+  background: repeating-linear-gradient(45deg, var(--hf-line) 0 12px, color-mix(in srgb, var(--hf-line) 70%, #000) 12px 24px);
+  transform: translateX(-100%);
+}
+.hfbtn-stripe:hover::before { transform: translateX(0); }

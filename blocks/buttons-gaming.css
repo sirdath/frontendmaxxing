@@ -1,0 +1,174 @@
+/* ============================================
+   BUTTONS GAMING — RPG / fantasy / sci-fi / arcade / cyberpunk buttons
+   Inspired by game UI kits + uiverse.io
+   ============================================
+   Usage:
+     <button class="gmbtn gmbtn-fantasy">Start Quest</button>
+
+   Variants: fantasy, rpg-gold, sci-fi, cyberpunk, arcade, hologram,
+             energy, pixel-quest, neon-arcade, mech, health, mana
+   ============================================ */
+
+.gmbtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.8rem;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 0;
+  color: #fff;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.1s ease, filter 0.15s ease, box-shadow 0.15s ease;
+}
+.gmbtn:active { transform: translateY(2px); }
+
+/* Fantasy stone — carved tablet */
+.gmbtn-fantasy {
+  color: #f4e4bc;
+  background: linear-gradient(180deg, #6b5536, #4a3826);
+  border: 2px solid #2e2114;
+  border-radius: 8px;
+  box-shadow: inset 0 2px 0 rgba(255,230,180,0.25), inset 0 -3px 6px rgba(0,0,0,0.5), 0 4px 0 #2e2114;
+  text-shadow: 0 2px 2px rgba(0,0,0,0.6);
+  font-family: 'Georgia', serif;
+}
+.gmbtn-fantasy:active { box-shadow: inset 0 2px 0 rgba(255,230,180,0.25), inset 0 -2px 4px rgba(0,0,0,0.5), 0 1px 0 #2e2114; }
+
+/* RPG gold frame */
+.gmbtn-rpg-gold {
+  color: #4a3500;
+  background: linear-gradient(180deg, #ffe88a, #e0a824 55%, #b8801a);
+  border: 2px solid #8a5e0c;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 0 0 2px #5c3d08, 0 4px 0 #5c3d08, 0 0 14px rgba(224,168,36,0.5);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+
+/* Sci-fi HUD — clipped corners + scanline */
+.gmbtn-sci-fi {
+  color: #7ef9ff;
+  background: linear-gradient(180deg, rgba(20,40,60,0.95), rgba(10,25,40,0.95));
+  border: 1px solid #2bd4e6;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  box-shadow: inset 0 0 12px rgba(43,212,230,0.3), 0 0 12px rgba(43,212,230,0.4);
+  text-shadow: 0 0 6px rgba(126,249,255,0.8);
+}
+.gmbtn-sci-fi:hover { box-shadow: inset 0 0 18px rgba(43,212,230,0.5), 0 0 20px rgba(43,212,230,0.6); }
+
+/* Cyberpunk — glitchy clip + yellow/cyan */
+.gmbtn-cyberpunk {
+  color: #0b0b0b;
+  background: #fcee0a;
+  border: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 92% 100%, 0 100%);
+  font-weight: 800;
+  box-shadow: 4px 4px 0 #00f0ff;
+  transition: box-shadow 0.1s ease, transform 0.1s ease;
+}
+.gmbtn-cyberpunk:hover { box-shadow: 6px 6px 0 #ff003c; }
+.gmbtn-cyberpunk:active { transform: translate(4px,4px); box-shadow: 0 0 0 #00f0ff; }
+
+/* Arcade cabinet — chunky red button */
+.gmbtn-arcade {
+  color: #fff;
+  background: radial-gradient(circle at 50% 35%, #ff5b5b, #d11a1a 70%);
+  border: 0;
+  border-radius: 999px;
+  padding: 0.9rem 2rem;
+  box-shadow: 0 6px 0 #7a0f0f, inset 0 2px 4px rgba(255,255,255,0.4), 0 8px 14px rgba(0,0,0,0.4);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+.gmbtn-arcade:active { transform: translateY(4px); box-shadow: 0 2px 0 #7a0f0f, inset 0 2px 4px rgba(255,255,255,0.4); }
+
+/* Hologram — translucent flicker */
+.gmbtn-hologram {
+  color: #9af9ff;
+  background: linear-gradient(180deg, rgba(80,220,255,0.12), rgba(80,220,255,0.04));
+  border: 1px solid rgba(140,240,255,0.6);
+  border-radius: 6px;
+  box-shadow: 0 0 14px rgba(80,220,255,0.4), inset 0 0 14px rgba(80,220,255,0.2);
+  text-shadow: 0 0 8px rgba(154,249,255,0.9);
+  animation: gm-flicker 3s steps(20) infinite;
+}
+@keyframes gm-flicker { 0%,92%,100% { opacity: 1; } 94% { opacity: 0.7; } 96% { opacity: 0.95; } 98% { opacity: 0.6; } }
+
+/* Energy charge — glowing fill that pulses */
+.gmbtn-energy {
+  color: #fff;
+  background: linear-gradient(90deg, #7c3aed, #db2777);
+  background-size: 200% 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 18px rgba(219,39,119,0.6);
+  animation: gm-charge 2s linear infinite;
+}
+@keyframes gm-charge { to { background-position: 200% 0; } }
+
+/* Pixel quest — 8-bit RPG */
+.gmbtn-pixel-quest {
+  color: #fff;
+  background: #3b5dc9;
+  border: 0;
+  border-radius: 0;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  box-shadow: inset -4px -4px 0 #1d2f7a, inset 4px 4px 0 #6f8ce8, 0 0 0 4px #0b0f2e;
+  image-rendering: pixelated;
+}
+.gmbtn-pixel-quest:active { box-shadow: inset 4px 4px 0 #1d2f7a, inset -4px -4px 0 #6f8ce8, 0 0 0 4px #0b0f2e; }
+
+/* Neon arcade — bright outlined neon */
+.gmbtn-neon-arcade {
+  color: #ff2ec4;
+  background: #11041a;
+  border: 2px solid #ff2ec4;
+  border-radius: 8px;
+  text-shadow: 0 0 8px #ff2ec4;
+  box-shadow: 0 0 10px #ff2ec4, inset 0 0 10px rgba(255,46,196,0.4);
+  transition: all 0.15s ease;
+}
+.gmbtn-neon-arcade:hover { background: #ff2ec4; color: #11041a; box-shadow: 0 0 24px #ff2ec4; text-shadow: none; }
+
+/* Mech panel — industrial metal w/ rivets */
+.gmbtn-mech {
+  color: #d6dde6;
+  background: linear-gradient(180deg, #4a525e, #2b313a);
+  border: 1px solid #1a1e25;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), inset 0 0 0 1px rgba(0,0,0,0.4), 0 3px 0 #15181d;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.7);
+  padding-inline: 2.2rem;
+}
+.gmbtn-mech::before, .gmbtn-mech::after {
+  content: '';
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #9aa3b0, #2b313a);
+}
+.gmbtn-mech::before { left: 8px; }
+.gmbtn-mech::after  { right: 8px; }
+
+/* Health (green) + Mana (blue) potion-style */
+.gmbtn-health {
+  color: #eafff0;
+  background: linear-gradient(180deg, #34d399, #059669);
+  border: 2px solid #047857;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 0 14px rgba(52,211,153,0.5);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+.gmbtn-mana {
+  color: #eaf2ff;
+  background: linear-gradient(180deg, #60a5fa, #2563eb);
+  border: 2px solid #1d4ed8;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 0 14px rgba(96,165,250,0.5);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}

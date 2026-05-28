@@ -2870,3 +2870,50 @@ Ports of the most-requested Aceternity UI patterns the vault was missing. All va
 
 **following-pointer.js** `interactions/following-pointer.js` (JS, global: `FollowingPointer`) — tags: following-pointer cursor lerp smooth-follow label color data-attr notion aceternity
   `FollowingPointer.init('.fp-host', {label, color, smooth})`. Reads `data-label` / `data-color` from host. Renders the cursor in `<body>`, lerps toward real cursor.
+
+**Phase buttons-mega — 11 new button + button-family packs (~126 variants, 14 files). Sources: uiverse-io/galaxy, getCSSScan, hover.css, Magic UI**
+
+**buttons-social.css** `blocks/buttons-social.css` (CSS) — tags: button social-login oauth sign-in google apple github facebook x twitter linkedin microsoft discord spotify slack figma twitch amazon dropbox brand sso continue-with login uiverse
+  14 branded social-login buttons (`.sobtn-google` … `.sobtn-dropbox`) with slots for inline SVG logos + brand colors. Modifiers: dark, outline, pill, icon (icon-only), block (full-width), sm/lg. Common logo SVG paths included in the file header.
+
+**buttons-hover-fill.css** `blocks/buttons-hover-fill.css` (CSS) — tags: button hover-fill directional fill-on-hover slide left right top bottom center circle diagonal split stripe corner hover.css ianlunn getcssscan
+  12 directional background-fill-on-hover buttons (`.hfbtn-left/right/top/bottom/center-h/center-v/circle/center-out/diagonal/split-v/corner/stripe`). 5 color presets (violet/emerald/rose/amber/sky). Label sits above an animated ::before fill layer.
+
+**buttons-borders.css** `blocks/buttons-borders.css` (CSS) — tags: button animated-border marching-ants conic snake draw double dashed beam glow-pulse gradient-flow corner-brackets neon-trace sweep uiverse
+  12 button-specific animated borders (`.bdbtn-marching/conic/snake/draw/double/dashed-spin/beam/glow-pulse/gradient-flow/brackets/neon-trace/sweep`). Uses mask-composite for the ring tricks. 4 color presets.
+
+**buttons-shine.css** `blocks/buttons-shine.css` (CSS) — tags: button shine gloss sweep spotlight holographic foil metallic steel gold chrome iridescent laser wet glass satin prism getcssscan uiverse
+  12 gloss/shine buttons (`.shbtn-sweep/satin/spotlight/holo-foil/steel/gold/chrome/iridescent/laser/wet/glass-gloss/prism`). Hover sweep, auto-loop shine, cursor spotlight (`--mx/--my`), metallic & holographic finishes.
+
+**buttons-glass.css** `blocks/buttons-glass.css` (CSS) — tags: button glassmorphism glass frosted aqua osx web2.0 glossy aero vista tinted liquid ios depth bubble dark ghost backdrop-blur uiverse
+  10 glass-family buttons (`.glbtn-frosted/aqua/web2/aero/tinted/liquid/depth/bubble/dark/ghost`). Spans Apple Aqua (2001) → Vista Aero → Web2.0 gloss → iOS-18 liquid glass. Most want a colorful backdrop to show the blur.
+
+**buttons-gaming.css** `blocks/buttons-gaming.css` (CSS) — tags: button gaming rpg fantasy sci-fi hud cyberpunk arcade hologram energy pixel-quest neon mech health mana game-ui fantasy-stone
+  12 game-UI buttons (`.gmbtn-fantasy/rpg-gold/sci-fi/cyberpunk/arcade/hologram/energy/pixel-quest/neon-arcade/mech/health/mana`). Carved stone, gold frames, clipped HUD corners, arcade dome, holographic flicker, 8-bit, rivet panels.
+
+**button-groups.css** `blocks/button-groups.css` (CSS) — tags: button-group segmented-control split-button joined toggle-group pill-toggle toolbar radio-group vertical fab-stack ios bootstrap linear figma family
+  Button-family controls (`.bgrp-segmented/joined/split/toggle/pill-toggle/toolbar/radio/vertical/fab-stack`). iOS segmented, joined borders, split (main + caret), icon toolbar w/ separators, radio group, inline round FAB stack. Active = `.is-active`.
+
+**buttons-states.css** `blocks/buttons-states.css` (CSS) — tags: button state loading spinner success error progress download hold-to-confirm slide-to-confirm submit async data-state stripe uiverse
+  Stateful action buttons via `data-state` (idle/loading/success/error): `.sbtn-async` (spinner→tick), `.sbtn-progress`/`.sbtn-download` (fill bar via `--p`), `.sbtn-hold` (press-and-hold fill), `.sbtn-slide` (drag knob to confirm). Pairs with buttons-states.js.
+
+**buttons-states.js** `blocks/buttons-states.js` (JS, global: `ButtonStates`) — tags: button state machine async promise task loading success error hold slide progress download driver
+  `ButtonStates.init('.sbtn-async', {task, successHold})` runs a promise → success/error; also wires `.sbtn-hold` (holdTime + onConfirm) and `.sbtn-slide` (drag-to-confirm). Instance methods: setState, progress(0-100), reset.
+
+**buttons-text-fx.css** `blocks/buttons-text-fx.css` (CSS) — tags: button text-effect glitch scramble typing slide-swap char-stagger arrow marquee count label animation uiverse
+  Animated-label buttons. CSS-only: `.txbtn-glitch` (RGB split, needs data-text), `.txbtn-swap` (label slides up), `.txbtn-stagger` (letters lift, wrap in `<i>`), `.txbtn-arrow`, `.txbtn-marquee`. JS-driven: scramble, typing, count.
+
+**buttons-text-fx.js** `blocks/buttons-text-fx.js` (JS, global: `ButtonTextFx`) — tags: button text scramble decode typing count-up matrix hover trigger label driver
+  `ButtonTextFx.init('.txbtn-scramble')` decode-scramble on hover; also `.txbtn-typing` (typewriter) and `.txbtn-count` ({to, from, prefix, suffix}). Options: trigger (hover/click), speed, chars.
+
+**buttons-micro.css** `blocks/buttons-micro.css` (CSS) — tags: button micro-interaction confetti particle ripple squish jelly checkmark sparkle emoji shockwave click-effect celebrate uiverse
+  Click micro-interaction buttons (`.mibtn-confetti/particle/ripple/ripple-point/squish/jelly/checkmark/sparkle/emoji/shockwave`). CSS handles ripple/squish/jelly/checkmark-draw/shockwave; JS spawns confetti/particle/sparkle/emoji bursts.
+
+**buttons-micro.js** `blocks/buttons-micro.js` (JS, global: `ButtonMicro`) — tags: button confetti particle burst ripple checkmark sparkle emoji spawn click celebrate zero-dep
+  `ButtonMicro.init('.mibtn')` auto-detects the effect from the class and fires it on click. Confetti/particles are short-lived `<body>`-appended spans with gravity (no dependency). `data-emoji` sets the emoji burst glyph.
+
+**buttons-toggle.css** `blocks/buttons-toggle.css` (CSS) — tags: button toggle two-state like heart bookmark follow following mute play-pause theme star pin subscribe x youtube spotify github aria-pressed
+  Two-state morph buttons (`.tgbtn-like/bookmark/star/pin/follow/subscribe/mute/play/theme`). Heart fills + pops, follow swaps Following⇄Follow, subscribe goes red→grey, icons swap via `.tg-on-ico`/`.tg-off-ico`. State = `.is-on`.
+
+**buttons-toggle.js** `blocks/buttons-toggle.js` (JS, global: `ButtonToggle`) — tags: button toggle two-state like follow bookmark aria-pressed count-bump onToggle driver
+  `ButtonToggle.init('.tgbtn', {onToggle})` toggles `.is-on` + `aria-pressed`, auto-bumps a `.tg-count` (formats ≥1000 as `1.2k`). Instance: toggle(), set(on), isOn().

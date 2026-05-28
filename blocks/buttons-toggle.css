@@ -1,0 +1,108 @@
+/* ============================================
+   BUTTONS TOGGLE — Two-state morph buttons (like / bookmark / follow / mute …)
+   Inspired by Twitter/X, YouTube, Spotify, GitHub toggle buttons + uiverse.io
+   ============================================
+   State is the .is-on class (toggled by buttons-toggle.js or your own code).
+   Most use inline SVGs that swap fill/outline; follow/subscribe swap text.
+
+   Usage:
+     <button class="tgbtn tgbtn-like" aria-pressed="false">
+       <svg class="tg-ico" viewBox="0 0 24 24"><path d="…heart…"/></svg>
+       <span class="tg-count">128</span>
+     </button>
+     <script>ButtonToggle.init('.tgbtn');</script>
+
+   Variants: like, bookmark, follow, mute, play-pause, theme, star, pin, subscribe
+   ============================================ */
+
+.tgbtn {
+  --tg-bg: #16161f;
+  --tg-fg: #c8ccd6;
+  --tg-on: #ec4899;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--tg-fg);
+  background: var(--tg-bg);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.tgbtn:active { transform: scale(0.94); }
+
+.tg-ico { width: 18px; height: 18px; flex: 0 0 auto; transition: transform 0.25s cubic-bezier(0.3,1.4,0.5,1), fill 0.2s ease, stroke 0.2s ease; }
+
+/* Like / heart — fills + pops, count bumps */
+.tgbtn-like { --tg-on: #ec4899; }
+.tgbtn-like .tg-ico { fill: none; stroke: currentColor; stroke-width: 2; }
+.tgbtn-like.is-on { color: var(--tg-on); border-color: color-mix(in srgb, var(--tg-on) 50%, transparent); }
+.tgbtn-like.is-on .tg-ico { fill: var(--tg-on); stroke: var(--tg-on); transform: scale(1.2); animation: tg-pop 0.35s ease; }
+@keyframes tg-pop { 0%{transform:scale(1);} 45%{transform:scale(1.4);} 100%{transform:scale(1.2);} }
+
+/* Bookmark */
+.tgbtn-bookmark { --tg-on: #f59e0b; }
+.tgbtn-bookmark .tg-ico { fill: none; stroke: currentColor; stroke-width: 2; }
+.tgbtn-bookmark.is-on { color: var(--tg-on); }
+.tgbtn-bookmark.is-on .tg-ico { fill: var(--tg-on); stroke: var(--tg-on); }
+
+/* Star */
+.tgbtn-star { --tg-on: #facc15; }
+.tgbtn-star .tg-ico { fill: none; stroke: currentColor; stroke-width: 2; }
+.tgbtn-star.is-on { color: var(--tg-on); }
+.tgbtn-star.is-on .tg-ico { fill: var(--tg-on); stroke: var(--tg-on); transform: rotate(72deg) scale(1.1); }
+
+/* Pin */
+.tgbtn-pin { --tg-on: #06b6d4; }
+.tgbtn-pin.is-on { color: var(--tg-on); border-color: color-mix(in srgb, var(--tg-on) 50%, transparent); }
+.tgbtn-pin.is-on .tg-ico { fill: var(--tg-on); transform: rotate(-20deg); }
+
+/* Follow — text swaps Following ⇄ Follow, color flips */
+.tgbtn-follow {
+  --tg-on: #fff;
+  background: #fff;
+  color: #0b0b12;
+  border-color: #fff;
+  min-width: 96px;
+}
+.tgbtn-follow .tg-on-label  { display: none; }
+.tgbtn-follow .tg-off-label { display: inline; }
+.tgbtn-follow.is-on {
+  background: transparent;
+  color: var(--tg-fg);
+  border-color: rgba(255,255,255,0.25);
+}
+.tgbtn-follow.is-on .tg-on-label  { display: inline; }
+.tgbtn-follow.is-on .tg-off-label { display: none; }
+.tgbtn-follow.is-on:hover { color: #f43f5e; border-color: #f43f5e; }
+.tgbtn-follow.is-on:hover .tg-on-label::after { content: ' ✕'; }
+
+/* Subscribe — red YouTube-style; toggles to "Subscribed" grey */
+.tgbtn-subscribe {
+  background: #cc0000;
+  color: #fff;
+  border-color: #cc0000;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.tgbtn-subscribe .tg-on-label  { display: none; }
+.tgbtn-subscribe .tg-off-label { display: inline; }
+.tgbtn-subscribe.is-on { background: #2a2a35; border-color: #2a2a35; color: #c8ccd6; }
+.tgbtn-subscribe.is-on .tg-on-label  { display: inline; }
+.tgbtn-subscribe.is-on .tg-off-label { display: none; }
+
+/* Mute / play-pause / theme — icon morph via swapping which child shows */
+.tgbtn-mute .tg-on-ico, .tgbtn-play .tg-on-ico, .tgbtn-theme .tg-on-ico { display: none; }
+.tgbtn-mute.is-on .tg-on-ico,  .tgbtn-play.is-on .tg-on-ico,  .tgbtn-theme.is-on .tg-on-ico  { display: block; }
+.tgbtn-mute.is-on .tg-off-ico, .tgbtn-play.is-on .tg-off-ico, .tgbtn-theme.is-on .tg-off-ico { display: none; }
+.tgbtn-mute, .tgbtn-play, .tgbtn-theme { padding: 0.55rem; }   /* icon-only */
+.tgbtn-theme { --tg-on: #facc15; }
+.tgbtn-theme.is-on { color: var(--tg-on); }
+.tgbtn-play  { --tg-on: #10b981; }

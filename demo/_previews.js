@@ -1357,6 +1357,140 @@
     document.head.appendChild(s);
   };
 
+  // ===== Phase buttons-mega previews =====
+  function btnWrap(inner, opts) {
+    opts = opts || {};
+    var bg = opts.bg || 'transparent';
+    return '<div style="display:flex;flex-wrap:wrap;gap:0.8rem;align-items:center;justify-content:center;padding:1rem;border-radius:12px;background:' + bg + ';">' + inner + '</div>';
+  }
+
+  P['blocks/buttons-social.css'] = function (target) {
+    var GG = '<svg class="sobtn-ico" viewBox="0 0 24 24"><path fill="#4285F4" d="M22 12c0-.7-.1-1.4-.2-2H12v4h5.6a4.8 4.8 0 0 1-2 3.1v2.6h3.2A9.7 9.7 0 0 0 22 12z"/><path fill="#34A853" d="M12 22c2.7 0 4.9-.9 6.6-2.3l-3.2-2.6c-.9.6-2 .9-3.4.9-2.6 0-4.8-1.7-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 13.9a6 6 0 0 1 0-3.8V7.5H3.1a10 10 0 0 0 0 9z"/><path fill="#EA4335" d="M12 6.6c1.5 0 2.8.5 3.8 1.5l2.8-2.8A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 8.3 9.4 6.6 12 6.6z"/></svg>';
+    var GH = '<svg class="sobtn-ico" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>';
+    var X = '<svg class="sobtn-ico" viewBox="0 0 24 24"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1 9.4 12.5h-7.4l-5.8-7.6-6.6 7.6H.5l8.5-9.8L0 1.2h7.6l5.2 6.9zM17.6 20.6h2L6.5 3.2H4.3z"/></svg>';
+    target.innerHTML = btnWrap(
+      '<button class="sobtn sobtn-google">' + GG + '<span>Continue with Google</span></button>' +
+      '<button class="sobtn sobtn-github">' + GH + '<span>Continue with GitHub</span></button>' +
+      '<button class="sobtn sobtn-x">' + X + '<span>Sign in with X</span></button>' +
+      '<button class="sobtn sobtn-discord"><span>Discord</span></button>' +
+      '<button class="sobtn sobtn-spotify"><span>Spotify</span></button>' +
+      '<button class="sobtn sobtn-google sobtn-pill">' + GG + '<span>Pill</span></button>' +
+      '<button class="sobtn sobtn-github sobtn-icon">' + GH + '<span>GitHub</span></button>'
+    , { bg: 'linear-gradient(135deg,#1b1b2b,#0e0e16)' });
+  };
+
+  P['blocks/buttons-hover-fill.css'] = function (target) {
+    var v = ['left','right','top','bottom','center-h','circle','center-out','diagonal','split-v','corner','stripe'];
+    var colors = ['violet','emerald','rose','amber','sky'];
+    target.innerHTML = btnWrap(v.map(function (x, i) {
+      return '<button class="hfbtn hfbtn-' + x + ' hfbtn-' + colors[i % colors.length] + '">' + x + '</button>';
+    }).join(''), { bg: '#0e0e16' });
+  };
+
+  P['blocks/buttons-borders.css'] = function (target) {
+    var v = ['marching','conic','snake','draw','double','dashed-spin','beam','glow-pulse','gradient-flow','brackets','neon-trace','sweep'];
+    target.innerHTML = btnWrap(v.map(function (x) {
+      return '<button class="bdbtn bdbtn-' + x + '">' + x + '</button>';
+    }).join(''), { bg: '#08080e' });
+  };
+
+  P['blocks/buttons-shine.css'] = function (target) {
+    var v = ['sweep','satin','spotlight','holo-foil','steel','gold','chrome','iridescent','laser','wet','glass-gloss','prism'];
+    target.innerHTML = btnWrap(v.map(function (x) {
+      return '<button class="shbtn shbtn-' + x + '">' + x + '</button>';
+    }).join(''), { bg: 'linear-gradient(135deg,#1a1a2e,#0b0b14)' });
+  };
+
+  P['blocks/buttons-glass.css'] = function (target) {
+    var v = ['frosted','aqua','web2','aero','tinted','liquid','depth','bubble','dark','ghost'];
+    target.innerHTML = btnWrap(v.map(function (x) {
+      return '<button class="glbtn glbtn-' + x + '">' + x + '</button>';
+    }).join(''), { bg: 'radial-gradient(circle at 30% 20%,#6d28d9,#0b0b14 70%)' });
+  };
+
+  P['blocks/buttons-gaming.css'] = function (target) {
+    var v = ['fantasy','rpg-gold','sci-fi','cyberpunk','arcade','hologram','energy','pixel-quest','neon-arcade','mech','health','mana'];
+    target.innerHTML = btnWrap(v.map(function (x) {
+      return '<button class="gmbtn gmbtn-' + x + '">' + x.replace('-', ' ') + '</button>';
+    }).join(''), { bg: 'radial-gradient(circle at 50% 0%,#1a1030,#06060c 70%)' });
+  };
+
+  P['blocks/button-groups.css'] = function (target) {
+    target.innerHTML = btnWrap(
+      '<div style="display:flex;flex-direction:column;gap:1rem;align-items:center;">' +
+        '<div class="bgrp bgrp-segmented"><button class="bgrp-item is-active">Day</button><button class="bgrp-item">Week</button><button class="bgrp-item">Month</button></div>' +
+        '<div class="bgrp bgrp-joined"><button class="bgrp-item is-active">Left</button><button class="bgrp-item">Mid</button><button class="bgrp-item">Right</button></div>' +
+        '<div class="bgrp bgrp-split"><button class="bgrp-item">Deploy</button><button class="bgrp-item">▾</button></div>' +
+        '<div class="bgrp bgrp-pill-toggle"><button class="bgrp-item is-active">On</button><button class="bgrp-item">Off</button></div>' +
+        '<div class="bgrp bgrp-toolbar"><button class="bgrp-item is-active">B</button><button class="bgrp-item">I</button><span class="bgrp-sep"></span><button class="bgrp-item">↺</button><button class="bgrp-item">↻</button></div>' +
+        '<div class="bgrp bgrp-radio"><button class="bgrp-item is-active">Small</button><button class="bgrp-item">Medium</button><button class="bgrp-item">Large</button></div>' +
+      '</div>'
+    , { bg: '#0e0e16' });
+  };
+
+  P['blocks/buttons-states.js'] = function (target) {
+    var check = '<span class="sbtn-spinner"></span><svg class="sbtn-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><svg class="sbtn-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    target.innerHTML = btnWrap(
+      '<button class="sbtn sbtn-async"><span class="sbtn-label">Save changes</span>' + check + '</button>' +
+      '<button class="sbtn sbtn-async" data-demo="fail"><span class="sbtn-label">Will fail</span>' + check + '</button>' +
+      '<button class="sbtn sbtn-hold"><span class="sbtn-label">Hold to delete</span></button>' +
+      '<button class="sbtn sbtn-slide" style="min-width:240px;"><span class="sbtn-label">Slide to confirm →</span><span class="sbtn-knob">→</span></button>'
+    , { bg: '#0e0e16' });
+    if (window.ButtonStates) {
+      window.ButtonStates.init(target.querySelector('.sbtn-async:not([data-demo])'), { task: function () { return new Promise(function (r) { setTimeout(function () { r(true); }, 1200); }); } });
+      window.ButtonStates.init(target.querySelector('.sbtn-async[data-demo]'), { task: function () { return new Promise(function (r) { setTimeout(function () { r(false); }, 1200); }); } });
+      window.ButtonStates.init(target.querySelector('.sbtn-hold'), { holdTime: 1200 });
+      window.ButtonStates.init(target.querySelector('.sbtn-slide'));
+    }
+  };
+
+  P['blocks/buttons-text-fx.js'] = function (target) {
+    target.innerHTML = btnWrap(
+      '<button class="txbtn txbtn-glitch" data-text="Launch">Launch</button>' +
+      '<button class="txbtn txbtn-swap"><span data-hover="Let\'s go!">Get started</span></button>' +
+      '<button class="txbtn txbtn-stagger"><i>H</i><i>o</i><i>v</i><i>e</i><i>r</i></button>' +
+      '<button class="txbtn txbtn-arrow">Next<span class="tx-arrow">→</span></button>' +
+      '<button class="txbtn txbtn-scramble">Decrypt</button>' +
+      '<button class="txbtn txbtn-typing">Deploy now</button>' +
+      '<button class="txbtn txbtn-count">0</button>'
+    , { bg: '#0e0e16' });
+    if (window.ButtonTextFx) {
+      window.ButtonTextFx.init(target.querySelector('.txbtn-scramble'));
+      window.ButtonTextFx.init(target.querySelector('.txbtn-typing'), { text: 'Deploy now' });
+      window.ButtonTextFx.init(target.querySelector('.txbtn-count'), { to: 1280, prefix: '$', trigger: 'hover' });
+    }
+  };
+
+  P['blocks/buttons-micro.js'] = function (target) {
+    var check = '<span class="mi-label">Done?</span><span class="mi-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></span>';
+    target.innerHTML = btnWrap(
+      '<button class="mibtn mibtn-confetti">🎉 Celebrate</button>' +
+      '<button class="mibtn mibtn-particle">Pop</button>' +
+      '<button class="mibtn mibtn-sparkle">✦ Sparkle</button>' +
+      '<button class="mibtn mibtn-ripple-point">Ripple</button>' +
+      '<button class="mibtn mibtn-shockwave">Shockwave</button>' +
+      '<button class="mibtn mibtn-squish">Squish</button>' +
+      '<button class="mibtn mibtn-jelly">Jelly</button>' +
+      '<button class="mibtn mibtn-checkmark">' + check + '</button>' +
+      '<button class="mibtn mibtn-emoji" data-emoji="🔥">Fire</button>'
+    , { bg: '#0e0e16' });
+    if (window.ButtonMicro) window.ButtonMicro.init(target.querySelectorAll('.mibtn'));
+  };
+
+  P['blocks/buttons-toggle.js'] = function (target) {
+    var heart = '<svg class="tg-ico" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-8.5C.5 9 2 5.5 5.3 5.5c2 0 3.2 1.2 3.7 2 .5-.8 1.7-2 3.7-2C16 5.5 17.5 9 15.5 12.5 13 16.5 12 21 12 21z"/></svg>';
+    var book = '<svg class="tg-ico" viewBox="0 0 24 24"><path d="M6 4h12v16l-6-4-6 4z"/></svg>';
+    var star = '<svg class="tg-ico" viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9 6.8 19.2l1-5.8L3.5 9.2l5.9-.9z"/></svg>';
+    target.innerHTML = btnWrap(
+      '<button class="tgbtn tgbtn-like">' + heart + '<span class="tg-count">128</span></button>' +
+      '<button class="tgbtn tgbtn-bookmark">' + book + '<span>Save</span></button>' +
+      '<button class="tgbtn tgbtn-star">' + star + '<span>Star</span></button>' +
+      '<button class="tgbtn tgbtn-follow"><span class="tg-off-label">Follow</span><span class="tg-on-label">Following</span></button>' +
+      '<button class="tgbtn tgbtn-subscribe"><span class="tg-off-label">Subscribe</span><span class="tg-on-label">Subscribed</span></button>'
+    , { bg: '#0e0e16' });
+    if (window.ButtonToggle) window.ButtonToggle.init(target.querySelectorAll('.tgbtn'));
+  };
+
   // ===== Aceternity gap-fill: high-impact previews =====
 
   P['components/infinite-moving-cards.js'] = function (target) {

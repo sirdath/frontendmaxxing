@@ -1,0 +1,184 @@
+/* ============================================
+   BUTTONS SHINE — Gloss / shine-sweep / metallic / holographic buttons
+   Inspired by uiverse.io + getCSSScan + Pokémon-foil shaders
+   ============================================
+   Usage:
+     <button class="shbtn shbtn-sweep">Get started</button>
+
+   Variants: sweep, spotlight, holo-foil, steel, gold, chrome,
+             iridescent, laser, wet, glass-gloss, satin, prism
+   ============================================ */
+
+.shbtn {
+  --sh-fg: #fff;
+  --sh-accent: #a855f7;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.7rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--sh-fg);
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+.shbtn > * { position: relative; z-index: 2; }
+
+/* Diagonal shine sweep on hover */
+.shbtn-sweep {
+  background: linear-gradient(135deg, #6d28d9, #9333ea);
+  box-shadow: 0 6px 18px -6px rgba(147,51,234,0.6);
+}
+.shbtn-sweep::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 60%; height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.45), transparent);
+  transform: translateX(-180%) skewX(-20deg);
+  z-index: 1;
+}
+.shbtn-sweep:hover::before { transition: transform 0.7s ease; transform: translateX(280%) skewX(-20deg); }
+
+/* Looping auto-shine (no hover needed) */
+.shbtn-satin {
+  background: linear-gradient(135deg, #1e293b, #334155);
+}
+.shbtn-satin::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 50%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: translateX(-150%) skewX(-20deg);
+  animation: sh-satin 3.2s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes sh-satin { 0% { transform: translateX(-150%) skewX(-20deg); } 60%, 100% { transform: translateX(320%) skewX(-20deg); } }
+
+/* Spotlight follows cursor (set --mx/--my via JS, falls back to center) */
+.shbtn-spotlight {
+  --mx: 50%; --my: 50%;
+  background: #18181b;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.shbtn-spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120px circle at var(--mx) var(--my), color-mix(in srgb, var(--sh-accent) 55%, transparent), transparent 60%);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.shbtn-spotlight:hover::before { opacity: 1; }
+
+/* Holographic foil */
+.shbtn-holo-foil {
+  background:
+    linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.4) 40%, transparent 60%),
+    linear-gradient(60deg, #ff6ec4, #7873f5, #4ade80, #fcd34d, #ff6ec4);
+  background-size: 200% 200%, 300% 300%;
+  color: #1a1a2e;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+  animation: sh-holo 4s linear infinite;
+}
+@keyframes sh-holo { to { background-position: 200% 0, 300% 0; } }
+
+/* Brushed steel */
+.shbtn-steel {
+  color: #1a1a1f;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.04) 0 2px, rgba(255,255,255,0.05) 2px 4px),
+    linear-gradient(180deg, #f0f0f3, #c4c4cc 50%, #9a9aa3);
+  border: 1px solid #8a8a93;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.25);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* Gold */
+.shbtn-gold {
+  color: #4a3500;
+  background: linear-gradient(180deg, #fff4c2, #f5c542 45%, #c9962a);
+  border: 1px solid #b8860b;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 3px 8px -2px rgba(201,150,42,0.7);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+
+/* Chrome */
+.shbtn-chrome {
+  color: #11131a;
+  background: linear-gradient(180deg, #ffffff, #d7dbe3 48%, #aab0bd 52%, #e9ecf2);
+  border: 1px solid #98a0ad;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 2px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.25);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+}
+
+/* Iridescent (shifts hue with conic gradient) */
+.shbtn-iridescent {
+  color: #fff;
+  background: conic-gradient(from 0deg, #ff6ec4, #7873f5, #21d4fd, #b721ff, #ff6ec4);
+  background-size: 200% 200%;
+  animation: sh-iri 6s linear infinite;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+@keyframes sh-iri { to { transform: none; filter: hue-rotate(360deg); } }
+
+/* Laser sweep — thin bright line crosses */
+.shbtn-laser {
+  background: #0b0b12;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #e9eaee;
+}
+.shbtn-laser::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 3px;
+  left: -10%;
+  background: linear-gradient(180deg, transparent, var(--sh-accent), transparent);
+  box-shadow: 0 0 14px 3px var(--sh-accent);
+  animation: sh-laser 2.4s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes sh-laser { 0% { left: -10%; } 60%, 100% { left: 110%; } }
+
+/* Wet look — glossy top-half reflection */
+.shbtn-wet {
+  background: linear-gradient(180deg, #7c3aed, #5b21b6);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 6px 16px -6px rgba(124,58,237,0.7);
+}
+.shbtn-wet::before {
+  content: '';
+  position: absolute;
+  top: 1px; left: 1px; right: 1px;
+  height: 45%;
+  border-radius: 11px 11px 50% 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.04));
+  z-index: 1;
+}
+
+/* Glass gloss — frosted with top shine */
+.shbtn-glass-gloss {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+/* Prism — splits into RGB on hover */
+.shbtn-prism {
+  background: #0b0b12;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+  transition: text-shadow 0.2s ease;
+}
+.shbtn-prism:hover { text-shadow: -2px 0 #ff004d, 2px 0 #00e0ff; }

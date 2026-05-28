@@ -1,0 +1,108 @@
+/* ============================================
+   BUTTONS TEXT-FX — Animated-label buttons (glitch / scramble / typing / swap)
+   Inspired by uiverse.io + hover.css + creative-coding text effects
+   ============================================
+   Pure-CSS variants (glitch, slide-swap, char-stagger, arrow, marquee) work
+   on their own. JS-driven ones (scramble, typing, count) use buttons-text-fx.js.
+
+   Usage:
+     <button class="txbtn txbtn-glitch" data-text="Launch">Launch</button>
+     <button class="txbtn txbtn-swap"><span data-hover="Let's go!">Get started</span></button>
+     <button class="txbtn txbtn-scramble">Decrypt</button>  <!-- needs JS -->
+     <script>ButtonTextFx.init('.txbtn-scramble');  // also typing/count</script>
+
+   Variants: glitch, scramble, typing, swap, stagger, arrow, count, marquee
+   ============================================ */
+
+.txbtn {
+  --tx-bg: #0e0e16;
+  --tx-fg: #f1f5f9;
+  --tx-accent: #a855f7;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 1.6rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--tx-fg);
+  background: var(--tx-bg);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Glitch — RGB split + clip jitter on hover (needs data-text mirror) */
+.txbtn-glitch { position: relative; }
+.txbtn-glitch::before,
+.txbtn-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+}
+.txbtn-glitch:hover::before { opacity: 0.9; color: #00e0ff; animation: tx-glitch-1 0.35s steps(2) infinite; }
+.txbtn-glitch:hover::after  { opacity: 0.9; color: #ff004d; animation: tx-glitch-2 0.35s steps(2) infinite; }
+@keyframes tx-glitch-1 { 0%{clip-path:inset(0 0 70% 0);transform:translate(-2px,-1px);} 50%{clip-path:inset(40% 0 20% 0);transform:translate(2px,1px);} 100%{clip-path:inset(70% 0 0 0);transform:translate(-1px,1px);} }
+@keyframes tx-glitch-2 { 0%{clip-path:inset(60% 0 10% 0);transform:translate(2px,1px);} 50%{clip-path:inset(20% 0 50% 0);transform:translate(-2px,-1px);} 100%{clip-path:inset(0 0 80% 0);transform:translate(1px,-1px);} }
+
+/* Slide-swap — current label slides up, hover label slides in (use data-hover on inner span) */
+.txbtn-swap span {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.txbtn-swap span::after {
+  content: attr(data-hover);
+  position: absolute;
+  left: 0; top: 100%;
+  width: 100%;
+  color: var(--tx-accent);
+}
+.txbtn-swap:hover span { transform: translateY(-100%); }
+
+/* Char-stagger lift — letters jump on hover (wrap each letter in <i>) */
+.txbtn-stagger i { display: inline-block; font-style: normal; transition: transform 0.2s ease; }
+.txbtn-stagger:hover i { transform: translateY(-4px); color: var(--tx-accent); }
+.txbtn-stagger:hover i:nth-child(2) { transition-delay: 0.03s; }
+.txbtn-stagger:hover i:nth-child(3) { transition-delay: 0.06s; }
+.txbtn-stagger:hover i:nth-child(4) { transition-delay: 0.09s; }
+.txbtn-stagger:hover i:nth-child(5) { transition-delay: 0.12s; }
+.txbtn-stagger:hover i:nth-child(6) { transition-delay: 0.15s; }
+.txbtn-stagger:hover i:nth-child(7) { transition-delay: 0.18s; }
+.txbtn-stagger:hover i:nth-child(8) { transition-delay: 0.21s; }
+
+/* Arrow — label shifts left, arrow slides in from right */
+.txbtn-arrow { gap: 0.4rem; }
+.txbtn-arrow .tx-arrow {
+  width: 0; opacity: 0;
+  transform: translateX(-6px);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+.txbtn-arrow:hover .tx-arrow { width: 1em; opacity: 1; transform: translateX(0); }
+
+/* Marquee — label scrolls on hover (wrap text twice in .tx-marquee) */
+.txbtn-marquee { overflow: hidden; }
+.txbtn-marquee .tx-marquee { display: inline-flex; gap: 1.5rem; white-space: nowrap; }
+.txbtn-marquee:hover .tx-marquee { animation: tx-marq 1.2s linear infinite; }
+@keyframes tx-marq { to { transform: translateX(-50%); } }
+
+/* Scramble / typing / count — JS sets text; CSS just gives a mono caret feel */
+.txbtn-scramble, .txbtn-count { font-variant-numeric: tabular-nums; }
+.txbtn-typing::after {
+  content: '';
+  display: inline-block;
+  width: 1px; height: 1em;
+  margin-left: 2px;
+  background: currentColor;
+  animation: tx-caret 0.8s steps(1) infinite;
+  vertical-align: text-bottom;
+}
+@keyframes tx-caret { 50% { opacity: 0; } }

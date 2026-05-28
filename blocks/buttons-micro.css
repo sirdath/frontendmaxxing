@@ -1,0 +1,99 @@
+/* ============================================
+   BUTTONS MICRO — Click micro-interactions (confetti / particles / ripple / checkmark)
+   Inspired by uiverse.io + feedback/emoji-spree.js
+   ============================================
+   CSS provides the button chrome + ripple/squish/jelly/checkmark animation;
+   particle/confetti/sparkle/emoji bursts are spawned by buttons-micro.js.
+
+   Usage:
+     <button class="mibtn mibtn-confetti">Celebrate</button>
+     <script>ButtonMicro.init('.mibtn');</script>
+
+   Variants: confetti, particle, ripple, ripple-point, squish, jelly,
+             checkmark, sparkle, emoji (data-emoji="🎉"), shockwave
+   ============================================ */
+
+.mibtn {
+  --mi-bg: #6d28d9;
+  --mi-fg: #fff;
+  --mi-accent: #a855f7;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1.5rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--mi-fg);
+  background: var(--mi-bg);
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+.mibtn > * { position: relative; z-index: 1; }
+
+/* Ripple (center) + ripple-point (from click) — JS injects .mi-ripple span */
+.mi-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  z-index: 0;
+  animation: mi-ripple 0.6s ease-out forwards;
+}
+@keyframes mi-ripple { to { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+
+/* Squish on press */
+.mibtn-squish { transition: transform 0.12s cubic-bezier(0.4,0,0.2,1); }
+.mibtn-squish:active { transform: scale(0.9, 0.86); }
+
+/* Jelly wobble on click (JS toggles .is-jelly) */
+.mibtn-jelly.is-jelly { animation: mi-jelly 0.5s ease; }
+@keyframes mi-jelly {
+  0%{transform:scale(1,1);} 25%{transform:scale(1.12,0.86);}
+  45%{transform:scale(0.9,1.12);} 65%{transform:scale(1.06,0.94);}
+  100%{transform:scale(1,1);}
+}
+
+/* Checkmark draw — label fades, tick draws (JS toggles .is-done) */
+.mibtn-checkmark .mi-check {
+  width: 0; opacity: 0;
+  overflow: hidden;
+  transition: width 0.2s ease, opacity 0.2s ease;
+}
+.mibtn-checkmark.is-done { background: #16a34a; }
+.mibtn-checkmark.is-done .mi-check { width: 1.1em; opacity: 1; }
+.mibtn-checkmark.is-done .mi-label { opacity: 0.85; }
+.mi-check svg { width: 1.1em; height: 1.1em; fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; }
+.mibtn-checkmark.is-done .mi-check svg { animation: mi-draw 0.35s ease forwards; }
+@keyframes mi-draw { to { stroke-dashoffset: 0; } }
+
+/* Shockwave — expanding ring on click (JS injects .mi-wave) */
+.mi-wave {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 10px; height: 10px;
+  border: 2px solid rgba(255,255,255,0.7);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  z-index: 0;
+  animation: mi-wave 0.6s ease-out forwards;
+}
+@keyframes mi-wave { to { transform: translate(-50%, -50%) scale(14); opacity: 0; } }
+
+/* Particle / confetti / sparkle / emoji — particles are absolutely-placed
+   children appended to <body> by JS; they share this base */
+.mi-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform, opacity;
+}

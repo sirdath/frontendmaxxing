@@ -1,0 +1,144 @@
+/* ============================================
+   BUTTON GROUPS — Button-family controls: segmented, joined, split, toolbars
+   Inspired by iOS segmented control, Bootstrap btn-group, Linear/Figma toolbars
+   ============================================
+   Usage:
+     <div class="bgrp bgrp-segmented">
+       <button class="bgrp-item is-active">Day</button>
+       <button class="bgrp-item">Week</button>
+       <button class="bgrp-item">Month</button>
+     </div>
+
+   Variants: segmented, joined, split, toggle, pill-toggle, toolbar,
+             radio, vertical, fab-stack
+   ============================================ */
+
+.bgrp {
+  --bgrp-bg: #16161f;
+  --bgrp-fg: #c8ccd6;
+  --bgrp-active-bg: #2b2b3a;
+  --bgrp-active-fg: #fff;
+  --bgrp-accent: #a855f7;
+  --bgrp-border: rgba(255,255,255,0.1);
+
+  display: inline-flex;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+.bgrp-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--bgrp-fg);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.bgrp-item:hover { color: var(--bgrp-active-fg); }
+.bgrp-item.is-active { color: var(--bgrp-active-fg); }
+
+/* iOS-style segmented control — sliding active pill feel via active bg */
+.bgrp-segmented {
+  background: var(--bgrp-bg);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+.bgrp-segmented .bgrp-item { border-radius: 8px; }
+.bgrp-segmented .bgrp-item.is-active {
+  background: var(--bgrp-active-bg);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* Joined group — buttons share borders */
+.bgrp-joined .bgrp-item {
+  background: var(--bgrp-bg);
+  border: 1px solid var(--bgrp-border);
+  border-right-width: 0;
+}
+.bgrp-joined .bgrp-item:first-child { border-radius: 9px 0 0 9px; }
+.bgrp-joined .bgrp-item:last-child  { border-radius: 0 9px 9px 0; border-right-width: 1px; }
+.bgrp-joined .bgrp-item.is-active   { background: var(--bgrp-accent); color: #0b0b12; border-color: var(--bgrp-accent); }
+
+/* Split button — main action + dropdown caret */
+.bgrp-split .bgrp-item {
+  background: var(--bgrp-accent);
+  color: #0b0b12;
+}
+.bgrp-split .bgrp-item:first-child { border-radius: 9px 0 0 9px; padding-inline: 1.2rem; }
+.bgrp-split .bgrp-item:last-child  { border-radius: 0 9px 9px 0; padding-inline: 0.6rem; border-left: 1px solid rgba(0,0,0,0.25); }
+.bgrp-split .bgrp-item:hover { filter: brightness(1.08); }
+
+/* Toggle group — multi-select, active filled */
+.bgrp-toggle {
+  background: var(--bgrp-bg);
+  border: 1px solid var(--bgrp-border);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+.bgrp-toggle .bgrp-item { border-radius: 8px; }
+.bgrp-toggle .bgrp-item.is-active { background: var(--bgrp-accent); color: #0b0b12; }
+
+/* Pill toggle — two-state on/off pill */
+.bgrp-pill-toggle {
+  background: var(--bgrp-bg);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 0;
+}
+.bgrp-pill-toggle .bgrp-item { border-radius: 999px; padding-inline: 1.2rem; }
+.bgrp-pill-toggle .bgrp-item.is-active { background: var(--bgrp-accent); color: #0b0b12; }
+
+/* Icon toolbar — icon-only grouped buttons + separators */
+.bgrp-toolbar {
+  background: var(--bgrp-bg);
+  border: 1px solid var(--bgrp-border);
+  border-radius: 10px;
+  padding: 4px;
+  gap: 2px;
+  align-items: center;
+}
+.bgrp-toolbar .bgrp-item { padding: 0.5rem; border-radius: 7px; }
+.bgrp-toolbar .bgrp-item.is-active { background: var(--bgrp-active-bg); color: var(--bgrp-accent); }
+.bgrp-toolbar .bgrp-sep { width: 1px; align-self: stretch; margin: 4px 3px; background: var(--bgrp-border); }
+
+/* Radio button group — outlined, single-select */
+.bgrp-radio { gap: 0.5rem; }
+.bgrp-radio .bgrp-item {
+  border: 1px solid var(--bgrp-border);
+  border-radius: 8px;
+  background: transparent;
+}
+.bgrp-radio .bgrp-item.is-active {
+  border-color: var(--bgrp-accent);
+  background: color-mix(in srgb, var(--bgrp-accent) 14%, transparent);
+  color: var(--bgrp-active-fg);
+  box-shadow: inset 0 0 0 1px var(--bgrp-accent);
+}
+
+/* Vertical */
+.bgrp-vertical { flex-direction: column; }
+.bgrp-vertical.bgrp-joined .bgrp-item { border-right-width: 1px; border-bottom-width: 0; }
+.bgrp-vertical.bgrp-joined .bgrp-item:first-child { border-radius: 9px 9px 0 0; }
+.bgrp-vertical.bgrp-joined .bgrp-item:last-child  { border-radius: 0 0 9px 9px; border-bottom-width: 1px; }
+
+/* FAB stack inline — round action buttons in a row */
+.bgrp-fab-stack { gap: 0.6rem; }
+.bgrp-fab-stack .bgrp-item {
+  width: 46px; height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--bgrp-bg);
+  border: 1px solid var(--bgrp-border);
+  box-shadow: 0 4px 12px -4px rgba(0,0,0,0.5);
+}
+.bgrp-fab-stack .bgrp-item:hover { background: var(--bgrp-active-bg); transform: translateY(-2px); }
+.bgrp-fab-stack .bgrp-item.is-active { background: var(--bgrp-accent); color: #0b0b12; }

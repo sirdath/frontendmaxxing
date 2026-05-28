@@ -1,0 +1,97 @@
+/* ============================================
+   BUTTONS SOCIAL — Branded social-login buttons with inline SVG logos
+   Inspired by official brand guidelines + uiverse.io
+   ============================================
+   Logos go inline as <svg class="sobtn-ico">…</svg>. This file ships the
+   button chrome (color, border, hover) per brand; paste the brand's SVG
+   path inside. Common logo paths are listed at the bottom of this comment.
+
+   Usage:
+     <button class="sobtn sobtn-google">
+       <svg class="sobtn-ico" viewBox="0 0 24 24"><!-- google paths --></svg>
+       <span>Continue with Google</span>
+     </button>
+
+   Brands: google, apple, github, facebook, x, linkedin, microsoft,
+           discord, spotify, slack, figma, twitch, amazon, dropbox
+   Modifiers: sobtn-dark, sobtn-outline, sobtn-pill, sobtn-icon (icon-only),
+              sobtn-block (full width), sobtn-sm, sobtn-lg
+   ============================================ */
+
+.sobtn {
+  --sobtn-bg: #fff;
+  --sobtn-fg: #1f2328;
+  --sobtn-border: #d0d7de;
+  --sobtn-hover: #f6f8fa;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.65rem 1.15rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--sobtn-fg);
+  background: var(--sobtn-bg);
+  border: 1px solid var(--sobtn-border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease, filter 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.sobtn:hover  { background: var(--sobtn-hover); }
+.sobtn:active { transform: translateY(1px); }
+.sobtn:focus-visible { outline: 2px solid var(--sobtn-fg); outline-offset: 2px; }
+
+.sobtn-ico { width: 18px; height: 18px; flex: 0 0 auto; display: block; }
+
+/* Modifiers */
+.sobtn-pill  { border-radius: 999px; }
+.sobtn-block { display: flex; width: 100%; }
+.sobtn-sm    { padding: 0.5rem 0.9rem; font-size: 0.82rem; }
+.sobtn-sm .sobtn-ico { width: 16px; height: 16px; }
+.sobtn-lg    { padding: 0.85rem 1.5rem; font-size: 1rem; }
+.sobtn-lg .sobtn-ico { width: 22px; height: 22px; }
+.sobtn-icon  { padding: 0.65rem; gap: 0; border-radius: 12px; }
+.sobtn-icon span { display: none; }
+
+/* Colored brand buttons (filled) ---------------------------------- */
+.sobtn-google    { --sobtn-bg: #fff;     --sobtn-fg: #1f2328; --sobtn-border: #dadce0; --sobtn-hover: #f7f8f8; }
+.sobtn-apple     { --sobtn-bg: #000;     --sobtn-fg: #fff;    --sobtn-border: #000;    --sobtn-hover: #1a1a1a; }
+.sobtn-github    { --sobtn-bg: #1f2328;  --sobtn-fg: #fff;    --sobtn-border: #1f2328; --sobtn-hover: #32383f; }
+.sobtn-facebook  { --sobtn-bg: #1877f2;  --sobtn-fg: #fff;    --sobtn-border: #1877f2; --sobtn-hover: #166fe0; }
+.sobtn-x         { --sobtn-bg: #000;     --sobtn-fg: #fff;    --sobtn-border: #000;    --sobtn-hover: #1a1a1a; }
+.sobtn-linkedin  { --sobtn-bg: #0a66c2;  --sobtn-fg: #fff;    --sobtn-border: #0a66c2; --sobtn-hover: #004182; }
+.sobtn-microsoft { --sobtn-bg: #fff;     --sobtn-fg: #1f2328; --sobtn-border: #8c8c8c; --sobtn-hover: #f3f3f3; }
+.sobtn-discord   { --sobtn-bg: #5865f2;  --sobtn-fg: #fff;    --sobtn-border: #5865f2; --sobtn-hover: #4752c4; }
+.sobtn-spotify   { --sobtn-bg: #1db954;  --sobtn-fg: #fff;    --sobtn-border: #1db954; --sobtn-hover: #1aa34a; }
+.sobtn-slack     { --sobtn-bg: #fff;     --sobtn-fg: #1f2328; --sobtn-border: #dadce0; --sobtn-hover: #f7f8f8; }
+.sobtn-figma     { --sobtn-bg: #1e1e1e;  --sobtn-fg: #fff;    --sobtn-border: #1e1e1e; --sobtn-hover: #2c2c2c; }
+.sobtn-twitch    { --sobtn-bg: #9146ff;  --sobtn-fg: #fff;    --sobtn-border: #9146ff; --sobtn-hover: #7d2df0; }
+.sobtn-amazon    { --sobtn-bg: #ff9900;  --sobtn-fg: #111;    --sobtn-border: #ff9900; --sobtn-hover: #e88b00; }
+.sobtn-dropbox   { --sobtn-bg: #0061ff;  --sobtn-fg: #fff;    --sobtn-border: #0061ff; --sobtn-hover: #0050d6; }
+
+/* Dark theme — translucent dark chrome, brand accent on icon/hover */
+.sobtn-dark {
+  --sobtn-bg: #16161d;
+  --sobtn-fg: #e9eaee;
+  --sobtn-border: rgba(255,255,255,0.14);
+  --sobtn-hover: #1f1f29;
+}
+
+/* Outline — brand-colored border + text, transparent fill */
+.sobtn-outline { background: transparent; }
+.sobtn-outline.sobtn-google    { --sobtn-fg: #5b667a; --sobtn-border: #c7ccd6; --sobtn-hover: rgba(0,0,0,0.04); }
+.sobtn-outline.sobtn-github     { --sobtn-fg: #1f2328; --sobtn-border: #1f2328; --sobtn-hover: rgba(31,35,40,0.06); }
+.sobtn-outline.sobtn-facebook   { --sobtn-fg: #1877f2; --sobtn-border: #1877f2; --sobtn-hover: rgba(24,119,242,0.08); }
+.sobtn-outline.sobtn-discord    { --sobtn-fg: #5865f2; --sobtn-border: #5865f2; --sobtn-hover: rgba(88,101,242,0.08); }
+.sobtn-outline.sobtn-spotify    { --sobtn-fg: #1db954; --sobtn-border: #1db954; --sobtn-hover: rgba(29,185,84,0.08); }
+.sobtn-outline.sobtn-twitch     { --sobtn-fg: #9146ff; --sobtn-border: #9146ff; --sobtn-hover: rgba(145,70,255,0.08); }
+
+/*  Inline SVG logo path reference (paste inside <svg class="sobtn-ico" viewBox="0 0 24 24">):
+    GitHub:  <path fill="currentColor" d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/>
+    X:       <path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1 9.4 12.5h-7.4l-5.8-7.6-6.6 7.6H.5l8.5-9.8L0 1.2h7.6l5.2 6.9zM17.6 20.6h2L6.5 3.2H4.3z"/>
+    Apple:   <path fill="currentColor" d="M16 1.6c.1 1-.3 2-.9 2.8-.7.8-1.7 1.4-2.7 1.3-.1-1 .4-2 1-2.7.7-.8 1.8-1.3 2.6-1.4zM19.6 17c-.5 1.2-.8 1.7-1.5 2.7-.9 1.4-2.2 3.1-3.8 3.1-1.4 0-1.8-.9-3.7-.9s-2.3.9-3.7.9c-1.6 0-2.8-1.5-3.8-2.9C.6 16.7.3 12 2 9.2c.9-1.4 2.4-2.3 3.9-2.3 1.5 0 2.5 1 3.7 1 1.2 0 1.9-1 3.7-1 1.3 0 2.7.7 3.7 2-3.2 1.8-2.7 6.4.6 8.1z"/>
+*/
