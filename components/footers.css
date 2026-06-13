@@ -269,3 +269,23 @@
     grid-column: 1 / -1;
   }
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .footer-inner, .footer-inner *, .footer-inner::before, .footer-inner::after,
+  .footer-brand, .footer-brand *, .footer-brand::before, .footer-brand::after,
+  .footer-group, .footer-group *, .footer-group::before, .footer-group::after,
+  .footer-bottom, .footer-bottom *, .footer-bottom::before, .footer-bottom::after,
+  .footer-social, .footer-social *, .footer-social::before, .footer-social::after,
+  .footer-columns, .footer-columns *, .footer-columns::before, .footer-columns::after,
+  .footer-mega, .footer-mega *, .footer-mega::before, .footer-mega::after,
+  .footer-newsletter, .footer-newsletter *, .footer-newsletter::before, .footer-newsletter::after,
+  .footer-minimal, .footer-minimal *, .footer-minimal::before, .footer-minimal::after,
+  .footer-cta-bar, .footer-cta-bar *, .footer-cta-bar::before, .footer-cta-bar::after,
+  .footer-wave, .footer-wave *, .footer-wave::before, .footer-wave::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

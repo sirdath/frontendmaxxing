@@ -317,3 +317,9 @@
   .btnp::before,
   .btnp::after { transition: none; animation: none; }
 }
+
+/* ── Accessibility: keyboard focus ring (added by a11y-codemod) ── */
+.btnp:focus-visible {
+  outline: var(--btnp-focus-width, 2px) solid var(--btnp-focus-color, #8b5cf6);
+  outline-offset: var(--btnp-focus-offset, 2px);
+}

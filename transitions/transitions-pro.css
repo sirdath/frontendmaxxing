@@ -1,0 +1,154 @@
+/* ============================================
+   TRANSITIONS PRO — overlay styles for the 6 transition effects
+   Inspired by codrops PageTransitions, swup/barba overlay themes
+   ============================================
+   Companion to transitions-pro.js (it builds the overlay + toggles data-phase).
+   The overlay covers the screen during cover, then uncovers during reveal.
+
+   Usage: driven by JS — TransitionsPro.run('circle', { onSwap });
+   Effects (class): txp-fade txp-circle txp-curtain txp-panels txp-diagonal txp-glitch
+   Tunables: --txp-color (overlay color) · --txp-dur · --txp-ease
+   ============================================ */
+
+@property --txp-clock { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+
+.txp-overlay {
+  --txp-color: #0b0b12;
+  --txp-dur: 600ms;
+  --txp-ease: cubic-bezier(0.76, 0, 0.24, 1);
+  --txp-stagger: 55ms;          /* mirrors STAGGER in transitions-pro.js */
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Scoped mode: confine the overlay to a positioned container (for demos / panels). */
+.txp-overlay.txp-scoped { position: absolute; z-index: 5; }
+
+/* ── fade ───────────────────────────────────── */
+.txp-fade { background: var(--txp-color); opacity: 0; }
+.txp-fade[data-phase="cover"]  { animation: txp-fade-in var(--txp-dur) var(--txp-ease) forwards; }
+.txp-fade[data-phase="reveal"] { opacity: 1; animation: txp-fade-out var(--txp-dur) var(--txp-ease) forwards; }
+@keyframes txp-fade-in  { to { opacity: 1; } }
+@keyframes txp-fade-out { to { opacity: 0; } }
+
+/* ── circle — iris wipe from centre ─────────── */
+.txp-circle { background: var(--txp-color); clip-path: circle(0% at 50% 50%); }
+.txp-circle[data-phase="cover"]  { animation: txp-circ-in var(--txp-dur) var(--txp-ease) forwards; }
+.txp-circle[data-phase="reveal"] { clip-path: circle(150% at 50% 50%); animation: txp-circ-out var(--txp-dur) var(--txp-ease) forwards; }
+@keyframes txp-circ-in  { to { clip-path: circle(150% at 50% 50%); } }
+@keyframes txp-circ-out { to { clip-path: circle(0% at 50% 50%); } }
+
+/* ── curtain — two halves close then open ───── */
+.txp-curtain { display: flex; }
+.txp-curtain .txp-part { flex: 1; background: var(--txp-color); transform: scaleX(0); }
+.txp-curtain .txp-part:nth-child(1) { transform-origin: left; }
+.txp-curtain .txp-part:nth-child(2) { transform-origin: right; }
+.txp-curtain[data-phase="cover"]  .txp-part { animation: txp-grow-x var(--txp-dur) var(--txp-ease) forwards; }
+.txp-curtain[data-phase="reveal"] .txp-part { transform: scaleX(1); animation: txp-shrink-x var(--txp-dur) var(--txp-ease) forwards; }
+@keyframes txp-grow-x   { to { transform: scaleX(1); } }
+@keyframes txp-shrink-x { to { transform: scaleX(0); } }
+
+/* ── panels — staggered vertical blinds ─────── */
+.txp-panels { display: flex; }
+.txp-panels .txp-part { flex: 1; background: var(--txp-color); transform: scaleY(0); transform-origin: top; }
+.txp-panels[data-phase="cover"]  .txp-part { animation: txp-grow-y var(--txp-dur) var(--txp-ease) forwards; animation-delay: calc(var(--i) * var(--txp-stagger)); }
+.txp-panels[data-phase="reveal"] .txp-part { transform: scaleY(1); transform-origin: bottom; animation: txp-shrink-y var(--txp-dur) var(--txp-ease) forwards; animation-delay: calc(var(--i) * var(--txp-stagger)); }
+@keyframes txp-grow-y   { to { transform: scaleY(1); } }
+@keyframes txp-shrink-y { to { transform: scaleY(0); } }
+
+/* ── diagonal — skewed sweep across ─────────── */
+.txp-diagonal { inset: 0 -20%; background: var(--txp-color); transform: translateX(-130%) skewX(-12deg); }
+.txp-diagonal[data-phase="cover"]  { animation: txp-diag-in var(--txp-dur) var(--txp-ease) forwards; }
+.txp-diagonal[data-phase="reveal"] { transform: translateX(0) skewX(-12deg); animation: txp-diag-out var(--txp-dur) var(--txp-ease) forwards; }
+@keyframes txp-diag-in  { to { transform: translateX(0) skewX(-12deg); } }
+@keyframes txp-diag-out { to { transform: translateX(130%) skewX(-12deg); } }
+
+/* ── glitch — RGB-split flash ───────────────── */
+.txp-glitch { background: var(--txp-color); opacity: 0; }
+.txp-glitch[data-phase="cover"]  { animation: txp-glitch-in var(--txp-dur) steps(8, jump-none) forwards; }
+.txp-glitch[data-phase="reveal"] { opacity: 1; animation: txp-glitch-out var(--txp-dur) steps(8, jump-none) forwards; }
+@keyframes txp-glitch-in {
+  0%   { opacity: 0; transform: translateX(-6px); box-shadow: 6px 0 #ec4899, -6px 0 #38bdf8; }
+  40%  { opacity: 1; transform: translateX(5px); box-shadow: -8px 0 #ec4899, 8px 0 #38bdf8; }
+  70%  { transform: translateX(-3px); box-shadow: 4px 0 #ec4899, -4px 0 #38bdf8; }
+  100% { opacity: 1; transform: translateX(0); box-shadow: none; }
+}
+@keyframes txp-glitch-out {
+  0%   { opacity: 1; transform: translateX(0); box-shadow: none; }
+  40%  { opacity: 1; transform: translateX(6px); box-shadow: 8px 0 #ec4899, -8px 0 #38bdf8; }
+  100% { opacity: 0; transform: translateX(-6px); box-shadow: -6px 0 #ec4899, 6px 0 #38bdf8; }
+}
+
+/* ── slide — clean push from the left ───────── */
+.txp-slide { background: var(--txp-color); transform: translateX(-101%); }
+.txp-slide[data-phase="cover"]  { animation: txp-slide-in var(--txp-dur) var(--txp-ease) forwards; }
+.txp-slide[data-phase="reveal"] { transform: translateX(0); animation: txp-slide-out var(--txp-dur) var(--txp-ease) forwards; }
+@keyframes txp-slide-in  { to { transform: translateX(0); } }
+@keyframes txp-slide-out { to { transform: translateX(101%); } }
+
+/* ── zoom — scale + blur dolly ──────────────── */
+.txp-zoom { background: var(--txp-color); opacity: 0; transform: scale(1.4); }
+.txp-zoom[data-phase="cover"]  { animation: txp-zoom-in var(--txp-dur) var(--txp-ease) forwards; }
+.txp-zoom[data-phase="reveal"] { opacity: 1; transform: scale(1); animation: txp-zoom-out var(--txp-dur) var(--txp-ease) forwards; }
+@keyframes txp-zoom-in  { to { opacity: 1; transform: scale(1); } }
+@keyframes txp-zoom-out { to { opacity: 0; transform: scale(0.7); filter: blur(14px); } }
+
+/* ── stripes — venetian blinds (alternating sides) ─ */
+.txp-stripes { --txp-stagger: 45ms; display: flex; flex-direction: column; }
+.txp-stripes .txp-part { flex: 1; background: var(--txp-color); transform: scaleX(0); }
+.txp-stripes .txp-part:nth-child(odd)  { transform-origin: left; }
+.txp-stripes .txp-part:nth-child(even) { transform-origin: right; }
+.txp-stripes[data-phase="cover"]  .txp-part { animation: txp-grow-x var(--txp-dur) var(--txp-ease) forwards; animation-delay: calc(var(--i) * var(--txp-stagger)); }
+.txp-stripes[data-phase="reveal"] .txp-part { transform: scaleX(1); animation: txp-shrink-x var(--txp-dur) var(--txp-ease) forwards; animation-delay: calc(var(--i) * var(--txp-stagger)); }
+
+/* ── rows — horizontal rows slide in from alternating sides ─ */
+.txp-rows { --txp-stagger: 60ms; display: flex; flex-direction: column; }
+.txp-rows .txp-part { flex: 1; background: var(--txp-color); transform: translateX(-101%); }
+.txp-rows .txp-part:nth-child(even) { transform: translateX(101%); }
+.txp-rows[data-phase="cover"]  .txp-part { animation: txp-slide-in var(--txp-dur) var(--txp-ease) forwards; animation-delay: calc(var(--i) * var(--txp-stagger)); }
+.txp-rows[data-phase="reveal"] .txp-part { transform: translateX(0); animation: txp-rowout-l var(--txp-dur) var(--txp-ease) forwards; animation-delay: calc(var(--i) * var(--txp-stagger)); }
+.txp-rows[data-phase="reveal"] .txp-part:nth-child(even) { animation-name: txp-rowout-r; }
+@keyframes txp-rowout-l { to { transform: translateX(-101%); } }
+@keyframes txp-rowout-r { to { transform: translateX(101%); } }
+
+/* ── blocks — mosaic of cells pops in/out in a sweep ─ */
+.txp-blocks { --txp-stagger: 16ms; display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 1fr; }
+.txp-blocks .txp-part { background: var(--txp-color); transform: scale(0); }
+.txp-blocks[data-phase="cover"]  .txp-part { animation: txp-pop-in var(--txp-dur) var(--txp-ease) forwards; animation-delay: calc(var(--i) * var(--txp-stagger)); }
+.txp-blocks[data-phase="reveal"] .txp-part { transform: scale(1.02); animation: txp-pop-out var(--txp-dur) var(--txp-ease) forwards; animation-delay: calc(var(--i) * var(--txp-stagger)); }
+@keyframes txp-pop-in  { to { transform: scale(1.02); } }
+@keyframes txp-pop-out { to { transform: scale(0); } }
+
+/* ── split — top & bottom halves slide together, then apart ── */
+.txp-split { display: flex; flex-direction: column; }
+.txp-split .txp-part { flex: 1; background: var(--txp-color); }
+.txp-split .txp-part:nth-child(1) { transform: translateY(-101%); }
+.txp-split .txp-part:nth-child(2) { transform: translateY(101%); }
+.txp-split[data-phase="cover"] .txp-part { animation: txp-slide-y0 var(--txp-dur) var(--txp-ease) forwards; }
+.txp-split[data-phase="reveal"] .txp-part:nth-child(1) { transform: translateY(0); animation: txp-up-out var(--txp-dur) var(--txp-ease) forwards; }
+.txp-split[data-phase="reveal"] .txp-part:nth-child(2) { transform: translateY(0); animation: txp-down-out var(--txp-dur) var(--txp-ease) forwards; }
+@keyframes txp-slide-y0 { to { transform: translateY(0); } }
+@keyframes txp-up-out { to { transform: translateY(-101%); } }
+@keyframes txp-down-out { to { transform: translateY(101%); } }
+
+/* ── flip — a 3D panel flips in to cover, flips out to reveal ── */
+.txp-flip { background: var(--txp-color); }
+.txp-flip[data-phase="cover"]  { animation: txp-flip-in var(--txp-dur) var(--txp-ease) forwards; }
+.txp-flip[data-phase="reveal"] { animation: txp-flip-out var(--txp-dur) var(--txp-ease) forwards; }
+@keyframes txp-flip-in  { from { transform: perspective(1400px) rotateX(-92deg); opacity: 0.2; } to { transform: perspective(1400px) rotateX(0); opacity: 1; } }
+@keyframes txp-flip-out { from { transform: perspective(1400px) rotateX(0); opacity: 1; } to { transform: perspective(1400px) rotateX(92deg); opacity: 0.2; } }
+
+/* ── clock — a radial conic wipe sweeps the overlay in/out ── */
+.txp-clock { background: var(--txp-color); -webkit-mask: conic-gradient(#000 var(--txp-clock, 0deg), transparent 0); mask: conic-gradient(#000 var(--txp-clock, 0deg), transparent 0); }
+.txp-clock[data-phase="cover"]  { animation: txp-clock-in var(--txp-dur) linear forwards; }
+.txp-clock[data-phase="reveal"] { --txp-clock: 360deg; animation: txp-clock-out var(--txp-dur) linear forwards; }
+@keyframes txp-clock-in  { from { --txp-clock: 0deg; } to { --txp-clock: 360deg; } }
+@keyframes txp-clock-out { from { --txp-clock: 360deg; } to { --txp-clock: 0deg; } }
+
+/* ── Accessibility: reduced-motion (JS already swaps instantly; hide overlay) ─ */
+@media (prefers-reduced-motion: reduce) {
+  .txp-overlay { display: none !important; }
+}

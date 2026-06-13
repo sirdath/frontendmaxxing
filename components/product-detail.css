@@ -119,3 +119,13 @@
 .pdt-accordion summary::after { content: '+'; color: var(--pdt-muted); font-size: 1.2rem; }
 .pdt-accordion details[open] summary::after { content: '−'; }
 .pdt-accordion p { padding-bottom: 1rem; color: var(--pdt-muted); font-size: 0.9rem; margin: 0; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .pdt, .pdt *, .pdt::before, .pdt::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

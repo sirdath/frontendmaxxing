@@ -394,3 +394,10 @@
 @media (prefers-reduced-motion: reduce) {
   .fp-step-pill > i, .fp-cap-box::before { transition: none; animation: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.fp-step, .fp-field, .fp-file, .fp-pwd, .fp-ac, .fp-cc, .fp-dep, .fp-cap) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.fp-step, .fp-field, .fp-file, .fp-pwd, .fp-ac, .fp-cc, .fp-dep, .fp-cap):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--fp-step-focus-width, 2px) solid var(--fp-step-focus-color, #8b5cf6);
+  outline-offset: var(--fp-step-focus-offset, 2px);
+}

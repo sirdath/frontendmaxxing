@@ -182,3 +182,13 @@
   transition: text-shadow 0.2s ease;
 }
 .shbtn-prism:hover { text-shadow: -2px 0 #ff004d, 2px 0 #00e0ff; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .shbtn, .shbtn *, .shbtn::before, .shbtn::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

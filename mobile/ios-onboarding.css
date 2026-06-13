@@ -131,3 +131,14 @@
 .ios-onb.ios-onb-light .ios-onb-dots span { background: rgba(60, 60, 67, 0.25); }
 .iph-light .ios-onb-dots span.is-active,
 .ios-onb.ios-onb-light .ios-onb-dots span.is-active { background: #000; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ios-onb, .ios-onb *, .ios-onb::before, .ios-onb::after,
+  .iph-light, .iph-light *, .iph-light::before, .iph-light::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

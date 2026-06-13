@@ -274,3 +274,10 @@
 @media (prefers-reduced-motion: reduce) {
   .ck-succ-tick { animation: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.ck-step, .ck-addr, .ck-pay, .ck-sum, .ck-disc, .ck-succ) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.ck-step, .ck-addr, .ck-pay, .ck-sum, .ck-disc, .ck-succ):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--ck-step-focus-width, 2px) solid var(--ck-step-focus-color, #8b5cf6);
+  outline-offset: var(--ck-step-focus-offset, 2px);
+}

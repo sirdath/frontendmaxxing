@@ -1,0 +1,34 @@
+/* ============================================
+   TASTE · DENSITY — spacing-rhythm presets (compact / normal / airy)
+   ============================================
+   Retunes the structure backbone's rhythm tokens together via ONE attribute,
+   so a whole page goes tighter or airier in a single switch. Layer on .struct.
+
+   Usage:
+     <body class="struct pal-saas-indigo" data-density="airy"> … </body>
+
+   Load AFTER structure/structure.css (these override --section-y/--gap/--gutter/--radius).
+   Values: compact · normal (= backbone default) · airy
+   ============================================ */
+
+[data-density="compact"] {
+  --section-y: clamp(2.2rem, 5vw, 4rem);
+  --gap:       clamp(0.7rem, 1.4vw, 1rem);
+  --gutter:    clamp(0.9rem, 3vw, 1.4rem);
+  --radius:    10px;
+  --radius-sm: 7px;
+}
+[data-density="normal"] {
+  --section-y: clamp(3.5rem, 8vw, 7rem);
+  --gap:       clamp(1rem, 2.2vw, 1.6rem);
+  --gutter:    clamp(1.1rem, 4vw, 2rem);
+  --radius:    16px;
+  --radius-sm: 10px;
+}
+[data-density="airy"] {
+  --section-y: clamp(4.5rem, 11vw, 9.5rem);
+  --gap:       clamp(1.4rem, 3vw, 2.4rem);
+  --gutter:    clamp(1.4rem, 5vw, 2.6rem);
+  --radius:    18px;
+  --radius-sm: 12px;
+}

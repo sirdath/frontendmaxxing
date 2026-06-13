@@ -246,3 +246,34 @@
     0 8px 8px rgba(0, 0, 0, 0.04),
     0 16px 16px rgba(0, 0, 0, 0.03);
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .shadow-sm, .shadow-sm *, .shadow-sm::before, .shadow-sm::after,
+  .shadow-md, .shadow-md *, .shadow-md::before, .shadow-md::after,
+  .shadow-lg, .shadow-lg *, .shadow-lg::before, .shadow-lg::after,
+  .shadow-xl, .shadow-xl *, .shadow-xl::before, .shadow-xl::after,
+  .shadow-layered, .shadow-layered *, .shadow-layered::before, .shadow-layered::after,
+  .shadow-dreamy, .shadow-dreamy *, .shadow-dreamy::before, .shadow-dreamy::after,
+  .shadow-sharp, .shadow-sharp *, .shadow-sharp::before, .shadow-sharp::after,
+  .shadow-brutal, .shadow-brutal *, .shadow-brutal::before, .shadow-brutal::after,
+  .shadow-neon-blue, .shadow-neon-blue *, .shadow-neon-blue::before, .shadow-neon-blue::after,
+  .shadow-neon-purple, .shadow-neon-purple *, .shadow-neon-purple::before, .shadow-neon-purple::after,
+  .shadow-neon-pink, .shadow-neon-pink *, .shadow-neon-pink::before, .shadow-neon-pink::after,
+  .shadow-neon-green, .shadow-neon-green *, .shadow-neon-green::before, .shadow-neon-green::after,
+  .shadow-neon-red, .shadow-neon-red *, .shadow-neon-red::before, .shadow-neon-red::after,
+  .shadow-neon-cyan, .shadow-neon-cyan *, .shadow-neon-cyan::before, .shadow-neon-cyan::after,
+  .shadow-neon-pulse, .shadow-neon-pulse *, .shadow-neon-pulse::before, .shadow-neon-pulse::after,
+  .shadow-neon-text, .shadow-neon-text *, .shadow-neon-text::before, .shadow-neon-text::after,
+  .shadow-long, .shadow-long *, .shadow-long::before, .shadow-long::after,
+  .shadow-inner, .shadow-inner *, .shadow-inner::before, .shadow-inner::after,
+  .shadow-sunken, .shadow-sunken *, .shadow-sunken::before, .shadow-sunken::after,
+  .shadow-neu, .shadow-neu *, .shadow-neu::before, .shadow-neu::after,
+  .shadow-colored, .shadow-colored *, .shadow-colored::before, .shadow-colored::after,
+  .shadow-hover, .shadow-hover *, .shadow-hover::before, .shadow-hover::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

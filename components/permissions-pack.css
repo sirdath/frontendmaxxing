@@ -245,3 +245,18 @@
 .pm-cmp-perms li::before { content: '✓'; position: absolute; left: 0; color: var(--p-good); font-weight: 700; }
 .pm-cmp-perms li.no { color: var(--p-muted); }
 .pm-cmp-perms li.no::before { content: '×'; color: var(--p-muted); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .pm-matrix, .pm-matrix *, .pm-matrix::before, .pm-matrix::after,
+  .pm-role, .pm-role *, .pm-role::before, .pm-role::after,
+  .pm-tree, .pm-tree *, .pm-tree::before, .pm-tree::after,
+  .pm-rdrop, .pm-rdrop *, .pm-rdrop::before, .pm-rdrop::after,
+  .pm-inline, .pm-inline *, .pm-inline::before, .pm-inline::after,
+  .pm-cmp, .pm-cmp *, .pm-cmp::before, .pm-cmp::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

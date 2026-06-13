@@ -240,3 +240,13 @@
     radial-gradient(circle at 30% 50%, rgba(139,92,246,0.2), transparent 50%),
     linear-gradient(135deg, #14141e, #1f1f2e);
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ls, .ls *, .ls::before, .ls::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

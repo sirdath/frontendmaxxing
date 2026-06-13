@@ -246,3 +246,25 @@
 .ft-sig-links { display: flex; gap: 1.2rem; }
 .ft-sig-links a { color: inherit; text-decoration: none; }
 .ft-sig-links a:hover { color: var(--f-fg); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ft-min, .ft-min *, .ft-min::before, .ft-min::after,
+  .ft-4col, .ft-4col *, .ft-4col::before, .ft-4col::after,
+  .ft-news, .ft-news *, .ft-news::before, .ft-news::after,
+  .ft-mega, .ft-mega *, .ft-mega::before, .ft-mega::after,
+  .ft-sticky, .ft-sticky *, .ft-sticky::before, .ft-sticky::after,
+  .ft-sig, .ft-sig *, .ft-sig::before, .ft-sig::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.ft-min, .ft-4col, .ft-news, .ft-mega, .ft-sticky, .ft-sig) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.ft-min, .ft-4col, .ft-news, .ft-mega, .ft-sticky, .ft-sig):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--ft-min-focus-width, 2px) solid var(--ft-min-focus-color, #8b5cf6);
+  outline-offset: var(--ft-min-focus-offset, 2px);
+}

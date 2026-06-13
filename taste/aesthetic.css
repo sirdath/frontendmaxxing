@@ -1,0 +1,124 @@
+/* ============================================
+   TASTE · AESTHETIC — master profiles (the one switch that sets the vibe)
+   ============================================
+   ONE attribute that coordinates type + motion + spacing + a small set of new
+   taste vars, so a whole page reads as a single deliberate aesthetic instead of
+   a bag of mismatched parts. Layer on .struct (+ a .pal-* for color). This is
+   the highest-level taste control — it writes the same vars that density.css /
+   motion.css / fonts.css do, so you usually need only this one attribute.
+
+   Usage:
+     <body class="struct pal-editorial-cream" data-aesthetic="editorial"> … </body>
+     <!-- override any single axis by also setting its own attribute: -->
+     <body class="struct pal-midnight" data-aesthetic="luxury" data-density="compact">
+
+   New (optional) vars each profile defines — existing snippets ignore them,
+   new/taste-aware ones can opt in:
+     --ts-accent-intensity   0..1  how loud accent usage should be
+     --ts-elevation          a ready box-shadow for raised surfaces
+     --ts-hover-lift         translateY for hover (e.g. -4px)
+
+   Profiles: minimal · editorial · energetic · luxury · playful · technical
+   Load AFTER structure/structure.css + colors/palettes.css.
+   ============================================ */
+
+[data-aesthetic] {
+  /* sensible defaults; each profile below overrides */
+  --ts-accent-intensity: 0.6;
+  --ts-elevation: 0 1px 2px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.16);
+  --ts-hover-lift: -3px;
+}
+
+/* ---- minimal — quiet, lots of air, restrained accent, snappy micro-motion ---- */
+[data-aesthetic="minimal"] {
+  --font-head: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --m-dur-fast: 90ms;  --m-dur: 140ms; --m-dur-slow: 200ms;
+  --m-ease: ease-out;  --m-stagger: 0ms;
+  --section-y: clamp(4.5rem, 11vw, 9.5rem);
+  --gap: clamp(1.4rem, 3vw, 2.4rem);
+  --gutter: clamp(1.4rem, 5vw, 2.6rem);
+  --radius: 12px; --radius-sm: 8px;
+  --ts-accent-intensity: 0.32;
+  --ts-elevation: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --ts-hover-lift: -2px;
+}
+
+/* ---- editorial — serif display, generous rhythm, calm confident motion ---- */
+[data-aesthetic="editorial"] {
+  --font-head: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --m-dur-fast: 120ms; --m-dur: 200ms; --m-dur-slow: 320ms;
+  --m-ease: cubic-bezier(0.2, 0.8, 0.2, 1); --m-stagger: 60ms;
+  --section-y: clamp(4rem, 9vw, 8rem);
+  --gap: clamp(1.2rem, 2.6vw, 2rem);
+  --gutter: clamp(1.2rem, 4.5vw, 2.3rem);
+  --radius: 14px; --radius-sm: 9px;
+  --ts-accent-intensity: 0.5;
+  --ts-elevation: 0 1px 2px rgba(0, 0, 0, 0.1), 0 10px 30px rgba(0, 0, 0, 0.12);
+  --ts-hover-lift: -3px;
+}
+
+/* ---- energetic — bold display, tight rhythm, loud accent, fast snap ---- */
+[data-aesthetic="energetic"] {
+  --font-head: 'Sora', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --m-dur-fast: 120ms; --m-dur: 200ms; --m-dur-slow: 320ms;
+  --m-ease: cubic-bezier(0.2, 0.9, 0.3, 1.2); --m-stagger: 60ms;
+  --section-y: clamp(3rem, 7vw, 6rem);
+  --gap: clamp(1rem, 2.2vw, 1.6rem);
+  --gutter: clamp(1.1rem, 4vw, 2rem);
+  --radius: 16px; --radius-sm: 10px;
+  --ts-accent-intensity: 0.92;
+  --ts-elevation: 0 2px 6px rgba(0, 0, 0, 0.18), 0 16px 40px rgba(0, 0, 0, 0.24);
+  --ts-hover-lift: -6px;
+}
+
+/* ---- luxury — high-contrast serif, airy, deep soft elevation, slow glide ---- */
+[data-aesthetic="luxury"] {
+  --font-head: 'Playfair Display', Georgia, serif;
+  --font-body: 'Jost', system-ui, sans-serif;
+  --m-dur-fast: 160ms; --m-dur: 260ms; --m-dur-slow: 480ms;
+  --m-ease: cubic-bezier(0.22, 1, 0.36, 1); --m-stagger: 90ms;
+  --section-y: clamp(4.5rem, 11vw, 9.5rem);
+  --gap: clamp(1.4rem, 3vw, 2.4rem);
+  --gutter: clamp(1.4rem, 5vw, 2.6rem);
+  --radius: 10px; --radius-sm: 6px;
+  --ts-accent-intensity: 0.58;
+  --ts-elevation: 0 2px 8px rgba(0, 0, 0, 0.14), 0 24px 60px rgba(0, 0, 0, 0.28);
+  --ts-hover-lift: -4px;
+}
+
+/* ---- playful — rounded geometric, bouncy spring, friendly loud accent ---- */
+[data-aesthetic="playful"] {
+  --font-head: 'Poppins', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+  --m-dur-fast: 160ms; --m-dur: 260ms; --m-dur-slow: 480ms;
+  --m-ease: cubic-bezier(0.34, 1.56, 0.64, 1); --m-stagger: 90ms;
+  --section-y: clamp(3.5rem, 8vw, 7rem);
+  --gap: clamp(1rem, 2.2vw, 1.6rem);
+  --gutter: clamp(1.1rem, 4vw, 2rem);
+  --radius: 22px; --radius-sm: 14px;
+  --ts-accent-intensity: 0.85;
+  --ts-elevation: 0 4px 10px rgba(0, 0, 0, 0.14), 0 18px 44px rgba(0, 0, 0, 0.2);
+  --ts-hover-lift: -6px;
+}
+
+/* ---- technical — grotesk/mono, compact, crisp edges, minimal motion ---- */
+[data-aesthetic="technical"] {
+  --font-head: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: ui-monospace, 'SF Mono', 'Menlo', monospace;
+  --m-dur-fast: 90ms; --m-dur: 140ms; --m-dur-slow: 200ms;
+  --m-ease: ease-out; --m-stagger: 0ms;
+  --section-y: clamp(2.2rem, 5vw, 4rem);
+  --gap: clamp(0.7rem, 1.4vw, 1rem);
+  --gutter: clamp(0.9rem, 3vw, 1.4rem);
+  --radius: 8px; --radius-sm: 5px;
+  --ts-accent-intensity: 0.55;
+  --ts-elevation: 0 1px 2px rgba(0, 0, 0, 0.16);
+  --ts-hover-lift: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aesthetic] { --m-dur-fast: 0.01ms; --m-dur: 0.01ms; --m-dur-slow: 0.01ms; --m-stagger: 0ms; }
+}

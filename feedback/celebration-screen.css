@@ -1,0 +1,337 @@
+/* ============================================
+   CELEBRATION SCREEN — Full-screen success / big-moment takeover
+   Inspired by Stripe checkout, Apple Pay sheets, Duolingo level-up
+   ============================================
+   The big-moment counterpart to success-checkmark (inline mark) and
+   achievement-popup (corner toast) — this one owns the whole viewport.
+   JS companion: feedback/celebration-screen.js (global CelebrationScreen)
+   builds this DOM and staggers the .is-in state classes.
+
+   Usage: (static markup with .is-in pre-applied; .cel--inline keeps it
+           inside a position:relative parent for embeds and demos)
+     <div style="position:relative;min-height:420px;overflow:hidden;border-radius:16px;">
+       <div class="cel cel--burst cel--inline is-in">
+         <div class="cel-rays"></div>
+         <div class="cel-stage">
+           <div class="cel-mark is-in"><svg viewBox="0 0 96 96" aria-hidden="true"><circle class="cel-mark-ring" cx="48" cy="48" r="44"></circle><path class="cel-mark-check" d="M30 50 L44 64 L68 36"></path></svg></div>
+           <h2 class="cel-title is-in">Order confirmed</h2>
+           <p class="cel-sub is-in">A receipt is on its way to your inbox</p>
+           <div class="cel-detail-card is-in">
+             <div class="cel-row"><span class="cel-row-label">Order</span><span class="cel-row-value">#FE-48211</span></div>
+             <div class="cel-row"><span class="cel-row-label">Total</span><span class="cel-row-value">$249.00</span></div>
+           </div>
+           <div class="cel-actions is-in">
+             <button class="cel-btn cel-btn--primary" type="button">View order</button>
+             <button class="cel-btn cel-btn--ghost" type="button">Continue</button>
+           </div>
+         </div>
+       </div>
+     </div>
+
+   Variants:
+     .cel--burst    — slow-rotating celebratory rays behind the mark
+     .cel--minimal  — flat backdrop, no glow, no rays
+     .cel--dark     — force the deep-dark scheme (ignores page tokens)
+     .cel--light    — airy light scheme
+     .cel--inline   — position:absolute, embeds in a relative parent
+   States:
+     .is-in on the root + on each child (JS staggers them in sequence)
+     .is-out on the root plays the exit choreography
+   Theming: default tokens inherit page palette vars (--bg --fg --muted
+   --ok from colors/palettes.css) with hex fallbacks baked in.
+   ============================================ */
+
+.cel {
+  --cel-bg: var(--bg, #070b14);
+  --cel-ink: var(--fg, #f4f7fb);
+  --cel-muted: var(--muted, rgba(225, 232, 245, 0.62));
+  --cel-accent: var(--ok, #34d399);
+  --cel-on-accent: #06281c;
+  --cel-glow: rgba(52, 211, 153, 0.14);          /* primary radial halo */
+  --cel-glow-2: rgba(129, 140, 248, 0.1);        /* secondary lower halo */
+  --cel-card-bg: rgba(255, 255, 255, 0.055);
+  --cel-card-border: rgba(255, 255, 255, 0.12);
+  --cel-card-shadow: 0 24px 50px -22px rgba(0, 0, 0, 0.55);
+  --cel-divider: rgba(255, 255, 255, 0.1);
+  --cel-ghost-border: rgba(255, 255, 255, 0.16);
+  --cel-ghost-hover: rgba(255, 255, 255, 0.07);
+  --cel-mark-size: 104px;
+  --cel-stroke: 3;
+  --cel-title-size: clamp(1.7rem, 4.5vw, 2.5rem);
+  --cel-sub-size: 1rem;
+  --cel-radius: 18px;
+  --cel-rise: 22px;                              /* entrance travel distance */
+  --cel-z: 9980;
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--cel-z);
+  display: grid;
+  place-items: center;
+  padding: clamp(1.2rem, 4vw, 3rem);
+  background:
+    radial-gradient(ellipse 120% 80% at 50% 30%, var(--cel-glow), transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50% 110%, var(--cel-glow-2), transparent 65%),
+    var(--cel-bg);
+  color: var(--cel-ink);
+  font-family: inherit;
+  text-align: center;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+.cel.is-in  { opacity: 1; }
+.cel.is-out { opacity: 0; transition: opacity 260ms ease 90ms; }
+
+.cel--inline { position: absolute; }
+
+/* ── Stage (content column) ───────────────── */
+.cel-stage {
+  position: relative;
+  z-index: 2;
+  width: min(440px, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 0.65rem;
+  transition: transform 320ms cubic-bezier(0.45, 0, 0.55, 1), opacity 320ms ease;
+}
+.cel.is-out .cel-stage { transform: translateY(-16px); opacity: 0; }
+
+/* ── Rays (burst variant) ─────────────────── */
+.cel-rays {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(150vmin, 1200px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  display: none;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 480ms ease;
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 62%);
+          mask-image: radial-gradient(circle, #000 0%, transparent 62%);
+}
+.cel--burst .cel-rays { display: block; }
+.cel.is-in .cel-rays  { opacity: 1; }
+.cel-rays::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    color-mix(in srgb, var(--cel-accent) 9%, transparent) 0deg 3deg,
+    transparent 3deg 8deg
+  );
+  /* 8° gradient period + 8° rotation per cycle = seamless slow spin
+     while the literal duration stays in the blessed set */
+  animation: cel-rays-spin 480ms linear infinite;
+}
+@keyframes cel-rays-spin { to { transform: rotate(8deg); } }
+
+/* ── Mark (JS injects the inline SVG) ─────── */
+.cel-mark {
+  position: relative;
+  width: var(--cel-mark-size);
+  height: var(--cel-mark-size);
+  margin-bottom: 0.6rem;
+  opacity: 0;
+  transform: translateY(calc(var(--cel-rise) * 0.5));
+  transition: opacity 320ms ease, transform 480ms cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.cel-mark.is-in { opacity: 1; transform: none; }
+.cel-mark svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 0 24px var(--cel-glow));
+}
+.cel-mark-ring {
+  fill: none;
+  stroke: var(--cel-accent);
+  stroke-width: var(--cel-stroke);
+  stroke-linecap: round;
+  stroke-dasharray: 277;          /* 2π × r44 */
+  stroke-dashoffset: 277;
+  transform-origin: center;
+  transform: rotate(-90deg);
+}
+.cel-mark.is-in .cel-mark-ring { animation: cel-ring-draw 480ms cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+.cel-mark-check {
+  fill: none;
+  stroke: var(--cel-accent);
+  stroke-width: calc(var(--cel-stroke) + 1);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 58;
+  stroke-dashoffset: 58;
+}
+.cel-mark.is-in .cel-mark-check { animation: cel-check-draw 320ms cubic-bezier(0.65, 0, 0.45, 1) 480ms forwards; }
+@keyframes cel-ring-draw  { to { stroke-dashoffset: 0; } }
+@keyframes cel-check-draw { to { stroke-dashoffset: 0; } }
+
+/* one-shot halo pop as the check lands */
+.cel-mark::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--cel-accent) 55%, transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+.cel-mark.is-in::after { animation: cel-halo 480ms ease-out 480ms forwards; }
+@keyframes cel-halo {
+  0%   { opacity: 0.8; transform: scale(0.82); }
+  100% { opacity: 0;   transform: scale(1.28); }
+}
+
+/* ── Title / subtitle (staggered rise-in) ─── */
+.cel-title {
+  margin: 0;
+  font-size: var(--cel-title-size);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  opacity: 0;
+  transform: translateY(var(--cel-rise));
+  transition: opacity 480ms ease, transform 480ms cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.cel-sub {
+  margin: 0;
+  font-size: var(--cel-sub-size);
+  line-height: 1.5;
+  color: var(--cel-muted);
+  max-width: 40ch;
+  opacity: 0;
+  transform: translateY(var(--cel-rise));
+  transition: opacity 480ms ease, transform 480ms cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.cel-title.is-in,
+.cel-sub.is-in { opacity: 1; transform: none; }
+
+/* ── Detail card (glass receipt) ──────────── */
+.cel-detail-card {
+  width: 100%;
+  margin-top: 0.9rem;
+  padding: 0.45rem 1.15rem;
+  background: var(--cel-card-bg);
+  border: 1px solid var(--cel-card-border);
+  border-radius: var(--cel-radius);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+          backdrop-filter: blur(18px) saturate(1.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), var(--cel-card-shadow);
+  text-align: left;
+  opacity: 0;
+  transform: translateY(calc(var(--cel-rise) * 1.3));
+  transition: opacity 480ms ease, transform 480ms cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.cel-detail-card.is-in { opacity: 1; transform: none; }
+.cel-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.4rem;
+  padding: 0.62rem 0;
+  font-size: 0.875rem;
+}
+.cel-row + .cel-row { border-top: 1px dashed var(--cel-divider); }
+.cel-row-label { color: var(--cel-muted); }
+.cel-row-value {
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+/* ── Actions ──────────────────────────────── */
+.cel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+  opacity: 0;
+  transform: translateY(var(--cel-rise));
+  transition: opacity 480ms ease, transform 480ms cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.cel-actions.is-in { opacity: 1; transform: none; }
+
+.cel-btn {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 0.72rem 1.5rem;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  color: var(--cel-ink);
+  background: transparent;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease,
+              background 160ms ease, border-color 160ms ease;
+}
+.cel-btn:focus-visible { outline: 2px solid var(--cel-accent); outline-offset: 3px; }
+.cel-btn:active { transform: translateY(0); }
+
+.cel-btn--primary {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--cel-accent) 88%, #fff), var(--cel-accent));
+  color: var(--cel-on-accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28),
+              0 10px 26px -10px color-mix(in srgb, var(--cel-accent) 65%, transparent);
+}
+.cel-btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28),
+              0 14px 32px -10px color-mix(in srgb, var(--cel-accent) 78%, transparent);
+}
+.cel-btn--ghost { border-color: var(--cel-ghost-border); }
+.cel-btn--ghost:hover { transform: translateY(-1px); background: var(--cel-ghost-hover); }
+
+/* ── Variants ─────────────────────────────── */
+.cel--minimal { background: var(--cel-bg); }
+.cel--minimal .cel-rays { display: none; }
+.cel--minimal .cel-mark svg { filter: none; }
+
+.cel--dark {
+  --cel-bg: #070b14;
+  --cel-ink: #f4f7fb;
+  --cel-muted: rgba(225, 232, 245, 0.62);
+  --cel-accent: #34d399;
+  --cel-card-bg: rgba(255, 255, 255, 0.055);
+  --cel-card-border: rgba(255, 255, 255, 0.12);
+  --cel-divider: rgba(255, 255, 255, 0.1);
+  --cel-ghost-border: rgba(255, 255, 255, 0.16);
+  --cel-ghost-hover: rgba(255, 255, 255, 0.07);
+}
+
+.cel--light {
+  --cel-bg: #f7f9fc;
+  --cel-ink: #101724;
+  --cel-muted: rgba(28, 38, 56, 0.62);
+  --cel-glow: rgba(52, 211, 153, 0.18);
+  --cel-glow-2: rgba(129, 140, 248, 0.14);
+  --cel-card-bg: rgba(255, 255, 255, 0.72);
+  --cel-card-border: rgba(16, 23, 36, 0.1);
+  --cel-card-shadow: 0 24px 50px -24px rgba(20, 30, 50, 0.22);
+  --cel-divider: rgba(16, 23, 36, 0.12);
+  --cel-ghost-border: rgba(16, 23, 36, 0.18);
+  --cel-ghost-hover: rgba(16, 23, 36, 0.06);
+}
+.cel--light .cel-detail-card { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), var(--cel-card-shadow); }
+
+/* ── Reduced motion: instant show ─────────── */
+@media (prefers-reduced-motion: reduce) {
+  .cel, .cel-stage, .cel-rays, .cel-rays::before, .cel-mark,
+  .cel-title, .cel-sub, .cel-detail-card, .cel-actions, .cel-btn {
+    transition: none !important;
+    animation: none !important;
+  }
+  .cel-mark-ring, .cel-mark-check {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+  .cel-mark.is-in::after { animation: none !important; display: none; }
+  .cel-btn:hover { transform: none; }
+}

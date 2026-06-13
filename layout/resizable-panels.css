@@ -82,3 +82,13 @@
 .rpan-handle.is-active::before { opacity: 1; }
 
 .rpan-no-handle .rpan-handle::before { display: none; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .rpan, .rpan *, .rpan::before, .rpan::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

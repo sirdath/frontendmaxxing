@@ -96,3 +96,13 @@
 }
 .awav-mini .awav-play { width: 28px; height: 28px; font-size: 0.75rem; }
 .awav-mini .awav-bars { height: 26px; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .awav, .awav *, .awav::before, .awav::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

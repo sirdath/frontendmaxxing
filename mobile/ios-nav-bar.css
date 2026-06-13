@@ -114,3 +114,14 @@
 .ios-nav.ios-nav-light { color: #000; }
 .ios-light .ios-nav.ios-nav-blur.is-collapsed,
 .ios-nav.ios-nav-light.is-collapsed { background: rgba(255, 255, 255, 0.78); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ios-nav, .ios-nav *, .ios-nav::before, .ios-nav::after,
+  .ios-light, .ios-light *, .ios-light::before, .ios-light::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

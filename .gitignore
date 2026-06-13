@@ -58,3 +58,6 @@ __pycache__/
 .cursor/
 *.tmp
 TODO.local.md
+
+# Atelier template — archival contact sheets (not used at runtime, ~70MB)
+templates/atelier/assets/catalog/sheets/

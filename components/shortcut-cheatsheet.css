@@ -229,3 +229,10 @@
 @media (prefers-reduced-motion: reduce) {
   .shc-modal, .shc-backdrop { transition: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.shc-backdrop, .shc-modal, .shc-head, .shc-title, .shc-subtitle, .shc-search, .shc-close, .shc-body, .shc-cols, .shc-group, .shc-row, .shc-label, .shc-keys, .shc-kbd, .shc-foot, .shc-cmd-style, .shc-empty) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.shc-backdrop, .shc-modal, .shc-head, .shc-title, .shc-subtitle, .shc-search, .shc-close, .shc-body, .shc-cols, .shc-group, .shc-row, .shc-label, .shc-keys, .shc-kbd, .shc-foot, .shc-cmd-style, .shc-empty):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--shc-backdrop-focus-width, 2px) solid var(--shc-backdrop-focus-color, #8b5cf6);
+  outline-offset: var(--shc-backdrop-focus-offset, 2px);
+}

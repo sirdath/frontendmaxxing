@@ -134,3 +134,17 @@
 
 /* Multistep — label cycles through steps */
 .sbtn-multistep .sbtn-label { display: inline-block; }
+
+/* ── Accessibility: keyboard focus ring + reduced-motion (added by a11y-codemod) ── */
+.sbtn:focus-visible {
+  outline: var(--sbtn-focus-width, 2px) solid var(--sbtn-focus-color, #8b5cf6);
+  outline-offset: var(--sbtn-focus-offset, 2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sbtn, .sbtn *, .sbtn::before, .sbtn::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

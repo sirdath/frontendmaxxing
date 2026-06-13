@@ -127,3 +127,14 @@
 .ios-picker.ios-picker-light .ios-picker-row.is-selected { color: #000; }
 .iph-light .ios-picker-selection,
 .ios-picker.ios-picker-light .ios-picker-selection { background: rgba(118, 118, 128, 0.18); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ios-picker, .ios-picker *, .ios-picker::before, .ios-picker::after,
+  .iph-light, .iph-light *, .iph-light::before, .iph-light::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

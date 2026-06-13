@@ -1,0 +1,75 @@
+/* ============================================
+   BUTTONS FX 2 — more creative button hovers (CSS) + particle burst (JS)
+   Inspired by uiverse, FABs, dribbble button micro-interactions
+   ============================================
+   Base class `bf2` + a variant. Works on <button>/<a>. Default focus ring kept.
+   The particle burst is opt-in via buttons-fx2.js.
+
+   Usage:
+     <link rel="stylesheet" href="blocks/buttons-fx2.css">
+     <button class="bf2 bf2-icon-rail">Download</button>
+     <button class="bf2 bf2-fab">★<span class="bf2-label">Favorite</span></button>
+     <button class="bf2 bf2-burst" data-button-fx="burst">Celebrate</button>
+     <script src="blocks/buttons-fx2.js"></script><script>ButtonFX.init('[data-button-fx]');</script>
+
+   Variants: bf2-icon-rail bf2-fab bf2-elastic bf2-spread bf2-stripe bf2-corner bf2-burst
+   Tunables: --bf2-c1 --bf2-c2 --bf2-dur --bf2-ease --bf2-radius
+   ============================================ */
+
+.bf2 {
+  --bf2-c1: #8b5cf6;
+  --bf2-c2: #ec4899;
+  --bf2-dur: 0.38s;
+  --bf2-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --bf2-radius: 10px;
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  padding: 0.7rem 1.4rem; border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05); color: #fff; border-radius: var(--bf2-radius);
+  font: inherit; font-weight: 600; cursor: pointer; overflow: hidden;
+  transition: transform var(--bf2-dur) var(--bf2-ease), letter-spacing var(--bf2-dur), box-shadow var(--bf2-dur), background var(--bf2-dur), border-color var(--bf2-dur), clip-path var(--bf2-dur) var(--bf2-ease);
+}
+
+/* icon-rail — a leading glyph slides in from a rail */
+.bf2-icon-rail::before { content: '↓'; display: inline-block; max-width: 0; opacity: 0; overflow: hidden; transition: all var(--bf2-dur) var(--bf2-ease); }
+.bf2-icon-rail:hover, .bf2-icon-rail:focus-visible { background: linear-gradient(120deg, var(--bf2-c1), var(--bf2-c2)); border-color: transparent; }
+.bf2-icon-rail:hover::before, .bf2-icon-rail:focus-visible::before { max-width: 1.4em; opacity: 1; margin-right: 0.3em; }
+
+/* fab — compact pill expands to reveal its label */
+.bf2-fab { border-radius: 999px; }
+.bf2-fab .bf2-label { max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; transition: all var(--bf2-dur) var(--bf2-ease); }
+.bf2-fab:hover .bf2-label, .bf2-fab:focus-visible .bf2-label { max-width: 9em; opacity: 1; margin-left: 0.35em; }
+.bf2-fab:hover, .bf2-fab:focus-visible { box-shadow: 0 10px 26px -10px rgba(139, 92, 246, 0.6); }
+
+/* elastic — springy squash bounce */
+.bf2-elastic:hover, .bf2-elastic:focus-visible { animation: bf2-elastic 0.6s var(--bf2-ease); }
+@keyframes bf2-elastic { 0% { transform: scale(1, 1); } 30% { transform: scale(1.12, 0.9); } 50% { transform: scale(0.94, 1.06); } 70% { transform: scale(1.03, 0.98); } 100% { transform: scale(1, 1); } }
+
+/* spread — letters spread with a glowing underline */
+.bf2-spread { box-shadow: inset 0 -2px 0 -1px transparent; }
+.bf2-spread:hover, .bf2-spread:focus-visible { letter-spacing: 0.14em; box-shadow: inset 0 -2px 0 0 var(--bf2-c1); text-shadow: 0 0 10px color-mix(in srgb, var(--bf2-c1) 60%, transparent); }
+
+/* stripe — animated diagonal hazard stripes */
+.bf2-stripe { background-image: repeating-linear-gradient(45deg, transparent 0 8px, rgba(255, 255, 255, 0.08) 8px 16px); background-size: 200% 200%; }
+.bf2-stripe:hover, .bf2-stripe:focus-visible { animation: bf2-stripe 0.9s linear infinite; border-color: var(--bf2-c1); }
+@keyframes bf2-stripe { to { background-position: 32px 0; } }
+
+/* corner — bevels two opposite corners on hover */
+.bf2-corner { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+.bf2-corner:hover, .bf2-corner:focus-visible {
+  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+  background: linear-gradient(120deg, var(--bf2-c1), var(--bf2-c2)); border-color: transparent;
+}
+
+/* burst — base style; the particles are spawned by buttons-fx2.js */
+.bf2-burst:hover, .bf2-burst:focus-visible { box-shadow: 0 8px 22px -10px var(--bf2-c1); }
+.bf2-particle { position: absolute; width: 7px; height: 7px; border-radius: 2px; pointer-events: none; z-index: 2; }
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .bf2, .bf2::before, .bf2::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

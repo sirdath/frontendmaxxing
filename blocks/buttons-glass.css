@@ -137,3 +137,13 @@
   border: 1px solid rgba(255,255,255,0.16);
 }
 .glbtn-ghost:hover { background: rgba(255,255,255,0.1); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .glbtn, .glbtn *, .glbtn::before, .glbtn::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

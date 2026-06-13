@@ -147,3 +147,20 @@
 }
 .apverify-cta:disabled { opacity: 0.35; cursor: not-allowed; }
 .apverify-cta:not(:disabled):active { transform: scale(0.985); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .apverify, .apverify *, .apverify::before, .apverify::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.apverify :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.apverify:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--apverify-focus-width, 2px) solid var(--apverify-focus-color, #8b5cf6);
+  outline-offset: var(--apverify-focus-offset, 2px);
+}

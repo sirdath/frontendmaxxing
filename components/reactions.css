@@ -113,3 +113,13 @@
 .rxn-floating:hover .rxn-picker { display: flex; }
 
 .rxn-pill .rxn-chip { padding: 0.15rem 0.45rem; font-size: 0.75rem; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .rxn, .rxn *, .rxn::before, .rxn::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

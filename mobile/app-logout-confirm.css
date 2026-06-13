@@ -191,3 +191,20 @@
   font-weight: 500;
   cursor: pointer;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .apconfirm, .apconfirm *, .apconfirm::before, .apconfirm::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.apconfirm :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.apconfirm:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--apconfirm-focus-width, 2px) solid var(--apconfirm-focus-color, #8b5cf6);
+  outline-offset: var(--apconfirm-focus-offset, 2px);
+}

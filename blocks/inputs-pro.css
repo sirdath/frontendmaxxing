@@ -250,3 +250,10 @@
 @media (prefers-reduced-motion: reduce) {
   .inpx-aurora::before { animation: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.inpx :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.inpx:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--inpx-focus-width, 2px) solid var(--inpx-focus-color, #8b5cf6);
+  outline-offset: var(--inpx-focus-offset, 2px);
+}

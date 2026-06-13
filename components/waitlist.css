@@ -73,3 +73,20 @@
 .wl-split .wl-in { max-width: 1000px; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; text-align: left; align-items: center; }
 .wl-split .wl-form { margin-inline: 0; } .wl-split .wl-visual { aspect-ratio: 4/3; border-radius: 18px; border: 1px solid var(--wl-border); background: linear-gradient(135deg, color-mix(in srgb, var(--wl-accent) 20%, transparent), transparent); }
 @media (max-width: 760px){ .wl-split .wl-in { grid-template-columns: 1fr; text-align: center; } .wl-split .wl-form { margin-inline: auto; } .wl-split .wl-visual { display: none; } }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .wl, .wl *, .wl::before, .wl::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.wl :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.wl:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--wl-focus-width, 2px) solid var(--wl-focus-color, #8b5cf6);
+  outline-offset: var(--wl-focus-offset, 2px);
+}

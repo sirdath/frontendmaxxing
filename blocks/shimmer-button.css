@@ -143,3 +143,9 @@
 @media (prefers-reduced-motion: reduce) {
   .shimmer-btn-spark { animation: none; }
 }
+
+/* ── Accessibility: keyboard focus ring (added by a11y-codemod) ── */
+.shimmer-btn:focus-visible {
+  outline: var(--shimmer-btn-focus-width, 2px) solid var(--shimmer-btn-focus-color, #8b5cf6);
+  outline-offset: var(--shimmer-btn-focus-offset, 2px);
+}

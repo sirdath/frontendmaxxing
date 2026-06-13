@@ -1,0 +1,60 @@
+/* ============================================
+   RADIOS UIVERSE — fancy radio buttons + selectable cards (CSS-only)
+   Inspired by uiverse.io community radios (re-implemented vanilla, MIT-spirit credit)
+   ============================================
+   Markup:
+     <label class="rdu rdu-grow">
+       <input type="radio" name="plan" class="rdu-input">
+       <span class="rdu-dot"></span>
+       <span class="rdu-label">Monthly</span>
+     </label>
+
+   Card variant wraps the whole label as a selectable card:
+     <label class="rdu rdu-card"><input type="radio" name="p" class="rdu-input">
+       <span class="rdu-dot"></span><span class="rdu-label">Pro plan</span></label>
+
+   Variants: rdu-grow rdu-fill rdu-square rdu-glow rdu-card
+   Tunables: --rdu-c1 --rdu-c2 --rdu-size --rdu-dur
+   ============================================ */
+
+.rdu {
+  --rdu-c1: #8b5cf6; --rdu-c2: #ec4899; --rdu-size: 22px; --rdu-dur: 0.3s;
+  display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; color: inherit;
+}
+.rdu-input { position: absolute; opacity: 0; width: 0; height: 0; }
+.rdu-dot {
+  position: relative; flex: 0 0 auto; width: var(--rdu-size); height: var(--rdu-size);
+  border: 2px solid rgba(255, 255, 255, 0.32); border-radius: 50%; display: grid; place-items: center;
+  transition: border-color var(--rdu-dur) ease, background var(--rdu-dur) ease, box-shadow var(--rdu-dur) ease;
+}
+.rdu-dot::after {
+  content: ''; width: 60%; height: 60%; border-radius: 50%;
+  background: linear-gradient(135deg, var(--rdu-c1), var(--rdu-c2)); transform: scale(0);
+  transition: transform var(--rdu-dur) cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+.rdu-input:checked ~ .rdu-dot { border-color: var(--rdu-c1); }
+.rdu-input:checked ~ .rdu-dot::after { transform: scale(1); }
+.rdu-input:focus-visible ~ .rdu-dot { outline: 2px solid var(--rdu-c1); outline-offset: 2px; }
+
+/* grow — default (inner dot grows) */
+
+/* fill — the whole disc fills */
+.rdu-fill .rdu-dot::after { width: 100%; height: 100%; }
+.rdu-fill .rdu-input:checked ~ .rdu-dot { border-color: transparent; }
+
+/* square — rounded square instead of circle */
+.rdu-square .rdu-dot { border-radius: 6px; }
+.rdu-square .rdu-dot::after { border-radius: 3px; }
+
+/* glow — neon halo when selected */
+.rdu-glow .rdu-input:checked ~ .rdu-dot { box-shadow: 0 0 8px var(--rdu-c1), 0 0 16px var(--rdu-c1); }
+
+/* card — the whole label becomes a selectable card (uses :has) */
+.rdu-card { padding: 0.75rem 1rem; border: 1.5px solid rgba(255, 255, 255, 0.14); border-radius: 12px; transition: border-color var(--rdu-dur), background var(--rdu-dur), box-shadow var(--rdu-dur); }
+.rdu-card:has(.rdu-input:checked) { border-color: var(--rdu-c1); background: color-mix(in srgb, var(--rdu-c1) 12%, transparent); box-shadow: 0 0 0 1px var(--rdu-c1); }
+.rdu-card:has(.rdu-input:focus-visible) { outline: 2px solid var(--rdu-c1); outline-offset: 2px; }
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .rdu-dot, .rdu-dot::after, .rdu-card { transition-duration: 0.01ms !important; }
+}

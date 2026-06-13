@@ -78,3 +78,13 @@
 .sts-pill.resolved { background: color-mix(in srgb, var(--s-ok) 16%, transparent); color: var(--s-ok); }
 .sts-pill.ongoing { background: color-mix(in srgb, var(--s-down) 16%, transparent); color: var(--s-down); }
 .sts-pill.monitoring { background: color-mix(in srgb, var(--s-info) 16%, transparent); color: var(--s-info); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .sts, .sts *, .sts::before, .sts::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,136 @@
+/* ============================================
+   LUXE HOVER — luxurious box / card hover effects (CSS-only)
+   Inspired by high-end editorial, gold-foil print, glassmorphism, awwwards
+   ============================================
+   Drop the base class `lux` + one variant on any box/card. Pure CSS — no JS.
+
+   Usage:
+     <link rel="stylesheet" href="effects/luxe-hover.css">
+     <div class="lux lux-gold-foil">…</div>
+     <div class="lux lux-glass">…</div>
+     <article class="lux lux-frame">…</article>
+
+   Variants: lux-gold-foil lux-glass lux-emboss lux-breathe lux-shimmer
+             lux-frame lux-rise lux-velvet lux-spotlight lux-tilt
+   Tunables: --lux-gold --lux-rose --lux-c1 --lux-c2 --lux-dur --lux-ease --lux-radius
+   ============================================ */
+
+.lux {
+  --lux-gold: #d4af37;
+  --lux-rose: #e8b4b8;
+  --lux-c1: #8b5cf6;
+  --lux-c2: #ec4899;
+  --lux-dur: 0.45s;
+  --lux-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --lux-radius: 16px;
+  position: relative;
+  border-radius: var(--lux-radius);
+  transition: transform var(--lux-dur) var(--lux-ease), box-shadow var(--lux-dur) var(--lux-ease),
+              border-color var(--lux-dur), filter var(--lux-dur);
+}
+
+/* 1. GOLD FOIL — holographic gold sheen sweeps across + gilt edge */
+.lux-gold-foil { overflow: hidden; }
+.lux-gold-foil::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 224, 138, 0.85) 50%,
+    rgba(255, 255, 255, 0.95) 53%, rgba(212, 175, 55, 0.6) 62%, transparent 72%);
+  transform: translateX(-130%); transition: transform 0.9s var(--lux-ease);
+}
+.lux-gold-foil:hover, .lux-gold-foil:focus-visible {
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.5), 0 16px 44px -18px rgba(212, 175, 55, 0.45);
+}
+.lux-gold-foil:hover::before, .lux-gold-foil:focus-visible::before { transform: translateX(130%); }
+
+/* 2. GLASS — frosted glass lifts, top highlight blooms */
+.lux-glass {
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.lux-glass::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0.55;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 42%);
+  transition: opacity var(--lux-dur);
+}
+.lux-glass:hover, .lux-glass:focus-visible {
+  transform: translateY(-4px); border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 22px 52px -22px rgba(0, 0, 0, 0.55);
+}
+.lux-glass:hover::after, .lux-glass:focus-visible::after { opacity: 1; }
+
+/* 3. EMBOSS — soft neumorphic relief deepens on lift */
+.lux-emboss { box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.4), -6px -6px 16px rgba(255, 255, 255, 0.04); }
+.lux-emboss:hover, .lux-emboss:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 10px 12px 30px rgba(0, 0, 0, 0.55), -8px -8px 24px rgba(255, 255, 255, 0.06);
+}
+
+/* 4. BREATHE — a precious-metal gradient border breathes while hovered */
+.lux-breathe::before {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: linear-gradient(120deg, var(--lux-gold), var(--lux-rose), var(--lux-gold));
+  background-size: 200% 200%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity var(--lux-dur);
+}
+.lux-breathe:hover::before, .lux-breathe:focus-visible::before { opacity: 1; animation: lux-breathe 3s ease-in-out infinite; }
+@keyframes lux-breathe { 0%, 100% { background-position: 0% 50%; filter: brightness(1); } 50% { background-position: 100% 50%; filter: brightness(1.35); } }
+
+/* 5. SHIMMER — continuous champagne shimmer over the surface */
+.lux-shimmer { overflow: hidden; }
+.lux-shimmer::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 232, 178, 0.25) 45%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 232, 178, 0.25) 55%, transparent 80%);
+  background-size: 220% 100%; transition: opacity var(--lux-dur);
+}
+.lux-shimmer:hover::before, .lux-shimmer:focus-visible::before { opacity: 1; animation: lux-shimmer 2.2s linear infinite; }
+@keyframes lux-shimmer { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+
+/* 6. FRAME — gilt corner brackets draw inward */
+.lux-frame::before, .lux-frame::after {
+  content: ''; position: absolute; width: 20px; height: 20px; border: 2px solid var(--lux-gold);
+  opacity: 0; transition: opacity var(--lux-dur) var(--lux-ease), transform var(--lux-dur) var(--lux-ease); pointer-events: none;
+}
+.lux-frame::before { top: 9px; left: 9px; border-right: 0; border-bottom: 0; transform: translate(8px, 8px); }
+.lux-frame::after  { bottom: 9px; right: 9px; border-left: 0; border-top: 0; transform: translate(-8px, -8px); }
+.lux-frame:hover::before, .lux-frame:hover::after,
+.lux-frame:focus-visible::before, .lux-frame:focus-visible::after { opacity: 1; transform: translate(0, 0); }
+
+/* 7. RISE — floats up with a crowning top light */
+.lux-rise::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 30%); transition: opacity var(--lux-dur);
+}
+.lux-rise:hover, .lux-rise:focus-visible { transform: translateY(-6px) scale(1.012); box-shadow: 0 32px 64px -26px rgba(0, 0, 0, 0.6); }
+.lux-rise:hover::after, .lux-rise:focus-visible::after { opacity: 1; }
+
+/* 8. VELVET — richens colour with a soft inner sheen */
+.lux-velvet:hover, .lux-velvet:focus-visible {
+  filter: saturate(1.3) contrast(1.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 18px 42px -22px rgba(0, 0, 0, 0.6);
+}
+
+/* 9. SPOTLIGHT — a soft overhead light intensifies on hover */
+.lux-spotlight::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0.4;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.16), transparent 60%); transition: opacity var(--lux-dur);
+}
+.lux-spotlight:hover::before, .lux-spotlight:focus-visible::before { opacity: 1; }
+
+/* 10. TILT — refined CSS-only 3D tilt + cast shadow */
+.lux-tilt:hover, .lux-tilt:focus-visible {
+  transform: perspective(800px) rotateX(4deg) rotateY(-4deg) translateY(-4px);
+  box-shadow: -10px 22px 44px -22px rgba(0, 0, 0, 0.6);
+}
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .lux, .lux *, .lux::before, .lux::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .lux-tilt:hover, .lux-tilt:focus-visible { transform: none !important; }
+}

@@ -341,3 +341,22 @@
   cursor: pointer;
   position: relative;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cd3-info, .cd3-info *, .cd3-info::before, .cd3-info::after,
+  .cd3-stat, .cd3-stat *, .cd3-stat::before, .cd3-stat::after,
+  .cd3-prod, .cd3-prod *, .cd3-prod::before, .cd3-prod::after,
+  .cd3-blog, .cd3-blog *, .cd3-blog::before, .cd3-blog::after,
+  .cd3-vid, .cd3-vid *, .cd3-vid::before, .cd3-vid::after,
+  .cd3-pl, .cd3-pl *, .cd3-pl::before, .cd3-pl::after,
+  .cd3-mem, .cd3-mem *, .cd3-mem::before, .cd3-mem::after,
+  .cd3-app, .cd3-app *, .cd3-app::before, .cd3-app::after,
+  .cd3-deal, .cd3-deal *, .cd3-deal::before, .cd3-deal::after,
+  .cd3-spot, .cd3-spot *, .cd3-spot::before, .cd3-spot::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -158,3 +158,13 @@
 
 .tbar-stacked .tbar-item { flex-direction: row; gap: 0.4rem; justify-content: flex-start; padding-left: 1rem; }
 .tbar-stacked { flex-direction: column; padding: 0.5rem 0; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .tbar, .tbar *, .tbar::before, .tbar::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -129,3 +129,20 @@
 .tour-pop[data-placement="top"]::before    { bottom: -7px; left: 24px; border-top: none; border-left: none; }
 .tour-pop[data-placement="right"]::before  { left: -7px; top: 24px; border-top: none; border-right: none; }
 .tour-pop[data-placement="left"]::before   { right: -7px; top: 24px; border-bottom: none; border-left: none; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .tour-overlay, .tour-overlay *, .tour-overlay::before, .tour-overlay::after,
+  .tour-spot, .tour-spot *, .tour-spot::before, .tour-spot::after,
+  .tour-pop, .tour-pop *, .tour-pop::before, .tour-pop::after,
+  .tour-title, .tour-title *, .tour-title::before, .tour-title::after,
+  .tour-text, .tour-text *, .tour-text::before, .tour-text::after,
+  .tour-dots, .tour-dots *, .tour-dots::before, .tour-dots::after,
+  .tour-actions, .tour-actions *, .tour-actions::before, .tour-actions::after,
+  .tour-counter, .tour-counter *, .tour-counter::before, .tour-counter::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

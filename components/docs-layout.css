@@ -93,3 +93,13 @@
 .docs-toc h4 { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--d-faint); margin: 0 0 .7rem; }
 .docs-toc a { display: block; color: var(--d-muted); text-decoration: none; padding: .25rem 0 .25rem .8rem; border-left: 2px solid var(--d-border); }
 .docs-toc a:hover { color: var(--d-fg); } .docs-toc a.is-active { color: var(--d-fg); border-left-color: var(--d-accent); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .docs, .docs *, .docs::before, .docs::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

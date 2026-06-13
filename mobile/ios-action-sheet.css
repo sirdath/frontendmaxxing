@@ -112,3 +112,17 @@
 .ios-action-row:last-child { border-bottom: 0; }
 .ios-action-row.is-destructive { color: #ff3b30; }
 .ios-action-row.is-bold { font-weight: 600; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ios-action-overlay, .ios-action-overlay *, .ios-action-overlay::before, .ios-action-overlay::after,
+  .ios-action-sheet, .ios-action-sheet *, .ios-action-sheet::before, .ios-action-sheet::after,
+  .ios-action-cancel, .ios-action-cancel *, .ios-action-cancel::before, .ios-action-cancel::after,
+  .ios-action-title, .ios-action-title *, .ios-action-title::before, .ios-action-title::after,
+  .ios-action-row, .ios-action-row *, .ios-action-row::before, .ios-action-row::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

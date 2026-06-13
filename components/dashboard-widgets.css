@@ -148,3 +148,13 @@
 .dw-tabs { display: inline-flex; background: var(--dw-border); border-radius: 8px; padding: 2px; gap: 2px; }
 .dw-tab { border: 0; background: transparent; color: var(--dw-muted); font: inherit; font-size: 0.76rem; font-weight: 600; padding: 0.3rem 0.6rem; border-radius: 6px; cursor: pointer; }
 .dw-tab.is-on { background: var(--dw-bg); color: var(--dw-fg); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .dw, .dw *, .dw::before, .dw::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

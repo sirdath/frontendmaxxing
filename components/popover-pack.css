@@ -207,3 +207,13 @@
 .pop-share button.facebook:hover { background: #1877f2; }
 .pop-share button.linkedin:hover { background: #0a66c2; }
 .pop-share button.email:hover    { background: #64748b; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .pop, .pop *, .pop::before, .pop::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

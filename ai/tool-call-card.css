@@ -223,3 +223,13 @@
 .tcc[data-tcc-tool="run_shell"]    .tcc-icon { background: rgba(251, 113, 133, 0.18); }
 .tcc[data-tcc-tool="execute_code"] .tcc-icon { background: rgba(34, 211, 238, 0.18); }
 .tcc[data-tcc-tool="edit_file"]    .tcc-icon { background: rgba(251, 191, 36, 0.18); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .tcc, .tcc *, .tcc::before, .tcc::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

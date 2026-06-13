@@ -1,0 +1,80 @@
+/* ============================================
+   CSS 3D — pure-CSS 3D components (cube · flip-box · stack · wall · coverflow)
+   Inspired by classic CSS 3D transforms + Apple coverflow (no WebGL)
+   ============================================
+   Real 3D via transform-style: preserve-3d. The coverflow tilt is driven by
+   css-3d.js; everything else is pure CSS.
+
+   Usage:
+     <link rel="stylesheet" href="components/css-3d.css">
+
+     <div class="c3d c3d-cube">
+       <div class="c3d-cube-inner">
+         <span class="c3d-face c3d-front">1</span><span class="c3d-face c3d-back">2</span>
+         <span class="c3d-face c3d-right">3</span><span class="c3d-face c3d-left">4</span>
+         <span class="c3d-face c3d-top">5</span><span class="c3d-face c3d-bottom">6</span>
+       </div>
+     </div>
+
+     <div class="c3d c3d-flip-box"><div class="c3d-fb-inner">
+       <div class="c3d-fb-front">Front</div><div class="c3d-fb-back">Back</div></div></div>
+
+     <div class="c3d c3d-coverflow" data-c3d="coverflow">
+       <div class="c3d-cf-item">…</div> … </div>
+     <script src="components/css-3d.js"></script><script>CSS3D.init('[data-c3d]');</script>
+
+   Variants: c3d-cube c3d-flip-box c3d-stack c3d-wall c3d-coverflow
+   Tunables: --c3d-c1 --c3d-c2 --c3d-size --c3d-dur
+   ============================================ */
+
+.c3d { --c3d-c1: #8b5cf6; --c3d-c2: #ec4899; --c3d-dur: 0.55s; --c3d-ease: cubic-bezier(0.2, 0.8, 0.2, 1); --c3d-size: 150px; }
+.c3d-face, .c3d-fb-front, .c3d-fb-back, .c3d-stack-item, .c3d-wall-tile, .c3d-cf-item {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--c3d-c1) 35%, #15151d), color-mix(in srgb, var(--c3d-c2) 35%, #15151d));
+  border: 1px solid rgba(255, 255, 255, 0.18); color: #fff; font-weight: 800; display: grid; place-items: center;
+}
+
+/* ── cube — auto-rotating 3D cube (hover to pause) ── */
+.c3d-cube { width: var(--c3d-size); height: var(--c3d-size); perspective: 900px; display: inline-block; }
+.c3d-cube-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; animation: c3d-cube-spin 12s linear infinite; }
+.c3d-cube:hover .c3d-cube-inner, .c3d-cube:focus-within .c3d-cube-inner { animation-play-state: paused; }
+.c3d-face { position: absolute; inset: 0; }
+.c3d-front  { transform: translateZ(calc(var(--c3d-size) / 2)); }
+.c3d-back   { transform: rotateY(180deg) translateZ(calc(var(--c3d-size) / 2)); }
+.c3d-right  { transform: rotateY(90deg) translateZ(calc(var(--c3d-size) / 2)); }
+.c3d-left   { transform: rotateY(-90deg) translateZ(calc(var(--c3d-size) / 2)); }
+.c3d-top    { transform: rotateX(90deg) translateZ(calc(var(--c3d-size) / 2)); }
+.c3d-bottom { transform: rotateX(-90deg) translateZ(calc(var(--c3d-size) / 2)); }
+@keyframes c3d-cube-spin { from { transform: rotateX(-22deg) rotateY(0); } to { transform: rotateX(-22deg) rotateY(360deg); } }
+
+/* ── flip-box — flips to a back face on hover/focus ── */
+.c3d-flip-box { width: var(--c3d-size); height: var(--c3d-size); perspective: 1000px; display: inline-block; }
+.c3d-fb-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform var(--c3d-dur) var(--c3d-ease); }
+.c3d-flip-box:hover .c3d-fb-inner, .c3d-flip-box:focus-within .c3d-fb-inner { transform: rotateY(180deg); }
+.c3d-fb-front, .c3d-fb-back { position: absolute; inset: 0; border-radius: 16px; backface-visibility: hidden; }
+.c3d-fb-back { transform: rotateY(180deg); }
+
+/* ── stack — layered cards fan out in 3D on hover ── */
+.c3d-stack { position: relative; width: var(--c3d-size); height: var(--c3d-size); perspective: 1000px; display: inline-block; }
+.c3d-stack-item { position: absolute; inset: 0; border-radius: 16px; transition: transform var(--c3d-dur) var(--c3d-ease); transform-style: preserve-3d; }
+.c3d-stack-item:nth-child(1) { transform: translateZ(0); }
+.c3d-stack-item:nth-child(2) { transform: translateZ(-26px) translateY(10px); filter: brightness(0.8); }
+.c3d-stack-item:nth-child(3) { transform: translateZ(-52px) translateY(20px); filter: brightness(0.62); }
+.c3d-stack:hover .c3d-stack-item:nth-child(1), .c3d-stack:focus-within .c3d-stack-item:nth-child(1) { transform: rotateY(-18deg) translateX(-34px); }
+.c3d-stack:hover .c3d-stack-item:nth-child(3), .c3d-stack:focus-within .c3d-stack-item:nth-child(3) { transform: rotateY(18deg) translateX(34px) translateZ(0); filter: brightness(1); }
+
+/* ── wall — a grid of tiles on a tilted 3D plane ── */
+.c3d-wall { perspective: 1100px; display: inline-block; }
+.c3d-wall-inner { transform: rotateX(42deg) rotateZ(-2deg); transform-style: preserve-3d; transition: transform var(--c3d-dur) var(--c3d-ease); display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.c3d-wall:hover .c3d-wall-inner, .c3d-wall:focus-within .c3d-wall-inner { transform: rotateX(14deg) rotateZ(0); }
+.c3d-wall-tile { width: 64px; height: 64px; border-radius: 12px; }
+
+/* ── coverflow — horizontal 3D card scroll (tilt driven by css-3d.js) ── */
+.c3d-coverflow { perspective: 1100px; display: flex; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory; padding: 1rem 42%; scrollbar-width: none; }
+.c3d-coverflow::-webkit-scrollbar { display: none; }
+.c3d-cf-item { flex: 0 0 auto; width: 130px; height: 175px; margin: 0 -14px; border-radius: 14px; scroll-snap-align: center; transform-style: preserve-3d; transition: transform 0.1s linear; will-change: transform; }
+
+/* ── Accessibility: reduced-motion (freeze the cube, drop transforms) ── */
+@media (prefers-reduced-motion: reduce) {
+  .c3d-cube-inner { animation: none !important; transform: rotateX(-22deg) rotateY(-28deg); }
+  .c3d-fb-inner, .c3d-stack-item, .c3d-wall-inner, .c3d-cf-item { transition: none !important; }
+}

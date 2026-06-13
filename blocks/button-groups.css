@@ -142,3 +142,13 @@
 }
 .bgrp-fab-stack .bgrp-item:hover { background: var(--bgrp-active-bg); transform: translateY(-2px); }
 .bgrp-fab-stack .bgrp-item.is-active { background: var(--bgrp-accent); color: #0b0b12; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .bgrp, .bgrp *, .bgrp::before, .bgrp::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

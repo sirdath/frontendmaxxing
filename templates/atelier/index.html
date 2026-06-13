@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Atelier storefront template for independent fashion shops." />
+    <title>Atelier — Independent Fashion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Italiana&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="announcement">Complimentary delivery on orders over €100</div>
+
+    <header class="site-header" id="siteHeader">
+      <button class="icon-button mobile-only" id="menuButton" aria-label="Open menu">
+        <span></span><span></span>
+      </button>
+      <a class="brand" href="#" aria-label="Homepage">
+        <img id="headerLogo" alt="" hidden />
+        <span id="headerBrand">ATELIER</span>
+      </a>
+      <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+        <a href="#new">New in</a>
+        <a href="#categories">Shop</a>
+        <a href="#story">Our story</a>
+        <button class="mobile-studio-link mobile-only" data-open-admin>Store studio</button>
+      </nav>
+      <div class="header-actions">
+        <button class="text-button desktop-only" id="adminOpen">Store studio</button>
+        <button class="icon-button" id="searchButton" aria-label="Search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+        </button>
+        <button class="bag-button" id="cartOpen" aria-label="Open shopping bag">
+          Bag <span id="cartCount">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="storefrontMain">
+      <section class="hero" id="hero">
+        <img src="assets/hero-campaign.png" alt="Models wearing the latest collection" id="heroFallback" />
+        <video id="heroVideo" muted loop autoplay playsinline hidden></video>
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <p class="eyebrow" id="heroEyebrow">Spring / Summer 2026</p>
+          <h1 id="heroTitle">Made for your<br />everyday story.</h1>
+          <a class="hero-link" href="#new">Discover the collection <span>↘</span></a>
+        </div>
+        <div class="hero-note">Independent pieces · Thoughtfully selected</div>
+      </section>
+
+      <section class="arrival-section" aria-labelledby="arrivalTitle">
+        <div class="arrival-heading">
+          <div>
+            <p class="eyebrow">A new rhythm of arrivals</p>
+            <h2 id="arrivalTitle">Just landed</h2>
+          </div>
+          <a href="#new" class="underlined-link">View all pieces</a>
+        </div>
+        <div class="arrival-rail" id="arrivalRail"></div>
+      </section>
+
+      <section class="editorial-grid" aria-label="Seasonal edits">
+        <a class="editorial-card editorial-card-large" href="#new" data-category="Dresses">
+          <div class="editorial-copy">
+            <p class="eyebrow">The occasion edit</p>
+            <h2>Soft statements</h2>
+            <span>Feminine forms with a subtle edge</span>
+          </div>
+        </a>
+        <a class="editorial-card editorial-card-small editorial-card-bags" href="#new" data-category="Bags">
+          <div class="editorial-copy">
+            <p class="eyebrow">Woven for the sun</p>
+            <h2>The everyday carry</h2>
+            <span>Explore bags</span>
+          </div>
+        </a>
+        <a class="editorial-card editorial-card-small editorial-card-shoes" href="#new" data-category="Shoes">
+          <div class="editorial-copy">
+            <p class="eyebrow">Grounded in summer</p>
+            <h2>Steps with character</h2>
+            <span>Explore shoes</span>
+          </div>
+        </a>
+      </section>
+
+      <section class="category-section" id="categories">
+        <div class="section-heading">
+          <p class="eyebrow">Shop by edit</p>
+          <h2>Find your piece</h2>
+        </div>
+        <div class="category-grid">
+          <a class="category-card category-dresses" href="#new" data-category="Dresses">
+            <span>01</span><strong>Dresses</strong><small>Explore</small>
+          </a>
+          <a class="category-card category-tops" href="#new" data-category="Tops">
+            <span>02</span><strong>Tops</strong><small>Explore</small>
+          </a>
+          <a class="category-card category-shoes" href="#new" data-category="Shoes">
+            <span>03</span><strong>Shoes</strong><small>Explore</small>
+          </a>
+          <a class="category-card category-bags" href="#new" data-category="Bags">
+            <span>04</span><strong>Bags</strong><small>Explore</small>
+          </a>
+          <a class="category-card category-accessories" href="#new" data-category="Accessories">
+            <span>05</span><strong>Accessories</strong><small>Explore</small>
+          </a>
+        </div>
+      </section>
+
+      <section class="products-section" id="new">
+        <div class="products-toolbar">
+          <div>
+            <p class="eyebrow">The latest edit</p>
+            <h2>New arrivals</h2>
+          </div>
+          <div class="filter-row" id="filters"></div>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <p>No pieces in this category yet.</p>
+          <button class="underlined-button" data-reset-filter>View all pieces</button>
+        </div>
+      </section>
+
+      <section class="story-section" id="story">
+        <div class="story-copy">
+          <p class="eyebrow">The boutique note</p>
+          <h2>Clothes to live in,<br />chosen with feeling.</h2>
+          <p>
+            A considered wardrobe of expressive, wearable pieces. Each arrival is selected by our
+            small team and made to become part of your own story.
+          </p>
+          <a href="#new" class="underlined-link">Read our story</a>
+        </div>
+        <div class="story-art" aria-hidden="true">
+          <div class="story-shape"></div>
+          <p>Small shop.<br />Big point of view.</p>
+        </div>
+      </section>
+    </main>
+
+    <section class="product-page" id="productPage" hidden aria-live="polite"></section>
+
+    <footer id="siteFooter">
+      <a class="brand footer-brand" href="#">ATELIER</a>
+      <div>
+        <p>Visit us</p>
+        <span>12 Studio Street<br />Athens, Greece</span>
+      </div>
+      <div>
+        <p>Follow along</p>
+        <a href="#">Instagram</a><br />
+        <a href="#">TikTok</a>
+      </div>
+      <div>
+        <p>Stay in the loop</p>
+        <form class="newsletter" id="newsletterForm">
+          <input type="email" placeholder="Your email address" aria-label="Email address" required />
+          <button aria-label="Subscribe">→</button>
+        </form>
+      </div>
+    </footer>
+
+    <div class="search-overlay" id="searchOverlay" hidden>
+      <button class="close-button" data-close-search aria-label="Close search">×</button>
+      <div>
+        <p class="eyebrow">What are you looking for?</p>
+        <input id="searchInput" type="search" placeholder="Search the collection" />
+        <p class="search-hint">Try “dress”, “linen” or “blue”</p>
+      </div>
+    </div>
+
+    <aside class="drawer cart-drawer" id="cartDrawer" aria-hidden="true">
+      <div class="drawer-header">
+        <div><p class="eyebrow">Your selection</p><h2>Shopping bag</h2></div>
+        <button class="close-button" data-close-cart aria-label="Close bag">×</button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-footer">
+        <div><span>Subtotal</span><strong id="cartSubtotal">€0</strong></div>
+        <button class="primary-button" id="checkoutButton">Continue to checkout</button>
+        <small>Taxes and shipping calculated at checkout.</small>
+      </div>
+    </aside>
+
+    <div class="admin-shell" id="adminShell" aria-hidden="true">
+      <header class="admin-header">
+        <div>
+          <span class="admin-mark">A</span>
+          <div><strong>Store studio</strong><small>Make the shop yours</small></div>
+        </div>
+        <div>
+          <button class="secondary-button" id="resetDemo">Reset demo</button>
+          <button class="primary-button" id="adminClose">View shop</button>
+        </div>
+      </header>
+      <div class="admin-layout">
+        <nav class="admin-nav">
+          <button class="active" data-admin-tab="brand">Brand & homepage</button>
+          <button data-admin-tab="products">Products</button>
+          <button data-admin-tab="product-layout">Product layout</button>
+          <button data-admin-tab="typography">Typography</button>
+          <div class="admin-tip">
+            <strong>Quick tip</strong>
+            <p>Your changes save automatically on this device.</p>
+          </div>
+        </nav>
+
+        <section class="admin-panel active" data-admin-panel="brand">
+          <div class="admin-title">
+            <div><p class="eyebrow">01 · Identity</p><h1>Brand & homepage</h1></div>
+            <span class="save-state" id="saveState">All changes saved</span>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-copy"><h3>Shop identity</h3><p>The name and mark your customers see.</p></div>
+            <div class="settings-fields">
+              <label>Shop name<input id="brandNameInput" type="text" maxlength="30" /></label>
+              <label class="upload-field">
+                <span>Company logo <small>PNG, JPG or SVG</small></span>
+                <input id="logoInput" type="file" accept="image/png,image/jpeg,image/svg+xml" />
+                <span class="upload-box"><b>Choose logo</b><small id="logoFileName">No file selected</small></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-copy"><h3>Hero campaign</h3><p>Add a short, silent MP4. The campaign image remains as a fallback.</p></div>
+            <div class="settings-fields">
+              <label>Small heading<input id="heroEyebrowInput" type="text" maxlength="45" /></label>
+              <label>Hero headline<textarea id="heroTitleInput" rows="3" maxlength="90"></textarea></label>
+              <label class="upload-field">
+                <span>Background video <small>MP4 or WebM</small></span>
+                <input id="videoInput" type="file" accept="video/mp4,video/webm" />
+                <span class="upload-box"><b>Choose video</b><small id="videoFileName">Using campaign image</small></span>
+              </label>
+              <p class="media-status" id="videoStatus" role="status"></p>
+              <button class="underlined-button remove-media" id="removeVideo" hidden>Remove current video</button>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-copy"><h3>Brand colours</h3><p>Based on your warm neutral and pastel palette references.</p></div>
+            <div class="settings-fields color-fields">
+              <label><span>Accent</span><input id="accentColor" type="color" /></label>
+              <label><span>Soft background</span><input id="softColor" type="color" /></label>
+              <label><span>Dark text</span><input id="darkColor" type="color" /></label>
+              <div class="palette-preview"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-panel" data-admin-panel="products">
+          <div class="admin-title">
+            <div><p class="eyebrow">02 · Catalogue</p><h1>Your products</h1></div>
+            <button class="primary-button" id="addProductButton">+ Add a product</button>
+          </div>
+          <div class="catalogue-toolbar">
+            <label class="catalogue-search">
+              <span>Search products</span>
+              <input id="adminProductSearch" type="search" placeholder="Name, colour or description" />
+            </label>
+            <label>
+              <span>Category</span>
+              <select id="adminCategoryFilter"></select>
+            </label>
+            <label>
+              <span>Sort by</span>
+              <select id="adminProductSort">
+                <option value="newest">Newest added</option>
+                <option value="name-asc">Name A–Z</option>
+                <option value="name-desc">Name Z–A</option>
+                <option value="price-asc">Price: low to high</option>
+                <option value="price-desc">Price: high to low</option>
+              </select>
+            </label>
+            <button class="underlined-button catalogue-clear" id="clearAdminFilters">Clear filters</button>
+          </div>
+          <div class="catalogue-summary">
+            <span id="adminProductCount">0 products</span>
+            <span id="adminFilterSummary">Showing all categories</span>
+          </div>
+          <div class="product-admin-list" id="productAdminList"></div>
+        </section>
+
+        <section class="admin-panel" data-admin-panel="product-layout">
+          <div class="admin-title">
+            <div><p class="eyebrow">03 · Product page</p><h1>Choose a layout</h1></div>
+            <span class="save-state">Applies to every product</span>
+          </div>
+          <div class="layout-intro">
+            <p>Choose how customers see a product after clicking it. Product information and shopping features stay the same.</p>
+          </div>
+          <div class="layout-options" role="radiogroup" aria-label="Product page layout">
+            <button class="layout-option" data-product-layout="atelier" role="radio" aria-checked="false">
+              <span class="layout-miniature layout-miniature-atelier" aria-hidden="true">
+                <i></i><i></i><i></i>
+              </span>
+              <span class="layout-option-copy"><strong>Atelier</strong><small>Current layout · Editorial gallery</small></span>
+              <span class="layout-check">✓</span>
+            </button>
+            <button class="layout-option" data-product-layout="maison" role="radio" aria-checked="false">
+              <span class="layout-miniature layout-miniature-maison" aria-hidden="true">
+                <i></i><i></i><i></i><i></i>
+              </span>
+              <span class="layout-option-copy"><strong>Maison Margiela</strong><small>Thumbnail rail · Centered product</small></span>
+              <span class="layout-check">✓</span>
+            </button>
+            <button class="layout-option" data-product-layout="luisa" role="radio" aria-checked="false">
+              <span class="layout-miniature layout-miniature-luisa" aria-hidden="true">
+                <i></i><i></i><i></i>
+              </span>
+              <span class="layout-option-copy"><strong>Luisa</strong><small>Oversized image · Commerce panel</small></span>
+              <span class="layout-check">✓</span>
+            </button>
+            <button class="layout-option" data-product-layout="mango" role="radio" aria-checked="false">
+              <span class="layout-miniature layout-miniature-mango" aria-hidden="true">
+                <i></i><i></i><i></i>
+              </span>
+              <span class="layout-option-copy"><strong>Mango</strong><small>Split imagery · Detailed information</small></span>
+              <span class="layout-check">✓</span>
+            </button>
+          </div>
+          <div class="layout-preview-actions">
+            <button class="primary-button" id="previewProductLayout">Preview with a product</button>
+            <p>Your selection saves automatically.</p>
+          </div>
+        </section>
+
+        <section class="admin-panel" data-admin-panel="typography">
+          <div class="admin-title">
+            <div><p class="eyebrow">04 · Type system</p><h1>Choose your fonts</h1></div>
+            <span class="save-state">Live across the shop</span>
+          </div>
+          <div class="typography-preview">
+            <p class="eyebrow">New collection</p>
+            <h2 id="fontPreviewHeading">Made for your everyday story.</h2>
+            <p id="fontPreviewBody">A considered wardrobe of expressive, wearable pieces, selected for the way you really live.</p>
+          </div>
+          <div class="settings-card typography-settings">
+            <div class="settings-copy">
+              <h3>Font pairing</h3>
+              <p>Choose one expressive font for headlines and one clear font for product information and navigation.</p>
+            </div>
+            <div class="settings-fields">
+              <label>Heading & display font
+                <select id="displayFontSelect"></select>
+              </label>
+              <label>Body & interface font
+                <select id="bodyFontSelect"></select>
+              </label>
+            </div>
+          </div>
+          <div class="settings-card">
+            <div class="settings-copy">
+              <h3>Upload your own font</h3>
+              <p>Add a TrueType font you have permission to use. It will become available in both font menus.</p>
+            </div>
+            <div class="settings-fields">
+              <label class="upload-field">
+                <span>Custom font file <small>TTF only</small></span>
+                <input id="customFontInput" type="file" accept=".ttf,font/ttf,application/x-font-ttf" />
+                <span class="upload-box"><b>Choose .ttf file</b><small id="customFontFileName">No custom font uploaded</small></span>
+              </label>
+              <button class="underlined-button remove-media" id="removeCustomFont" hidden>Remove custom font</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <dialog class="product-dialog" id="productDialog">
+      <form id="productForm">
+        <div class="dialog-header">
+          <div><p class="eyebrow">Simple listing</p><h2 id="productDialogTitle">Add a product</h2></div>
+          <button type="button" class="close-button" data-close-product>×</button>
+        </div>
+        <input type="hidden" id="productId" />
+        <div class="form-grid">
+          <label>Product name<input id="productName" required maxlength="60" placeholder="e.g. Linen column dress" /></label>
+          <label>Price (€)<input id="productPrice" required type="number" min="0" step="0.01" placeholder="89" /></label>
+          <label>Category
+            <select id="productCategory" required>
+              <option>Dresses</option><option>Tops</option><option>Shoes</option>
+              <option>Bags</option><option>Accessories</option>
+            </select>
+          </label>
+          <label>Colour<input id="productColor" maxlength="30" placeholder="e.g. Buttermilk" /></label>
+          <label class="full-width">Short description<textarea id="productDescription" rows="3" maxlength="180" placeholder="Fabric, fit and the little details customers care about."></textarea></label>
+          <label class="upload-field">
+            <span>Product photo <small>Required for new listings</small></span>
+            <input id="productImage" type="file" accept="image/*" />
+            <span class="upload-box"><b>Choose product photo</b><small>Front or flat-lay</small></span>
+          </label>
+          <label class="upload-field">
+            <span>On-model photo <small>Shown on hover</small></span>
+            <input id="productModelImage" type="file" accept="image/*" />
+            <span class="upload-box"><b>Choose on-model photo</b><small>Creates the hover swap</small></span>
+          </label>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="secondary-button" data-close-product>Cancel</button>
+          <button type="submit" class="primary-button">Save product</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>

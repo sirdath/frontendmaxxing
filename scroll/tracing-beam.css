@@ -74,3 +74,19 @@
 }
 
 .tb-content { min-width: 0; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .tb-host, .tb-host *, .tb-host::before, .tb-host::after,
+  .tb-rail, .tb-rail *, .tb-rail::before, .tb-rail::after,
+  .tb-svg, .tb-svg *, .tb-svg::before, .tb-svg::after,
+  .tb-track, .tb-track *, .tb-track::before, .tb-track::after,
+  .tb-fill, .tb-fill *, .tb-fill::before, .tb-fill::after,
+  .tb-dot, .tb-dot *, .tb-dot::before, .tb-dot::after,
+  .tb-content, .tb-content *, .tb-content::before, .tb-content::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

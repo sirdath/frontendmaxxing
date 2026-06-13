@@ -314,3 +314,25 @@
   color: var(--d-fg);
 }
 .dt-rec-summary b { color: var(--d-accent); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .dt-range, .dt-range *, .dt-range::before, .dt-range::after,
+  .dt-tw, .dt-tw *, .dt-tw::before, .dt-tw::after,
+  .dt-pop, .dt-pop *, .dt-pop::before, .dt-pop::after,
+  .dt-year, .dt-year *, .dt-year::before, .dt-year::after,
+  .dt-week, .dt-week *, .dt-week::before, .dt-week::after,
+  .dt-rec, .dt-rec *, .dt-rec::before, .dt-rec::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.dt-range, .dt-tw, .dt-pop, .dt-year, .dt-week, .dt-rec) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.dt-range, .dt-tw, .dt-pop, .dt-year, .dt-week, .dt-rec):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--dt-range-focus-width, 2px) solid var(--dt-range-focus-color, #8b5cf6);
+  outline-offset: var(--dt-range-focus-offset, 2px);
+}

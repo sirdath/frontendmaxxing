@@ -228,3 +228,26 @@
 }
 .iep-splitbtn-mute .iep-splitbtn-toggle { border-left-color: var(--ie-line); }
 .iep-splitbtn-mute:hover { filter: none; background: rgba(255, 255, 255, 0.06); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .iep-edit, .iep-edit *, .iep-edit::before, .iep-edit::after,
+  .iep-action, .iep-action *, .iep-action::before, .iep-action::after,
+  .iep-floatin, .iep-floatin *, .iep-floatin::before, .iep-floatin::after,
+  .iep-labels, .iep-labels *, .iep-labels::before, .iep-labels::after,
+  .iep-label, .iep-label *, .iep-label::before, .iep-label::after,
+  .iep-status, .iep-status *, .iep-status::before, .iep-status::after,
+  .iep-splitbtn, .iep-splitbtn *, .iep-splitbtn::before, .iep-splitbtn::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.iep-edit, .iep-action, .iep-floatin, .iep-labels, .iep-label, .iep-status, .iep-splitbtn) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.iep-edit, .iep-action, .iep-floatin, .iep-labels, .iep-label, .iep-status, .iep-splitbtn):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--iep-edit-focus-width, 2px) solid var(--iep-edit-focus-color, #8b5cf6);
+  outline-offset: var(--iep-edit-focus-offset, 2px);
+}

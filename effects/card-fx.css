@@ -1,0 +1,93 @@
+/* ============================================
+   CARD FX — expressive card/box hover effects (CSS + optional JS)
+   Inspired by Pokémon holo cards, bento grids, editorial image hovers
+   ============================================
+   Base class `cfx` + a variant. Most are pure CSS; cfx-holo needs card-fx.js.
+
+   Usage:
+     <link rel="stylesheet" href="effects/card-fx.css">
+     <div class="cfx cfx-holo" data-card-fx="holo">Holographic</div>
+     <div class="cfx cfx-flip"><div class="cfx-inner"><div class="cfx-front">Front</div><div class="cfx-back">Back</div></div></div>
+     <div class="cfx cfx-bento"><span>1</span><span>2</span><span>3</span></div>
+     <figure class="cfx cfx-duotone"><img class="cfx-img" src="…"></figure>
+     <div class="cfx cfx-peek"><div class="cfx-peek-body">Reveal</div></div>
+     <figure class="cfx cfx-zoom"><img class="cfx-img" src="…"></figure>
+     <script src="effects/card-fx.js"></script><script>CardFX.init('[data-card-fx]');</script>
+
+   Variants: cfx-holo cfx-flip cfx-bento cfx-duotone cfx-peek cfx-zoom
+   Tunables: --cfx-c1 --cfx-c2 --cfx-dur --cfx-ease --cfx-radius
+   ============================================ */
+
+.cfx {
+  --cfx-c1: #8b5cf6;
+  --cfx-c2: #ec4899;
+  --cfx-dur: 0.45s;
+  --cfx-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --cfx-radius: 16px;
+  position: relative;
+  border-radius: var(--cfx-radius);
+  transition: transform var(--cfx-dur) var(--cfx-ease), box-shadow var(--cfx-dur) var(--cfx-ease);
+}
+
+/* HOLO — 3D tilt + rainbow holographic sheen + glare that track the cursor (JS) */
+.cfx-holo {
+  transform: perspective(800px) rotateX(var(--cfx-rx, 0deg)) rotateY(var(--cfx-ry, 0deg));
+  transition: transform 0.14s ease-out; overflow: hidden;
+}
+.cfx-holo::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  transition: opacity var(--cfx-dur); mix-blend-mode: color-dodge;
+  background:
+    radial-gradient(circle at var(--cfx-mx, 50%) var(--cfx-my, 50%), rgba(255, 255, 255, 0.55), transparent 45%),
+    linear-gradient(115deg, rgba(255, 0, 128, 0.3), rgba(0, 255, 200, 0.3), rgba(120, 0, 255, 0.3), rgba(255, 200, 0, 0.3));
+  background-size: 100% 100%, 220% 220%;
+  background-position: 0 0, var(--cfx-mx, 50%) var(--cfx-my, 50%);
+}
+.cfx-holo:hover::before, .cfx-holo:focus-visible::before { opacity: 1; }
+
+/* FLIP — 3D flip to a back face */
+.cfx-flip { background: transparent; perspective: 1000px; }
+.cfx-flip .cfx-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s var(--cfx-ease); }
+.cfx-flip:hover .cfx-inner, .cfx-flip:focus-visible .cfx-inner { transform: rotateY(180deg); }
+.cfx-flip .cfx-front, .cfx-flip .cfx-back {
+  position: absolute; inset: 0; border-radius: inherit; backface-visibility: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.cfx-flip .cfx-back { transform: rotateY(180deg); }
+
+/* BENTO — direct children lift in a quick stagger */
+.cfx-bento > * { transition: transform var(--cfx-dur) var(--cfx-ease); }
+.cfx-bento:hover > *, .cfx-bento:focus-visible > * { transform: translateY(-5px); }
+.cfx-bento:hover > :nth-child(2), .cfx-bento:focus-visible > :nth-child(2) { transition-delay: 0.05s; }
+.cfx-bento:hover > :nth-child(3), .cfx-bento:focus-visible > :nth-child(3) { transition-delay: 0.1s; }
+.cfx-bento:hover > :nth-child(4), .cfx-bento:focus-visible > :nth-child(4) { transition-delay: 0.15s; }
+
+/* DUOTONE — image sits in a duotone wash, blooms to full colour on hover */
+.cfx-duotone { overflow: hidden; }
+.cfx-duotone .cfx-img, .cfx-duotone img { display: block; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05); transition: filter var(--cfx-dur); }
+.cfx-duotone::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0.62;
+  background: linear-gradient(135deg, var(--cfx-c1), var(--cfx-c2)); mix-blend-mode: color; transition: opacity var(--cfx-dur);
+}
+.cfx-duotone:hover .cfx-img, .cfx-duotone:hover img, .cfx-duotone:focus-visible .cfx-img { filter: none; }
+.cfx-duotone:hover::after, .cfx-duotone:focus-visible::after { opacity: 0; }
+
+/* PEEK — a body panel slides up from the bottom */
+.cfx-peek { overflow: hidden; }
+.cfx-peek .cfx-peek-body { position: absolute; left: 0; right: 0; bottom: 0; transform: translateY(100%); transition: transform var(--cfx-dur) var(--cfx-ease); }
+.cfx-peek:hover .cfx-peek-body, .cfx-peek:focus-visible .cfx-peek-body { transform: translateY(0); }
+
+/* ZOOM — framed image zooms within its bounds */
+.cfx-zoom { overflow: hidden; }
+.cfx-zoom .cfx-img, .cfx-zoom img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--cfx-ease); }
+.cfx-zoom:hover .cfx-img, .cfx-zoom:hover img, .cfx-zoom:focus-visible .cfx-img { transform: scale(1.12); }
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .cfx, .cfx *, .cfx::before, .cfx::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .cfx-holo { transform: none !important; }
+}

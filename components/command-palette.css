@@ -180,3 +180,20 @@
   padding: 1px 5px;
   margin-right: 0.25rem;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cmdp, .cmdp *, .cmdp::before, .cmdp::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.cmdp :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.cmdp:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--cmdp-focus-width, 2px) solid var(--cmdp-focus-color, #8b5cf6);
+  outline-offset: var(--cmdp-focus-offset, 2px);
+}

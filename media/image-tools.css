@@ -226,3 +226,24 @@
   background: var(--i-line);
   margin: 0.3rem 0.15rem;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .it-crop, .it-crop *, .it-crop::before, .it-crop::after,
+  .it-rot, .it-rot *, .it-rot::before, .it-rot::after,
+  .it-fil, .it-fil *, .it-fil::before, .it-fil::after,
+  .it-bc, .it-bc *, .it-bc::before, .it-bc::after,
+  .it-ur, .it-ur *, .it-ur::before, .it-ur::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.it-crop, .it-rot, .it-fil, .it-bc, .it-ur) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.it-crop, .it-rot, .it-fil, .it-bc, .it-ur):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--it-crop-focus-width, 2px) solid var(--it-crop-focus-color, #8b5cf6);
+  outline-offset: var(--it-crop-focus-offset, 2px);
+}

@@ -1,0 +1,184 @@
+/* ============================================
+   SPLASH INTRO — Full-screen branded boot overlay that unveils the page
+   Logo mask-reveal (+ per-letter stagger), thin progress bar, status line,
+   then a cinematic unveil: fade / curtain / iris / split.
+   Companion JS: components/splash-intro.js (SplashIntro)
+   Inspired by Linear & Vercel launch pages, awwwards site intros
+   ============================================
+   Usage:
+     <div class="spl spl--curtain" id="splash">
+       <div class="spl-logo spl-logo--letters">NOVA</div>
+       <div class="spl-bar"></div>
+       <div class="spl-status" data-spl-percent>0%</div>
+     </div>
+
+   Variants (unveil, on the root): .spl--fade, .spl--curtain, .spl--iris, .spl--split
+   Modifiers: .spl-logo--letters (per-letter stagger — spans auto-split by JS,
+              or write your own), .is-done (plays the unveil, then the overlay
+              ends visibility:hidden)
+   Driven by: --spl-progress (0–1) on the root (set by JS or by hand)
+   ============================================ */
+.spl {
+  --spl-bg: #0a0a12;
+  --spl-fg: #f5f6fa;
+  --spl-muted: rgba(245, 246, 250, 0.45);
+  --spl-accent: #6366f1;                       /* theming hook */
+  --spl-accent-2: #c084fc;                     /* bar gradient end */
+  --spl-z: 9999;
+  --spl-progress: 0;                           /* 0–1, drives the bar */
+  --spl-logo-size: clamp(2.2rem, 7vw, 4rem);
+  --spl-bar-w: min(280px, 56vw);
+  --spl-bar-h: 2px;
+  --spl-ease: cubic-bezier(0.76, 0, 0.24, 1);  /* unveil easing */
+  position: fixed;
+  inset: 0;
+  z-index: var(--spl-z);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  background: var(--spl-bg);
+  color: var(--spl-fg);
+  font-family: inherit;
+  transition: visibility 480ms linear;
+}
+.spl.is-done {
+  visibility: hidden;
+  pointer-events: none;
+}
+/* entrance animations have done their job once the unveil starts —
+   drop them so fill-mode can't pin opacity during the exit */
+.spl.is-done :is(.spl-logo, .spl-bar, .spl-status),
+.spl.is-done .spl-logo--letters > span {
+  animation: none;
+}
+
+/* ---- Logo: mask/clip wipe reveal ---- */
+.spl-logo {
+  font-size: var(--spl-logo-size);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: var(--spl-fg);
+  animation: spl-logo-in 480ms cubic-bezier(0.22, 1, 0.36, 1) 160ms both;
+}
+@keyframes spl-logo-in {
+  from { clip-path: inset(0 100% 0 0); transform: translateY(10px); }
+  to   { clip-path: inset(0 -4% 0 0);  transform: translateY(0); }
+}
+
+/* ---- Logo: per-letter stagger (wrap each letter in a <span>) ---- */
+.spl-logo--letters {
+  animation: none;
+  clip-path: none;
+}
+.spl-logo--letters > span {
+  display: inline-block;
+  animation: spl-letter-in 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(120ms + var(--spl-i, 0) * 90ms);
+}
+@keyframes spl-letter-in {
+  from { opacity: 0; transform: translateY(0.55em); filter: blur(5px); }
+  to   { opacity: 1; transform: translateY(0);      filter: blur(0); }
+}
+/* hand-written spans (no JS) still stagger — first 12 letters */
+.spl-logo--letters > span:nth-child(2)  { --spl-i: 1; }
+.spl-logo--letters > span:nth-child(3)  { --spl-i: 2; }
+.spl-logo--letters > span:nth-child(4)  { --spl-i: 3; }
+.spl-logo--letters > span:nth-child(5)  { --spl-i: 4; }
+.spl-logo--letters > span:nth-child(6)  { --spl-i: 5; }
+.spl-logo--letters > span:nth-child(7)  { --spl-i: 6; }
+.spl-logo--letters > span:nth-child(8)  { --spl-i: 7; }
+.spl-logo--letters > span:nth-child(9)  { --spl-i: 8; }
+.spl-logo--letters > span:nth-child(10) { --spl-i: 9; }
+.spl-logo--letters > span:nth-child(11) { --spl-i: 10; }
+.spl-logo--letters > span:nth-child(12) { --spl-i: 11; }
+
+/* ---- Thin progress bar, width driven by --spl-progress ---- */
+.spl-bar {
+  position: relative;
+  width: var(--spl-bar-w);
+  height: var(--spl-bar-h);
+  border-radius: var(--spl-pill, 999px);
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  animation: spl-fade-in 480ms ease 260ms both;
+}
+.spl-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--spl-progress) * 100%);
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--spl-accent), var(--spl-accent-2));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--spl-accent) 60%, transparent);
+  transition: width 200ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* ---- Status / percent line ---- */
+.spl-status {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--spl-muted);
+  animation: spl-fade-in 480ms ease 320ms both;
+}
+@keyframes spl-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ---- Unveil: fade — overlay dissolves ---- */
+.spl--fade {
+  transition: opacity 480ms var(--spl-ease), visibility 480ms linear;
+}
+.spl--fade.is-done { opacity: 0; }
+
+/* ---- Unveil: curtain — slides up off-screen ---- */
+.spl--curtain {
+  transition: transform 480ms var(--spl-ease), visibility 480ms linear;
+}
+.spl--curtain.is-done { transform: translateY(-100%); }
+
+/* ---- Unveil: iris — circular clip-path closes on the center ---- */
+.spl--iris {
+  clip-path: circle(120% at 50% 50%);
+  transition: clip-path 480ms var(--spl-ease), visibility 480ms linear;
+}
+.spl--iris.is-done { clip-path: circle(0% at 50% 50%); }
+
+/* ---- Unveil: split — two halves part vertically ---- */
+.spl--split {
+  background: transparent;
+  transition: visibility 480ms linear;
+}
+.spl--split::before,
+.spl--split::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50.5%;
+  background: var(--spl-bg);
+  z-index: -1;
+  transition: transform 480ms var(--spl-ease);
+}
+.spl--split::before { top: 0; }
+.spl--split::after  { bottom: 0; }
+.spl--split > * { transition: opacity 200ms ease; }
+.spl--split.is-done::before { transform: translateY(-102%); }
+.spl--split.is-done::after  { transform: translateY(102%); }
+.spl--split.is-done > *     { opacity: 0; }
+
+/* ---- Reduced motion: no choreography, instant reveal ---- */
+@media (prefers-reduced-motion: reduce) {
+  .spl, .spl::before, .spl::after, .spl > *,
+  .spl-logo, .spl-logo--letters > span, .spl-bar, .spl-bar::before, .spl-status {
+    animation: none !important;
+    transition: none !important;
+  }
+  .spl.is-done { display: none !important; }
+}

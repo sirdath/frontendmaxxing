@@ -1,0 +1,78 @@
+/* ============================================
+   PATTERNS MEGA — a big set of pure-CSS background patterns (no images)
+   Inspired by Magic Pattern / Hero Patterns / uiverse (re-implemented vanilla)
+   ============================================
+   Apply `pat` + a variant to any element/section. Pure CSS gradients.
+   (Complements backgrounds/patterns.css's `bg-*` set — these use `pat-*`.)
+
+   Usage:
+     <link rel="stylesheet" href="backgrounds/patterns-mega.css">
+     <section class="pat pat-dots"  style="min-height:40vh;">…</section>
+     <section class="pat pat-zigzag pat-fade">…</section>
+     <div class="pat pat-isometric pat-drift">…</div>
+
+   Variants: pat-dots pat-grid pat-lines pat-vlines pat-diagonal pat-plaid
+             pat-checker pat-zigzag pat-rings pat-polka pat-isometric pat-cross
+             pat-carbon pat-starburst pat-brick pat-triangles
+   Modifiers: pat-fade · pat-drift · pat-dense · pat-bold
+   Tunables: --pat-c --pat-c2 --pat-bg --pat-size
+   ============================================ */
+
+.pat {
+  --pat-c: rgba(255, 255, 255, 0.10);
+  --pat-c2: rgba(255, 255, 255, 0.05);
+  --pat-bg: #0a0a12;
+  --pat-size: 24px;
+  background-color: var(--pat-bg);
+}
+
+.pat-dots { background-image: radial-gradient(var(--pat-c) 1.6px, transparent 1.7px); background-size: var(--pat-size) var(--pat-size); }
+.pat-grid { background-image: linear-gradient(var(--pat-c) 1px, transparent 1px), linear-gradient(90deg, var(--pat-c) 1px, transparent 1px); background-size: var(--pat-size) var(--pat-size); }
+.pat-lines { background-image: repeating-linear-gradient(0deg, var(--pat-c) 0 1px, transparent 1px var(--pat-size)); }
+.pat-vlines { background-image: repeating-linear-gradient(90deg, var(--pat-c) 0 1px, transparent 1px var(--pat-size)); }
+.pat-diagonal { background-image: repeating-linear-gradient(45deg, var(--pat-c) 0 1px, transparent 1px 14px); }
+.pat-plaid { background-image: repeating-linear-gradient(45deg, var(--pat-c) 0 1px, transparent 1px 14px), repeating-linear-gradient(-45deg, var(--pat-c2) 0 1px, transparent 1px 14px); }
+.pat-checker { background-image: conic-gradient(var(--pat-c) 25%, transparent 0 50%, var(--pat-c) 0 75%, transparent 0); background-size: var(--pat-size) var(--pat-size); }
+
+/* chevron / zigzag */
+.pat-zigzag {
+  background-image:
+    linear-gradient(135deg, var(--pat-c) 25%, transparent 25%), linear-gradient(225deg, var(--pat-c) 25%, transparent 25%),
+    linear-gradient(45deg, var(--pat-c) 25%, transparent 25%), linear-gradient(315deg, var(--pat-c) 25%, transparent 25%);
+  background-position: calc(var(--pat-size) / 2) 0, calc(var(--pat-size) / 2) 0, 0 0, 0 0;
+  background-size: var(--pat-size) var(--pat-size);
+}
+
+/* concentric rings */
+.pat-rings { background-image: repeating-radial-gradient(circle at 50% 50%, transparent 0 10px, var(--pat-c) 10px 11px); }
+
+/* offset polka dots (two layers) */
+.pat-polka { background-image: radial-gradient(var(--pat-c) 2.4px, transparent 2.6px), radial-gradient(var(--pat-c) 2.4px, transparent 2.6px); background-size: var(--pat-size) var(--pat-size); background-position: 0 0, calc(var(--pat-size) / 2) calc(var(--pat-size) / 2); }
+
+/* isometric grid */
+.pat-isometric { background-image: repeating-linear-gradient(30deg, var(--pat-c) 0 1px, transparent 1px var(--pat-size)), repeating-linear-gradient(150deg, var(--pat-c) 0 1px, transparent 1px var(--pat-size)), repeating-linear-gradient(90deg, var(--pat-c2) 0 1px, transparent 1px var(--pat-size)); }
+
+/* plus / cross marks */
+.pat-cross { background-image: linear-gradient(var(--pat-c) 2px, transparent 2px), linear-gradient(90deg, var(--pat-c) 2px, transparent 2px); background-size: var(--pat-size) var(--pat-size); -webkit-mask: repeating-conic-gradient(#000 0 25%, transparent 0 50%) 0 0 / var(--pat-size) var(--pat-size); mask: repeating-conic-gradient(#000 0 25%, transparent 0 50%) 0 0 / var(--pat-size) var(--pat-size); }
+
+/* carbon fibre */
+.pat-carbon { --pat-bg: #0c0c12; background-image: radial-gradient(circle at center, var(--pat-c) 1px, transparent 1.5px), radial-gradient(circle at center, var(--pat-c) 1px, transparent 1.5px); background-size: 12px 12px; background-position: 0 0, 6px 6px; }
+
+/* starburst rays */
+.pat-starburst { background-image: repeating-conic-gradient(from 0deg at 50% 50%, var(--pat-c) 0 4deg, transparent 4deg 12deg); }
+
+/* offset brick */
+.pat-brick { background-image: linear-gradient(var(--pat-c) 2px, transparent 2px), linear-gradient(90deg, var(--pat-c) 2px, transparent 2px); background-size: var(--pat-size) calc(var(--pat-size) / 2); }
+
+/* triangle tiling */
+.pat-triangles { background-image: linear-gradient(60deg, var(--pat-c) 25%, transparent 25.5%), linear-gradient(-60deg, var(--pat-c) 25%, transparent 25.5%); background-size: var(--pat-size) calc(var(--pat-size) * 0.87); }
+
+/* modifiers */
+.pat-fade { -webkit-mask: radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 75%); mask: radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 75%); }
+.pat-dense { --pat-size: 14px; }
+.pat-bold { --pat-c: rgba(255, 255, 255, 0.2); }
+.pat-drift { animation: pat-drift 12s linear infinite; }
+@keyframes pat-drift { to { background-position: var(--pat-size) var(--pat-size); } }
+
+/* ── Accessibility: reduced-motion ── */
+@media (prefers-reduced-motion: reduce) { .pat-drift { animation: none !important; } }

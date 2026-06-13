@@ -138,3 +138,10 @@
   border-radius: 4px;
 }
 .prps-mini-btn:hover { background: rgba(255, 255, 255, 0.06); color: var(--prps-fg); }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.prps :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.prps:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--prps-focus-width, 2px) solid var(--prps-focus-color, #8b5cf6);
+  outline-offset: var(--prps-focus-offset, 2px);
+}

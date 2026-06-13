@@ -109,3 +109,13 @@
 .ctabs-panel .tok-num { color: #f59e0b; }
 .ctabs-panel .tok-com { color: var(--ct-muted); font-style: italic; }
 .ctabs-panel .tok-fn  { color: #06b6d4; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ctabs, .ctabs *, .ctabs::before, .ctabs::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

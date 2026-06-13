@@ -1,0 +1,89 @@
+/* ============================================
+   INTERACTIVE CANVAS — cursor-reactive backgrounds / canvas (CSS + JS)
+   Inspired by Vercel/Linear hero grids, particle networks, aurora fields
+   ============================================
+   A full-area background that reacts to the pointer. CSS variants follow the
+   cursor via --icv-x/--icv-y (set by interactive-canvas.js); the `network`
+   mode draws a live particle web on a <canvas>; `ripple` rings out on click.
+
+   Usage:
+     <link rel="stylesheet" href="backgrounds/interactive-canvas.css">
+     <div class="icv icv-spotlight" data-canvas="spotlight" style="height:60vh;">…</div>
+     <div class="icv icv-network"  data-canvas="network"  style="height:60vh;"></div>
+     <script src="backgrounds/interactive-canvas.js"></script>
+     <script>InteractiveCanvas.init('[data-canvas]');</script>
+
+   Variants: icv-spotlight icv-dot-grid icv-aurora icv-network icv-ripple
+   Tunables: --icv-c1 --icv-c2 --icv-bg
+   ============================================ */
+
+.icv {
+  --icv-c1: #8b5cf6;
+  --icv-c2: #ec4899;
+  --icv-bg: #0a0a12;
+  --icv-x: 50%;
+  --icv-y: 50%;
+  position: relative;
+  overflow: hidden;
+  background: var(--icv-bg);
+}
+.icv > * { position: relative; z-index: 2; }
+
+/* spotlight — radial light tracks the cursor */
+.icv-spotlight::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(420px circle at var(--icv-x) var(--icv-y),
+    color-mix(in srgb, var(--icv-c1) 32%, transparent), transparent 62%);
+}
+
+/* dot-grid — faint dots everywhere, colour blooms near the cursor */
+.icv-dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1.4px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+.icv-dot-grid::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background-image: radial-gradient(var(--icv-c1) 1.7px, transparent 1.7px);
+  background-size: 22px 22px;
+  -webkit-mask: radial-gradient(190px circle at var(--icv-x) var(--icv-y), #000 0%, transparent 62%);
+          mask: radial-gradient(190px circle at var(--icv-x) var(--icv-y), #000 0%, transparent 62%);
+}
+
+/* aurora — two blurred blobs drift toward the cursor (JS sets --icv-px/py) */
+.icv-aurora { background: #07060d; }
+.icv-aurora::before, .icv-aurora::after {
+  content: ''; position: absolute; width: 65%; height: 65%; border-radius: 50%;
+  filter: blur(64px); opacity: 0.5; z-index: 0; pointer-events: none; transition: transform 0.4s ease-out;
+}
+.icv-aurora::before { background: var(--icv-c1); left: 8%; top: 6%; transform: translate(calc(var(--icv-px, 0) * 1px), calc(var(--icv-py, 0) * 1px)); }
+.icv-aurora::after  { background: var(--icv-c2); right: 8%; bottom: 6%; transform: translate(calc(var(--icv-px, 0) * -1px), calc(var(--icv-py, 0) * -1px)); }
+
+/* network — JS draws the particle web here */
+.icv-network .icv-canvas, .icv-canvas { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%; }
+
+/* mesh — a multi-point gradient mesh that leans toward the cursor */
+.icv-mesh {
+  background:
+    radial-gradient(42% 52% at var(--icv-x, 50%) var(--icv-y, 50%), color-mix(in srgb, var(--icv-c1) 55%, transparent), transparent 70%),
+    radial-gradient(46% 56% at calc(100% - var(--icv-x, 50%)) calc(100% - var(--icv-y, 50%)), color-mix(in srgb, var(--icv-c2) 55%, transparent), transparent 70%),
+    radial-gradient(50% 60% at 50% 118%, color-mix(in srgb, var(--icv-c1) 28%, transparent), transparent 70%),
+    var(--icv-bg);
+  transition: background 0.15s linear;
+}
+
+/* confetti — JS appends pieces on click */
+.icv-confetti { position: absolute; z-index: 1; width: 8px; height: 8px; border-radius: 2px; pointer-events: none; }
+
+/* ripple — JS appends expanding rings on click */
+.icv-ripple-dot {
+  position: absolute; z-index: 1; border: 2px solid var(--icv-c1); border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0); opacity: 0.7; pointer-events: none;
+  animation: icv-ripple 1s ease-out forwards;
+}
+@keyframes icv-ripple { to { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .icv-aurora::before, .icv-aurora::after { transition: none !important; }
+  .icv-ripple-dot { animation-duration: 0.01ms !important; }
+}

@@ -97,3 +97,17 @@
   z-index: 9999;
   will-change: transform, opacity;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .mibtn, .mibtn *, .mibtn::before, .mibtn::after,
+  .mi-ripple, .mi-ripple *, .mi-ripple::before, .mi-ripple::after,
+  .mi-check, .mi-check *, .mi-check::before, .mi-check::after,
+  .mi-wave, .mi-wave *, .mi-wave::before, .mi-wave::after,
+  .mi-particle, .mi-particle *, .mi-particle::before, .mi-particle::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

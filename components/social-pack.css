@@ -248,3 +248,25 @@
 }
 .soc-usercard-name { font-weight: 600; font-size: 0.85rem; }
 .soc-usercard-meta { font-size: 0.72rem; color: var(--s-muted); display: block; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .soc-xpost, .soc-xpost *, .soc-xpost::before, .soc-xpost::after,
+  .soc-comm, .soc-comm *, .soc-comm::before, .soc-comm::after,
+  .soc-pres, .soc-pres *, .soc-pres::before, .soc-pres::after,
+  .soc-award, .soc-award *, .soc-award::before, .soc-award::after,
+  .soc-editp, .soc-editp *, .soc-editp::before, .soc-editp::after,
+  .soc-usercard, .soc-usercard *, .soc-usercard::before, .soc-usercard::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.soc-xpost, .soc-comm, .soc-pres, .soc-award, .soc-editp, .soc-usercard) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.soc-xpost, .soc-comm, .soc-pres, .soc-award, .soc-editp, .soc-usercard):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--soc-xpost-focus-width, 2px) solid var(--soc-xpost-focus-color, #8b5cf6);
+  outline-offset: var(--soc-xpost-focus-offset, 2px);
+}

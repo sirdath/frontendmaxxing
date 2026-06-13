@@ -257,3 +257,10 @@
   color: var(--e-accent);
   font-weight: 600;
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.ep-find, .ep-goto, .ep-tabs, .ep-tab, .ep-gut, .ep-git, .ep-bread) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.ep-find, .ep-goto, .ep-tabs, .ep-tab, .ep-gut, .ep-git, .ep-bread):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--ep-find-focus-width, 2px) solid var(--ep-find-focus-color, #8b5cf6);
+  outline-offset: var(--ep-find-focus-offset, 2px);
+}

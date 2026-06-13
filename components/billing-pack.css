@@ -296,3 +296,20 @@
 }
 .bl-addon.is-on .bl-addon-toggle { background: var(--b-accent); }
 .bl-addon.is-on .bl-addon-toggle::before { transform: translateX(18px); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .bl-inv, .bl-inv *, .bl-inv::before, .bl-inv::after,
+  .bl-pm, .bl-pm *, .bl-pm::before, .bl-pm::after,
+  .bl-plan, .bl-plan *, .bl-plan::before, .bl-plan::after,
+  .bl-use, .bl-use *, .bl-use::before, .bl-use::after,
+  .bl-rec, .bl-rec *, .bl-rec::before, .bl-rec::after,
+  .bl-credit, .bl-credit *, .bl-credit::before, .bl-credit::after,
+  .bl-refund, .bl-refund *, .bl-refund::before, .bl-refund::after,
+  .bl-addon, .bl-addon *, .bl-addon::before, .bl-addon::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -310,3 +310,29 @@
 .wid-files-name { font-size: 0.88rem; font-weight: 500; margin: 0; }
 .wid-files-meta { font-size: 0.72rem; color: var(--w-muted); }
 .wid-files-size { font-size: 0.74rem; color: var(--w-muted); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .wid-acts, .wid-acts *, .wid-acts::before, .wid-acts::after,
+  .wid-weight, .wid-weight *, .wid-weight::before, .wid-weight::after,
+  .wid-trade, .wid-trade *, .wid-trade::before, .wid-trade::after,
+  .wid-prevlink, .wid-prevlink *, .wid-prevlink::before, .wid-prevlink::after,
+  .wid-deploy, .wid-deploy *, .wid-deploy::before, .wid-deploy::after,
+  .wid-integ, .wid-integ *, .wid-integ::before, .wid-integ::after,
+  .wid-meet, .wid-meet *, .wid-meet::before, .wid-meet::after,
+  .wid-evrem, .wid-evrem *, .wid-evrem::before, .wid-evrem::after,
+  .wid-email, .wid-email *, .wid-email::before, .wid-email::after,
+  .wid-files, .wid-files *, .wid-files::before, .wid-files::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.wid-acts, .wid-weight, .wid-trade, .wid-prevlink, .wid-deploy, .wid-integ, .wid-meet, .wid-evrem, .wid-email, .wid-files) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.wid-acts, .wid-weight, .wid-trade, .wid-prevlink, .wid-deploy, .wid-integ, .wid-meet, .wid-evrem, .wid-email, .wid-files):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--wid-acts-focus-width, 2px) solid var(--wid-acts-focus-color, #8b5cf6);
+  outline-offset: var(--wid-acts-focus-offset, 2px);
+}

@@ -1,0 +1,343 @@
+/* ============================================
+   ONBOARDING FLOW — Page-level multi-step flow shell
+   Progress header + directional sliding step panels + back/next/skip foot
+   Inspired by Linear / Superhuman / Arc first-run flows
+   ============================================
+   The FLOW CONTAINER that strings individual onboarding cards into one
+   polished sequence. Companion JS: onboarding-flow.js (OnboardingFlow).
+   Distinct from onboarding-pack.css (.onb-* individual cards) and
+   steps-wizard.css (.wzd-* stepper layout) — this is the state-machine shell.
+
+   Usage:
+     <div class="obf" data-finish-label="Open dashboard" style="height:480px">
+       <header class="obf-head">
+         <div class="obf-progress" aria-label="Onboarding progress">
+           <i class="is-active"></i><i></i><i></i>
+         </div>
+         <button class="obf-skip" type="button">Skip</button>
+       </header>
+       <div class="obf-steps">
+         <section class="obf-step is-active">
+           <div class="obf-art">🛰️</div>
+           <h2 class="obf-title">Welcome to Orbit</h2>
+           <p class="obf-sub">Your team's mission control. Three quick steps and you're ready for launch.</p>
+           <div class="obf-body"></div>
+         </section>
+         <section class="obf-step">
+           <div class="obf-art">🪐</div>
+           <h2 class="obf-title">Name your workspace</h2>
+           <p class="obf-sub">This is the home for your projects.</p>
+         </section>
+         <section class="obf-step">
+           <div class="obf-art">🚀</div>
+           <h2 class="obf-title">Invite your crew</h2>
+           <p class="obf-sub">Orbit is better together.</p>
+         </section>
+       </div>
+       <footer class="obf-foot">
+         <button class="obf-back" type="button" disabled>Back</button>
+         <div class="obf-dots" aria-hidden="true"></div>
+         <button class="obf-next" type="button">Continue</button>
+       </footer>
+     </div>
+
+   Variants:
+     .obf--card  — centered card flow on a dimmed, blurred backdrop
+                   (wrap head/steps/foot in a single .obf-card child)
+   Modifiers (JS-managed):
+     .obf-step  .is-active · .is-enter-fwd / .is-enter-back · .is-leave-fwd / .is-leave-back
+     .obf-progress > i / .obf-dots > i  .is-done · .is-active
+     .obf  .is-busy (async validate in flight) · .is-complete (flow finished)
+     .obf-error  .is-on (validation message visible)
+   Notes:
+     default = full-page flow; set height:100dvh for true full-screen,
+     or drop it in any container — min-height keeps it composed.
+   ============================================ */
+
+.obf {
+  /* ── theme hooks ───────────────────────── */
+  --obf-bg: #0b0b13;
+  --obf-card-bg: #13131d;
+  --obf-fg: #f4f4f8;
+  --obf-muted: rgba(244, 244, 248, 0.55);
+  --obf-line: rgba(255, 255, 255, 0.08);
+  --obf-accent: #8b5cf6;       /* primary accent (theming hook) */
+  --obf-accent-2: #ec4899;     /* gradient tail */
+  --obf-danger: #f87171;       /* validation error text */
+  --obf-dim: rgba(5, 5, 10, 0.65);   /* .obf--card backdrop */
+  /* ── metrics ───────────────────────────── */
+  --obf-radius: 20px;          /* card variant corner radius */
+  --obf-radius-sm: 8px;
+  --obf-max: 560px;            /* step content max width */
+  --obf-seg-h: 4px;            /* progress segment height */
+  --obf-shift: 36px;           /* slide distance for step transitions */
+  /* ── motion (blessed durations) ────────── */
+  --obf-in: 320ms;             /* step enter */
+  --obf-out: 200ms;            /* step leave */
+  --obf-fill: 480ms;           /* progress segment fill */
+  --obf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 480px;
+  background: var(--obf-bg);
+  color: var(--obf-fg);
+  font-family: inherit;
+  overflow: hidden;
+}
+
+/* ── HEAD: segmented progress + skip ──────────────────── */
+.obf-head {
+  display: grid;
+  grid-template-columns: minmax(3rem, 1fr) minmax(0, 320px) minmax(3rem, 1fr);
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.15rem 1.4rem;
+}
+.obf-progress {
+  grid-column: 2;
+  display: flex;
+  gap: 6px;
+}
+.obf-progress > i {
+  position: relative;
+  flex: 1;
+  height: var(--obf-seg-h);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--obf-pill, 999px);
+  overflow: hidden;
+}
+.obf-progress > i::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--obf-accent), var(--obf-accent-2));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--obf-fill) var(--obf-ease);
+}
+.obf-progress > i.is-done::before,
+.obf-progress > i.is-active::before { transform: scaleX(1); }
+.obf-progress > i.is-active {
+  box-shadow: 0 0 14px color-mix(in srgb, var(--obf-accent) 50%, transparent);
+}
+.obf-skip {
+  grid-column: 3;
+  justify-self: end;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--obf-muted);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--obf-radius-sm, 8px);
+  cursor: pointer;
+  transition: color 160ms ease, background 160ms ease;
+}
+.obf-skip:hover { color: var(--obf-fg); background: rgba(255, 255, 255, 0.06); }
+.obf-skip:focus-visible { outline: 2px solid var(--obf-accent); outline-offset: 2px; }
+.obf.is-complete .obf-skip { visibility: hidden; }
+
+/* ── STEPS: stacked viewport + directional panels ─────── */
+.obf-steps {
+  position: relative;
+  flex: 1;
+  display: grid;
+  overflow: hidden;
+}
+.obf-step {
+  grid-area: 1 / 1;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  padding: 2rem 1.6rem;
+}
+.obf-step.is-active,
+.obf-step.is-leave-fwd,
+.obf-step.is-leave-back { display: flex; }
+.obf-step.is-leave-fwd,
+.obf-step.is-leave-back { pointer-events: none; }
+.obf-step.is-enter-fwd  { animation: obf-in-fwd  var(--obf-in)  var(--obf-ease) both; }
+.obf-step.is-enter-back { animation: obf-in-back var(--obf-in)  var(--obf-ease) both; }
+.obf-step.is-leave-fwd  { animation: obf-out-fwd  var(--obf-out) ease both; }
+.obf-step.is-leave-back { animation: obf-out-back var(--obf-out) ease both; }
+@keyframes obf-in-fwd   { from { opacity: 0; transform: translateX(var(--obf-shift)); } }
+@keyframes obf-in-back  { from { opacity: 0; transform: translateX(calc(var(--obf-shift) * -1)); } }
+@keyframes obf-out-fwd  { to   { opacity: 0; transform: translateX(calc(var(--obf-shift) * -1)); } }
+@keyframes obf-out-back { to   { opacity: 0; transform: translateX(var(--obf-shift)); } }
+
+/* ── STEP inner layout helpers ────────────────────────── */
+.obf-art {
+  width: 112px;
+  height: 112px;
+  display: grid;
+  place-items: center;
+  font-size: 3.2rem;
+  line-height: 1;
+  border-radius: var(--obf-radius-sm, 28px);
+  border: 1px solid var(--obf-line);
+  background:
+    radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--obf-accent) 28%, transparent), transparent 65%),
+    radial-gradient(circle at 75% 80%, color-mix(in srgb, var(--obf-accent-2) 18%, transparent), transparent 60%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  box-shadow:
+    0 24px 48px -18px color-mix(in srgb, var(--obf-accent) 40%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  margin-bottom: 1.6rem;
+}
+.obf-title {
+  margin: 0 0 0.5rem;
+  max-width: var(--obf-max);
+  font-size: clamp(1.5rem, 3.6vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.obf-title:focus-visible { outline: 2px solid var(--obf-accent); outline-offset: 6px; border-radius: var(--obf-radius-xs, 4px); }
+.obf-sub {
+  margin: 0;
+  max-width: min(var(--obf-max), 46ch);
+  color: var(--obf-muted);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+.obf-body {
+  width: 100%;
+  max-width: var(--obf-max);
+  margin-top: 1.6rem;
+  text-align: left;
+}
+.obf-error {
+  display: none;
+  width: 100%;
+  max-width: var(--obf-max);
+  margin: 0.9rem 0 0;
+  color: var(--obf-danger);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.obf-error.is-on { display: block; animation: obf-err-in 160ms ease both; }
+@keyframes obf-err-in { from { opacity: 0; transform: translateY(-3px); } }
+
+/* ── FOOT: ghost back · dots · primary next ───────────── */
+.obf-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  max-width: calc(var(--obf-max) + 3.2rem);
+  margin-inline: auto;
+  padding: 1.1rem 1.4rem 1.5rem;
+}
+.obf-back,
+.obf-next {
+  appearance: none;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--obf-radius-sm, 12px);
+  cursor: pointer;
+  transition: transform 160ms var(--obf-ease), box-shadow 160ms ease,
+              color 160ms ease, border-color 160ms ease, opacity 160ms ease;
+}
+.obf-back {
+  border: 1px solid var(--obf-line);
+  background: transparent;
+  color: var(--obf-muted);
+}
+.obf-back:hover:not(:disabled) { color: var(--obf-fg); border-color: rgba(255, 255, 255, 0.2); }
+.obf-back:disabled { opacity: 0.35; cursor: default; }
+.obf-next {
+  border: 0;
+  color: var(--obf-on-accent, #fff);
+  background: linear-gradient(135deg, var(--obf-accent), color-mix(in srgb, var(--obf-accent) 55%, var(--obf-accent-2)));
+  box-shadow:
+    0 12px 24px -10px color-mix(in srgb, var(--obf-accent) 75%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.obf-next:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 34px -12px color-mix(in srgb, var(--obf-accent) 85%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.obf-next:active:not(:disabled) { transform: translateY(0); transition-duration: 90ms; }
+.obf-next:disabled { opacity: 0.55; cursor: wait; }
+.obf-back:focus-visible,
+.obf-next:focus-visible { outline: 2px solid var(--obf-accent); outline-offset: 2px; }
+.obf-dots {
+  display: flex;
+  gap: 7px;
+}
+.obf-dots > i {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--obf-pill, 999px);
+  background: rgba(255, 255, 255, 0.16);
+  transition: width 200ms var(--obf-ease), background 200ms ease;
+}
+.obf-dots > i.is-done   { background: color-mix(in srgb, var(--obf-accent) 55%, transparent); }
+.obf-dots > i.is-active { width: 22px; background: var(--obf-accent); }
+
+/* ── VARIANT: centered card on dimmed backdrop ────────── */
+.obf--card {
+  position: fixed;          /* set position:absolute to scope to a positioned parent */
+  inset: 0;
+  z-index: 999;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: var(--obf-dim);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  overflow: auto;
+}
+.obf-card {
+  display: flex;
+  flex-direction: column;
+  width: min(600px, 100%);
+  min-height: 480px;
+  max-height: min(720px, 100%);
+  background: linear-gradient(170deg, color-mix(in srgb, var(--obf-card-bg) 92%, var(--obf-art-tint, #fff)), var(--obf-card-bg));
+  border: 1px solid var(--obf-line);
+  border-radius: var(--obf-radius);
+  box-shadow:
+    0 40px 80px -24px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+/* ── MOBILE: full-width primary ───────────────────────── */
+@media (max-width: 560px) {
+  .obf-foot { flex-wrap: wrap; padding-bottom: 1.2rem; }
+  .obf-back { order: 1; }
+  .obf-dots { order: 2; }
+  .obf-next { order: 3; flex: 1 1 100%; padding: 0.9rem 1.5rem; }
+}
+
+/* ── REDUCED MOTION: instant swaps, no slides ─────────── */
+@media (prefers-reduced-motion: reduce) {
+  .obf-step.is-enter-fwd,
+  .obf-step.is-enter-back,
+  .obf-step.is-leave-fwd,
+  .obf-step.is-leave-back { animation: none !important; }
+  .obf-step.is-leave-fwd,
+  .obf-step.is-leave-back { display: none !important; }
+  .obf-progress > i::before,
+  .obf-dots > i,
+  .obf-skip,
+  .obf-back,
+  .obf-next { transition: none !important; }
+  .obf-error.is-on { animation: none !important; }
+}

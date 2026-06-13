@@ -279,6 +279,9 @@
 
 ### Backgrounds & patterns
 
+**patterns-mega.css** `backgrounds/patterns-mega.css` (CSS) — tags: background pattern css gradient dots grid lines vlines diagonal plaid checker zigzag chevron rings polka isometric cross carbon starburst brick triangles fade drift dense bold hero-patterns magic-pattern
+  16 pure-CSS background patterns under `.pat-*`: dots, grid, lines, vlines, diagonal, plaid, checker, zigzag, rings, polka, isometric, cross, carbon, starburst, brick, triangles. Modifiers pat-fade/drift/dense/bold. Tunable --pat-c/c2/bg/size.
+
 **patterns.css** `backgrounds/patterns.css` (CSS) — tags: background pattern stripes dots grid diagonal checker
   Repeating CSS-only background patterns.
 
@@ -309,6 +312,18 @@
 **gradient-orbs.js** `backgrounds/gradient-orbs.js` (JS, global: `GradientOrbs`) — tags: orbs dynamic generate parallax pointer-track palette drift waapi
   Programmatically inject N orbs into a container. Supports parallax (orbs follow pointer) + WAAPI drift animations.
 
+**interactive-canvas.css** `backgrounds/interactive-canvas.css` (CSS) — tags: interactive cursor-reactive background canvas spotlight dot-grid grid aurora mesh gradient-mesh network particle web constellation field flow-field ripple confetti cannon mouse-follow hero vercel linear
+  Cursor-reactive background styles: icv-spotlight (light follows cursor), icv-dot-grid (dots bloom near cursor), icv-aurora (blobs drift), icv-mesh (gradient mesh leans to cursor), icv-network (particle web canvas), icv-field (flow-field canvas), icv-ripple (click rings), icv-confetti (click cannon). Tunable --icv-c1/c2/bg.
+
+**interactive-canvas.js** `backgrounds/interactive-canvas.js` (JS, global: `InteractiveCanvas`) — tags: interactive canvas particle network constellation flow-field cursor spotlight dot-grid aurora mesh ripple confetti pointermove requestAnimationFrame init reduced-motion hero background
+  Drives interactive-canvas.css. `InteractiveCanvas.init('[data-canvas]')` reads data-canvas="spotlight|dot-grid|aurora|mesh|network|field|ripple|confetti"; network/field draw live canvases (web links / flow-field) that react to the cursor. Returns instances with destroy().
+
+**canvas-fx.css** `backgrounds/canvas-fx.css` (CSS) — tags: canvas matrix code-rain digital-rain green matrix metaballs goo gooey blob blur contrast generative background hero
+  Styles for canvas-fx.js generative backgrounds: cvfx-matrix (Matrix code rain) and cvfx-metaballs (gooey blobs merged via a CSS blur+contrast filter on the canvas). Tunable --cvfx-c1/c2/bg.
+
+**canvas-fx.js** `backgrounds/canvas-fx.js` (JS, global: `CanvasFX`) — tags: canvas matrix code-rain digital-rain metaballs goo blobs generative requestAnimationFrame cursor init reduced-motion hero background
+  Generative canvas backgrounds. `CanvasFX.init('[data-canvas-fx]')` reads data-canvas-fx="matrix|metaballs"; matrix = falling glyph columns, metaballs = cursor-reactive gooey blobs. Returns instances with destroy().
+
 **sky-gradients.css** `backgrounds/sky-gradients.css` (CSS) — tags: sky gradient dawn sunrise sunset twilight blue-hour dusk night midnight aurora storm fog mars jupiter venus pastel cotton-candy arctic savanna deep-space galactic nebula time-of-day atmospheric
   30+ sky/atmosphere gradient presets — dawn through midnight + alien worlds (mars/jupiter) + nebulas. `.sky-radial` / `.sky-conic` / `.sky-animate` modifiers.
 
@@ -337,6 +352,24 @@
 
 **buttons-pack.css** `blocks/buttons-pack.css` (CSS) — tags: button pack uiverse neon glass 3d gooey soft flip slide-fill border-draw glow-arrow cta skew icon-pop pulse rounded-arrow ghost-underline split ribbon tag
   18 button variants under `.btnp-*`. Sizes btnp-sm/lg/xl.
+
+**buttons-sleek.css** `blocks/buttons-sleek.css` (CSS) — tags: button sleek minimal refined modern saas ghost soft line underline kbd shortcut dot status icon chevron quiet outline gradient-hairline subtle premium
+  8 refined minimal buttons under `.slk-*`: ghost, soft (pill lift), line (text + hairline), kbd (keyboard-hint glow), dot (status dot), icon (chevron nudge), quiet, outline (gradient hairline). Quiet/premium aesthetic. Tunable --slk-c1/c2/fg.
+
+**buttons-fx.css** `blocks/buttons-fx.css` (CSS) — tags: button hover creative fill conic-border arrow glitch gold press 3d dot-expand border-draw shine sweep neon flicker label-swap micro-interaction uiverse dribbble cta
+  12 creative CSS-only button hovers under `.bfx-*`: fill-up, fill-diag, conic (spinning border), arrow, glitch, gold (shimmer), press (3D), dot (expand-to-fill), draw (border draws), shine, neon (flicker), swap (label swap via data-text). Focus-visible mirrors hover.
+
+**buttons-fx2.css** `blocks/buttons-fx2.css` (CSS) — tags: button hover icon-rail fab floating-action elastic bounce letter-spread underline stripe hazard corner bevel burst particle confetti celebrate micro-interaction
+  6 more CSS-only button hovers under `.bf2-*`: icon-rail (glyph slides in), fab (expands to labelled pill), elastic (squash bounce), spread (letter-spread + underline), stripe (animated hazard stripes), corner (bevels corners). Plus bf2-burst for the JS particle burst.
+
+**buttons-fx2.js** `blocks/buttons-fx2.js` (JS, global: `ButtonFX`) — tags: button particle burst confetti celebrate click WAAPI animate init reduced-motion micro-interaction cta
+  Particle burst on click for bf2-burst. ButtonFX.init('[data-button-fx]') reads data-button-fx="burst"; shorthand ButtonFX.burst(sel, {count}). Particles append to <body> (escape the button clip). Returns instances with destroy().
+
+**buttons-fx3.css** `blocks/buttons-fx3.css` (CSS) — tags: button hover liquid-metal chrome equalizer sound-wave bars shutter glow-trail conic border hold-to-confirm press fill micro-interaction cta luxe
+  5 button effects under `.bf3-*`: metal (liquid-chrome sheen), wave (equalizer bars, needs .bf3-bars>i), shutter (gradient drops in), glow-trail (bright point races the border), hold (hold-to-confirm fill, driven by buttons-fx3.js).
+
+**buttons-fx3.js** `blocks/buttons-fx3.js` (JS, global: `HoldConfirm`) — tags: button hold-to-confirm press long-press touch fill progress confirm pointerdown requestAnimationFrame onConfirm init reduced-motion safety
+  Hold-to-confirm for bf3-hold. HoldConfirm.init('[data-hold]', { duration, onConfirm }) fills --bf3-hold 0→1 while pressed; completes with an .is-confirmed flash + onConfirm(el); releasing early resets. Returns instances with destroy().
 
 **shimmer-button.css** `blocks/shimmer-button.css` (CSS) — tags: button shimmer conic glow magic-ui pill rainbow
   Pill button with rotating shimmer trail. Variants: ghost, light, rainbow, sm/lg.
@@ -371,6 +404,21 @@
 
 **cards.js** `components/cards.js` (JS, global: `Cards`) — tags: card flip expand tilt spotlight hover
   `.flip()`, `.expand()`, `.tilt()`, `.spotlight()`.
+
+**css-3d.css** `components/css-3d.css` (CSS) — tags: 3d css transform cube flip-box flip stack wall coverflow carousel perspective preserve-3d rotate gallery no-webgl
+  Pure-CSS 3D components under `.c3d-*`: cube (auto-rotating, hover-pause), flip-box (3D flip to back), stack (cards fan out), wall (tiles on a tilted plane), coverflow (3D card scroll, needs css-3d.js). Tunable --c3d-c1/c2/size.
+
+**css-3d.js** `components/css-3d.js` (JS, global: `CSS3D`) — tags: 3d coverflow carousel scroll tilt rotateY perspective apple init reduced-motion
+  Coverflow tilt for css-3d.css. `CSS3D.init('[data-c3d]')` reads data-c3d="coverflow"; tilts each card toward centre as the row scrolls. Returns instances with destroy().
+
+**theme-switch.css** `components/theme-switch.css` (CSS) — tags: theme dark-mode light toggle switch sun moon day-night data-theme animated orb crescent
+  Round sun↔moon dark-mode toggle. Orb morphs from glowing sun to crescent moon. Pair with theme-switch.js. Tunable --thsw-day/night/size.
+
+**theme-switch.js** `components/theme-switch.js` (JS, global: `ThemeSwitch`) — tags: theme dark-mode toggle localStorage persist prefers-color-scheme data-theme init apply onChange reduced-motion
+  `ThemeSwitch.init('.thsw')` flips data-theme="dark|light" on a target (default <html>), persists to localStorage, falls back to OS preference. `.apply()` applies stored theme on load. Returns instances with get/set/destroy.
+
+**profile-card.css** `components/profile-card.css` (CSS) — tags: profile card user social avatar cover banner stats followers follow message bio team member hover lift glow uiverse dribbble
+  Polished profile card: cover banner, overlapping avatar, name/role/bio, stats row (posts/followers/following), Follow + Message buttons. Lifts with accent glow on hover. `.pfc-*`, tunable --pfc-c1/c2/bg.
 
 **cards-3d.css** `components/cards-3d.css` (CSS) — tags: card 3d tilt parallax layers aceternity depth perspective glass
   Tilt card with parallaxing inner layers (via `data-card3d-depth`). Variants: glass, flat.
@@ -580,6 +628,27 @@
 **hover-effects.css** `effects/hover-effects.css` (CSS) — tags: hover lift glow tilt rise spread
   Hover utility classes for lift/glow/tilt.
 
+**hover-pro.css** `effects/hover-pro.css` (CSS) — tags: hover spotlight cursor-tracked border-glow glare 3d-tilt holographic linear vercel aceternity cult-ui glow lift liquid depth sheen conic-border mouse-follow card interactive
+  8 distinctive cursor-aware hover effects. CSS-only: hvp-glow, hvp-border-run (running conic border), hvp-liquid (gooey fill), hvp-depth (3D push), hvp-holo-sheen. JS-tracked (hover-pro.js): hvp-spotlight (radial light follows cursor), hvp-border-spotlight (Linear-style border glow), hvp-glare (holographic tilt). All tunable via --hvp-* vars.
+
+**hover-pro.js** `effects/hover-pro.js` (JS, global: `HoverPro`) — tags: hover spotlight cursor mouse-track glare tilt border-glow pointermove requestAnimationFrame linear holographic init reduced-motion
+  Drives the cursor-tracked hover-pro.css variants by writing --hvp-mx/my (light) + --hvp-rx/ry (tilt). HoverPro.init('[data-hover]') reads data-hover="spotlight|border|glare"; shorthands spotlight/border/glare(sel, opts). Returns instances with destroy().
+
+**hover-fx.css** `effects/hover-fx.css` (CSS) — tags: hover magnetic ripple parallax depth image-reveal before-after text-flow gradient-text ring pulse squash bounce slide-swap label cursor mouse codrops awwwards micro-interaction button card
+  8 more hover effects. CSS-only: hfx-text-flow (animated gradient text), hfx-ring (pulsing ring), hfx-squash (squash-stretch), hfx-slide-swap (label swap). JS-tracked (hover-fx.js): hfx-magnetic (drifts to cursor), hfx-ripple (ink ripple from pointer), hfx-parallax (data-depth layers), hfx-reveal (circular before/after reveal).
+
+**hover-fx.js** `effects/hover-fx.js` (JS, global: `HoverFX`) — tags: hover magnetic ripple parallax depth reveal cursor pointermove requestAnimationFrame init strength factor radius reduced-motion micro-interaction
+  Drives the cursor-tracked hover-fx.css variants. HoverFX.init('[data-hover-fx]') reads data-hover-fx="magnetic|ripple|parallax|reveal"; shorthands magnetic/ripple/parallax/reveal(sel, opts). Returns instances with destroy().
+
+**luxe-hover.css** `effects/luxe-hover.css` (CSS) — tags: hover luxury luxe premium gold foil glass glassmorphism emboss neumorphic breathe shimmer champagne frame corner-brackets rise velvet spotlight tilt card box editorial high-end elegant
+  10 luxurious CSS-only box/card hovers: lux-gold-foil (holographic gold sweep), lux-glass (frosted lift), lux-emboss, lux-breathe (precious-metal border), lux-shimmer (champagne), lux-frame (gilt corner brackets), lux-rise, lux-velvet, lux-spotlight, lux-tilt. Tunable --lux-gold/rose/c1/c2.
+
+**card-fx.css** `effects/card-fx.css` (CSS) — tags: hover card box holographic holo pokemon tilt flip flip-card duotone bento stagger peek reveal zoom image cursor 3d rainbow sheen
+  6 expressive card hovers. CSS-only: cfx-flip (3D flip to back), cfx-bento (children stagger-lift), cfx-duotone (image duotone→colour), cfx-peek (body slides up), cfx-zoom (framed image zoom). JS-tracked (card-fx.js): cfx-holo (Pokémon-style holographic tilt + rainbow sheen + glare).
+
+**card-fx.js** `effects/card-fx.js` (JS, global: `CardFX`) — tags: hover holographic holo card tilt cursor pointermove requestAnimationFrame sheen glare init reduced-motion
+  Drives the cfx-holo card: writes --cfx-mx/my (sheen+glare) and --cfx-rx/ry (tilt). CardFX.init('[data-card-fx]'); shorthand CardFX.holo(sel, opts). Returns instances with destroy().
+
 **gradient-blobs.css** `effects/gradient-blobs.css` (CSS) — tags: blob organic morph border-radius gradient haikei codrops floating aurora sunset cyber pastel cosmic glow blurred
   Morphing organic shapes with gradient fills. 10 color variants + sizes (sm/md/lg/xl/full) + spin/glow/blurred modifiers.
 
@@ -781,6 +850,18 @@
 **toggles.css** `blocks/toggles.css` (CSS) — tags: toggle switch ios square pill icon soft stretchy vertical
   6 toggle variants under `.tgl-*`. Colors accent/cyan/pink/amber, sizes sm/lg/xl.
 
+**checkboxes-uiverse.css** `blocks/checkboxes-uiverse.css` (CSS) — tags: checkbox uiverse fancy animated draw fill bounce flip glow ripple heart gradient form control accessible
+  7 fancy uiverse-style checkboxes under `.cbu-*`: draw, fill (washes up), bounce, flip (3D), glow (neon), ripple, heart. Real `<input>` + label, keyboard + focus-visible. Tunable --cbu-c1/c2/size.
+
+**toggles-uiverse.css** `blocks/toggles-uiverse.css` (CSS) — tags: toggle switch uiverse fancy ios gradient day-night sun-moon neumorph power emoji square form control accessible
+  7 fancy uiverse-style switches under `.tgu-*`: ios, gradient, daynight (sun→moon), neumorph, power (⏻ red→green), emoji (😴→😎), square. Real `<input>`, focus-visible. Tunable --tgu-c1/c2/w/h.
+
+**social-icons.css** `blocks/social-icons.css` (CSS) — tags: social icon button hover uiverse twitter github youtube discord linkedin instagram brand fill 3d bounce ring tooltip slide animated
+  Animated social icon buttons under `.soc-*`. Hover variants: fill, 3d, bounce, ring (spinning gradient), tooltip (data-tip), slide. Brand modifiers: soc-twitter/github/youtube/discord/linkedin/instagram (gradient). Put your own icon inside.
+
+**radios-uiverse.css** `blocks/radios-uiverse.css` (CSS) — tags: radio uiverse fancy grow fill square glow card selectable :has form control accessible plan-picker
+  Fancy uiverse-style radios under `.rdu-*`: grow, fill, square, glow, and rdu-card (whole label is a selectable card via :has). Real `<input>` + label, focus-visible. Tunable --rdu-c1/c2/size.
+
 **sliders.css** `blocks/sliders.css` (CSS) — tags: slider range thick thin glow vertical segments range-input
   Range slider variants with `--sld-progress`. Colors pink/cyan/amber/mint/rose, sizes thick/thin.
 
@@ -911,6 +992,9 @@
 **tooltips.css** `blocks/tooltips.css` (CSS) — tags: tooltip hover popover css-only top bottom
   CSS-only tooltips via `data-tooltip`.
 
+**tooltips-fancy.css** `blocks/tooltips-fancy.css` (CSS) — tags: tooltip uiverse directional top bottom left right arrow neon gradient animated slide fade data-tip hover focus accessible
+  Directional animated tooltips via `data-tip` + `.ttu-{top,bottom,left,right}` with arrows. Style modifiers: ttu-neon (glowing), ttu-gradient. Shows on hover + focus-visible. Tunable --ttu-c1/c2/bg.
+
 **tooltips.js** `blocks/tooltips.js` (JS, global: `Tooltip`) — tags: tooltip popover positioned floating
   `Tooltip.init()`, `.attach(el, content, opts)`.
 
@@ -998,6 +1082,12 @@
 
 **view-transitions.js** `transitions/view-transitions.js` (JS, global: `ViewTransitions`) — tags: view-transitions api wrapper cross-fade fallback flip
   `ViewTransitions.run(callback, {type})` wrapper for `document.startViewTransition()` with FLIP fallback.
+
+**transitions-pro.css** `transitions/transitions-pro.css` (CSS) — tags: page-transition overlay cover reveal circle iris curtain panels blinds stripes venetian rows slide zoom blur blocks mosaic diagonal glitch rgb-split codrops swup barba creative cool route navigation
+  Overlay styles for the 11 transitions-pro effects (fade, circle iris, curtain, panels/blinds, diagonal sweep, RGB-split glitch, slide push, zoom-blur, stripes/venetian, rows, blocks/mosaic, split, 3D flip, clock wipe). Driven by transitions-pro.js via data-phase cover/reveal. Tunable --txp-color/dur/ease/stagger.
+
+**transitions-pro.js** `transitions/transitions-pro.js` (JS, global: `TransitionsPro`) — tags: page-transition overlay controller cover swap reveal view-transitions startViewTransition bindLinks SPA route circle curtain panels stripes rows slide zoom blocks mosaic split flip clock diagonal glitch fade reduced-motion codrops swup barba
+  Overlay-driven cover→swap→reveal transition controller. `TransitionsPro.run('circle', { onSwap })`; `.view(onSwap, { effect })` uses the native View Transitions API with fallback; `.bindLinks('a[data-txp]')` intercepts links for real navigation. 14 effects.
 
 ---
 
@@ -2963,8 +3053,17 @@ Ports of the most-requested Aceternity UI patterns the vault was missing. All va
 
 **Phase wave2-uiverse — exotic loaders / inputs / cards in the uiverse aesthetic (3 files). Source: uiverse.io (MIT/CC0)**
 
+**loaders-mega.css** `blocks/loaders-mega.css` (CSS) — tags: loader spinner css pacman hourglass coin clock jelly bars equalizer bounce ball square typing dots pulse wifi newton cradle propeller loading-io
+  13 distinct CSS loaders under `.ldm-*`: pacman, hourglass, coin, clock, jelly, bars (child i×N), bounce, square, typing, pulse, wifi, newton (child i×5), propeller. Tunable --ldm-c1/c2/size/speed.
+
 **loaders-uiverse.css** `blocks/loaders-uiverse.css` (CSS) — tags: loader spinner uiverse glow neon gradient conic comet orbit ripple radar segment-clock three-body liquid infinity square-morph pulse-grid helix dual-conic exotic
   15 glow/gradient/neon loaders (`.uload-*`): conic-glow, gradient-orbit, neon-bars, dual-conic, comet, ripple-radar, glow-orb, segment-clock, three-body, liquid-circle, infinity, square-morph, gradient-trail, pulse-grid (3×3), helix-dots. `--u-c1/--u-c2` colors, `--u-size`/`--u-speed`, sm/lg. Distinct from loaders-pack (flat) + loaders-fancy (illustrative).
+
+**glow-search.css** `components/glow-search.css` (CSS) — tags: search input search-bar glow conic-gradient rotating-border animated-border neon dark uiverse lakshay-art filter icon focus-within
+  Search bar wrapped in a rotating conic-gradient glow border + blurred glow that intensifies on focus. `.gsb` wrapper + `.gsb-input` + `.gsb-icon` + `.gsb-filter`. Tunable --gsb-c1/c2/c3/bg/speed.
+
+**login-form.css** `components/login-form.css` (CSS) — tags: login sign-in form auth card email password oauth google apple remember-me forgot-password uiverse micaelgomestavares dark-theme
+  Clean sign-in card: icon inputs (focus-within accent border), remember/forgot row, black submit, OAuth provider buttons, Or-With divider. `.lf-*`; add `.lf-dark` for dark theme. Tunable --lf-bg/fg/accent/submit.
 
 **inputs-uiverse.css** `blocks/inputs-uiverse.css` (CSS) — tags: input uiverse neon glow animated-gradient-border underline-grow floating-label glass icon-glow search-expand ring-focus pill-glow focus exotic
   10 exotic text inputs (`.uinp-*`): neon (glow focus), gradient-border (conic-rotate on focus via @property), underline-grow (center-out), float-glow (floating label + glow), glass, icon-glow, search-expand (width grows on focus), ring-focus, slot-fill, pill-glow. + is-error shake / is-success states. Distinct from inputs.css + inputs-pro.css.
@@ -3088,3 +3187,53 @@ Ports of the most-requested Aceternity UI patterns the vault was missing. All va
 
 **media-library.js** `components/media-library.js` (JS, global: `MediaLibrary`) — tags: media-library select multi-select view-toggle grid list search filter open folder onSelect onOpen google-drive
   `MediaLibrary.init('#lib', {multi, onOpen, onSelect})`. Click-select (ctrl/cmd for multi), grid/list toggle, search-filter by name, dbl-click opens. Methods: selected(), clear().
+
+**Phase taste — TASTE LAYER: token-layer presets that coordinate type + motion + spacing into one cohesive aesthetic. Attribute selectors that WRITE CSS vars only (load after structure.css + palettes.css); existing snippets are unchanged. See taste.skill.md**
+
+**aesthetic.css** `taste/aesthetic.css` (CSS) — tags: taste aesthetic vibe profile minimal editorial energetic luxury playful technical data-aesthetic master-switch font motion density elevation hover-lift accent-intensity cohesion design-system themeable
+  Master vibe switch (`[data-aesthetic="minimal|editorial|energetic|luxury|playful|technical"]`): one attribute coordinates --font-head/body + --m-* motion + --section-y/--gap/--radius + new --ts-accent-intensity/--ts-elevation/--ts-hover-lift. Layer on .struct + a .pal-*. Override any axis with its own data-* attribute.
+
+**density.css** `taste/density.css` (CSS) — tags: taste density spacing rhythm compact normal airy whitespace data-density section-y gap gutter radius layout breathing-room cohesion themeable
+  Spacing-rhythm presets (`[data-density="compact|normal|airy"]`): retunes --section-y/--gap/--gutter/--radius/--radius-sm together so a whole page goes tighter or airier in one switch. Layer on .struct after structure.css.
+
+**motion.css** `taste/motion.css` (CSS) — tags: taste motion timing duration easing stagger minimal standard playful data-motion m-dur m-ease blessed-durations transition hover cohesion reduced-motion themeable
+  Blessed motion-token set (`[data-motion="minimal|standard|playful"]`): exposes --m-dur-fast/--m-dur/--m-dur-slow/--m-ease/--m-stagger so hover/transition timing is coordinated page-wide. Blessed durations 90/120/140/160/200/260/320/480ms; zeros under prefers-reduced-motion. Pairs with motion-profiles.js.
+
+**motion-profiles.js** `taste/motion-profiles.js` (JS, global: `MotionProfile`) — tags: taste motion profile js stagger spring duration easing data-motion reduced-motion get apply tokens minimal standard playful timing cohesion
+  JS side of the motion layer. `MotionProfile.get(el)` reads the active profile off the nearest [data-motion]; `.apply(el,name)` pushes --m-* inline; `.tokens(name)` returns {durFast,dur,durSlow,ease,stagger}; `.stagger(sel,opts)` bridges to Stagger with matching timing. Mirrors motion.css; respects reduced-motion.
+
+**fonts.css** `taste/fonts.css` (CSS) — tags: taste fonts typography font-pairing type head body data-font-pair serif grotesk mono editorial luxury geometric humanist google-fonts cohesion themeable
+  Curated head+body font pairings (`[data-font-pair="system-clean|grotesk-tech|editorial-serif|luxury-serif|geometric-warm|mono-technical|display-bold|humanist-soft"]`): sets only --font-head/--font-body so a coordinated type pairing applies in one attribute. Google-Fonts @import at top (self-host note inside).
+
+**presets.js** `taste/presets.js` (JS, global: `TastePresets`) — tags: taste presets bundle aesthetic palette font-pair motion density house-components recipe theme calm-fintech clean-saas editorial luxury-noir playful-pop dev-tool data-console validate cohesion compose
+  ~12 named taste bundles binding {aesthetic, palette, fontPair, motion, density, house:{button,card,input,hero,loader → real INDEX paths}, avoid}. `TastePresets.get(name)`/`.list(aesthetic?)`/`.names()` + pure `.validate(preset,{paletteNames,indexPaths})`. This is the "keep all packs, guide via presets" layer — minimal→buttons-sleek, energetic→buttons-fx, luxury→buttons-fx3, playful→buttons-pack. Pairs with taste.skill.md and compose_page.
+
+**Phase wow-screens — full-screen experience packs: branded splash/boot intro, success celebration takeover, onboarding flow shell, table-safe email receipt/invoice (7 files). Complements loading-pages / achievement-popup / onboarding-pack / email-pack without duplicating them**
+
+**splash-intro.css** `components/splash-intro.css` (CSS) — tags: splash intro overlay preloader boot brand logo reveal stagger progress bar curtain iris split fade unveil page-load cinematic linear vercel awwwards
+  Full-screen branded splash overlay `.spl` with clip-wipe logo reveal (`.spl-logo`, `.spl-logo--letters` per-letter stagger), --spl-progress-driven `.spl-bar` + `.spl-status`, and `.is-done`-triggered unveil variants .spl--fade / .spl--curtain / .spl--iris / .spl--split.
+**splash-intro.js** `components/splash-intro.js` (JS, global: `SplashIntro`) — tags: splash intro preloader orchestrator progress auto fake-progress unveil reveal done once sessionstorage skip reduced-motion ondone boot page-load
+  SplashIntro.init(el, { minDuration, unveil, once, onDone }) drives the .spl overlay — .progress(0-1), .auto() fake-progress toward 90%, .done() completes the bar, plays the unveil and removes the overlay; sessionStorage once-key and prefers-reduced-motion both skip straight to onDone.
+
+**celebration-screen.css** `feedback/celebration-screen.css` (CSS) — tags: celebration success screen takeover full-screen order-confirmed payment-complete signup level-up checkmark rays glass receipt confetti overlay glow stagger choreography
+  Full-screen success takeover (`.cel-*`): radial-glow overlay, draw-in SVG checkmark circle, staggered title/sub rise-ins, glass receipt card, primary+ghost actions; variants cel--burst (rotating rays), cel--minimal, cel--dark, cel--light, cel--inline; .is-in/.is-out choreography, inherits palette tokens with fallbacks.
+**celebration-screen.js** `feedback/celebration-screen.js` (JS, global: `CelebrationScreen`) — tags: celebration screen show hide success takeover sequence stagger confetti autohide esc overlay-close focus-trap restore-focus actions receipt
+  CelebrationScreen.show({title, subtitle, detail, actions, variant, confetti, autoHide, onClose}) builds the takeover and staggers mark→title→card→actions, fires window.Confetti when present; hide() plays exit; ESC/overlay close, focus moves to primary action and is restored on close.
+
+**onboarding-flow.css** `components/onboarding-flow.css` (CSS) — tags: onboarding flow multi-step shell progress segments skip wizard slide transition directional card backdrop linear superhuman arc first-run
+  Page-level onboarding flow shell (`.obf-*`): segmented progress header + skip, sliding step panels (.is-enter-fwd/back, .is-leave-fwd/back), art/title/sub/body slots, ghost-back/primary-next foot with dots, `.obf--card` centered-card variant on a dimmed backdrop.
+**onboarding-flow.js** `components/onboarding-flow.js` (JS, global: `OnboardingFlow`) — tags: onboarding flow state machine next back skip go validate async error focus a11y keyboard arrows finish complete
+  `OnboardingFlow.init('.obf', {onStep, validate, onSkip, onComplete})` — directional step transitions, sync/async validate (string → `.obf-error`), auto-built segments + dots, Back disabled on first step, Next swaps to `data-finish-label` on last, ArrowLeft/Right keys, focuses the new step's heading. Methods: `.next()` `.back()` `.go(i)` `.destroy()`.
+
+**email-receipt.css** `components/email-receipt.css` (CSS) — tags: email receipt invoice order-confirmation transactional table-safe inline-styles bulletproof-button line-items totals payment-card billing shipping unsubscribe stripe shopify paid pending refunded
+  Table-safe transactional email templates (.rcpt, 600px light-first canvas + .rcpt--dark and .rcpt--invoice variants): brand head, paid/pending/refunded status banner, zebra `<table>` line items, grand-total rule, payment-chip row, stacking billing/shipping columns, bulletproof CTA `<a>`, due banner + invoice-meta grid, legal footer — inline the styles for real sends.
+
+**Phase creative-assets — agent creative firepower: hand-crafted SVG illustration registry (12 duotone scenes) + FIGlet-style ASCII banners (3 files)**
+
+**illustrations.js** `svg/illustrations.js` (JS, global: `Illustrations`) — tags: illustration illustrations inline-svg scene registry sleeping-child bed moon crescent night-sky stars meditation meditate cat lamp armchair plants monstera waves mountain dawn coffee mug steam paper-plane arches empty-state hero spot-art duotone line-art currentcolor themable accessible
+  12 hand-crafted duotone line-style SVG scenes behind the `Illustrations` registry — `.get(name,{accent,title})` returns a themable svg string (role="img"+`<title>` when titled, aria-hidden otherwise), `.mount(el,name,opts)` injects, `.names()` lists; strokes inherit currentColor, fills use `--ill-accent` at varying opacity, zero baked-in colors.
+**illustrations.css** `svg/illustrations.css` (CSS) — tags: illustration illustrations svg frame framed backdrop float hover lift sizes small large themable duotone accent stroke empty-state decoration spot-art presentation
+  `.ill` base (block, fluid width, `--ill-stroke`/`--ill-accent` theming) plus `.ill--framed` soft rounded backdrop, `.ill--float` translateY+shadow hover lift (320ms, reduced-motion guarded), `.ill--sm`/`.ill--lg` size caps, `.ill-spot` host wrapper.
+
+**ascii-banner.js** `typography/ascii-banner.js` (JS, global: `AsciiBanner`) — tags: ascii banner figlet block font terminal hero headline 404 retro text-art monospace pre dev-tool cli console splash boxed frame typography glyph letters half-block
+  `.ascii-banner` <pre> banners from a hand-tuned 5-row █▀▄ block font (A-Z 0-9 space - . !) — `AsciiBanner.render(text)` / `.mount(el, text, {className})` (sets aria-label, font via `--ab-font`, color inherits) / `.box(text, {pad})` ┌─┐ frame / `.chars()`.

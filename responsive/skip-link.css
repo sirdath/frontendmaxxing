@@ -76,3 +76,15 @@
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .skip-link, .skip-link *, .skip-link::before, .skip-link::after,
+  .sr-only, .sr-only *, .sr-only::before, .sr-only::after,
+  .focus-ring, .focus-ring *, .focus-ring::before, .focus-ring::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

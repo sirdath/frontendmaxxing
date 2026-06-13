@@ -162,3 +162,10 @@
 @media (prefers-reduced-motion: reduce) {
   .goo > *, .goo-fab > button { transition: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.goo :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.goo:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--goo-focus-width, 2px) solid var(--goo-focus-color, #8b5cf6);
+  outline-offset: var(--goo-focus-offset, 2px);
+}

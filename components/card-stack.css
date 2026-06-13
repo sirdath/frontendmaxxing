@@ -58,3 +58,14 @@
 
 .cs-card p { margin: 0; font-size: 1rem; line-height: 1.5; }
 .cs-card span { font-size: 0.78rem; color: var(--cs-muted); font-weight: 500; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cs-host, .cs-host *, .cs-host::before, .cs-host::after,
+  .cs-card, .cs-card *, .cs-card::before, .cs-card::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

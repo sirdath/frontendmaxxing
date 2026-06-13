@@ -89,3 +89,15 @@
 @media (max-width: 600px) {
   .imc-card { width: 280px; }
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .imc-host, .imc-host *, .imc-host::before, .imc-host::after,
+  .imc-track, .imc-track *, .imc-track::before, .imc-track::after,
+  .imc-card, .imc-card *, .imc-card::before, .imc-card::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

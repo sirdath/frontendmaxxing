@@ -250,3 +250,25 @@
   width: 60px; font: inherit; font-size: 0.82rem;
   outline: 0;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .crp-aave, .crp-aave *, .crp-aave::before, .crp-aave::after,
+  .crp-uniswap, .crp-uniswap *, .crp-uniswap::before, .crp-uniswap::after,
+  .crp-swap, .crp-swap *, .crp-swap::before, .crp-swap::after,
+  .crp-returns, .crp-returns *, .crp-returns::before, .crp-returns::after,
+  .crp-gas, .crp-gas *, .crp-gas::before, .crp-gas::after,
+  .crp-slip, .crp-slip *, .crp-slip::before, .crp-slip::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.crp-aave, .crp-uniswap, .crp-swap, .crp-returns, .crp-gas, .crp-slip) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.crp-aave, .crp-uniswap, .crp-swap, .crp-returns, .crp-gas, .crp-slip):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--crp-aave-focus-width, 2px) solid var(--crp-aave-focus-color, #8b5cf6);
+  outline-offset: var(--crp-aave-focus-offset, 2px);
+}

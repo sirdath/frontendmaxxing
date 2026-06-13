@@ -1,0 +1,70 @@
+/* ============================================
+   ILLUSTRATIONS — Presentation layer for the inline-SVG scene registry
+   Pairs with svg/illustrations.js (global: Illustrations)
+   ============================================
+   Usage:
+     <figure class="ill-spot" id="empty-art" style="--ill-accent:#8b5cf6;"></figure>
+     <script>Illustrations.mount('#empty-art', 'cat-sleeping', { title: 'Nothing here yet' });</script>
+
+   Variants:
+     .ill          base class (added automatically by Illustrations.get)
+     .ill--framed  soft rounded backdrop (apply to the svg or a wrapper)
+     .ill--float   gentle hover lift — translateY + drop-shadow (no scale)
+     .ill--sm      small cap (~icon-spot size)
+     .ill--lg      large cap (hero size)
+
+   Tunables:
+     --ill-stroke  line color (defaults to currentColor)
+     --ill-accent  duotone fill/accent color (defaults to currentColor)
+     --ill-bg, --ill-radius, --ill-pad   framed backdrop
+     --ill-lift, --ill-shadow            float hover
+     --ill-sm, --ill-lg                  size caps
+   ============================================ */
+
+.ill {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--ill-stroke, currentColor);
+}
+
+/* Optional host wrapper — keeps mount targets tidy */
+.ill-spot {
+  display: block;
+  margin: 0;
+}
+
+/* Soft rounded backdrop behind the artwork */
+.ill--framed {
+  background: var(--ill-bg, rgba(127, 127, 127, 0.08));
+  border-radius: var(--ill-radius, 18px);
+  padding: var(--ill-pad, 1.1rem);
+}
+
+/* Gentle hover lift — transform transition, no long animations */
+.ill--float {
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), filter 320ms ease;
+  will-change: transform;
+}
+.ill--float:hover {
+  transform: translateY(var(--ill-lift, -6px));
+  filter: drop-shadow(var(--ill-shadow, 0 10px 18px rgba(0, 0, 0, 0.18)));
+}
+
+/* Size helpers */
+.ill--sm {
+  max-width: var(--ill-sm, 180px);
+}
+.ill--lg {
+  max-width: var(--ill-lg, 560px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ill--float {
+    transition: none;
+  }
+  .ill--float:hover {
+    transform: none;
+    filter: none;
+  }
+}

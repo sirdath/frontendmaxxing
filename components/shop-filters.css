@@ -115,3 +115,30 @@
 .shf-sheet { position: fixed; inset: 0; z-index: 150; background: rgba(0,0,0,0.5); display: none; }
 .shf-sheet.is-open { display: block; }
 .shf-sheet-panel { position: absolute; inset: 0 0 0 auto; width: min(360px, 90vw); background: var(--shf-bg); padding: 1.2rem; overflow-y: auto; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .shf-toolbar, .shf-toolbar *, .shf-toolbar::before, .shf-toolbar::after,
+  .shf-count, .shf-count *, .shf-count::before, .shf-count::after,
+  .shf-sort, .shf-sort *, .shf-sort::before, .shf-sort::after,
+  .shf-view, .shf-view *, .shf-view::before, .shf-view::after,
+  .shf-chips, .shf-chips *, .shf-chips::before, .shf-chips::after,
+  .shf-chip, .shf-chip *, .shf-chip::before, .shf-chip::after,
+  .shf-layout, .shf-layout *, .shf-layout::before, .shf-layout::after,
+  .shf-sidebar, .shf-sidebar *, .shf-sidebar::before, .shf-sidebar::after,
+  .shf-group, .shf-group *, .shf-group::before, .shf-group::after,
+  .shf-check, .shf-check *, .shf-check::before, .shf-check::after,
+  .shf-swatch, .shf-swatch *, .shf-swatch::before, .shf-swatch::after,
+  .shf-size, .shf-size *, .shf-size::before, .shf-size::after,
+  .shf-range, .shf-range *, .shf-range::before, .shf-range::after,
+  .shf-rating, .shf-rating *, .shf-rating::before, .shf-rating::after,
+  .shf-more, .shf-more *, .shf-more::before, .shf-more::after,
+  .shf-pagination, .shf-pagination *, .shf-pagination::before, .shf-pagination::after,
+  .shf-filter-btn, .shf-filter-btn *, .shf-filter-btn::before, .shf-filter-btn::after,
+  .shf-sheet, .shf-sheet *, .shf-sheet::before, .shf-sheet::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

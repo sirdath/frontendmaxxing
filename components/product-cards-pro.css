@@ -176,3 +176,13 @@
   background-size: 400% 100%; animation: ppc-shimmer 1.4s ease infinite;
 }
 @keyframes ppc-shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ppc, .ppc *, .ppc::before, .ppc::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,135 @@
+/* ============================================
+   BUTTONS FX — creative button hover animations (CSS-only)
+   Inspired by uiverse, dribbble micro-interactions, codrops
+   ============================================
+   Base class `bfx` + one variant. Works on <button> and <a>. Pure CSS.
+   Focus-visible mirrors hover, and the default focus ring is preserved.
+
+   Usage:
+     <link rel="stylesheet" href="blocks/buttons-fx.css">
+     <button class="bfx bfx-fill-up">Fill up</button>
+     <button class="bfx bfx-conic">Conic border</button>
+     <button class="bfx bfx-arrow"><span>Continue</span></button>
+     <button class="bfx bfx-swap" data-text="Let's go →">Hover me</button>
+
+   Variants: bfx-fill-up bfx-fill-diag bfx-conic bfx-arrow bfx-glitch bfx-gold
+             bfx-press bfx-dot bfx-draw bfx-shine bfx-neon bfx-swap
+   Tunables: --bfx-c1 --bfx-c2 --bfx-fg --bfx-dur --bfx-ease --bfx-radius
+   ============================================ */
+
+@property --bfx-a { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+
+.bfx {
+  --bfx-c1: #8b5cf6;
+  --bfx-c2: #ec4899;
+  --bfx-fg: #fff;
+  --bfx-dur: 0.4s;
+  --bfx-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --bfx-radius: 10px;
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.7rem 1.4rem; border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05); color: var(--bfx-fg);
+  border-radius: var(--bfx-radius); font: inherit; font-weight: 600; cursor: pointer;
+  overflow: hidden; isolation: isolate;
+  transition: transform var(--bfx-dur) var(--bfx-ease), color var(--bfx-dur), box-shadow var(--bfx-dur), border-color var(--bfx-dur);
+}
+.bfx > * { position: relative; z-index: 1; }
+
+/* fill from bottom */
+.bfx-fill-up::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; transform: translateY(101%);
+  background: linear-gradient(var(--bfx-c1), var(--bfx-c2)); transition: transform var(--bfx-dur) var(--bfx-ease);
+}
+.bfx-fill-up:hover, .bfx-fill-up:focus-visible { color: #fff; border-color: transparent; }
+.bfx-fill-up:hover::before, .bfx-fill-up:focus-visible::before { transform: translateY(0); }
+
+/* diagonal fill */
+.bfx-fill-diag::before {
+  content: ''; position: absolute; inset: -2px; z-index: 0; transform: translateX(-101%) skewX(-12deg);
+  background: linear-gradient(120deg, var(--bfx-c1), var(--bfx-c2)); transition: transform var(--bfx-dur) var(--bfx-ease);
+}
+.bfx-fill-diag:hover, .bfx-fill-diag:focus-visible { color: #fff; border-color: transparent; }
+.bfx-fill-diag:hover::before, .bfx-fill-diag:focus-visible::before { transform: translateX(0) skewX(-12deg); }
+
+/* spinning conic gradient border */
+.bfx-conic::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: conic-gradient(from var(--bfx-a), var(--bfx-c1), var(--bfx-c2), var(--bfx-c1));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity var(--bfx-dur);
+}
+.bfx-conic:hover, .bfx-conic:focus-visible { border-color: transparent; }
+.bfx-conic:hover::before, .bfx-conic:focus-visible::before { opacity: 1; animation: bfx-spin 2s linear infinite; }
+@keyframes bfx-spin { to { --bfx-a: 360deg; } }
+
+/* arrow slides in + fill */
+.bfx-arrow::after { content: '→'; margin-left: -0.4rem; opacity: 0; transform: translateX(-6px); transition: all var(--bfx-dur) var(--bfx-ease); }
+.bfx-arrow:hover, .bfx-arrow:focus-visible { padding-right: 1.7rem; background: linear-gradient(120deg, var(--bfx-c1), var(--bfx-c2)); border-color: transparent; color: #fff; }
+.bfx-arrow:hover::after, .bfx-arrow:focus-visible::after { opacity: 1; transform: translateX(0); margin-left: 0; }
+
+/* RGB glitch */
+.bfx-glitch:hover, .bfx-glitch:focus-visible { animation: bfx-glitch 0.4s steps(3) 1; text-shadow: 2px 0 var(--bfx-c2), -2px 0 var(--bfx-c1); }
+@keyframes bfx-glitch { 0% { transform: translate(0); } 33% { transform: translate(-2px, 1px); } 66% { transform: translate(2px, -1px); } 100% { transform: translate(0); } }
+
+/* gold gradient + shine */
+.bfx-gold { background: linear-gradient(120deg, #b8860b, #ffd700, #b8860b); background-size: 200% auto; color: #2a1c00; border-color: rgba(255, 215, 0, 0.5); }
+.bfx-gold:hover, .bfx-gold:focus-visible { animation: bfx-gold 1.6s linear infinite; box-shadow: 0 8px 24px -8px rgba(255, 215, 0, 0.6); }
+@keyframes bfx-gold { to { background-position: 200% center; } }
+
+/* 3D press */
+.bfx-press { box-shadow: 0 6px 0 -1px rgba(0, 0, 0, 0.5); }
+.bfx-press:hover, .bfx-press:focus-visible { transform: translateY(2px); box-shadow: 0 3px 0 -1px rgba(0, 0, 0, 0.5); }
+.bfx-press:active { transform: translateY(6px); box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5); }
+
+/* dot expands to fill */
+.bfx-dot::before {
+  content: ''; position: absolute; z-index: 0; left: 50%; top: 50%; width: 8px; height: 8px; border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0); background: linear-gradient(var(--bfx-c1), var(--bfx-c2));
+  transition: transform var(--bfx-dur) var(--bfx-ease);
+}
+.bfx-dot:hover, .bfx-dot:focus-visible { color: #fff; border-color: transparent; }
+.bfx-dot:hover::before, .bfx-dot:focus-visible::before { transform: translate(-50%, -50%) scale(40); }
+
+/* border draws around */
+.bfx-draw { border-color: transparent; }
+.bfx-draw::before, .bfx-draw::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  border: 2px solid var(--bfx-c1); opacity: 0; transition: opacity var(--bfx-dur), clip-path var(--bfx-dur) var(--bfx-ease);
+  clip-path: inset(0 100% 100% 0);
+}
+.bfx-draw::after { border-color: var(--bfx-c2); clip-path: inset(100% 0 0 100%); }
+.bfx-draw:hover::before, .bfx-draw:focus-visible::before { opacity: 1; clip-path: inset(0 0 0 0); }
+.bfx-draw:hover::after, .bfx-draw:focus-visible::after { opacity: 1; clip-path: inset(0 0 0 0); }
+
+/* light sweep */
+.bfx-shine::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; transform: translateX(-120%);
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+  transition: transform 0.7s var(--bfx-ease);
+}
+.bfx-shine:hover::before, .bfx-shine:focus-visible::before { transform: translateX(120%); }
+
+/* neon flicker */
+.bfx-neon { color: var(--bfx-c1); border-color: var(--bfx-c1); text-shadow: 0 0 6px currentColor; }
+.bfx-neon:hover, .bfx-neon:focus-visible { color: #fff; box-shadow: 0 0 8px var(--bfx-c1), 0 0 22px var(--bfx-c1), inset 0 0 10px rgba(139, 92, 246, 0.4); animation: bfx-neon 1.4s infinite; }
+@keyframes bfx-neon { 0%, 19%, 21%, 50%, 100% { opacity: 1; } 20%, 20.5% { opacity: 0.6; } }
+
+/* label swap (needs data-text) */
+.bfx-swap::after {
+  content: attr(data-text); position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center;
+  transform: translateY(110%); transition: transform var(--bfx-dur) var(--bfx-ease); color: #fff;
+}
+.bfx-swap > *, .bfx-swap { transition: transform var(--bfx-dur) var(--bfx-ease), color var(--bfx-dur), background var(--bfx-dur); }
+.bfx-swap:hover, .bfx-swap:focus-visible { background: linear-gradient(120deg, var(--bfx-c1), var(--bfx-c2)); border-color: transparent; color: transparent; }
+.bfx-swap:hover::after, .bfx-swap:focus-visible::after { transform: translateY(0); }
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .bfx, .bfx::before, .bfx::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -276,3 +276,20 @@
   --l-border: rgba(0, 0, 0, 0.1);
   --l-muted: rgba(31, 41, 55, 0.55);
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .lstr, .lstr *, .lstr::before, .lstr::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.lstr :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.lstr:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--lstr-focus-width, 2px) solid var(--lstr-focus-color, #8b5cf6);
+  outline-offset: var(--lstr-focus-offset, 2px);
+}

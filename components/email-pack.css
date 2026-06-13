@@ -320,3 +320,25 @@
 .eml-snooze-row.is-custom { border-top: 1px solid var(--e-line); margin-top: 0.3rem; padding-top: 0.55rem; color: var(--e-accent); font-weight: 600; }
 .eml-snooze-ic { font-size: 0.95rem; }
 .eml-snooze-when { color: var(--e-muted); font-size: 0.72rem; font-variant-numeric: tabular-nums; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .eml-row, .eml-row *, .eml-row::before, .eml-row::after,
+  .eml-thread, .eml-thread *, .eml-thread::before, .eml-thread::after,
+  .eml-side, .eml-side *, .eml-side::before, .eml-side::after,
+  .eml-comp, .eml-comp *, .eml-comp::before, .eml-comp::after,
+  .eml-sender, .eml-sender *, .eml-sender::before, .eml-sender::after,
+  .eml-snooze, .eml-snooze *, .eml-snooze::before, .eml-snooze::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.eml-row, .eml-thread, .eml-side, .eml-comp, .eml-sender, .eml-snooze) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.eml-row, .eml-thread, .eml-side, .eml-comp, .eml-sender, .eml-snooze):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--eml-row-focus-width, 2px) solid var(--eml-row-focus-color, #8b5cf6);
+  outline-offset: var(--eml-row-focus-offset, 2px);
+}

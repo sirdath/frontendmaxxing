@@ -193,3 +193,13 @@
   .wzd { grid-template-columns: 1fr; }
   .wzd-side { display: none; }
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .wzd, .wzd *, .wzd::before, .wzd::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

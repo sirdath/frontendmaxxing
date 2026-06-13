@@ -108,3 +108,10 @@
 .cpk-item-code { color: var(--cpk-muted); font-variant-numeric: tabular-nums; font-size: 0.8rem; }
 
 .cpk-pill { border-radius: 999px; }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.cpk :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.cpk:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--cpk-focus-width, 2px) solid var(--cpk-focus-color, #8b5cf6);
+  outline-offset: var(--cpk-focus-offset, 2px);
+}

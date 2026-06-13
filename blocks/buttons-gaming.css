@@ -172,3 +172,17 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 0 14px rgba(96,165,250,0.5);
   text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
+
+/* ── Accessibility: keyboard focus ring + reduced-motion (added by a11y-codemod) ── */
+.gmbtn:focus-visible {
+  outline: var(--gmbtn-focus-width, 2px) solid var(--gmbtn-focus-color, #8b5cf6);
+  outline-offset: var(--gmbtn-focus-offset, 2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .gmbtn, .gmbtn *, .gmbtn::before, .gmbtn::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

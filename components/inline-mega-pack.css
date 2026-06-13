@@ -346,3 +346,10 @@
   .imp-xtool, .imp-xtool-act, .imp-xtool-trig,
   .imp-pricing-feats, .imp-tilt > * { transition: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.imp-3dot, .imp-itable, .imp-dtabs, .imp-journal, .imp-edit, .imp-xtool, .imp-pricing, .imp-tilt) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.imp-3dot, .imp-itable, .imp-dtabs, .imp-journal, .imp-edit, .imp-xtool, .imp-pricing, .imp-tilt):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--imp-3dot-focus-width, 2px) solid var(--imp-3dot-focus-color, #8b5cf6);
+  outline-offset: var(--imp-3dot-focus-offset, 2px);
+}

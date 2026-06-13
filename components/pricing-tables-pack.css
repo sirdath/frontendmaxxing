@@ -305,3 +305,25 @@
   font-variant-numeric: tabular-nums;
 }
 .pr-addon-desc { color: var(--p-muted); font-size: 0.78rem; line-height: 1.5; margin: 0; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .pr-tier, .pr-tier *, .pr-tier::before, .pr-tier::after,
+  .pr-bar, .pr-bar *, .pr-bar::before, .pr-bar::after,
+  .pr-single, .pr-single *, .pr-single::before, .pr-single::after,
+  .pr-slide, .pr-slide *, .pr-slide::before, .pr-slide::after,
+  .pr-horiz, .pr-horiz *, .pr-horiz::before, .pr-horiz::after,
+  .pr-addon, .pr-addon *, .pr-addon::before, .pr-addon::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.pr-tier, .pr-bar, .pr-single, .pr-slide, .pr-horiz, .pr-addon) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.pr-tier, .pr-bar, .pr-single, .pr-slide, .pr-horiz, .pr-addon):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--pr-tier-focus-width, 2px) solid var(--pr-tier-focus-color, #8b5cf6);
+  outline-offset: var(--pr-tier-focus-offset, 2px);
+}

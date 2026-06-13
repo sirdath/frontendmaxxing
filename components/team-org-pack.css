@@ -299,3 +299,10 @@
 }
 .to-ws-stats b { display: block; font-size: 0.92rem; font-weight: 700; }
 .to-ws-stats span { color: var(--t-muted); }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.to-member, .to-invite, .to-role, .to-pending, .to-switcher, .to-transfer, .to-audit, .to-ws) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.to-member, .to-invite, .to-role, .to-pending, .to-switcher, .to-transfer, .to-audit, .to-ws):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--to-member-focus-width, 2px) solid var(--to-member-focus-color, #8b5cf6);
+  outline-offset: var(--to-member-focus-offset, 2px);
+}

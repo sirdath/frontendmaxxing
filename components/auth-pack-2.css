@@ -244,3 +244,25 @@
   cursor: pointer;
 }
 .au2-sess-revoke:hover { background: rgba(239,68,68,0.1); }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.au2-pin, .au2-reset, .au2-sso, .au2-magic, .au2-lock, .au2-sess) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.au2-pin, .au2-reset, .au2-sso, .au2-magic, .au2-lock, .au2-sess):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--au2-pin-focus-width, 2px) solid var(--au2-pin-focus-color, #8b5cf6);
+  outline-offset: var(--au2-pin-focus-offset, 2px);
+}
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .au2-pin, .au2-pin *, .au2-pin::before, .au2-pin::after,
+  .au2-reset, .au2-reset *, .au2-reset::before, .au2-reset::after,
+  .au2-sso, .au2-sso *, .au2-sso::before, .au2-sso::after,
+  .au2-magic, .au2-magic *, .au2-magic::before, .au2-magic::after,
+  .au2-lock, .au2-lock *, .au2-lock::before, .au2-lock::after,
+  .au2-sess, .au2-sess *, .au2-sess::before, .au2-sess::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

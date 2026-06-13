@@ -237,3 +237,33 @@
 .gradient-conic {
   background: conic-gradient(from 0deg, #667eea, #764ba2, #f093fb, #4facfe, #667eea);
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .gradient-text, .gradient-text *, .gradient-text::before, .gradient-text::after,
+  .gradient-animated, .gradient-animated *, .gradient-animated::before, .gradient-animated::after,
+  .gradient-purple, .gradient-purple *, .gradient-purple::before, .gradient-purple::after,
+  .gradient-warm, .gradient-warm *, .gradient-warm::before, .gradient-warm::after,
+  .gradient-ocean, .gradient-ocean *, .gradient-ocean::before, .gradient-ocean::after,
+  .gradient-sunset, .gradient-sunset *, .gradient-sunset::before, .gradient-sunset::after,
+  .gradient-midnight, .gradient-midnight *, .gradient-midnight::before, .gradient-midnight::after,
+  .gradient-forest, .gradient-forest *, .gradient-forest::before, .gradient-forest::after,
+  .gradient-fire, .gradient-fire *, .gradient-fire::before, .gradient-fire::after,
+  .gradient-ice, .gradient-ice *, .gradient-ice::before, .gradient-ice::after,
+  .gradient-mesh, .gradient-mesh *, .gradient-mesh::before, .gradient-mesh::after,
+  .gradient-border, .gradient-border *, .gradient-border::before, .gradient-border::after,
+  .gradient-overlay-bottom, .gradient-overlay-bottom *, .gradient-overlay-bottom::before, .gradient-overlay-bottom::after,
+  .gradient-vignette, .gradient-vignette *, .gradient-vignette::before, .gradient-vignette::after,
+  .gradient-to-r, .gradient-to-r *, .gradient-to-r::before, .gradient-to-r::after,
+  .gradient-to-l, .gradient-to-l *, .gradient-to-l::before, .gradient-to-l::after,
+  .gradient-to-t, .gradient-to-t *, .gradient-to-t::before, .gradient-to-t::after,
+  .gradient-to-b, .gradient-to-b *, .gradient-to-b::before, .gradient-to-b::after,
+  .gradient-to-tr, .gradient-to-tr *, .gradient-to-tr::before, .gradient-to-tr::after,
+  .gradient-to-br, .gradient-to-br *, .gradient-to-br::before, .gradient-to-br::after,
+  .gradient-conic, .gradient-conic *, .gradient-conic::before, .gradient-conic::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

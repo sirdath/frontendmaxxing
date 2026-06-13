@@ -346,3 +346,33 @@
   border: 1px solid var(--bw-line);
 }
 .bw-dropbtn-outline:hover { background: rgba(255,255,255,0.04); filter: none; }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.bw-predict, .bw-freq, .bw-chip, .bw-slot, .bw-otp, .bw-copy, .bw-seginp, .bw-piltabs, .bw-fab-bar, .bw-fab-btn, .bw-fab-divider, .bw-statp, .bw-avstack, .bw-dropbtn) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.bw-predict, .bw-freq, .bw-chip, .bw-slot, .bw-otp, .bw-copy, .bw-seginp, .bw-piltabs, .bw-fab-bar, .bw-fab-btn, .bw-fab-divider, .bw-statp, .bw-avstack, .bw-dropbtn):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--bw-predict-focus-width, 2px) solid var(--bw-predict-focus-color, #8b5cf6);
+  outline-offset: var(--bw-predict-focus-offset, 2px);
+}
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .bw-predict, .bw-predict *, .bw-predict::before, .bw-predict::after,
+  .bw-freq, .bw-freq *, .bw-freq::before, .bw-freq::after,
+  .bw-chip, .bw-chip *, .bw-chip::before, .bw-chip::after,
+  .bw-slot, .bw-slot *, .bw-slot::before, .bw-slot::after,
+  .bw-otp, .bw-otp *, .bw-otp::before, .bw-otp::after,
+  .bw-copy, .bw-copy *, .bw-copy::before, .bw-copy::after,
+  .bw-seginp, .bw-seginp *, .bw-seginp::before, .bw-seginp::after,
+  .bw-piltabs, .bw-piltabs *, .bw-piltabs::before, .bw-piltabs::after,
+  .bw-fab-bar, .bw-fab-bar *, .bw-fab-bar::before, .bw-fab-bar::after,
+  .bw-fab-btn, .bw-fab-btn *, .bw-fab-btn::before, .bw-fab-btn::after,
+  .bw-fab-divider, .bw-fab-divider *, .bw-fab-divider::before, .bw-fab-divider::after,
+  .bw-statp, .bw-statp *, .bw-statp::before, .bw-statp::after,
+  .bw-avstack, .bw-avstack *, .bw-avstack::before, .bw-avstack::after,
+  .bw-dropbtn, .bw-dropbtn *, .bw-dropbtn::before, .bw-dropbtn::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

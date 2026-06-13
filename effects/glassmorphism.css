@@ -201,3 +201,20 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0 24px;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .glass, .glass *, .glass::before, .glass::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.glass :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.glass:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--glass-focus-width, 2px) solid var(--glass-focus-color, #8b5cf6);
+  outline-offset: var(--glass-focus-offset, 2px);
+}

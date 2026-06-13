@@ -65,3 +65,15 @@
   from { stroke-dashoffset: 320; }
   to   { stroke-dashoffset: 0; }
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .bb-host, .bb-host *, .bb-host::before, .bb-host::after,
+  .bb-svg, .bb-svg *, .bb-svg::before, .bb-svg::after,
+  .bb-path, .bb-path *, .bb-path::before, .bb-path::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

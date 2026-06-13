@@ -214,3 +214,10 @@
 @media (prefers-reduced-motion: reduce) {
   .inp, .inp::after, .inp > label { transition: none !important; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.inp :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.inp:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--inp-focus-width, 2px) solid var(--inp-focus-color, #8b5cf6);
+  outline-offset: var(--inp-focus-offset, 2px);
+}

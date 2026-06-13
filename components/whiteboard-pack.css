@@ -244,3 +244,22 @@
   border-radius: 4px;
 }
 .wb-zoomchrome button:hover { background: rgba(255,255,255,0.08); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .wb-tools, .wb-tools *, .wb-tools::before, .wb-tools::after,
+  .wb-tool, .wb-tool *, .wb-tool::before, .wb-tool::after,
+  .wb-shape, .wb-shape *, .wb-shape::before, .wb-shape::after,
+  .wb-sticky, .wb-sticky *, .wb-sticky::before, .wb-sticky::after,
+  .wb-clrs, .wb-clrs *, .wb-clrs::before, .wb-clrs::after,
+  .wb-clr, .wb-clr *, .wb-clr::before, .wb-clr::after,
+  .wb-host, .wb-host *, .wb-host::before, .wb-host::after,
+  .wb-marq, .wb-marq *, .wb-marq::before, .wb-marq::after,
+  .wb-arrow, .wb-arrow *, .wb-arrow::before, .wb-arrow::after,
+  .wb-zoomchrome, .wb-zoomchrome *, .wb-zoomchrome::before, .wb-zoomchrome::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -309,3 +309,32 @@
   cursor: pointer;
 }
 .st-sess-revoke:hover { background: rgba(239,68,68,0.08); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .st-card, .st-card *, .st-card::before, .st-card::after,
+  .st-profile, .st-profile *, .st-profile::before, .st-profile::after,
+  .st-notif, .st-notif *, .st-notif::before, .st-notif::after,
+  .st-int-list, .st-int-list *, .st-int-list::before, .st-int-list::after,
+  .st-int-row, .st-int-row *, .st-int-row::before, .st-int-row::after,
+  .st-int-logo, .st-int-logo *, .st-int-logo::before, .st-int-logo::after,
+  .st-int-body, .st-int-body *, .st-int-body::before, .st-int-body::after,
+  .st-int-toggle, .st-int-toggle *, .st-int-toggle::before, .st-int-toggle::after,
+  .st-appear, .st-appear *, .st-appear::before, .st-appear::after,
+  .st-lang, .st-lang *, .st-lang::before, .st-lang::after,
+  .st-danger, .st-danger *, .st-danger::before, .st-danger::after,
+  .st-2fa, .st-2fa *, .st-2fa::before, .st-2fa::after,
+  .st-sess, .st-sess *, .st-sess::before, .st-sess::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.st-card, .st-profile, .st-notif, .st-int-list, .st-int-row, .st-int-logo, .st-int-body, .st-int-toggle, .st-appear, .st-lang, .st-danger, .st-2fa, .st-sess) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.st-card, .st-profile, .st-notif, .st-int-list, .st-int-row, .st-int-logo, .st-int-body, .st-int-toggle, .st-appear, .st-lang, .st-danger, .st-2fa, .st-sess):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--st-card-focus-width, 2px) solid var(--st-card-focus-color, #8b5cf6);
+  outline-offset: var(--st-card-focus-offset, 2px);
+}

@@ -102,3 +102,17 @@
   .ssr-text { padding: 8vh 0; gap: 18vh; }
   .ssr-stage { position: relative; top: 0; height: 280px; }
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ssr-host, .ssr-host *, .ssr-host::before, .ssr-host::after,
+  .ssr-text, .ssr-text *, .ssr-text::before, .ssr-text::after,
+  .ssr-panel, .ssr-panel *, .ssr-panel::before, .ssr-panel::after,
+  .ssr-stage, .ssr-stage *, .ssr-stage::before, .ssr-stage::after,
+  .ssr-visual, .ssr-visual *, .ssr-visual::before, .ssr-visual::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

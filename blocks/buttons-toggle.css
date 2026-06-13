@@ -106,3 +106,14 @@
 .tgbtn-theme { --tg-on: #facc15; }
 .tgbtn-theme.is-on { color: var(--tg-on); }
 .tgbtn-play  { --tg-on: #10b981; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .tgbtn, .tgbtn *, .tgbtn::before, .tgbtn::after,
+  .tg-ico, .tg-ico *, .tg-ico::before, .tg-ico::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

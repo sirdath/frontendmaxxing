@@ -66,3 +66,14 @@
           mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 0);
   z-index: -1;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ra-bar, .ra-bar *, .ra-bar::before, .ra-bar::after,
+  .ra-top, .ra-top *, .ra-top::before, .ra-top::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

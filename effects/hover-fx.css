@@ -1,0 +1,105 @@
+/* ============================================
+   HOVER FX — more cursor-aware hover animations (CSS + optional JS)
+   Inspired by Codrops, awwwards micro-interactions, magnetic buttons
+   ============================================
+   Companion to hover-pro.css (different effects, same spirit). Mix freely.
+
+   Usage:
+     <link rel="stylesheet" href="effects/hover-fx.css">
+
+     <!-- Pure CSS: -->
+     <a class="hfx hfx-text-flow">Flowing gradient text</a>
+     <div class="hfx hfx-ring">Pulsing ring</div>
+     <button class="hfx hfx-squash">Squash</button>
+     <button class="hfx hfx-slide-swap"><span class="hfx-slide-front">Hover me</span><span class="hfx-slide-back">Let's go →</span></button>
+
+     <!-- Cursor-tracked (need hover-fx.js): -->
+     <button class="hfx hfx-magnetic" data-hover-fx="magnetic">Magnetic</button>
+     <div class="hfx hfx-ripple" data-hover-fx="ripple">Ripple from cursor</div>
+     <div class="hfx hfx-parallax" data-hover-fx="parallax"><span data-depth="0.2">back</span><span data-depth="0.6">mid</span><span data-depth="1">front</span></div>
+     <div class="hfx hfx-reveal" data-hover-fx="reveal"><div class="hfx-reveal-base">before</div><div class="hfx-reveal-top">after</div></div>
+     <script src="effects/hover-fx.js"></script>
+     <script>HoverFX.init('[data-hover-fx]');</script>
+
+   Variants: hfx-text-flow hfx-ring hfx-squash hfx-slide-swap
+             hfx-magnetic hfx-ripple hfx-parallax hfx-reveal
+   ============================================ */
+
+.hfx {
+  --hfx-accent: #8b5cf6;
+  --hfx-accent-2: #ec4899;
+  --hfx-dur: 0.4s;
+  --hfx-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+}
+
+/* ── text-flow — animated gradient sweeps through the text ──── */
+.hfx-text-flow:hover, .hfx-text-flow:focus-visible {
+  background: linear-gradient(90deg, var(--hfx-accent), var(--hfx-accent-2), var(--hfx-accent));
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: hfx-flow 2s linear infinite;
+}
+@keyframes hfx-flow { to { background-position: 200% center; } }
+
+/* ── ring — accent ring pulses outward while hovered ────────── */
+.hfx-ring::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  border: 2px solid var(--hfx-accent); opacity: 0; pointer-events: none;
+}
+.hfx-ring:hover::after, .hfx-ring:focus-visible::after { animation: hfx-ring 1.1s var(--hfx-ease) infinite; }
+@keyframes hfx-ring { 0% { opacity: 0.7; transform: scale(1); } 100% { opacity: 0; transform: scale(1.28); } }
+
+/* ── squash — springy squash-and-stretch bounce ─────────────── */
+.hfx-squash { transition: transform var(--hfx-dur) var(--hfx-ease); }
+.hfx-squash:hover, .hfx-squash:focus-visible { animation: hfx-squash 0.5s var(--hfx-ease); }
+@keyframes hfx-squash {
+  0% { transform: scale(1, 1); } 30% { transform: scale(1.15, 0.85); }
+  50% { transform: scale(0.92, 1.08); } 70% { transform: scale(1.04, 0.96); } 100% { transform: scale(1, 1); }
+}
+
+/* ── slide-swap — front label slides out, back label slides in ─ */
+.hfx-slide-swap { overflow: hidden; display: inline-grid; }
+.hfx-slide-swap .hfx-slide-front, .hfx-slide-swap .hfx-slide-back {
+  grid-area: 1 / 1; transition: transform var(--hfx-dur) var(--hfx-ease), opacity var(--hfx-dur);
+}
+.hfx-slide-swap .hfx-slide-back { transform: translateY(115%); opacity: 0; }
+.hfx-slide-swap:hover .hfx-slide-front, .hfx-slide-swap:focus-visible .hfx-slide-front { transform: translateY(-115%); opacity: 0; }
+.hfx-slide-swap:hover .hfx-slide-back, .hfx-slide-swap:focus-visible .hfx-slide-back { transform: translateY(0); opacity: 1; }
+
+/* ── magnetic — element drifts toward the cursor (JS sets tx/ty) ─ */
+.hfx-magnetic { transition: transform 0.25s var(--hfx-ease); transform: translate(var(--hfx-tx, 0), var(--hfx-ty, 0)); }
+
+/* ── parallax — layered children shift by depth (JS sets px/py) ─ */
+.hfx-parallax [data-depth] { transition: transform 0.18s var(--hfx-ease); transform: translate(var(--hfx-px, 0), var(--hfx-py, 0)); }
+
+/* ── ripple — circle expands from the cursor point (JS appends dot) ─ */
+.hfx-ripple { overflow: hidden; }
+.hfx-ripple .hfx-ripple-dot {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  background: radial-gradient(circle, color-mix(in srgb, var(--hfx-accent) 55%, transparent), transparent 70%);
+  animation: hfx-ripple 0.7s var(--hfx-ease) forwards;
+}
+@keyframes hfx-ripple { to { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+
+/* ── reveal — top layer unmasked in a circle that follows the cursor (JS sets mx/my) ─ */
+.hfx-reveal { overflow: hidden; }
+.hfx-reveal .hfx-reveal-base, .hfx-reveal .hfx-reveal-top { position: absolute; inset: 0; }
+.hfx-reveal .hfx-reveal-top {
+  clip-path: circle(0px at var(--hfx-mx, 50%) var(--hfx-my, 50%));
+  transition: clip-path 0.18s ease-out;
+}
+.hfx-reveal:hover .hfx-reveal-top, .hfx-reveal:focus-visible .hfx-reveal-top {
+  clip-path: circle(var(--hfx-reveal-r, 130px) at var(--hfx-mx, 50%) var(--hfx-my, 50%));
+}
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .hfx, .hfx *, .hfx::before, .hfx::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .hfx-magnetic, .hfx-parallax [data-depth] { transform: none !important; }
+}

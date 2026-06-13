@@ -187,3 +187,10 @@
   --ctas-border: rgba(0, 0, 0, 0.08);
 }
 .ctas-light .ctas-ghost { background: rgba(0, 0, 0, 0.04); }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.ctas :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.ctas:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--ctas-focus-width, 2px) solid var(--ctas-focus-color, #8b5cf6);
+  outline-offset: var(--ctas-focus-offset, 2px);
+}

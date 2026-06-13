@@ -112,3 +112,13 @@
   font-size: 18px;
   opacity: 0.95;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ios-cmenu, .ios-cmenu *, .ios-cmenu::before, .ios-cmenu::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -305,3 +305,10 @@
 @media (prefers-reduced-motion: reduce) {
   .com-stock::before, .com-add.is-loading::before { animation: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.com-gal, .com-clr, .com-sz, .com-qty, .com-add, .com-mini, .com-save, .com-stock, .com-price) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.com-gal, .com-clr, .com-sz, .com-qty, .com-add, .com-mini, .com-save, .com-stock, .com-price):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--com-gal-focus-width, 2px) solid var(--com-gal-focus-color, #8b5cf6);
+  outline-offset: var(--com-gal-focus-offset, 2px);
+}

@@ -93,3 +93,13 @@
   border-top: none;
 }
 .sbar-accent .sbar-muted, .sbar-accent .sbar-dot { color: rgba(255, 255, 255, 0.85); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .sbar, .sbar *, .sbar::before, .sbar::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

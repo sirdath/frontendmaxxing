@@ -291,3 +291,26 @@
   margin-left: -4px;
 }
 .s2-thread-avatars > div:first-child { margin-left: 0; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .s2-react, .s2-react *, .s2-react::before, .s2-react::after,
+  .s2-ment, .s2-ment *, .s2-ment::before, .s2-ment::after,
+  .s2-poll, .s2-poll *, .s2-poll::before, .s2-poll::after,
+  .s2-vote, .s2-vote *, .s2-vote::before, .s2-vote::after,
+  .s2-pile, .s2-pile *, .s2-pile::before, .s2-pile::after,
+  .s2-cur, .s2-cur *, .s2-cur::before, .s2-cur::after,
+  .s2-thread, .s2-thread *, .s2-thread::before, .s2-thread::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.s2-react, .s2-ment, .s2-poll, .s2-vote, .s2-pile, .s2-cur, .s2-thread) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.s2-react, .s2-ment, .s2-poll, .s2-vote, .s2-pile, .s2-cur, .s2-thread):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--s2-react-focus-width, 2px) solid var(--s2-react-focus-color, #8b5cf6);
+  outline-offset: var(--s2-react-focus-offset, 2px);
+}

@@ -160,3 +160,20 @@
 .text-muted     { color: var(--text-tertiary); }
 
 .border-themed  { border-color: var(--border); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .theme-transition, .theme-transition *, .theme-transition::before, .theme-transition::after,
+  .bg-primary, .bg-primary *, .bg-primary::before, .bg-primary::after,
+  .bg-secondary, .bg-secondary *, .bg-secondary::before, .bg-secondary::after,
+  .bg-surface, .bg-surface *, .bg-surface::before, .bg-surface::after,
+  .text-primary, .text-primary *, .text-primary::before, .text-primary::after,
+  .text-secondary, .text-secondary *, .text-secondary::before, .text-secondary::after,
+  .text-muted, .text-muted *, .text-muted::before, .text-muted::after,
+  .border-themed, .border-themed *, .border-themed::before, .border-themed::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

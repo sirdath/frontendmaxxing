@@ -126,3 +126,13 @@
 .apperm-green .apperm-icon { background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 16px 40px rgba(34, 197, 94, 0.3); }
 .apperm-violet { --app-accent: #8b5cf6; }
 .apperm-violet .apperm-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 16px 40px rgba(139, 92, 246, 0.3); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .apperm, .apperm *, .apperm::before, .apperm::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

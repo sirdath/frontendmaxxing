@@ -1,0 +1,79 @@
+/* ============================================
+   SOCIAL ICONS — animated social icon buttons (CSS-only)
+   Inspired by uiverse.io community social buttons (re-implemented vanilla, MIT-spirit credit)
+   ============================================
+   Put your own icon (SVG / emoji / glyph) inside. Brand colour comes from a
+   modifier class; the hover animation comes from a variant class.
+
+   Usage:
+     <a class="soc soc-fill soc-twitter" data-tip="Twitter">🐦</a>
+     <a class="soc soc-3d soc-github" data-tip="GitHub">★</a>
+     <a class="soc soc-ring soc-instagram">◎</a>
+
+   Variants: soc-fill soc-3d soc-bounce soc-ring soc-tooltip soc-slide
+   Brands:   soc-twitter soc-github soc-youtube soc-discord soc-linkedin soc-instagram
+   Tunables: --soc-color --soc-grad --soc-size --soc-dur
+   ============================================ */
+
+.soc {
+  --soc-color: #8b5cf6; --soc-size: 48px; --soc-dur: 0.35s; --soc-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: var(--soc-size); height: var(--soc-size); border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.05); color: #fff;
+  cursor: pointer; overflow: hidden; font-size: 1.25rem; text-decoration: none;
+  transition: transform var(--soc-dur) var(--soc-ease), color var(--soc-dur), border-color var(--soc-dur), box-shadow var(--soc-dur);
+}
+.soc > * { position: relative; z-index: 1; }
+.soc:focus-visible { outline: 2px solid var(--soc-color); outline-offset: 2px; }
+
+/* brand colours */
+.soc-twitter   { --soc-color: #1da1f2; }
+.soc-github    { --soc-color: #e5e7eb; }
+.soc-youtube   { --soc-color: #ff0000; }
+.soc-discord   { --soc-color: #5865f2; }
+.soc-linkedin  { --soc-color: #0a66c2; }
+.soc-instagram { --soc-color: #e1306c; --soc-grad: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5); }
+
+/* fill — brand colour washes up from the bottom */
+.soc-fill::before { content: ''; position: absolute; inset: 0; z-index: 0; transform: translateY(100%); transition: transform var(--soc-dur) var(--soc-ease); background: var(--soc-grad, var(--soc-color)); }
+.soc-fill:hover, .soc-fill:focus-visible { color: #fff; border-color: transparent; }
+.soc-fill:hover::before, .soc-fill:focus-visible::before { transform: translateY(0); }
+
+/* 3d — lifts with a brand glow */
+.soc-3d:hover, .soc-3d:focus-visible { transform: translateY(-4px); color: var(--soc-color); border-color: var(--soc-color); box-shadow: 0 10px 22px -8px var(--soc-color); }
+
+/* bounce — springs + brand colour */
+.soc-bounce:hover, .soc-bounce:focus-visible { color: var(--soc-color); animation: soc-bounce 0.5s var(--soc-ease); }
+@keyframes soc-bounce { 0% { transform: translateY(0); } 35% { transform: translateY(-8px) scale(1.08); } 60% { transform: translateY(2px) scale(0.96); } 100% { transform: translateY(0); } }
+
+/* ring — gradient ring spins around it */
+.soc-ring::after {
+  content: ''; position: absolute; inset: -2px; z-index: 0; border-radius: inherit; padding: 2px; pointer-events: none;
+  background: conic-gradient(var(--soc-color), color-mix(in srgb, var(--soc-color) 30%, transparent), var(--soc-color));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity var(--soc-dur);
+}
+.soc-ring:hover, .soc-ring:focus-visible { color: var(--soc-color); }
+.soc-ring:hover::after, .soc-ring:focus-visible::after { opacity: 1; animation: soc-spin 2s linear infinite; }
+@keyframes soc-spin { to { transform: rotate(360deg); } }
+
+/* tooltip — a label pops up (needs data-tip) */
+.soc-tooltip::after {
+  content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 50%; z-index: 3;
+  transform: translate(-50%, 6px); padding: 0.25rem 0.55rem; border-radius: 6px; white-space: nowrap;
+  background: var(--soc-color); color: #0a0a12; font-size: 0.72rem; font-weight: 700;
+  opacity: 0; pointer-events: none; transition: opacity var(--soc-dur), transform var(--soc-dur) var(--soc-ease);
+}
+.soc-tooltip:hover, .soc-tooltip:focus-visible { color: var(--soc-color); border-color: var(--soc-color); }
+.soc-tooltip:hover::after, .soc-tooltip:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+
+/* slide — brand fills, icon hops */
+.soc-slide::before { content: ''; position: absolute; inset: 0; z-index: 0; clip-path: circle(0% at 50% 120%); transition: clip-path var(--soc-dur) var(--soc-ease); background: var(--soc-grad, var(--soc-color)); }
+.soc-slide:hover, .soc-slide:focus-visible { color: #fff; border-color: transparent; transform: scale(1.06); }
+.soc-slide:hover::before, .soc-slide:focus-visible::before { clip-path: circle(140% at 50% 120%); }
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .soc, .soc::before, .soc::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

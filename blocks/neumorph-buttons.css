@@ -194,3 +194,13 @@
     radial-gradient(at 30% 20%, rgba(255, 255, 255, 0.05), transparent 60%),
     radial-gradient(at 70% 80%, rgba(0, 0, 0, 0.15), transparent 60%);
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .neu, .neu *, .neu::before, .neu::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

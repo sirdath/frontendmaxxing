@@ -1,0 +1,63 @@
+/* ============================================
+   BUTTONS SLEEK — refined, minimal modern buttons (CSS-only)
+   A quiet, premium counterpoint to the flashier button packs
+   ============================================
+   Base class `slk` + a variant. Works on <button>/<a>. Default focus ring kept.
+
+   Usage:
+     <link rel="stylesheet" href="blocks/buttons-sleek.css">
+     <button class="slk slk-ghost">Ghost</button>
+     <button class="slk slk-kbd">Command <kbd>⌘K</kbd></button>
+     <a class="slk slk-line">Read more</a>
+     <button class="slk slk-icon">Continue <span class="slk-chev">›</span></button>
+
+   Variants: slk-ghost slk-soft slk-line slk-kbd slk-dot slk-icon slk-quiet slk-outline
+   Tunables: --slk-c1 --slk-c2 --slk-fg --slk-dur --slk-radius
+   ============================================ */
+
+.slk {
+  --slk-c1: #8b5cf6; --slk-c2: #ec4899; --slk-fg: #e9e7ef; --slk-dur: 0.22s; --slk-ease: cubic-bezier(0.2, 0.8, 0.2, 1); --slk-radius: 9px;
+  position: relative; display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.55rem 1.05rem; border: 1px solid rgba(255, 255, 255, 0.14); background: transparent; color: var(--slk-fg);
+  border-radius: var(--slk-radius); font: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer; letter-spacing: 0.01em;
+  transition: color var(--slk-dur), background var(--slk-dur), border-color var(--slk-dur), transform var(--slk-dur) var(--slk-ease), box-shadow var(--slk-dur);
+}
+
+/* ghost — barely-there outline that softly fills */
+.slk-ghost:hover, .slk-ghost:focus-visible { background: rgba(255, 255, 255, 0.07); border-color: rgba(255, 255, 255, 0.28); }
+
+/* soft — gentle pill that lifts a hair */
+.slk-soft { background: rgba(255, 255, 255, 0.06); border-color: transparent; border-radius: 999px; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset; }
+.slk-soft:hover, .slk-soft:focus-visible { transform: translateY(-1px); box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.5); background: rgba(255, 255, 255, 0.1); }
+
+/* line — text-only, a hairline grows from the left */
+.slk-line { border: 0; padding: 0.4rem 0.1rem; background: none; }
+.slk-line::after { content: ''; position: absolute; left: 0; bottom: 0; height: 1.5px; width: 100%; background: linear-gradient(90deg, var(--slk-c1), var(--slk-c2)); transform: scaleX(0); transform-origin: left; transition: transform var(--slk-dur) var(--slk-ease); }
+.slk-line:hover::after, .slk-line:focus-visible::after { transform: scaleX(1); }
+
+/* kbd — a keyboard hint that lights up */
+.slk-kbd kbd { font: inherit; font-size: 0.74rem; padding: 0.08rem 0.4rem; border-radius: 5px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.14); color: rgba(255, 255, 255, 0.7); transition: all var(--slk-dur); }
+.slk-kbd:hover kbd, .slk-kbd:focus-visible kbd { background: color-mix(in srgb, var(--slk-c1) 25%, transparent); border-color: var(--slk-c1); color: #fff; }
+
+/* dot — a leading status dot brightens + grows */
+.slk-dot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transition: all var(--slk-dur); }
+.slk-dot:hover::before, .slk-dot:focus-visible::before { background: var(--slk-c1); box-shadow: 0 0 8px var(--slk-c1); transform: scale(1.25); }
+
+/* icon — trailing chevron nudges right */
+.slk-chev { transition: transform var(--slk-dur) var(--slk-ease); }
+.slk-icon:hover .slk-chev, .slk-icon:focus-visible .slk-chev { transform: translateX(3px); }
+.slk-icon:hover, .slk-icon:focus-visible { border-color: rgba(255, 255, 255, 0.28); }
+
+/* quiet — muted until hover (text + faint underline) */
+.slk-quiet { border-color: transparent; color: rgba(255, 255, 255, 0.6); }
+.slk-quiet:hover, .slk-quiet:focus-visible { color: #fff; background: rgba(255, 255, 255, 0.05); }
+
+/* outline — a gradient hairline appears on hover */
+.slk-outline { border-color: transparent; }
+.slk-outline::before { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(120deg, var(--slk-c1), var(--slk-c2)); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity var(--slk-dur); }
+.slk-outline:hover::before, .slk-outline:focus-visible::before { opacity: 1; }
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .slk, .slk::before, .slk::after, .slk kbd, .slk .slk-chev { transition-duration: 0.01ms !important; }
+}

@@ -221,3 +221,13 @@
   border-bottom: 1px solid var(--cp-border);
   border-right: 1px solid var(--cp-border);
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cit, .cit *, .cit::before, .cit::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,68 @@
+/* ============================================
+   PROFILE CARD — polished social/profile card (CSS-only)
+   Inspired by uiverse.io / dribbble profile cards (re-implemented vanilla, MIT-spirit credit)
+   ============================================
+   A cover banner, overlapping avatar, name/role, bio, a stats row and two
+   action buttons. Lifts with an accent glow on hover.
+
+   Usage:
+     <link rel="stylesheet" href="components/profile-card.css">
+     <article class="pfc">
+       <div class="pfc-cover"></div>
+       <img class="pfc-avatar" src="avatar.jpg" alt="">
+       <div class="pfc-body">
+         <h3 class="pfc-name">Ada Lovelace</h3>
+         <p class="pfc-role">Product Designer</p>
+         <p class="pfc-bio">Designing calm, useful interfaces.</p>
+         <div class="pfc-stats">
+           <div class="pfc-stat"><span class="pfc-num">128</span><span class="pfc-label">Posts</span></div>
+           <div class="pfc-stat"><span class="pfc-num">8.4k</span><span class="pfc-label">Followers</span></div>
+           <div class="pfc-stat"><span class="pfc-num">312</span><span class="pfc-label">Following</span></div>
+         </div>
+         <div class="pfc-actions">
+           <button class="pfc-btn pfc-btn-primary">Follow</button>
+           <button class="pfc-btn pfc-btn-ghost">Message</button>
+         </div>
+       </div>
+     </article>
+
+   Tunables: --pfc-c1 --pfc-c2 --pfc-bg --pfc-fg --pfc-radius
+   ============================================ */
+
+.pfc {
+  --pfc-c1: #8b5cf6; --pfc-c2: #ec4899; --pfc-bg: #15151d; --pfc-fg: #e9e7ef; --pfc-radius: 18px;
+  width: 300px; max-width: 100%; border-radius: var(--pfc-radius); overflow: hidden;
+  background: var(--pfc-bg); border: 1px solid rgba(255, 255, 255, 0.08); color: var(--pfc-fg);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s, border-color 0.4s;
+}
+.pfc:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -24px var(--pfc-c1); border-color: color-mix(in srgb, var(--pfc-c1) 40%, transparent); }
+
+.pfc-cover { height: 84px; background: linear-gradient(120deg, var(--pfc-c1), var(--pfc-c2)); }
+.pfc-avatar {
+  display: block; width: 76px; height: 76px; margin: -38px auto 0; border-radius: 50%;
+  border: 4px solid var(--pfc-bg); object-fit: cover; background: #2a2a33;
+}
+.pfc-body { padding: 0.6rem 1.2rem 1.3rem; text-align: center; }
+.pfc-name { margin: 0.4rem 0 0; font-size: 1.1rem; font-weight: 800; }
+.pfc-role { margin: 0.1rem 0 0; font-size: 0.84rem; color: rgba(255, 255, 255, 0.55); }
+.pfc-bio { margin: 0.6rem 0 0; font-size: 0.82rem; color: rgba(255, 255, 255, 0.7); line-height: 1.5; }
+
+.pfc-stats { display: flex; justify-content: center; gap: 1.4rem; margin: 1rem 0; }
+.pfc-stat { display: flex; flex-direction: column; }
+.pfc-num { font-size: 1.05rem; font-weight: 800; }
+.pfc-label { font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255, 255, 255, 0.45); }
+
+.pfc-actions { display: flex; gap: 0.6rem; }
+.pfc-btn {
+  flex: 1; padding: 0.6rem 0; border-radius: 10px; font: inherit; font-weight: 600; font-size: 0.88rem; cursor: pointer;
+  border: 1px solid transparent; transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+}
+.pfc-btn:focus-visible { outline: 2px solid var(--pfc-c1); outline-offset: 2px; }
+.pfc-btn-primary { background: linear-gradient(120deg, var(--pfc-c1), var(--pfc-c2)); color: #fff; }
+.pfc-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 20px -8px var(--pfc-c1); }
+.pfc-btn-ghost { background: transparent; border-color: rgba(255, 255, 255, 0.16); color: var(--pfc-fg); }
+.pfc-btn-ghost:hover { border-color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.05); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pfc, .pfc-btn { transition-duration: 0.01ms !important; }
+}

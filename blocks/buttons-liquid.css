@@ -175,3 +175,9 @@
 @media (prefers-reduced-motion: reduce) {
   .lbtn, .lbtn-blob, .lbtn-magma, .lbtn-jelly:hover { animation: none; transition: none; }
 }
+
+/* ── Accessibility: keyboard focus ring (added by a11y-codemod) ── */
+.lbtn:focus-visible {
+  outline: var(--lbtn-focus-width, 2px) solid var(--lbtn-focus-color, #8b5cf6);
+  outline-offset: var(--lbtn-focus-offset, 2px);
+}

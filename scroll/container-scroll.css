@@ -104,3 +104,16 @@
   .csa-host { height: 180vh; perspective: 800px; }
   .csa-frame { margin-top: 22vh; }
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .csa-host, .csa-host *, .csa-host::before, .csa-host::after,
+  .csa-title, .csa-title *, .csa-title::before, .csa-title::after,
+  .csa-frame, .csa-frame *, .csa-frame::before, .csa-frame::after,
+  .csa-img, .csa-img *, .csa-img::before, .csa-img::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

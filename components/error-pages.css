@@ -273,3 +273,10 @@
 @media (prefers-reduced-motion: reduce) {
   .err-503 .err-illus::before, .err-503 .err-illus::after { animation: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.err-404, .err-500, .err-403, .err-503, .err-soon, .err-billing, .err-btn) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.err-404, .err-500, .err-403, .err-503, .err-soon, .err-billing, .err-btn):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--err-404-focus-width, 2px) solid var(--err-404-focus-color, #8b5cf6);
+  outline-offset: var(--err-404-focus-offset, 2px);
+}

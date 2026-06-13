@@ -315,3 +315,10 @@
   .hp-gradient-mesh::before, .hp-gradient-mesh::after,
   .hp-animated-grid::before, .hp-marquee-strip-track { animation: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.hp :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.hp:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--hp-focus-width, 2px) solid var(--hp-focus-color, #8b5cf6);
+  outline-offset: var(--hp-focus-offset, 2px);
+}

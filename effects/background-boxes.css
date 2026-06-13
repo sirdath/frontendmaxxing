@@ -44,3 +44,15 @@
   transition: background 0.05s ease, box-shadow 0.4s ease, opacity 1.5s ease;
 }
 .bgx-cell.is-fade { background: transparent; box-shadow: none; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .bgx-host, .bgx-host *, .bgx-host::before, .bgx-host::after,
+  .bgx-grid, .bgx-grid *, .bgx-grid::before, .bgx-grid::after,
+  .bgx-cell, .bgx-cell *, .bgx-cell::before, .bgx-cell::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

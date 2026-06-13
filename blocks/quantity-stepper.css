@@ -83,3 +83,20 @@
 
 .qstep-bordered > button:first-child { border-right: 1px solid var(--qstep-border); }
 .qstep-bordered > button:last-child  { border-left:  1px solid var(--qstep-border); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .qstep, .qstep *, .qstep::before, .qstep::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.qstep :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.qstep:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--qstep-focus-width, 2px) solid var(--qstep-focus-color, #8b5cf6);
+  outline-offset: var(--qstep-focus-offset, 2px);
+}

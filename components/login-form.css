@@ -1,0 +1,68 @@
+/* ============================================
+   LOGIN FORM — clean sign-in card with icon inputs + OAuth (CSS-only)
+   Inspired by uiverse.io by micaelgomestavares (re-implemented vanilla, MIT-spirit credit)
+   ============================================
+   Markup:
+     <form class="lf">
+       <label class="lf-label">Email</label>
+       <div class="lf-input"><span class="lf-ico">✉</span><input type="email" placeholder="Enter your email"></div>
+       <label class="lf-label">Password</label>
+       <div class="lf-input"><span class="lf-ico">🔒</span><input type="password" placeholder="Enter your password"><span class="lf-ico lf-eye">👁</span></div>
+       <div class="lf-row"><label class="lf-remember"><input type="checkbox"> Remember me</label><a class="lf-link">Forgot password?</a></div>
+       <button class="lf-submit">Sign In</button>
+       <p class="lf-alt">Don't have an account? <a class="lf-link">Sign Up</a></p>
+       <p class="lf-or">Or With</p>
+       <div class="lf-row lf-oauth"><button class="lf-prov">G&nbsp;Google</button><button class="lf-prov">&#63743;&nbsp;Apple</button></div>
+     </form>
+
+   Tunables: --lf-bg --lf-fg --lf-accent --lf-submit --lf-radius (defaults: light theme)
+   ============================================ */
+
+.lf {
+  --lf-bg: #ffffff; --lf-fg: #151717; --lf-accent: #2d79f3; --lf-submit: #151717; --lf-radius: 14px;
+  display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 420px; padding: 28px;
+  background: var(--lf-bg); color: var(--lf-fg); border-radius: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+}
+.lf-label { font-weight: 600; font-size: 0.92rem; }
+.lf-input {
+  display: flex; align-items: center; gap: 10px; height: 50px; padding: 0 12px;
+  border: 1.5px solid #ecedec; border-radius: var(--lf-radius); transition: border-color 0.2s ease-in-out;
+}
+.lf-input:focus-within { border-color: var(--lf-accent); }
+.lf-input input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; color: inherit; font: inherit; outline: none; }
+.lf-ico { display: inline-flex; color: #9aa0a6; font-size: 1rem; }
+.lf-eye { margin-left: auto; cursor: pointer; }
+
+.lf-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.lf-remember { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer; }
+.lf-link { color: var(--lf-accent); font-size: 0.85rem; font-weight: 500; cursor: pointer; text-decoration: none; }
+.lf-link:hover { text-decoration: underline; }
+
+.lf-submit {
+  margin: 14px 0 6px; height: 50px; width: 100%; border: 0; border-radius: var(--lf-radius);
+  background: var(--lf-submit); color: #fff; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s ease-in-out;
+}
+.lf-submit:hover { background: #252727; }
+.lf-submit:focus-visible { outline: 2px solid var(--lf-accent); outline-offset: 2px; }
+
+.lf-alt { text-align: center; font-size: 0.85rem; margin: 4px 0; }
+.lf-or { text-align: center; font-size: 0.82rem; color: #6b7280; margin: 6px 0; position: relative; }
+.lf-or::before, .lf-or::after { content: ''; position: absolute; top: 50%; width: 32%; height: 1px; background: #e5e7eb; }
+.lf-or::before { left: 0; } .lf-or::after { right: 0; }
+
+.lf-prov {
+  flex: 1; height: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: 1px solid #ededef; border-radius: var(--lf-radius); background: #fff; color: var(--lf-fg);
+  font-weight: 500; cursor: pointer; transition: border-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+.lf-prov:hover { border-color: var(--lf-accent); transform: translateY(-1px); }
+.lf-prov:focus-visible { outline: 2px solid var(--lf-accent); outline-offset: 2px; }
+
+/* dark theme: add class .lf-dark */
+.lf-dark { --lf-bg: #14141b; --lf-fg: #e9e7ef; --lf-submit: #8b5cf6; }
+.lf-dark .lf-input { border-color: rgba(255, 255, 255, 0.12); }
+.lf-dark .lf-prov { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.12); }
+.lf-dark .lf-or::before, .lf-dark .lf-or::after { background: rgba(255, 255, 255, 0.12); }
+
+@media (prefers-reduced-motion: reduce) { .lf-input, .lf-submit, .lf-prov { transition-duration: 0.01ms !important; } }

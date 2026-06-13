@@ -150,3 +150,10 @@
 @media (prefers-reduced-motion: reduce) {
   .stp.is-busy .stp-plus, .stp.is-busy .stp-minus { animation: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.stp :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.stp:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--stp-focus-width, 2px) solid var(--stp-focus-color, #8b5cf6);
+  outline-offset: var(--stp-focus-offset, 2px);
+}

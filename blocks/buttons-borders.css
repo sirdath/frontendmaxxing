@@ -197,3 +197,17 @@
   transition: filter 0.3s ease;
 }
 .bdbtn-sweep:hover { filter: brightness(1.3); }
+
+/* ── Accessibility: keyboard focus ring + reduced-motion (added by a11y-codemod) ── */
+.bdbtn:focus-visible {
+  outline: var(--bdbtn-focus-width, 2px) solid var(--bdbtn-focus-color, #8b5cf6);
+  outline-offset: var(--bdbtn-focus-offset, 2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .bdbtn, .bdbtn *, .bdbtn::before, .bdbtn::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

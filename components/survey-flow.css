@@ -82,3 +82,20 @@
 .sv-done { grid-area: 1 / 1; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: .8rem; padding: 2rem; }
 .sv.is-done .sv-done { display: flex; } .sv.is-done .sv-q { display: none; }
 .sv-done-ico { width: 60px; height: 60px; border-radius: 50%; background: color-mix(in srgb, var(--ok, #34d399) 18%, transparent); color: var(--ok, #34d399); display: grid; place-items: center; font-size: 1.8rem; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .sv, .sv *, .sv::before, .sv::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.sv :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.sv:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--sv-focus-width, 2px) solid var(--sv-focus-color, #8b5cf6);
+  outline-offset: var(--sv-focus-offset, 2px);
+}

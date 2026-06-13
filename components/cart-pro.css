@@ -113,3 +113,13 @@
   transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
 }
 .cartx-mini.is-open { opacity: 1; visibility: visible; transform: translateY(0); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cartx, .cartx *, .cartx::before, .cartx::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -84,3 +84,13 @@
 
 .annb-sticky { position: sticky; top: 0; z-index: 50; }
 .annb-fixed  { position: fixed; top: 0; left: 0; right: 0; z-index: 50; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .annb, .annb *, .annb::before, .annb::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

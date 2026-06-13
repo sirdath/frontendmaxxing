@@ -5574,4 +5574,830 @@
       '<div style="height:150px;display:grid;place-items:center;color:#fff;font-weight:700;background:linear-gradient(135deg,#0f172a,#1e293b);">🪄 Inertial smooth scrolling</div>');
   };
 
+  // ===== Gradient builder (JS) — live linear + mesh output, randomizable =====
+  P['utils/gradient-builder.js'] = function (target) {
+    html(target,
+      '<div style="display:flex;flex-direction:column;gap:0.7rem;width:100%;max-width:420px;">' +
+        '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;">' +
+          '<div class="gb-cell" style="height:78px;border-radius:12px;"></div>'.repeat(4) +
+        '</div>' +
+        '<button id="gb-rand" style="align-self:center;cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);color:#fff;border-radius:999px;padding:0.4rem 0.95rem;font-size:0.8rem;">↻ Randomize</button>' +
+      '</div>');
+    function paint() {
+      var GB = window.GradientBuilder; if (!GB) return;
+      var pals = ['aurora', 'sunset', 'ocean', 'candy'];
+      var hues = ['#c084fc', '#38bdf8', '#f472b6', '#34d399', '#fbbf24', '#f87171'];
+      target.querySelectorAll('.gb-cell').forEach(function (c, i) {
+        if (i % 2 === 0) {
+          var pick = hues.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 3);
+          c.style.background = GB.linear(pick, Math.round(Math.random() * 360));
+        } else {
+          var m = GB.randomMesh({ palette: pals[i % pals.length], stops: 4 });
+          c.style.background = m.background; c.style.backgroundColor = m.backgroundColor;
+        }
+      });
+    }
+    setTimeout(function () { paint(); var b = target.querySelector('#gb-rand'); if (b) b.addEventListener('click', paint); }, 30);
+  };
+
+  // ===== Gradient extract (JS) — pull a palette from a synthetic image =====
+  P['utils/gradient-extract.js'] = function (target) {
+    html(target, '<div style="color:rgba(255,255,255,0.5);font-size:0.78rem;padding:1.2rem;">Extracting palette…</div>');
+    setTimeout(function () {
+      var GE = window.GradientExtract; if (!GE) return;
+      var cv = document.createElement('canvas'); cv.width = 160; cv.height = 110;
+      var ctx = cv.getContext('2d');
+      var g = ctx.createLinearGradient(0, 0, 160, 110);
+      ['#ff6b6b', '#feca57', '#48dbfb', '#5f27cd'].forEach(function (col, i, a) { g.addColorStop(i / (a.length - 1), col); });
+      ctx.fillStyle = g; ctx.fillRect(0, 0, 160, 110);
+      var url = cv.toDataURL();
+      GE.fromImage(url).then(function (p) {
+        var sw = (p.palette || []).map(function (h) { return '<div style="flex:1;height:34px;background:' + h + ';" title="' + h + '"></div>'; }).join('');
+        target.innerHTML =
+          '<div style="display:flex;flex-direction:column;gap:0.6rem;width:100%;max-width:380px;align-items:center;">' +
+            '<img src="' + url + '" alt="source" style="width:160px;height:110px;border-radius:10px;">' +
+            '<div style="font-size:0.7rem;color:rgba(255,255,255,0.45);">↓ extracted palette</div>' +
+            '<div style="display:flex;width:100%;border-radius:8px;overflow:hidden;">' + sw + '</div>' +
+          '</div>';
+      }).catch(function () { html(target, '<div style="color:rgba(255,255,255,0.4);font-size:0.78rem;padding:1.2rem;">GradientExtract.fromImage(src) → { dominant, accent, palette[] }</div>'); });
+    }, 40);
+  };
+
+  // ===== Page-transition morph (JS) — shared-element morph on click =====
+  P['transitions/page-transition-morph.js'] = function (target) {
+    html(target,
+      '<div style="display:flex;flex-direction:column;gap:1rem;align-items:center;width:100%;">' +
+        '<div style="display:flex;gap:1.4rem;align-items:center;">' +
+          '<div id="ptm-thumb" style="width:58px;height:58px;border-radius:10px;background:linear-gradient(135deg,#8b5cf6,#ec4899);box-shadow:0 6px 18px -6px rgba(139,92,246,0.6);"></div>' +
+          '<span style="color:rgba(255,255,255,0.35);font-size:1.2rem;">→</span>' +
+          '<div id="ptm-hero" style="width:150px;height:90px;border-radius:14px;background:linear-gradient(135deg,#8b5cf6,#ec4899);opacity:0.22;"></div>' +
+        '</div>' +
+        '<button id="ptm-go" style="cursor:pointer;border:1px solid rgba(139,92,246,0.4);background:rgba(139,92,246,0.14);color:#ddd6fe;border-radius:999px;padding:0.4rem 1rem;font-size:0.8rem;">▶ Morph thumb → hero</button>' +
+      '</div>');
+    setTimeout(function () {
+      var b = target.querySelector('#ptm-go'), M = window.PageTransitionMorph;
+      if (b && M) b.addEventListener('click', function () {
+        try { M.morph('#ptm-thumb', '#ptm-hero', { duration: 600 }); } catch (e) {}
+      });
+    }, 30);
+  };
+
+  // ===== Hover Pro — 8 cursor-aware hover effects (CSS + JS) =====
+  P['effects/hover-pro.css'] = function (target) {
+    function card(cls, attr, label) {
+      return '<div class="hvp ' + cls + '" ' + (attr || '') +
+        ' tabindex="0" style="background:#16161f;border:1px solid rgba(255,255,255,0.08);min-height:78px;' +
+        'display:flex;align-items:center;justify-content:center;padding:0.8rem;color:#e5e7eb;font-size:0.8rem;' +
+        'font-weight:600;text-align:center;cursor:pointer;"><span>' + label + '</span></div>';
+    }
+    html(target,
+      '<div style="width:100%;max-width:560px;">' +
+        '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.7rem;">' +
+          card('hvp-glow', '', 'Glow + lift') +
+          card('hvp-border-run', '', 'Running border') +
+          card('hvp-liquid', '', 'Liquid fill') +
+          card('hvp-depth', '', '3D depth') +
+          card('hvp-holo-sheen', '', 'Holo sheen') +
+          card('hvp-spotlight', 'data-hover="spotlight"', 'Spotlight ✦') +
+          card('hvp-border-spotlight', 'data-hover="border"', 'Border spotlight ✦') +
+          card('hvp-glare', 'data-hover="glare"', 'Glare tilt ✦') +
+        '</div>' +
+        '<div style="margin-top:0.6rem;font-size:0.68rem;color:rgba(255,255,255,0.4);text-align:center;">✦ = cursor-tracked — move the mouse across the card</div>' +
+      '</div>');
+    setTimeout(function () {
+      if (window.HoverPro) window.HoverPro.init(target.querySelectorAll('[data-hover]'));
+    }, 30);
+  };
+
+  // ===== Hover FX — 8 more hover effects (magnetic/ripple/parallax/reveal + CSS) =====
+  P['effects/hover-fx.css'] = function (target) {
+    var box = 'background:#16161f;border:1px solid rgba(255,255,255,0.08);border-radius:12px;min-height:74px;' +
+      'display:flex;align-items:center;justify-content:center;padding:0.8rem;color:#e5e7eb;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:center;';
+    var grad = 'display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;';
+    html(target,
+      '<div style="width:100%;max-width:560px;">' +
+        '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.7rem;">' +
+          '<a class="hfx hfx-text-flow" tabindex="0" style="' + box + 'font-size:1.05rem;">Flowing text</a>' +
+          '<div class="hfx hfx-ring" tabindex="0" style="' + box + '">Pulsing ring</div>' +
+          '<button class="hfx hfx-squash" style="' + box + 'border:1px solid rgba(255,255,255,0.08);">Squash</button>' +
+          '<button class="hfx hfx-slide-swap" style="' + box + 'border:1px solid rgba(255,255,255,0.08);"><span class="hfx-slide-front">Hover me</span><span class="hfx-slide-back" style="color:#c4b5fd;">Let\'s go →</span></button>' +
+          '<button class="hfx hfx-magnetic" data-hover-fx="magnetic" style="' + box + 'border:1px solid rgba(139,92,246,0.4);background:rgba(139,92,246,0.14);">Magnetic ✦</button>' +
+          '<div class="hfx hfx-ripple" data-hover-fx="ripple" style="' + box + '">Ripple ✦</div>' +
+          '<div class="hfx hfx-parallax" data-hover-fx="parallax" style="' + box + 'flex-direction:column;gap:0.1rem;"><span data-depth="0.3" style="opacity:0.5;font-size:0.7rem;">layer</span><span data-depth="0.9">Parallax ✦</span></div>' +
+          '<div class="hfx hfx-reveal" data-hover-fx="reveal" style="' + box + 'overflow:hidden;padding:0;"><div class="hfx-reveal-base" style="' + grad + 'background:linear-gradient(135deg,#334155,#0f172a);">Before</div><div class="hfx-reveal-top" style="' + grad + 'background:linear-gradient(135deg,#8b5cf6,#ec4899);">After ✦</div></div>' +
+        '</div>' +
+        '<div style="margin-top:0.6rem;font-size:0.68rem;color:rgba(255,255,255,0.4);text-align:center;">✦ = cursor-tracked — move the mouse across the card</div>' +
+      '</div>');
+    setTimeout(function () { if (window.HoverFX) window.HoverFX.init(target.querySelectorAll('[data-hover-fx]')); }, 30);
+  };
+
+  // ===== Transitions Pro — overlay cover→swap→reveal, 6 effects =====
+  P['transitions/transitions-pro.css'] = function (target) {
+    var effects = (window.TransitionsPro && window.TransitionsPro.effects) ||
+      ['fade', 'circle', 'curtain', 'panels', 'diagonal', 'glitch', 'slide', 'zoom', 'stripes', 'rows', 'blocks'];
+    var btns = effects.map(function (e) {
+      return '<button class="txp-demo-btn" data-fx="' + e + '" style="cursor:pointer;border:1px solid rgba(255,255,255,0.18);' +
+        'background:rgba(255,255,255,0.06);color:#fff;border-radius:999px;padding:0.3rem 0.7rem;font-size:0.72rem;">' + e + '</button>';
+    }).join('');
+    html(target,
+      '<div style="width:100%;max-width:520px;display:flex;flex-direction:column;gap:0.7rem;">' +
+        '<div id="txp-stage" style="position:relative;overflow:hidden;border-radius:12px;height:160px;border:1px solid rgba(255,255,255,0.08);">' +
+          '<div id="txp-pageA" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#1e1b4b,#4c1d95);">Page A</div>' +
+          '<div id="txp-pageB" style="position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#0f766e,#155e75);">Page B</div>' +
+        '</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;">' + btns + '</div>' +
+      '</div>');
+    var stage = target.querySelector('#txp-stage');
+    var a = target.querySelector('#txp-pageA'), b = target.querySelector('#txp-pageB');
+    var showingA = true;
+    target.querySelectorAll('.txp-demo-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (!window.TransitionsPro) return;
+        window.TransitionsPro.run(btn.getAttribute('data-fx'), {
+          container: stage, scoped: true, duration: 550,
+          onSwap: function () {
+            showingA = !showingA;
+            a.style.display = showingA ? 'flex' : 'none';
+            b.style.display = showingA ? 'none' : 'flex';
+          }
+        });
+      });
+    });
+  };
+
+  // ===== Luxe Hover — 10 luxurious box/card hovers (CSS-only) =====
+  P['effects/luxe-hover.css'] = function (target) {
+    var box = 'background:#15151d;border:1px solid rgba(255,255,255,0.08);min-height:80px;display:flex;' +
+      'align-items:center;justify-content:center;padding:0.9rem;color:#e9e7ef;font-size:0.82rem;font-weight:700;text-align:center;';
+    var v = ['gold-foil', 'glass', 'emboss', 'breathe', 'shimmer', 'frame', 'rise', 'velvet', 'spotlight', 'tilt'];
+    html(target,
+      '<div style="width:100%;max-width:560px;display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;">' +
+        v.map(function (x) { return '<div class="lux lux-' + x + '" tabindex="0" style="' + box + '">' + x + '</div>'; }).join('') +
+      '</div>');
+  };
+
+  // ===== Buttons FX — 12 creative button hovers (CSS-only) =====
+  P['blocks/buttons-fx.css'] = function (target) {
+    grid(target,
+      '<div style="display:flex;flex-wrap:wrap;gap:0.7rem;justify-content:center;align-items:center;max-width:560px;">' +
+        '<button class="bfx bfx-fill-up">Fill up</button>' +
+        '<button class="bfx bfx-fill-diag">Diagonal</button>' +
+        '<button class="bfx bfx-conic">Conic</button>' +
+        '<button class="bfx bfx-arrow"><span>Continue</span></button>' +
+        '<button class="bfx bfx-glitch">Glitch</button>' +
+        '<button class="bfx bfx-gold">Gold</button>' +
+        '<button class="bfx bfx-press">3D press</button>' +
+        '<button class="bfx bfx-dot">Dot fill</button>' +
+        '<button class="bfx bfx-draw">Border draw</button>' +
+        '<button class="bfx bfx-shine">Shine</button>' +
+        '<button class="bfx bfx-neon">Neon</button>' +
+        '<button class="bfx bfx-swap" data-text="Let\'s go →">Hover me</button>' +
+      '</div>');
+  };
+
+  // ===== Interactive Canvas — cursor-reactive backgrounds =====
+  P['backgrounds/interactive-canvas.css'] = function (target) {
+    var modes = ['network', 'field', 'spotlight', 'mesh', 'dot-grid', 'aurora', 'ripple', 'confetti'];
+    var btns = modes.map(function (m) {
+      return '<button data-m="' + m + '" style="cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);color:#fff;border-radius:999px;padding:0.3rem 0.7rem;font-size:0.72rem;">' + m + '</button>';
+    }).join('');
+    html(target,
+      '<div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:0.6rem;">' +
+        '<div id="icv-stage" style="height:200px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);"></div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;">' + btns + '</div>' +
+        '<div style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-align:center;">move the cursor over the canvas · click for ripple</div>' +
+      '</div>');
+    var stage = target.querySelector('#icv-stage');
+    var current = null;
+    function set(mode) {
+      if (current) current.forEach(function (i) { i.destroy(); });
+      stage.className = '';
+      stage.innerHTML = '';
+      stage.setAttribute('data-canvas', mode);
+      current = window.InteractiveCanvas ? window.InteractiveCanvas.init(stage, { mode: mode }) : null;
+    }
+    setTimeout(function () { set('network'); }, 30);
+    target.querySelectorAll('[data-m]').forEach(function (b) { b.addEventListener('click', function () { set(b.getAttribute('data-m')); }); });
+  };
+
+  // ===== Card FX — holo / flip / bento / duotone / peek / zoom =====
+  P['effects/card-fx.css'] = function (target) {
+    var box = 'background:#15151d;border:1px solid rgba(255,255,255,0.08);min-height:96px;display:flex;align-items:center;justify-content:center;color:#e9e7ef;font-weight:700;font-size:0.8rem;text-align:center;';
+    var img = 'background:linear-gradient(135deg,#8b5cf6,#ec4899);width:100%;height:96px;';
+    html(target,
+      '<div style="width:100%;max-width:560px;display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;">' +
+        '<div class="cfx cfx-holo" data-card-fx="holo" tabindex="0" style="' + box + '">Holo ✦</div>' +
+        '<div class="cfx cfx-flip" tabindex="0" style="height:96px;"><div class="cfx-inner"><div class="cfx-front" style="' + box + '">Front</div><div class="cfx-back" style="' + box + 'background:linear-gradient(135deg,#0f766e,#155e75);">Back</div></div></div>' +
+        '<div class="cfx cfx-bento" tabindex="0" style="' + box + 'flex-direction:column;gap:0.2rem;"><span>1</span><span>2</span><span>3</span></div>' +
+        '<figure class="cfx cfx-duotone" tabindex="0" style="height:96px;margin:0;"><div class="cfx-img" style="' + img + '"></div></figure>' +
+        '<div class="cfx cfx-peek" tabindex="0" style="' + box + 'background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;">Peek<div class="cfx-peek-body" style="background:rgba(0,0,0,0.65);color:#fff;padding:0.4rem;font-size:0.68rem;">revealed body</div></div>' +
+        '<figure class="cfx cfx-zoom" tabindex="0" style="height:96px;margin:0;"><div class="cfx-img" style="' + img + '"></div></figure>' +
+      '</div>');
+    setTimeout(function () { if (window.CardFX) window.CardFX.init(target.querySelectorAll('[data-card-fx]')); }, 30);
+  };
+
+  // ===== Buttons FX 2 — icon-rail / fab / elastic / spread / stripe / corner / burst =====
+  P['blocks/buttons-fx2.css'] = function (target) {
+    grid(target,
+      '<div style="display:flex;flex-wrap:wrap;gap:0.7rem;justify-content:center;align-items:center;max-width:560px;">' +
+        '<button class="bf2 bf2-icon-rail">Download</button>' +
+        '<button class="bf2 bf2-fab">★<span class="bf2-label">Favorite</span></button>' +
+        '<button class="bf2 bf2-elastic">Elastic</button>' +
+        '<button class="bf2 bf2-spread">Spread</button>' +
+        '<button class="bf2 bf2-stripe">Stripe</button>' +
+        '<button class="bf2 bf2-corner">Corner</button>' +
+        '<button class="bf2 bf2-burst" data-button-fx="burst">Celebrate 🎉</button>' +
+      '</div>');
+    setTimeout(function () { if (window.ButtonFX) window.ButtonFX.init(target.querySelectorAll('[data-button-fx]')); }, 30);
+  };
+
+  // ===== Canvas FX — matrix code rain + gooey metaballs =====
+  P['backgrounds/canvas-fx.css'] = function (target) {
+    var modes = ['matrix', 'metaballs'];
+    var btns = modes.map(function (m) {
+      return '<button data-cm="' + m + '" style="cursor:pointer;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);color:#fff;border-radius:999px;padding:0.3rem 0.8rem;font-size:0.72rem;">' + m + '</button>';
+    }).join('');
+    html(target,
+      '<div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:0.6rem;">' +
+        '<div id="cvfx-stage" style="height:210px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);"></div>' +
+        '<div style="display:flex;gap:0.4rem;justify-content:center;">' + btns + '</div>' +
+        '<div style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-align:center;">metaballs follows the cursor</div>' +
+      '</div>');
+    var stage = target.querySelector('#cvfx-stage');
+    var current = null;
+    function set(mode) {
+      if (current) current.forEach(function (i) { i.destroy(); });
+      stage.className = ''; stage.innerHTML = ''; stage.setAttribute('data-canvas-fx', mode);
+      current = window.CanvasFX ? window.CanvasFX.init(stage, { mode: mode }) : null;
+    }
+    setTimeout(function () { set('matrix'); }, 30);
+    target.querySelectorAll('[data-cm]').forEach(function (b) { b.addEventListener('click', function () { set(b.getAttribute('data-cm')); }); });
+  };
+
+  // ===== Buttons FX 3 — metal / wave / shutter / glow-trail / hold-to-confirm =====
+  P['blocks/buttons-fx3.css'] = function (target) {
+    grid(target,
+      '<div style="display:flex;flex-wrap:wrap;gap:0.7rem;justify-content:center;align-items:center;max-width:560px;">' +
+        '<button class="bf3 bf3-metal">Liquid metal</button>' +
+        '<button class="bf3 bf3-wave"><span class="bf3-bars"><i></i><i></i><i></i><i></i></span>Playing</button>' +
+        '<button class="bf3 bf3-shutter">Shutter</button>' +
+        '<button class="bf3 bf3-glow-trail">Glow trail</button>' +
+        '<button class="bf3 bf3-hold" data-hold>Hold to confirm</button>' +
+      '</div>');
+    setTimeout(function () { if (window.HoldConfirm) window.HoldConfirm.init(target.querySelectorAll('[data-hold]'), { duration: 900 }); }, 30);
+  };
+
+  // ===== Checkboxes (uiverse) =====
+  P['blocks/checkboxes-uiverse.css'] = function (target) {
+    var v = ['draw', 'fill', 'bounce', 'flip', 'glow', 'ripple', 'heart'];
+    grid(target, '<div style="display:flex;flex-wrap:wrap;gap:1rem 1.5rem;justify-content:center;max-width:540px;color:#e9e7ef;font-size:0.85rem;">' +
+      v.map(function (x, i) { return '<label class="cbu cbu-' + x + '"><input type="checkbox" class="cbu-input"' + (i % 2 ? ' checked' : '') + '><span class="cbu-box"></span><span class="cbu-label">' + x + '</span></label>'; }).join('') +
+      '</div>');
+  };
+
+  // ===== Toggles (uiverse) =====
+  P['blocks/toggles-uiverse.css'] = function (target) {
+    var v = ['ios', 'gradient', 'daynight', 'neumorph', 'power', 'emoji', 'square'];
+    grid(target, '<div style="display:flex;flex-wrap:wrap;gap:1.1rem 1.4rem;justify-content:center;align-items:center;max-width:540px;">' +
+      v.map(function (x, i) { return '<label class="tgu tgu-' + x + '" title="' + x + '"><input type="checkbox" class="tgu-input"' + (i % 2 ? ' checked' : '') + '><span class="tgu-track"><span class="tgu-thumb"></span></span></label>'; }).join('') +
+      '</div>');
+  };
+
+  // ===== Social icons (uiverse) =====
+  P['blocks/social-icons.css'] = function (target) {
+    var combos = [['fill', 'twitter', '🐦'], ['3d', 'github', '★'], ['bounce', 'youtube', '▶'], ['ring', 'discord', '✦'], ['tooltip', 'linkedin', 'in'], ['slide', 'instagram', '◎']];
+    html(target, '<div style="display:flex;flex-wrap:wrap;gap:0.9rem;justify-content:center;align-items:center;max-width:540px;padding:1.6rem 0;">' +
+      combos.map(function (c) { return '<a class="soc soc-' + c[0] + ' soc-' + c[1] + '" data-tip="' + c[1] + '">' + c[2] + '</a>'; }).join('') +
+      '</div>');
+  };
+
+  // ===== Tooltips (fancy / directional) =====
+  P['blocks/tooltips-fancy.css'] = function (target) {
+    function chip(cls, tip, label) { return '<span class="ttu ' + cls + '" data-tip="' + tip + '" tabindex="0" style="padding:0.5rem 0.9rem;border-radius:9px;background:#16161f;border:1px solid rgba(255,255,255,0.1);color:#e9e7ef;font-size:0.82rem;cursor:default;">' + label + '</span>'; }
+    html(target, '<div style="display:flex;flex-wrap:wrap;gap:1.3rem;justify-content:center;align-items:center;max-width:540px;padding:2.2rem 0;">' +
+      chip('ttu-top', 'Top tooltip', 'Top') +
+      chip('ttu-bottom', 'Bottom tooltip', 'Bottom') +
+      chip('ttu-left', 'Left tooltip', 'Left') +
+      chip('ttu-right', 'Right tooltip', 'Right') +
+      chip('ttu-top ttu-neon', 'Neon glow', 'Neon') +
+      chip('ttu-top ttu-gradient', 'Gradient', 'Gradient') +
+      '</div><div style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-align:center;">hover or focus each chip</div>');
+  };
+
+  // ===== Radios (uiverse) =====
+  P['blocks/radios-uiverse.css'] = function (target) {
+    grid(target, '<div style="display:flex;flex-direction:column;gap:0.9rem;max-width:440px;color:#e9e7ef;font-size:0.85rem;">' +
+      '<div style="display:flex;gap:1.3rem;flex-wrap:wrap;">' +
+        ['grow', 'fill', 'square', 'glow'].map(function (x, i) { return '<label class="rdu rdu-' + x + '"><input type="radio" name="rdua" class="rdu-input"' + (i === 0 ? ' checked' : '') + '><span class="rdu-dot"></span><span class="rdu-label">' + x + '</span></label>'; }).join('') +
+      '</div>' +
+      '<div style="display:flex;gap:0.7rem;flex-wrap:wrap;">' +
+        ['Starter', 'Pro', 'Team'].map(function (x, i) { return '<label class="rdu rdu-card"><input type="radio" name="rdub" class="rdu-input"' + (i === 1 ? ' checked' : '') + '><span class="rdu-dot"></span><span class="rdu-label">' + x + '</span></label>'; }).join('') +
+      '</div>' +
+      '</div>');
+  };
+
+  // ===== CSS 3D — cube / flip-box / stack / coverflow =====
+  P['components/css-3d.css'] = function (target) {
+    var faces = ['front', 'back', 'right', 'left', 'top', 'bottom'];
+    html(target,
+      '<div style="display:flex;flex-wrap:wrap;gap:1.8rem;justify-content:center;align-items:center;padding:1.2rem 0;max-width:560px;">' +
+        '<div class="c3d c3d-cube" style="--c3d-size:88px;"><div class="c3d-cube-inner">' +
+          faces.map(function (f, i) { return '<span class="c3d-face c3d-' + f + '">' + (i + 1) + '</span>'; }).join('') + '</div></div>' +
+        '<div class="c3d c3d-flip-box" tabindex="0" style="--c3d-size:88px;"><div class="c3d-fb-inner"><div class="c3d-fb-front">Hover</div><div class="c3d-fb-back" style="background:linear-gradient(135deg,#0f766e,#155e75);">Back</div></div></div>' +
+        '<div class="c3d c3d-stack" tabindex="0" style="--c3d-size:88px;"><div class="c3d-stack-item"></div><div class="c3d-stack-item"></div><div class="c3d-stack-item"></div></div>' +
+      '</div>' +
+      '<div class="c3d c3d-coverflow" data-c3d="coverflow" style="max-width:540px;">' +
+        [1, 2, 3, 4, 5, 6, 7].map(function (n) { return '<div class="c3d-cf-item">' + n + '</div>'; }).join('') + '</div>');
+    setTimeout(function () { if (window.CSS3D) window.CSS3D.init(target.querySelectorAll('[data-c3d]')); }, 50);
+  };
+
+  // ===== Loaders Mega =====
+  P['blocks/loaders-mega.css'] = function (target) {
+    var solo = ['pacman', 'hourglass', 'coin', 'clock', 'jelly', 'bounce', 'square', 'typing', 'pulse', 'wifi', 'propeller'];
+    var kids = { bars: 5, newton: 5 };
+    function cell(x, inner) { return '<div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;"><div class="ldm ldm-' + x + '">' + (inner || '') + '</div><span style="font-size:0.64rem;color:rgba(255,255,255,0.4);">' + x + '</span></div>'; }
+    var cells = solo.map(function (x) { return cell(x); });
+    Object.keys(kids).forEach(function (x) { var inner = ''; for (var i = 0; i < kids[x]; i++) inner += '<i></i>'; cells.push(cell(x, inner)); });
+    grid(target, '<div style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;align-items:center;padding:1rem;max-width:560px;">' + cells.join('') + '</div>');
+  };
+
+  // ===== Patterns Mega =====
+  P['backgrounds/patterns-mega.css'] = function (target) {
+    var v = ['dots', 'grid', 'lines', 'vlines', 'diagonal', 'plaid', 'checker', 'zigzag', 'rings', 'polka', 'isometric', 'cross', 'carbon', 'starburst', 'brick', 'triangles'];
+    grid(target, '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;max-width:540px;">' +
+      v.map(function (x) { return '<div class="pat pat-' + x + '" style="--pat-bg:#13131a;height:70px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);position:relative;"><span style="position:absolute;bottom:3px;left:5px;font-size:0.6rem;color:rgba(255,255,255,0.55);">' + x + '</span></div>'; }).join('') + '</div>');
+  };
+
+  // ===== Login Form =====
+  P['components/login-form.css'] = function (target) {
+    grid(target, '<form class="lf" onsubmit="return false" style="margin:0 auto;">' +
+      '<label class="lf-label">Email</label>' +
+      '<div class="lf-input"><span class="lf-ico">✉</span><input type="email" placeholder="Enter your email"></div>' +
+      '<label class="lf-label">Password</label>' +
+      '<div class="lf-input"><span class="lf-ico">🔒</span><input type="password" placeholder="Enter your password"><span class="lf-ico lf-eye">👁</span></div>' +
+      '<div class="lf-row"><label class="lf-remember"><input type="checkbox"> Remember me</label><a class="lf-link">Forgot password?</a></div>' +
+      '<button class="lf-submit">Sign In</button>' +
+      '<p class="lf-alt">Don\'t have an account? <a class="lf-link">Sign Up</a></p>' +
+      '<p class="lf-or">Or With</p>' +
+      '<div class="lf-row lf-oauth"><button class="lf-prov">G&nbsp;Google</button><button class="lf-prov">Apple</button></div>' +
+      '</form>');
+  };
+
+  // ===== Glow Search =====
+  P['components/glow-search.css'] = function (target) {
+    html(target, '<div style="padding:2.2rem 0;display:flex;justify-content:center;"><div class="gsb"><span class="gsb-icon">⌕</span><input class="gsb-input" type="text" placeholder="Search..."><button class="gsb-filter" aria-label="Filter">⛯</button></div></div>');
+  };
+
+  // ===== Buttons Sleek =====
+  P['blocks/buttons-sleek.css'] = function (target) {
+    grid(target, '<div style="display:flex;flex-wrap:wrap;gap:0.7rem;justify-content:center;align-items:center;max-width:540px;">' +
+      '<button class="slk slk-ghost">Ghost</button>' +
+      '<button class="slk slk-soft">Soft</button>' +
+      '<a class="slk slk-line" tabindex="0">Read more</a>' +
+      '<button class="slk slk-kbd">Command <kbd>⌘K</kbd></button>' +
+      '<button class="slk slk-dot">Status</button>' +
+      '<button class="slk slk-icon">Continue <span class="slk-chev">›</span></button>' +
+      '<button class="slk slk-quiet">Quiet</button>' +
+      '<button class="slk slk-outline">Outline</button>' +
+      '</div>');
+  };
+
+  // ===== Theme Switch =====
+  P['components/theme-switch.css'] = function (target) {
+    html(target, '<div style="display:flex;flex-direction:column;align-items:center;gap:0.9rem;padding:1.5rem;">' +
+      '<div style="display:flex;gap:1.2rem;align-items:center;"><button class="thsw"><span class="thsw-orb"></span></button><button class="thsw is-dark"><span class="thsw-orb"></span></button></div>' +
+      '<div style="font-size:0.68rem;color:rgba(255,255,255,0.4);">click the left one — it toggles + persists</div>' +
+      '</div>');
+    setTimeout(function () { var b = target.querySelector('.thsw'); if (window.ThemeSwitch && b) window.ThemeSwitch.init(b, { target: target, storageKey: 'fm-theme-demo' }); }, 30);
+  };
+
+  // ===== Profile Card =====
+  P['components/profile-card.css'] = function (target) {
+    var av = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='76' height='76'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%238b5cf6'/><stop offset='1' stop-color='%23ec4899'/></linearGradient></defs><rect width='76' height='76' fill='url(%23g)'/></svg>";
+    grid(target, '<article class="pfc" style="margin:0 auto;">' +
+      '<div class="pfc-cover"></div>' +
+      '<img class="pfc-avatar" src="' + av + '" alt="">' +
+      '<div class="pfc-body">' +
+        '<h3 class="pfc-name">Ada Lovelace</h3>' +
+        '<p class="pfc-role">Product Designer</p>' +
+        '<p class="pfc-bio">Designing calm, useful interfaces.</p>' +
+        '<div class="pfc-stats"><div class="pfc-stat"><span class="pfc-num">128</span><span class="pfc-label">Posts</span></div><div class="pfc-stat"><span class="pfc-num">8.4k</span><span class="pfc-label">Followers</span></div><div class="pfc-stat"><span class="pfc-num">312</span><span class="pfc-label">Following</span></div></div>' +
+        '<div class="pfc-actions"><button class="pfc-btn pfc-btn-primary">Follow</button><button class="pfc-btn pfc-btn-ghost">Message</button></div>' +
+      '</div>' +
+      '</article>');
+  };
+
+  // ===== TASTE · Aesthetic master profiles =====
+  // Self-contained: each card sets data-aesthetic and reads the taste vars inline
+  // (structure.css is NOT loaded in the demo, so we don't rely on .struct).
+  P['taste/aesthetic.css'] = function (target) {
+    var profiles = [
+      ['minimal', 'Minimal', 'Quiet, airy, restrained.'],
+      ['editorial', 'Editorial', 'Serif voice, generous rhythm.'],
+      ['energetic', 'Energetic', 'Loud accent, fast snap.'],
+      ['luxury', 'Luxury', 'High-contrast, slow glide.'],
+      ['playful', 'Playful', 'Rounded, bouncy, friendly.'],
+      ['technical', 'Technical', 'Mono, compact, crisp.'],
+    ];
+    var cards = profiles.map(function (p) {
+      return '<div class="taes-card" data-aesthetic="' + p[0] + '" style="' +
+        'background:#15151f;border:1px solid rgba(255,255,255,0.09);color:#f2f3f7;' +
+        'border-radius:var(--radius);box-shadow:var(--ts-elevation);padding:1.1rem 1.15rem;' +
+        'transition:transform var(--m-dur) var(--m-ease),box-shadow var(--m-dur) var(--m-ease);">' +
+        '<div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#7c5cff;font-family:var(--font-body);">' + p[0] + '</div>' +
+        '<div style="font-family:var(--font-head);font-size:1.55rem;line-height:1.1;margin:0.25rem 0 0.35rem;font-weight:700;">' + p[1] + '</div>' +
+        '<div style="font-family:var(--font-body);font-size:0.82rem;color:rgba(242,243,247,0.66);line-height:1.45;">' + p[2] + '</div>' +
+        '<button class="taes-btn" style="margin-top:0.85rem;font-family:var(--font-body);font-size:0.78rem;color:#fff;' +
+          'background:#7c5cff;border:0;border-radius:var(--radius-sm);padding:0.5rem 0.9rem;cursor:pointer;' +
+          'transition:transform var(--m-dur-fast) var(--m-ease);">Action ›</button>' +
+        '</div>';
+    }).join('');
+    html(target,
+      '<style>' +
+        '.taes-grid .taes-card:hover{transform:translateY(var(--ts-hover-lift));}' +
+        '.taes-grid .taes-btn:hover{transform:translateY(-1px) scale(1.02);}' +
+      '</style>' +
+      '<div class="taes-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;width:100%;max-width:760px;margin:0 auto;">' +
+        cards +
+      '</div>' +
+      '<div style="text-align:center;font-size:0.68rem;color:rgba(255,255,255,0.4);margin-top:1rem;">one attribute — <code>data-aesthetic</code> — sets font + motion + spacing + elevation. hover a card.</div>');
+  };
+
+  // ===== TASTE · Density rhythm =====
+  P['taste/density.css'] = function (target) {
+    function block(d) {
+      return '<div data-density="' + d + '" style="flex:1;min-width:150px;">' +
+        '<div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:#7c5cff;margin-bottom:0.5rem;">' + d + '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:var(--gap);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:var(--gutter);">' +
+          '<div style="background:#7c5cff;border-radius:var(--radius-sm);height:34px;"></div>' +
+          '<div style="background:rgba(255,255,255,0.13);border-radius:var(--radius-sm);height:34px;"></div>' +
+          '<div style="background:rgba(255,255,255,0.13);border-radius:var(--radius-sm);height:34px;"></div>' +
+        '</div></div>';
+    }
+    html(target,
+      '<div style="display:flex;gap:1.4rem;align-items:flex-start;width:100%;max-width:680px;margin:0 auto;">' +
+        block('compact') + block('normal') + block('airy') +
+      '</div>' +
+      '<div style="text-align:center;font-size:0.68rem;color:rgba(255,255,255,0.4);margin-top:1rem;"><code>data-density</code> retunes gap · gutter · radius together.</div>');
+  };
+
+  // ===== TASTE · Motion timing =====
+  P['taste/motion.css'] = function (target) {
+    function chip(m, label) {
+      return '<div data-motion="' + m + '" style="text-align:center;">' +
+        '<button class="tmot-btn" style="font:600 0.85rem/1 system-ui;color:#fff;background:#15151f;' +
+          'border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:1rem 1.3rem;cursor:pointer;' +
+          'transition:transform var(--m-dur) var(--m-ease),background var(--m-dur) var(--m-ease);">' + label + '</button>' +
+        '<div style="font-size:0.64rem;color:rgba(255,255,255,0.5);margin-top:0.55rem;font-family:ui-monospace,monospace;">' +
+          'dur var(--m-dur)<br>ease ' + m + '</div>' +
+        '</div>';
+    }
+    html(target,
+      '<style>' +
+        '.tmot-row [data-motion] .tmot-btn:hover{transform:translateY(-6px) scale(1.04);background:#7c5cff;}' +
+      '</style>' +
+      '<div class="tmot-row" style="display:flex;gap:1.6rem;justify-content:center;align-items:flex-start;flex-wrap:wrap;">' +
+        chip('minimal', 'Minimal') + chip('standard', 'Standard') + chip('playful', 'Playful') +
+      '</div>' +
+      '<div style="text-align:center;font-size:0.68rem;color:rgba(255,255,255,0.4);margin-top:1.1rem;">hover each — same gesture, different <code>data-motion</code> timing/easing.</div>');
+  };
+
+  // ===== TASTE · Motion profiles (JS) =====
+  P['taste/motion-profiles.js'] = function (target) {
+    html(target,
+      '<div data-motion-demo style="width:100%;max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:0.9rem;">' +
+        '<div data-motion="minimal" data-slot="minimal"></div>' +
+        '<div data-motion="standard" data-slot="standard"></div>' +
+        '<div data-motion="playful" data-slot="playful"></div>' +
+      '</div>' +
+      '<div style="text-align:center;font-size:0.68rem;color:rgba(255,255,255,0.4);margin-top:1rem;"><code>MotionProfile.get(el)</code> resolves these from the nearest <code>[data-motion]</code>.</div>');
+    setTimeout(function () {
+      var MP = window.MotionProfile;
+      target.querySelectorAll('[data-slot]').forEach(function (el) {
+        var name = el.getAttribute('data-slot');
+        var t = MP ? MP.get(el) : { durFast: '?', dur: '?', durSlow: '?', ease: '?', stagger: '?' };
+        if (MP) MP.apply(el, name);
+        el.style.cssText += ';background:#15151f;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:0.95rem 0.8rem;color:#f2f3f7;';
+        el.innerHTML =
+          '<div style="font:700 0.9rem/1 system-ui;color:#7c5cff;text-transform:capitalize;margin-bottom:0.55rem;">' + name + '</div>' +
+          '<div style="font:0.66rem/1.7 ui-monospace,monospace;color:rgba(242,243,247,0.72);">' +
+            'fast ' + t.durFast + '<br>dur ' + t.dur + '<br>slow ' + t.durSlow + '<br>stag ' + t.stagger + '</div>';
+      });
+    }, 40);
+  };
+
+  // ===== TASTE · Presets registry (JS) =====
+  P['taste/presets.js'] = function (target) {
+    html(target,
+      '<div data-presets-grid style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.85rem;width:100%;max-width:760px;margin:0 auto;"></div>' +
+      '<div style="text-align:center;font-size:0.68rem;color:rgba(255,255,255,0.4);margin-top:1rem;"><code>TastePresets.get(name)</code> → aesthetic · palette · font · motion · density · house pack.</div>');
+    setTimeout(function () {
+      var TP = window.TastePresets;
+      var grid = target.querySelector('[data-presets-grid]');
+      if (!TP || !grid) { if (grid) grid.innerHTML = '<div style="color:rgba(255,255,255,0.5);">TastePresets not loaded</div>'; return; }
+      grid.innerHTML = TP.presets.map(function (p) {
+        var chips = [p.aesthetic, p.palette, p.fontPair, p.motion + ' motion', p.density].map(function (c) {
+          return '<span style="display:inline-block;font:0.6rem/1 ui-monospace,monospace;color:rgba(242,243,247,0.7);background:rgba(124,92,255,0.16);border:1px solid rgba(124,92,255,0.3);border-radius:6px;padding:0.25rem 0.4rem;margin:0.15rem 0.15rem 0 0;">' + c + '</span>';
+        }).join('');
+        return '<div style="background:#15151f;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:0.95rem 1rem;text-align:left;">' +
+          '<div style="font:700 0.95rem/1.15 system-ui;color:#f2f3f7;">' + p.label + '</div>' +
+          '<div style="font:0.74rem/1.4 system-ui;color:rgba(242,243,247,0.6);margin:0.3rem 0 0.5rem;">' + p.summary + '</div>' +
+          '<div>' + chips + '</div>' +
+          '<div style="font:0.62rem/1.5 ui-monospace,monospace;color:rgba(242,243,247,0.45);margin-top:0.55rem;">house.button → ' + p.house.button + '</div>' +
+          '</div>';
+      }).join('');
+    }, 40);
+  };
+
+  // ===== TASTE · Font pairings =====
+  P['taste/fonts.css'] = function (target) {
+    var pairs = ['system-clean', 'grotesk-tech', 'editorial-serif', 'luxury-serif', 'geometric-warm', 'mono-technical', 'display-bold', 'humanist-soft'];
+    var specimens = pairs.map(function (p) {
+      return '<div data-font-pair="' + p + '" style="background:#15151f;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1rem 1.15rem;">' +
+        '<div style="font-size:0.6rem;letter-spacing:0.13em;text-transform:uppercase;color:#7c5cff;font-family:ui-monospace,monospace;margin-bottom:0.4rem;">' + p + '</div>' +
+        '<div style="font-family:var(--font-head);font-size:1.7rem;line-height:1.05;font-weight:700;color:#f2f3f7;">Aa Quietly bold</div>' +
+        '<div style="font-family:var(--font-body);font-size:0.84rem;line-height:1.5;color:rgba(242,243,247,0.7);margin-top:0.4rem;">The body reads in a paired companion face.</div>' +
+        '</div>';
+    }).join('');
+    grid(target,
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0.9rem;width:100%;max-width:740px;margin:0 auto;">' +
+        specimens +
+      '</div>');
+  };
+
+
+  // ===== Phase wow-screens previews =====
+  P['components/splash-intro.css'] = function (target) {
+    html(target,
+      '<div style="display:grid;gap:12px">' +
+        '<div class="spl-demo-stage" style="position:relative;height:320px;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#12121c,#1a1430)">' +
+          '<div style="position:absolute;inset:0;display:grid;place-content:center;gap:8px;text-align:center;color:#f5f6fa;padding:1rem">' +
+            '<div style="font-size:1.5rem;font-weight:800;letter-spacing:-0.02em">The page underneath</div>' +
+            '<div style="font-size:.85rem;color:rgba(245,246,250,.55)">unveiled once the splash completes</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="spl-demo-btns" style="display:flex;gap:8px;flex-wrap:wrap"></div>' +
+      '</div>');
+    var stage = target.querySelector('.spl-demo-stage');
+    var btns = target.querySelector('.spl-demo-btns');
+    function play(unveil) {
+      var old = stage.querySelector('.spl');
+      if (old) old.remove();
+      var spl = document.createElement('div');
+      spl.className = 'spl';
+      spl.style.position = 'absolute'; /* contain the fixed overlay inside the card */
+      spl.innerHTML =
+        '<div class="spl-logo spl-logo--letters">NOVA</div>' +
+        '<div class="spl-bar"></div>' +
+        '<div class="spl-status" data-spl-percent>0%</div>';
+      stage.appendChild(spl);
+      var inst = SplashIntro.init(spl, { minDuration: 1500, unveil: unveil });
+      inst.auto();
+      setTimeout(function () { inst.done(); }, 1300);
+    }
+    ['fade', 'curtain', 'iris', 'split'].forEach(function (u) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = u;
+      b.style.cssText = 'padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:inherit;font:inherit;font-size:.8rem;cursor:pointer';
+      b.addEventListener('click', function () { play(u); });
+      btns.appendChild(b);
+    });
+    setTimeout(function () { play('curtain'); }, 40);
+  };
+
+  P['feedback/celebration-screen.css'] = function (target) {
+      html(target,
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:0.8rem;width:100%;">' +
+          '<div style="position:relative;width:min(560px,100%);height:360px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);">' +
+            '<div class="cel cel--burst cel--inline is-in" style="--cel-mark-size:72px;--cel-title-size:1.5rem;--cel-sub-size:0.8rem;--cel-rise:14px;padding:1.2rem;">' +
+              '<div class="cel-rays"></div>' +
+              '<div class="cel-stage" style="gap:0.4rem;width:min(330px,92%);">' +
+                '<div class="cel-mark is-in"><svg viewBox="0 0 96 96" aria-hidden="true"><circle class="cel-mark-ring" cx="48" cy="48" r="44"></circle><path class="cel-mark-check" d="M30 50 L44 64 L68 36"></path></svg></div>' +
+                '<h2 class="cel-title is-in">Payment successful</h2>' +
+                '<p class="cel-sub is-in">Receipt sent to you@example.com</p>' +
+                '<div class="cel-detail-card is-in" style="margin-top:0.4rem;">' +
+                  '<div class="cel-row" style="padding:0.45rem 0;font-size:0.74rem;"><span class="cel-row-label">Plan</span><span class="cel-row-value">Pro · annual</span></div>' +
+                  '<div class="cel-row" style="padding:0.45rem 0;font-size:0.74rem;"><span class="cel-row-label">Total</span><span class="cel-row-value">$144.00</span></div>' +
+                '</div>' +
+                '<div class="cel-actions is-in" style="margin-top:0.55rem;">' +
+                  '<button class="cel-btn cel-btn--primary" type="button" style="padding:0.5rem 1.05rem;font-size:0.76rem;">Go to dashboard</button>' +
+                  '<button class="cel-btn cel-btn--ghost" type="button" style="padding:0.5rem 1.05rem;font-size:0.76rem;">Invite team</button>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<button id="dapp-cel-launch" style="padding:0.7rem 1.5rem;background:linear-gradient(180deg,#3ee0a4,#34d399);border:0;border-radius:10px;color:#06281c;font-weight:700;font-size:0.92rem;cursor:pointer;box-shadow:0 10px 26px -10px rgba(52,211,153,0.65);">Launch full-screen takeover</button>' +
+          '<div style="font-size:0.7rem;color:rgba(255,255,255,0.45);">Plays mark → title → receipt → actions with confetti · ESC or overlay click closes</div>' +
+        '</div>');
+      setTimeout(function () {
+        var b = document.getElementById('dapp-cel-launch');
+        if (!b || !window.CelebrationScreen) return;
+        b.addEventListener('click', function () {
+          window.CelebrationScreen.show({
+            title: 'Order confirmed',
+            subtitle: 'We emailed your receipt — it ships Friday.',
+            detail: [['Order', '#FE-48211'], ['Items', '3'], ['Total', '$249.00']],
+            actions: [{ label: 'Track package', primary: true }, { label: 'Keep browsing' }],
+            variant: 'burst',
+            confetti: true
+          });
+        });
+      }, 40);
+    };
+
+  P['components/onboarding-flow.css'] = function (target) {
+      var chip = function (label, icon) {
+        return '<button type="button" data-obf-chip style="appearance:none;font:inherit;font-size:0.85rem;font-weight:600;color:#f4f4f8;background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.1);border-radius:999px;padding:0.5rem 1rem;cursor:pointer;">' + icon + ' ' + label + '</button>';
+      };
+      html(target,
+        '<div class="obf" data-finish-label="Open dashboard" style="min-height:440px;max-width:720px;margin:0 auto;border:1px solid rgba(255,255,255,0.08);border-radius:20px;">' +
+          '<header class="obf-head">' +
+            '<div class="obf-progress" aria-label="Onboarding progress"></div>' +
+            '<button class="obf-skip" type="button">Skip</button>' +
+          '</header>' +
+          '<div class="obf-steps">' +
+            '<section class="obf-step is-active">' +
+              '<div class="obf-art">🛰️</div>' +
+              '<h2 class="obf-title">Welcome to Orbit</h2>' +
+              '<p class="obf-sub">Your team\'s mission control. Three quick steps and you\'re ready for launch.</p>' +
+              '<div class="obf-body" style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;">' +
+                chip('Design', '🎨') + chip('Engineering', '⚙️') + chip('Product', '📐') +
+              '</div>' +
+            '</section>' +
+            '<section class="obf-step">' +
+              '<div class="obf-art">🪐</div>' +
+              '<h2 class="obf-title">Name your workspace</h2>' +
+              '<p class="obf-sub">This is the home for your projects — you can rename it anytime. Leave it empty to see async validation block Next.</p>' +
+              '<div class="obf-body" style="max-width:340px;margin-inline:auto;">' +
+                '<input data-obf-name placeholder="e.g. Apollo Labs" style="width:100%;box-sizing:border-box;padding:0.8rem 1rem;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#f4f4f8;font:inherit;font-size:0.92rem;">' +
+              '</div>' +
+            '</section>' +
+            '<section class="obf-step">' +
+              '<div class="obf-art">🚀</div>' +
+              '<h2 class="obf-title">Invite your crew</h2>' +
+              '<p class="obf-sub">Orbit is better together — teammates see every change live. Try ← → keys to navigate, then hit Finish.</p>' +
+            '</section>' +
+          '</div>' +
+          '<footer class="obf-foot">' +
+            '<button class="obf-back" type="button">Back</button>' +
+            '<div class="obf-dots" aria-hidden="true"></div>' +
+            '<button class="obf-next" type="button">Continue</button>' +
+          '</footer>' +
+        '</div>'
+      );
+      setTimeout(function () {
+        if (!window.OnboardingFlow) return;
+        var root = target.querySelector('.obf');
+        Array.prototype.forEach.call(root.querySelectorAll('[data-obf-chip]'), function (c) {
+          c.addEventListener('click', function () {
+            var on = c.getAttribute('aria-pressed') === 'true';
+            c.setAttribute('aria-pressed', String(!on));
+            c.style.borderColor = on ? 'rgba(255,255,255,0.1)' : '#8b5cf6';
+            c.style.background = on ? 'rgba(255,255,255,0.05)' : 'rgba(139,92,246,0.12)';
+          });
+        });
+        window.OnboardingFlow.init(root, {
+          validate: function (i, stepEl) {
+            var inp = stepEl.querySelector('[data-obf-name]');
+            if (inp && !inp.value.trim()) return 'Give your workspace a name to continue.';
+            return true;
+          },
+          onSkip: function () {
+            var sub = root.querySelector('.obf-step.is-active .obf-sub');
+            if (sub) sub.textContent = 'onSkip(i) fired — wire it to dismiss or fast-forward the flow.';
+          },
+          onComplete: function () {
+            root.querySelector('.obf-steps').innerHTML =
+              '<section class="obf-step is-active is-enter-fwd">' +
+                '<div class="obf-art">🎉</div>' +
+                '<h2 class="obf-title">You\'re in!</h2>' +
+                '<p class="obf-sub">onComplete() fired — hand off to your app here.</p>' +
+              '</section>';
+            root.querySelector('.obf-foot').style.visibility = 'hidden';
+          }
+        });
+      }, 40);
+    };
+
+  P['components/email-receipt.css'] = function (target) {
+      html(target,
+        '<div style="display:flex;flex-wrap:wrap;gap:1.2rem;justify-content:center;align-items:flex-start;width:100%;padding:0.4rem 0;">' +
+          // Light order-confirmation receipt
+          '<div style="flex:1 1 300px;max-width:380px;min-width:280px;">' +
+            '<div class="rcpt">' +
+              '<div class="rcpt-head">' +
+                '<div class="rcpt-brand"><span class="rcpt-logo"></span>Acme Supply Co.</div>' +
+                '<h1 class="rcpt-title">Order confirmed</h1>' +
+                '<p class="rcpt-meta">Order #10482 &middot; June 12, 2026</p>' +
+              '</div>' +
+              '<div class="rcpt-status rcpt-status--paid">Paid &mdash; $214.00 charged to Visa &middot;&middot;4242</div>' +
+              '<table class="rcpt-items">' +
+                '<thead><tr><th>Item</th><th class="rcpt-qty">Qty</th><th class="rcpt-amt">Price</th></tr></thead>' +
+                '<tbody>' +
+                  '<tr><td>Field Jacket<span class="rcpt-item-sub">Olive &middot; M</span></td><td class="rcpt-qty">1</td><td class="rcpt-amt">$148.00</td></tr>' +
+                  '<tr><td>Merino Beanie<span class="rcpt-item-sub">Charcoal</span></td><td class="rcpt-qty">2</td><td class="rcpt-amt">$48.00</td></tr>' +
+                '</tbody>' +
+              '</table>' +
+              '<table class="rcpt-totals"><tbody>' +
+                '<tr><td>Subtotal</td><td class="rcpt-amt">$196.00</td></tr>' +
+                '<tr><td>Shipping</td><td class="rcpt-amt">$8.00</td></tr>' +
+                '<tr><td>Tax</td><td class="rcpt-amt">$10.00</td></tr>' +
+                '<tr class="rcpt-grand"><td>Total</td><td class="rcpt-amt">$214.00</td></tr>' +
+              '</tbody></table>' +
+              '<div class="rcpt-card"><span class="rcpt-card-chip">VISA</span><span class="rcpt-card-digits">&bull;&bull;&bull;&bull; 4242</span><span class="rcpt-card-exp">exp 09/28</span></div>' +
+              '<div class="rcpt-cta"><a class="rcpt-btn" href="#" onclick="return false">View your order</a>' +
+              '<p class="rcpt-help">Questions? Just reply to this email.</p></div>' +
+              '<div class="rcpt-foot">Acme Supply Co &middot; San Francisco, CA &middot; <a href="#" onclick="return false">Unsubscribe</a></div>' +
+            '</div>' +
+          '</div>' +
+          // Dark invoice variant
+          '<div style="flex:1 1 300px;max-width:380px;min-width:280px;">' +
+            '<div class="rcpt rcpt--dark rcpt--invoice">' +
+              '<div class="rcpt-head">' +
+                '<div class="rcpt-brand"><span class="rcpt-logo"></span>Stellar Labs</div>' +
+                '<h1 class="rcpt-title">Invoice</h1>' +
+                '<p class="rcpt-meta">INV-0042 &middot; issued June 12, 2026</p>' +
+              '</div>' +
+              '<div class="rcpt-due">Payment due June 30, 2026 <span class="rcpt-due-amt">$1,240.00</span></div>' +
+              '<div class="rcpt-invoice-meta">' +
+                '<div class="rcpt-invoice-cell"><span class="rcpt-invoice-label">Invoice</span><b>INV-0042</b></div>' +
+                '<div class="rcpt-invoice-cell"><span class="rcpt-invoice-label">Due date</span><b>Jun 30, 2026</b></div>' +
+                '<div class="rcpt-invoice-cell"><span class="rcpt-invoice-label">Bill to</span><b>Northwind GmbH</b></div>' +
+              '</div>' +
+              '<table class="rcpt-items">' +
+                '<thead><tr><th>Service</th><th class="rcpt-qty">Hrs</th><th class="rcpt-amt">Amount</th></tr></thead>' +
+                '<tbody>' +
+                  '<tr><td>Design retainer<span class="rcpt-item-sub">May 2026</span></td><td class="rcpt-qty">24</td><td class="rcpt-amt">$960.00</td></tr>' +
+                  '<tr><td>Icon set<span class="rcpt-item-sub">48 glyphs</span></td><td class="rcpt-qty">&mdash;</td><td class="rcpt-amt">$280.00</td></tr>' +
+                '</tbody>' +
+              '</table>' +
+              '<table class="rcpt-totals"><tbody>' +
+                '<tr><td>Subtotal</td><td class="rcpt-amt">$1,240.00</td></tr>' +
+                '<tr><td>Tax (reverse charge)</td><td class="rcpt-amt">$0.00</td></tr>' +
+                '<tr class="rcpt-grand"><td>Amount due</td><td class="rcpt-amt">$1,240.00</td></tr>' +
+              '</tbody></table>' +
+              '<div class="rcpt-cta"><a class="rcpt-btn" href="#" onclick="return false">Pay invoice</a></div>' +
+              '<div class="rcpt-foot">Stellar Labs Inc. &middot; <a href="#" onclick="return false">Billing portal</a></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>'
+      );
+    };
+
+
+  // ===== Phase creative-assets previews =====
+  P['svg/illustrations.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.7rem;max-width:760px;width:100%;">' +
+        ['sleeping-child','crescent-moon','night-sky','meditating-figure','cat-sleeping','reading-lamp','plant-duo','calm-waves','mountain-dawn','hot-drink','paper-plane','abstract-arches'].map(function (n) {
+          return '<div style="background:#14141e;border-radius:10px;padding:0.6rem;color:rgba(255,255,255,0.8);--ill-accent:#8b5cf6;">' +
+            '<div data-ill="' + n + '"></div>' +
+            '<div style="font-size:0.62rem;color:rgba(255,255,255,0.45);font-family:ui-monospace,monospace;text-align:center;margin-top:0.3rem;">' + n + '</div>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+    setTimeout(function () {
+      if (!window.Illustrations) return;
+      target.querySelectorAll('[data-ill]').forEach(function (el) {
+        Illustrations.mount(el, el.getAttribute('data-ill'), { title: el.getAttribute('data-ill') });
+      });
+    }, 40);
+  };
+  
+  P['svg/illustrations.css'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-wrap:wrap;gap:0.8rem;align-items:flex-end;max-width:740px;">' +
+        '<div data-illv="sleeping-child" data-cls="ill--framed" style="width:220px;color:rgba(255,255,255,0.8);--ill-accent:#fbbf24;--ill-bg:rgba(255,255,255,0.06);"></div>' +
+        '<div data-illv="cat-sleeping" data-cls="ill--framed ill--float" style="width:220px;color:rgba(255,255,255,0.8);--ill-accent:#34d399;--ill-bg:rgba(255,255,255,0.06);cursor:pointer;"></div>' +
+        '<div data-illv="hot-drink" data-cls="ill--sm" style="color:rgba(255,255,255,0.8);--ill-accent:#f472b6;"></div>' +
+      '</div>' +
+      '<div style="font-size:0.65rem;color:rgba(255,255,255,0.4);margin-top:0.5rem;">.ill--framed / .ill--framed.ill--float (hover) / .ill--sm</div>';
+    setTimeout(function () {
+      if (!window.Illustrations) return;
+      target.querySelectorAll('[data-illv]').forEach(function (el) {
+        var svg;
+        Illustrations.mount(el, el.getAttribute('data-illv'), { title: el.getAttribute('data-illv') });
+        svg = el.querySelector('svg');
+        el.getAttribute('data-cls').split(' ').forEach(function (c) { svg.classList.add(c); });
+      });
+    }, 40);
+  };
+
+  P['typography/ascii-banner.js'] = function (target) {
+      target.innerHTML =
+        '<div style="display:flex;flex-direction:column;align-items:center;gap:1.1rem;overflow:auto;max-width:100%;">' +
+          '<div id="ab-demo-hero" style="font-size:9px;background:linear-gradient(135deg,#8b5cf6,#ec4899,#06b6d4);-webkit-background-clip:text;background-clip:text;color:transparent;"></div>' +
+          '<div id="ab-demo-404" style="font-size:9px;color:#6ee7b7;"></div>' +
+          '<pre id="ab-demo-box" style="font-family:ui-monospace,monospace;line-height:1.25;letter-spacing:0;white-space:pre;margin:0;font-size:11px;color:rgba(255,255,255,0.65);"></pre>' +
+        '</div>';
+      setTimeout(function () {
+        if (typeof AsciiBanner === 'undefined') return;
+        AsciiBanner.mount('#ab-demo-hero', 'SOLACE');
+        AsciiBanner.mount('#ab-demo-404', '404 - LOST!');
+        var box = document.getElementById('ab-demo-box');
+        if (box) box.textContent = AsciiBanner.box('frontendmaxxing v2 - zero deps', { pad: 2 });
+      }, 40);
+    };
+
 })();

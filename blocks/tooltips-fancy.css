@@ -1,0 +1,64 @@
+/* ============================================
+   TOOLTIPS FANCY — directional animated tooltips (CSS-only)
+   Inspired by uiverse.io community tooltips (re-implemented vanilla, MIT-spirit credit)
+   ============================================
+   Text comes from data-tip. Add a direction + optional style modifier.
+
+   Usage:
+     <link rel="stylesheet" href="blocks/tooltips-fancy.css">
+     <span class="ttu ttu-top" data-tip="Profile" tabindex="0">Hover me</span>
+     <button class="ttu ttu-right ttu-neon" data-tip="Settings">⚙</button>
+     <span class="ttu ttu-bottom ttu-gradient" data-tip="New" tabindex="0">Badge</span>
+
+   Directions: ttu-top ttu-bottom ttu-left ttu-right
+   Styles: ttu-neon ttu-gradient
+   Tunables: --ttu-c1 --ttu-c2 --ttu-bg --ttu-dur
+   ============================================ */
+
+.ttu {
+  --ttu-c1: #8b5cf6; --ttu-c2: #ec4899; --ttu-bg: #1a1a22; --ttu-dur: 0.25s; --ttu-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative; display: inline-flex;
+}
+.ttu::after {
+  content: attr(data-tip); position: absolute; z-index: 20; padding: 0.32rem 0.62rem; border-radius: 7px;
+  background: var(--ttu-bg); color: #fff; font-size: 0.74rem; font-weight: 600; white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity var(--ttu-dur), transform var(--ttu-dur) var(--ttu-ease);
+}
+.ttu::before { /* arrow */
+  content: ''; position: absolute; z-index: 20; border: 5px solid transparent;
+  opacity: 0; pointer-events: none; transition: opacity var(--ttu-dur);
+}
+.ttu:hover::after, .ttu:focus-visible::after, .ttu:hover::before, .ttu:focus-visible::before { opacity: 1; }
+
+/* top */
+.ttu-top::after { bottom: calc(100% + 9px); left: 50%; transform: translate(-50%, 6px); }
+.ttu-top::before { bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); border-top-color: var(--ttu-bg); }
+.ttu-top:hover::after, .ttu-top:focus-visible::after { transform: translate(-50%, 0); }
+/* bottom */
+.ttu-bottom::after { top: calc(100% + 9px); left: 50%; transform: translate(-50%, -6px); }
+.ttu-bottom::before { top: calc(100% + 4px); left: 50%; transform: translateX(-50%); border-bottom-color: var(--ttu-bg); }
+.ttu-bottom:hover::after, .ttu-bottom:focus-visible::after { transform: translate(-50%, 0); }
+/* left */
+.ttu-left::after { right: calc(100% + 9px); top: 50%; transform: translate(6px, -50%); }
+.ttu-left::before { right: calc(100% + 4px); top: 50%; transform: translateY(-50%); border-left-color: var(--ttu-bg); }
+.ttu-left:hover::after, .ttu-left:focus-visible::after { transform: translate(0, -50%); }
+/* right */
+.ttu-right::after { left: calc(100% + 9px); top: 50%; transform: translate(-6px, -50%); }
+.ttu-right::before { left: calc(100% + 4px); top: 50%; transform: translateY(-50%); border-right-color: var(--ttu-bg); }
+.ttu-right:hover::after, .ttu-right:focus-visible::after { transform: translate(0, -50%); }
+
+/* neon — glowing accent bubble */
+.ttu-neon { --ttu-bg: #0c0c14; }
+.ttu-neon::after { color: var(--ttu-c1); border: 1px solid var(--ttu-c1); box-shadow: 0 0 10px -1px var(--ttu-c1); }
+
+/* gradient — gradient bubble (arrow tinted to match) */
+.ttu-gradient::after { background: linear-gradient(120deg, var(--ttu-c1), var(--ttu-c2)); color: #fff; }
+.ttu-gradient.ttu-top::before { border-top-color: var(--ttu-c2); }
+.ttu-gradient.ttu-bottom::before { border-bottom-color: var(--ttu-c1); }
+.ttu-gradient.ttu-left::before { border-left-color: var(--ttu-c2); }
+.ttu-gradient.ttu-right::before { border-right-color: var(--ttu-c1); }
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ttu::after, .ttu::before { transition-duration: 0.01ms !important; }
+}

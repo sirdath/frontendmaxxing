@@ -1,7 +1,7 @@
 {
   "name": "frontendmaxxing-mcp",
-  "version": "1.0.0",
-  "description": "MCP server exposing the frontendmaxxing snippet library to AI agents (Claude Desktop, Cursor, Claude Code).",
+  "version": "2.0.0",
+  "description": "MCP server exposing the frontendmaxxing snippet vault (800+ snippets) to AI agents (Claude Desktop, Cursor, Claude Code) — BM25 search, companion-aware bundling, skill docs, structured output.",
   "keywords": [
     "mcp",
     "model-context-protocol",
@@ -64,7 +64,9 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "test": "node test.js",
+    "smoke": "node smoke.mjs"
   },
   "engines": {
     "node": ">=18"

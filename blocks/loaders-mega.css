@@ -1,0 +1,94 @@
+/* ============================================
+   LOADERS MEGA — a big set of distinct CSS loaders (CSS-only)
+   Inspired by uiverse.io / loading.io community loaders (re-implemented vanilla, MIT-spirit credit)
+   ============================================
+   Most are self-contained (one div); a few take child <i> spans (noted).
+
+   Usage:
+     <link rel="stylesheet" href="blocks/loaders-mega.css">
+     <div class="ldm ldm-pacman"></div>
+     <div class="ldm ldm-bars"><i></i><i></i><i></i><i></i><i></i></div>
+     <div class="ldm ldm-newton"><i></i><i></i><i></i><i></i><i></i></div>
+
+   Variants: ldm-pacman ldm-hourglass ldm-coin ldm-clock ldm-jelly ldm-bars
+             ldm-bounce ldm-square ldm-typing ldm-pulse ldm-wifi ldm-newton ldm-propeller
+   Tunables: --ldm-c1 --ldm-c2 --ldm-size --ldm-speed
+   ============================================ */
+
+.ldm { --ldm-c1: #8b5cf6; --ldm-c2: #ec4899; --ldm-size: 44px; --ldm-speed: 1s; position: relative; display: inline-block; width: var(--ldm-size); height: var(--ldm-size); }
+
+/* pacman — chomping jaws */
+.ldm-pacman::before, .ldm-pacman::after { content: ''; position: absolute; left: 0; width: 100%; height: 50%; background: var(--ldm-c1); }
+.ldm-pacman::before { top: 0; border-radius: 100% 100% 0 0; transform-origin: bottom; animation: ldm-pac-top var(--ldm-speed) ease-in-out infinite; }
+.ldm-pacman::after { bottom: 0; border-radius: 0 0 100% 100%; transform-origin: top; animation: ldm-pac-bot var(--ldm-speed) ease-in-out infinite; }
+@keyframes ldm-pac-top { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-45deg); } }
+@keyframes ldm-pac-bot { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(45deg); } }
+
+/* hourglass — flips and drains */
+.ldm-hourglass { border: 3px solid var(--ldm-c1); border-radius: 3px; box-sizing: border-box; animation: ldm-hg var(--ldm-speed) ease-in-out infinite; }
+.ldm-hourglass::after { content: ''; position: absolute; inset: 0; background: linear-gradient(var(--ldm-c2) 50%, transparent 0); }
+@keyframes ldm-hg { 0% { transform: rotate(0); } 50%, 100% { transform: rotate(180deg); } }
+
+/* coin — flips on the Y axis */
+.ldm-coin { border-radius: 50%; background: linear-gradient(120deg, var(--ldm-c1), var(--ldm-c2)); animation: ldm-coin var(--ldm-speed) linear infinite; }
+@keyframes ldm-coin { to { transform: rotateY(360deg); } }
+
+/* clock — two rotating hands */
+.ldm-clock { border: 2px solid var(--ldm-c1); border-radius: 50%; }
+.ldm-clock::before, .ldm-clock::after { content: ''; position: absolute; left: 50%; bottom: 50%; background: var(--ldm-c2); transform-origin: bottom; border-radius: 2px; }
+.ldm-clock::before { width: 2px; height: 32%; margin-left: -1px; animation: ldm-spin calc(var(--ldm-speed) * 2) linear infinite; }
+.ldm-clock::after { width: 2px; height: 22%; margin-left: -1px; background: var(--ldm-c1); animation: ldm-spin calc(var(--ldm-speed) * 8) linear infinite; }
+
+/* jelly — a square wobbles its corners */
+.ldm-jelly { background: linear-gradient(135deg, var(--ldm-c1), var(--ldm-c2)); animation: ldm-jelly calc(var(--ldm-speed) * 1.5) ease-in-out infinite; }
+@keyframes ldm-jelly { 0%, 100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; } 50% { border-radius: 70% 30% 46% 54% / 30% 60% 40% 70%; } }
+
+/* bars — equalizer (child <i> × N) */
+.ldm-bars { display: inline-flex; align-items: flex-end; gap: 4px; }
+.ldm-bars i { flex: 1; height: 100%; background: linear-gradient(var(--ldm-c1), var(--ldm-c2)); border-radius: 3px; transform-origin: bottom; animation: ldm-bars var(--ldm-speed) ease-in-out infinite; }
+.ldm-bars i:nth-child(2) { animation-delay: 0.1s; } .ldm-bars i:nth-child(3) { animation-delay: 0.2s; }
+.ldm-bars i:nth-child(4) { animation-delay: 0.3s; } .ldm-bars i:nth-child(5) { animation-delay: 0.4s; }
+@keyframes ldm-bars { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
+
+/* bounce — ball bounces over a squashing shadow */
+.ldm-bounce::before { content: ''; position: absolute; top: 0; left: 50%; width: 40%; height: 40%; margin-left: -20%; border-radius: 50%; background: var(--ldm-c1); animation: ldm-bounce var(--ldm-speed) cubic-bezier(0.5, 0.05, 0.5, 0.95) infinite; }
+.ldm-bounce::after { content: ''; position: absolute; bottom: 4%; left: 50%; width: 44%; height: 8%; margin-left: -22%; border-radius: 50%; background: rgba(0, 0, 0, 0.4); animation: ldm-bounce-sh var(--ldm-speed) cubic-bezier(0.5, 0.05, 0.5, 0.95) infinite; }
+@keyframes ldm-bounce { 0%, 100% { top: 0; } 50% { top: 56%; } }
+@keyframes ldm-bounce-sh { 0%, 100% { transform: scaleX(0.6); opacity: 0.4; } 50% { transform: scaleX(1); opacity: 0.8; } }
+
+/* square — flips across both axes */
+.ldm-square { background: var(--ldm-c1); animation: ldm-square calc(var(--ldm-speed) * 1.6) ease-in-out infinite; }
+@keyframes ldm-square { 0% { transform: perspective(120px) rotateX(0) rotateY(0); } 50% { transform: perspective(120px) rotateX(180deg) rotateY(0); } 100% { transform: perspective(120px) rotateX(180deg) rotateY(180deg); } }
+
+/* typing — three chat dots (self-contained via box-shadow) */
+.ldm-typing { width: 10px; height: 10px; border-radius: 50%; background: var(--ldm-c1); color: var(--ldm-c1); box-shadow: 16px 0 var(--ldm-c1), -16px 0 var(--ldm-c1); animation: ldm-typing var(--ldm-speed) linear infinite alternate; }
+@keyframes ldm-typing { 0% { box-shadow: 16px 0 var(--ldm-c1), -16px 0 rgba(139, 92, 246, 0.2); background: rgba(139, 92, 246, 0.2); } 50% { box-shadow: 16px 0 rgba(139, 92, 246, 0.2), -16px 0 rgba(139, 92, 246, 0.2); background: var(--ldm-c1); } 100% { box-shadow: 16px 0 rgba(139, 92, 246, 0.2), -16px 0 var(--ldm-c1); background: rgba(139, 92, 246, 0.2); } }
+
+/* pulse — concentric pulsing ring */
+.ldm-pulse { border-radius: 50%; background: var(--ldm-c1); animation: ldm-pulse var(--ldm-speed) ease-out infinite; }
+@keyframes ldm-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ldm-c1) 60%, transparent); transform: scale(0.85); } 100% { box-shadow: 0 0 0 22px transparent; transform: scale(1); } }
+
+/* wifi — signal arcs pulse outward */
+.ldm-wifi::before, .ldm-wifi::after { content: ''; position: absolute; left: 50%; bottom: 18%; border: 3px solid var(--ldm-c1); border-bottom-color: transparent; border-left-color: transparent; border-right-color: transparent; border-radius: 50%; transform: translateX(-50%); opacity: 0; animation: ldm-wifi var(--ldm-speed) ease-out infinite; }
+.ldm-wifi::before { width: 40%; height: 40%; }
+.ldm-wifi::after { width: 75%; height: 75%; animation-delay: calc(var(--ldm-speed) * 0.25); }
+@keyframes ldm-wifi { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
+
+/* newton — newton's cradle (child <i> × 5) */
+.ldm-newton { display: inline-flex; align-items: flex-start; }
+.ldm-newton i { width: 20%; height: 100%; position: relative; }
+.ldm-newton i::after { content: ''; position: absolute; top: 30%; left: 50%; width: 80%; height: 0; padding-bottom: 80%; margin-left: -40%; border-radius: 50%; background: var(--ldm-c1); }
+.ldm-newton i:first-child { transform-origin: top center; animation: ldm-newton-l var(--ldm-speed) ease-in-out infinite; }
+.ldm-newton i:last-child { transform-origin: top center; animation: ldm-newton-r var(--ldm-speed) ease-in-out infinite; }
+@keyframes ldm-newton-l { 0%, 50%, 100% { transform: rotate(0); } 25% { transform: rotate(-42deg); } }
+@keyframes ldm-newton-r { 0%, 50%, 100% { transform: rotate(0); } 75% { transform: rotate(42deg); } }
+
+/* propeller — two-tone spinning blade */
+.ldm-propeller { border-radius: 50%; background: conic-gradient(var(--ldm-c1) 0 25%, transparent 0 50%, var(--ldm-c2) 0 75%, transparent 0); animation: ldm-spin var(--ldm-speed) linear infinite; }
+
+@keyframes ldm-spin { to { transform: rotate(360deg); } }
+
+/* ── Accessibility: reduced-motion (freeze loaders) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ldm, .ldm *, .ldm::before, .ldm::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}

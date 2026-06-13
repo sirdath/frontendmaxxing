@@ -290,3 +290,18 @@
   border-radius: 4px; cursor: pointer;
   font-size: 1rem;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .onb-welc, .onb-welc *, .onb-welc::before, .onb-welc::after,
+  .onb-wiz, .onb-wiz *, .onb-wiz::before, .onb-wiz::after,
+  .onb-launch, .onb-launch *, .onb-launch::before, .onb-launch::after,
+  .onb-plan, .onb-plan *, .onb-plan::before, .onb-plan::after,
+  .onb-next, .onb-next *, .onb-next::before, .onb-next::after,
+  .onb-install, .onb-install *, .onb-install::before, .onb-install::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

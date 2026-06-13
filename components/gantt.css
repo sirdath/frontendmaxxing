@@ -70,3 +70,13 @@
 .gantt-track.has-today::after { content: ''; position: absolute; top: 0; bottom: 0; left: calc((var(--today) - .5) * (100% / var(--cols))); width: 2px; background: var(--danger, #f87171); opacity: .7; }
 
 @media (max-width: 600px){ .gantt { --g-label-w: 110px; } .gantt-bar { font-size: 0; padding: 0; } }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .gantt, .gantt *, .gantt::before, .gantt::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -146,3 +146,13 @@
 }
 .gmenu-trigger.has-status.is-error::after { background: #f87171; box-shadow: 0 0 6px #f87171; }
 .gmenu-trigger.has-status.is-warn::after  { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .gmenu, .gmenu *, .gmenu::before, .gmenu::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

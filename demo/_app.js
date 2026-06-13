@@ -36,6 +36,7 @@
     'shaders':     { icon: '🌈', desc: 'Pure-WebGL fullscreen-quad shaders — voronoi, mesh, godrays, plasma, fluid' },
     'structure':   { icon: '🏗', desc: 'Page architecture — backbone, section transitions/frames + 4 full genre demo pages (see structure.skill.md)' },
     'svg':         { icon: '✏️', desc: 'SVG animations, gradient definitions' },
+    'taste':       { icon: '🎩', desc: 'Taste layer — aesthetic/density/motion/font-pair token presets + TastePresets bundles (see taste.skill.md)' },
     'transitions': { icon: '🎞', desc: 'Page transitions: fade, curtain, morph, View Transitions API' },
     'typography':  { icon: '🔤', desc: 'Fluid type, variable fonts, gradient numbers, text effects, Greek-font pack' },
     'utils':       { icon: '🛠', desc: 'easing, lerp, dom helpers, performance, palette generator, gradient builder' }

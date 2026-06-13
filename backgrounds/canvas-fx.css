@@ -1,0 +1,37 @@
+/* ============================================
+   CANVAS FX — generative canvas backgrounds (matrix rain · metaballs)
+   Inspired by The Matrix code rain, classic metaball demos (see README credits)
+   ============================================
+   A full-area canvas background drawn by canvas-fx.js. The metaballs mode uses
+   a CSS blur+contrast "goo" filter on the canvas so blobs merge organically.
+
+   Usage:
+     <link rel="stylesheet" href="backgrounds/canvas-fx.css">
+     <div class="cvfx cvfx-matrix"   data-canvas-fx="matrix"   style="height:60vh;"></div>
+     <div class="cvfx cvfx-metaballs" data-canvas-fx="metaballs" style="height:60vh;"></div>
+     <script src="backgrounds/canvas-fx.js"></script>
+     <script>CanvasFX.init('[data-canvas-fx]');</script>
+
+   Variants: cvfx-matrix cvfx-metaballs
+   Tunables: --cvfx-c1 --cvfx-c2 --cvfx-bg
+   ============================================ */
+
+.cvfx {
+  --cvfx-c1: #34d399;
+  --cvfx-c2: #8b5cf6;
+  --cvfx-bg: #05060a;
+  position: relative;
+  overflow: hidden;
+  background: var(--cvfx-bg);
+}
+.cvfx > * { position: relative; z-index: 2; }
+.cvfx .cvfx-canvas { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%; }
+
+/* metaballs: blur + contrast threshold on the canvas merges blobs into goo */
+.cvfx-metaballs { --cvfx-c1: #8b5cf6; --cvfx-bg: #07060d; }
+.cvfx-metaballs .cvfx-canvas { filter: blur(8px) contrast(18); }
+
+/* ── Accessibility: reduced-motion (JS renders a single static frame) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cvfx .cvfx-canvas { filter: none; }
+}

@@ -202,3 +202,18 @@
   margin-top: 0.3rem;
   width: 100%; max-width: 380px;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .rp-stars, .rp-stars *, .rp-stars::before, .rp-stars::after,
+  .rp-tens, .rp-tens *, .rp-tens::before, .rp-tens::after,
+  .rp-dist, .rp-dist *, .rp-dist::before, .rp-dist::after,
+  .rp-rev, .rp-rev *, .rp-rev::before, .rp-rev::after,
+  .rp-tum, .rp-tum *, .rp-tum::before, .rp-tum::after,
+  .rp-nps, .rp-nps *, .rp-nps::before, .rp-nps::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

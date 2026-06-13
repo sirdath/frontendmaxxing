@@ -144,3 +144,13 @@
 .mvp.is-paused .mvp-pause-icon {
   opacity: 1; transform: translate(-50%, -50%) scale(1.1);
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .mvp, .mvp *, .mvp::before, .mvp::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -243,3 +243,18 @@
 }
 .cp-sgrid-card.is-down .cp-sgrid-bars > i { background: var(--c-down); }
 .cp-sgrid-card.is-up   .cp-sgrid-bars > i { background: var(--c-up); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cp-heat, .cp-heat *, .cp-heat::before, .cp-heat::after,
+  .cp-scat, .cp-scat *, .cp-scat::before, .cp-scat::after,
+  .cp-cdl, .cp-cdl *, .cp-cdl::before, .cp-cdl::after,
+  .cp-donut, .cp-donut *, .cp-donut::before, .cp-donut::after,
+  .cp-arc, .cp-arc *, .cp-arc::before, .cp-arc::after,
+  .cp-sgrid, .cp-sgrid *, .cp-sgrid::before, .cp-sgrid::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

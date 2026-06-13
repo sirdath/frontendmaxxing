@@ -83,3 +83,20 @@
 
 /* Light theme */
 .dlg-light .dlg-box { --dlg-bg: #fff; --dlg-fg: #14141e; --dlg-muted: #5b5b66; --dlg-border: rgba(0,0,0,0.1); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .dlg, .dlg *, .dlg::before, .dlg::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.dlg :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.dlg:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--dlg-focus-width, 2px) solid var(--dlg-focus-color, #8b5cf6);
+  outline-offset: var(--dlg-focus-offset, 2px);
+}

@@ -304,3 +304,25 @@
 }
 .sb-two > .sb-disc { background: #1e1f22; }
 .sb-two > .sb-not { border-right: 1px solid var(--s-line); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .sb-disc, .sb-disc *, .sb-disc::before, .sb-disc::after,
+  .sb-not, .sb-not *, .sb-not::before, .sb-not::after,
+  .sb-tree, .sb-tree *, .sb-tree::before, .sb-tree::after,
+  .sb-set, .sb-set *, .sb-set::before, .sb-set::after,
+  .sb-doc, .sb-doc *, .sb-doc::before, .sb-doc::after,
+  .sb-two, .sb-two *, .sb-two::before, .sb-two::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.sb-disc, .sb-not, .sb-tree, .sb-set, .sb-doc, .sb-two) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.sb-disc, .sb-not, .sb-tree, .sb-set, .sb-doc, .sb-two):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--sb-disc-focus-width, 2px) solid var(--sb-disc-focus-color, #8b5cf6);
+  outline-offset: var(--sb-disc-focus-offset, 2px);
+}

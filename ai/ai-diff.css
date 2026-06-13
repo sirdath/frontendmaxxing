@@ -258,3 +258,13 @@
       rgba(255, 255, 255, 0.04) 6px 12px);
   min-height: 80px;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .adf, .adf *, .adf::before, .adf::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

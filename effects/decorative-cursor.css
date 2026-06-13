@@ -60,3 +60,21 @@
   animation: dc-trail-fade 0.6s linear forwards;
 }
 @keyframes dc-trail-fade { to { opacity: 0; transform: translate(-50%, -50%) scale(0); } }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .dc-host, .dc-host *, .dc-host::before, .dc-host::after,
+  .dc-dot, .dc-dot *, .dc-dot::before, .dc-dot::after,
+  .dc-pulse, .dc-pulse *, .dc-pulse::before, .dc-pulse::after,
+  .dc-rotate, .dc-rotate *, .dc-rotate::before, .dc-rotate::after,
+  .dc-pink, .dc-pink *, .dc-pink::before, .dc-pink::after,
+  .dc-cyan, .dc-cyan *, .dc-cyan::before, .dc-cyan::after,
+  .dc-mint, .dc-mint *, .dc-mint::before, .dc-mint::after,
+  .dc-amber, .dc-amber *, .dc-amber::before, .dc-amber::after,
+  .dc-trail-host, .dc-trail-host *, .dc-trail-host::before, .dc-trail-host::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

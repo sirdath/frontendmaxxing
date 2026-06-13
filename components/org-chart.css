@@ -69,3 +69,13 @@
 .org-av { width: 30px; height: 30px; border-radius: 50%; flex: 0 0 auto; background: linear-gradient(135deg, var(--o-accent), var(--accent-2, #22d3ee)); }
 .org-node b { display: block; font-size: .85rem; }
 .org-node small { color: var(--o-muted); font-size: .74rem; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .org, .org *, .org::before, .org::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -255,3 +255,10 @@
 @media (prefers-reduced-motion: reduce) {
   .heropk-bg-aurora::before, .heropk-bg-aurora::after { animation: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.heropk :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.heropk:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--heropk-focus-width, 2px) solid var(--heropk-focus-color, #8b5cf6);
+  outline-offset: var(--heropk-focus-offset, 2px);
+}

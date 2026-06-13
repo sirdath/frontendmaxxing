@@ -319,3 +319,13 @@
   --cdp-border: rgba(0, 0, 0, 0.08);
   --cdp-muted: rgba(12, 12, 20, 0.6);
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cdp, .cdp *, .cdp::before, .cdp::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

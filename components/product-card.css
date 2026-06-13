@@ -242,3 +242,13 @@
   --pc-muted: rgba(12, 12, 20, 0.6);
 }
 .pcard-light .pcard-add { background: #0c0c14; color: #fff; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .pcard, .pcard *, .pcard::before, .pcard::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

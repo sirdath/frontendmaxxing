@@ -184,3 +184,13 @@
 }
 .slm-tag-new { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; }
 .slm-tag-ai  { background: rgba(34, 211, 238, 0.18); color: #67e8f9; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .slm, .slm *, .slm::before, .slm::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

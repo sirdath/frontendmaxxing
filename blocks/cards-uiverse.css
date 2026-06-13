@@ -127,3 +127,13 @@
 
 @keyframes uc-spin { to { transform: rotate(1turn); } }
 @keyframes uc-holo { to { background-position: 200% 0, 300% 0; } }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ucard, .ucard *, .ucard::before, .ucard::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

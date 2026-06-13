@@ -296,3 +296,27 @@
   border: 0; border-top: 1px solid var(--h-line);
   margin: 0.4rem 0;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .hd-cent, .hd-cent *, .hd-cent::before, .hd-cent::after,
+  .hd-mega, .hd-mega *, .hd-mega::before, .hd-mega::after,
+  .hd-trans, .hd-trans *, .hd-trans::before, .hd-trans::after,
+  .hd-dual, .hd-dual *, .hd-dual::before, .hd-dual::after,
+  .hd-ann, .hd-ann *, .hd-ann::before, .hd-ann::after,
+  .hd-bcrumb, .hd-bcrumb *, .hd-bcrumb::before, .hd-bcrumb::after,
+  .hd-srch, .hd-srch *, .hd-srch::before, .hd-srch::after,
+  .hd-mob, .hd-mob *, .hd-mob::before, .hd-mob::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.hd-cent, .hd-mega, .hd-trans, .hd-dual, .hd-ann, .hd-bcrumb, .hd-srch, .hd-mob) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.hd-cent, .hd-mega, .hd-trans, .hd-dual, .hd-ann, .hd-bcrumb, .hd-srch, .hd-mob):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--hd-cent-focus-width, 2px) solid var(--hd-cent-focus-color, #8b5cf6);
+  outline-offset: var(--hd-cent-focus-offset, 2px);
+}

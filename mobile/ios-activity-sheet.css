@@ -153,3 +153,13 @@
 }
 .ios-share-action:last-child { border-bottom: 0; }
 .ios-share-action-icon { font-size: 18px; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ios-share, .ios-share *, .ios-share::before, .ios-share::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

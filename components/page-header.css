@@ -83,3 +83,20 @@
 .pgh-gradient { background: radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--pgh-accent) 16%, transparent), transparent 60%); }
 .pgh-compact { padding-top: .8rem; } .pgh-compact .pgh-avatar { width: 34px; height: 34px; border-radius: 9px; } .pgh-compact .pgh-title { font-size: 1.2rem; } .pgh-compact .pgh-sub { display: none; }
 .pgh-center { text-align: center; } .pgh-center .pgh-bar { flex-direction: column; align-items: center; } .pgh-center .pgh-breadcrumb, .pgh-center .pgh-tabs { justify-content: center; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .pgh, .pgh *, .pgh::before, .pgh::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.pgh :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.pgh:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--pgh-focus-width, 2px) solid var(--pgh-focus-color, #8b5cf6);
+  outline-offset: var(--pgh-focus-offset, 2px);
+}

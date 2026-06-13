@@ -218,3 +218,20 @@
 .spot-light .spot-input::placeholder { color: rgba(0, 0, 0, 0.4); }
 .spot-light .spot-foot { background: rgba(0, 0, 0, 0.04); color: rgba(0, 0, 0, 0.55); }
 .spot-light .spot-shortcut { background: rgba(0, 0, 0, 0.06); color: rgba(0, 0, 0, 0.55); border-color: rgba(0, 0, 0, 0.08); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .spot, .spot *, .spot::before, .spot::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.spot :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.spot:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--spot-focus-width, 2px) solid var(--spot-focus-color, #8b5cf6);
+  outline-offset: var(--spot-focus-offset, 2px);
+}

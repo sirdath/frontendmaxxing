@@ -11,6 +11,9 @@ site needs, their sequence, pacing, and how to connect them.
 > Ten full openable reference pages live there — open them to *see* the
 > architecture: `saas.html`, `agency.html`, `restaurant.html`, `ecommerce.html`,
 > `shop-store.html` (a complete store wiring the e-shop component kit),
+> **plus `templates/atelier/`** — a complete prebuilt luxury clothing webshop
+> (35-product catalogue, 4 product-page layouts, Store Studio admin) to copy
+> wholesale as a starting point (see `templates/README.md`),
 > `dashboard.html` (an analytics/admin app built from `dashboard-widgets` +
 > a color palette), and the **local-business** set: `legal.html`, `cleaning.html`,
 > `gym.html`, `coffee.html`.

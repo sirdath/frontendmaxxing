@@ -286,3 +286,13 @@
 .wfr-region-amber  { --r-c: #fbbf24; }
 .wfr-region-mint   { --r-c: #34d399; }
 .wfr-region-rose   { --r-c: #fb7185; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .wfr, .wfr *, .wfr::before, .wfr::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

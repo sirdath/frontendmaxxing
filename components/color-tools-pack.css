@@ -324,3 +324,26 @@
 }
 .ct-ctr-grade.pass { background: rgba(16, 185, 129, 0.18); color: #10b981; }
 .ct-ctr-grade.fail { background: rgba(239, 68, 68, 0.18); color: #ef4444; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ct-sq, .ct-sq *, .ct-sq::before, .ct-sq::after,
+  .ct-ring, .ct-ring *, .ct-ring::before, .ct-ring::after,
+  .ct-grid, .ct-grid *, .ct-grid::before, .ct-grid::after,
+  .ct-stops, .ct-stops *, .ct-stops::before, .ct-stops::after,
+  .ct-stop, .ct-stop *, .ct-stop::before, .ct-stop::after,
+  .ct-tw, .ct-tw *, .ct-tw::before, .ct-tw::after,
+  .ct-ctr, .ct-ctr *, .ct-ctr::before, .ct-ctr::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.ct-sq, .ct-ring, .ct-grid, .ct-stops, .ct-stop, .ct-tw, .ct-ctr) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.ct-sq, .ct-ring, .ct-grid, .ct-stops, .ct-stop, .ct-tw, .ct-ctr):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--ct-sq-focus-width, 2px) solid var(--ct-sq-focus-color, #8b5cf6);
+  outline-offset: var(--ct-sq-focus-offset, 2px);
+}

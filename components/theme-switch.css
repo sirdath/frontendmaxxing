@@ -1,0 +1,43 @@
+/* ============================================
+   THEME SWITCH — animated sun↔moon dark-mode toggle (CSS + JS)
+   Inspired by uiverse.io day/night toggles (re-implemented vanilla, MIT-spirit credit)
+   ============================================
+   A round button whose orb morphs from a glowing sun to a crescent moon.
+   theme-switch.js flips data-theme on a target + persists to localStorage.
+
+   Usage:
+     <link rel="stylesheet" href="components/theme-switch.css">
+     <button class="thsw" aria-label="Toggle theme"><span class="thsw-orb"></span></button>
+     <script src="components/theme-switch.js"></script>
+     <script>ThemeSwitch.init('.thsw');  // toggles <html data-theme="dark|light"></script>
+
+   Style your page off [data-theme="dark"] / [data-theme="light"].
+   Tunables: --thsw-day --thsw-night --thsw-size --thsw-dur
+   ============================================ */
+
+.thsw {
+  --thsw-day: #fbbf24; --thsw-night: #cbd5e1; --thsw-size: 50px; --thsw-dur: 0.45s;
+  width: var(--thsw-size); height: var(--thsw-size); border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.05);
+  cursor: pointer; display: inline-grid; place-items: center; overflow: hidden; padding: 0;
+  transition: background var(--thsw-dur), border-color var(--thsw-dur);
+}
+.thsw:focus-visible { outline: 2px solid var(--thsw-day); outline-offset: 2px; }
+
+.thsw-orb {
+  position: relative; width: calc(var(--thsw-size) * 0.44); height: calc(var(--thsw-size) * 0.44);
+  border-radius: 50%; background: var(--thsw-day); box-shadow: 0 0 12px var(--thsw-day);
+  transition: transform var(--thsw-dur) cubic-bezier(0.2, 0.9, 0.3, 1.3), background var(--thsw-dur), box-shadow var(--thsw-dur);
+}
+
+/* dark state: sky dims, orb becomes a crescent moon and rotates in */
+.thsw.is-dark { background: rgba(30, 27, 75, 0.45); border-color: rgba(255, 255, 255, 0.2); }
+.thsw.is-dark .thsw-orb {
+  background: var(--thsw-night);
+  box-shadow: inset calc(var(--thsw-size) * -0.14) calc(var(--thsw-size) * -0.07) 0 0 #8b93a7, 0 0 8px rgba(203, 213, 225, 0.4);
+  transform: rotate(-42deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thsw, .thsw-orb { transition-duration: 0.01ms !important; }
+}

@@ -268,3 +268,27 @@
   .au-split { grid-template-columns: 1fr; }
   .au-split-art { display: none; }
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .au-field, .au-field *, .au-field::before, .au-field::after,
+  .au-cta, .au-cta *, .au-cta::before, .au-cta::after,
+  .au-login, .au-login *, .au-login::before, .au-login::after,
+  .au-signup, .au-signup *, .au-signup::before, .au-signup::after,
+  .au-forgot, .au-forgot *, .au-forgot::before, .au-forgot::after,
+  .au-lock, .au-lock *, .au-lock::before, .au-lock::after,
+  .au-onboard, .au-onboard *, .au-onboard::before, .au-onboard::after,
+  .au-split, .au-split *, .au-split::before, .au-split::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.au-field, .au-cta, .au-login, .au-signup, .au-forgot, .au-lock, .au-onboard, .au-split) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.au-field, .au-cta, .au-login, .au-signup, .au-forgot, .au-lock, .au-onboard, .au-split):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--au-field-focus-width, 2px) solid var(--au-field-focus-color, #8b5cf6);
+  outline-offset: var(--au-field-focus-offset, 2px);
+}

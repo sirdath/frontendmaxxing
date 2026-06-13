@@ -133,3 +133,13 @@
 .lyrs-child { padding-left: 1.8rem; }
 .lyrs-group .lyrs-icon::before { content: '▾'; margin-right: 0.2rem; transition: transform 0.15s ease; display: inline-block; }
 .lyrs-group:not(.is-open) .lyrs-icon::before { transform: rotate(-90deg); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .lyrs, .lyrs *, .lyrs::before, .lyrs::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

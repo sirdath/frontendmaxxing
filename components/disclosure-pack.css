@@ -267,3 +267,19 @@
   padding: 0.25rem 0;
 }
 .dp-task-row span { color: var(--d-muted); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .dp-cont, .dp-cont *, .dp-cont::before, .dp-cont::after,
+  .dp-drop, .dp-drop *, .dp-drop::before, .dp-drop::after,
+  .dp-float, .dp-float *, .dp-float::before, .dp-float::after,
+  .dp-layer, .dp-layer *, .dp-layer::before, .dp-layer::after,
+  .dp-switch, .dp-switch *, .dp-switch::before, .dp-switch::after,
+  .dp-voice, .dp-voice *, .dp-voice::before, .dp-voice::after,
+  .dp-task, .dp-task *, .dp-task::before, .dp-task::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

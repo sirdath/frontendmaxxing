@@ -149,3 +149,10 @@
   .md-panes { grid-template-columns: 1fr; }
   .md-source { border-right: none; border-bottom: 1px solid var(--md-border); }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.md :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.md:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--md-focus-width, 2px) solid var(--md-focus-color, #8b5cf6);
+  outline-offset: var(--md-focus-offset, 2px);
+}

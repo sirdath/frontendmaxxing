@@ -220,3 +220,20 @@
   transition: filter 0.15s ease;
 }
 .cart-checkout:hover { filter: brightness(1.08); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cart, .cart *, .cart::before, .cart::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.cart :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.cart:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--cart-focus-width, 2px) solid var(--cart-focus-color, #8b5cf6);
+  outline-offset: var(--cart-focus-offset, 2px);
+}

@@ -73,3 +73,13 @@
 .jse-brace  { color: var(--jse-muted); }
 .jse-comma  { color: var(--jse-muted); }
 .jse-count  { color: var(--jse-muted); font-size: 0.7rem; margin-left: 0.4rem; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .jse, .jse *, .jse::before, .jse::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

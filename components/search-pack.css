@@ -312,3 +312,27 @@
 }
 .sp-empty-tips li { padding: 0.2rem 0; }
 .sp-empty-tips li::before { content: '• '; color: var(--s-accent); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .sp-inp, .sp-inp *, .sp-inp::before, .sp-inp::after,
+  .sp-fac, .sp-fac *, .sp-fac::before, .sp-fac::after,
+  .sp-chips, .sp-chips *, .sp-chips::before, .sp-chips::after,
+  .sp-chip, .sp-chip *, .sp-chip::before, .sp-chip::after,
+  .sp-sort, .sp-sort *, .sp-sort::before, .sp-sort::after,
+  .sp-rec, .sp-rec *, .sp-rec::before, .sp-rec::after,
+  .sp-res, .sp-res *, .sp-res::before, .sp-res::after,
+  .sp-empty, .sp-empty *, .sp-empty::before, .sp-empty::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.sp-inp, .sp-fac, .sp-chips, .sp-chip, .sp-sort, .sp-rec, .sp-res, .sp-empty) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.sp-inp, .sp-fac, .sp-chips, .sp-chip, .sp-sort, .sp-rec, .sp-res, .sp-empty):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--sp-inp-focus-width, 2px) solid var(--sp-inp-focus-color, #8b5cf6);
+  outline-offset: var(--sp-inp-focus-offset, 2px);
+}

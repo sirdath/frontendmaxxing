@@ -359,3 +359,34 @@
   width: 100%; min-width: 180px;
 }
 .inp-mask::placeholder { letter-spacing: 0.08em; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .inp-box, .inp-box *, .inp-box::before, .inp-box::after,
+  .inp-tags, .inp-tags *, .inp-tags::before, .inp-tags::after,
+  .inp-tag, .inp-tag *, .inp-tag::before, .inp-tag::after,
+  .inp-ment, .inp-ment *, .inp-ment::before, .inp-ment::after,
+  .inp-num, .inp-num *, .inp-num::before, .inp-num::after,
+  .inp-pwd, .inp-pwd *, .inp-pwd::before, .inp-pwd::after,
+  .inp-srch, .inp-srch *, .inp-srch::before, .inp-srch::after,
+  .inp-file, .inp-file *, .inp-file::before, .inp-file::after,
+  .inp-clr, .inp-clr *, .inp-clr::before, .inp-clr::after,
+  .inp-rng, .inp-rng *, .inp-rng::before, .inp-rng::after,
+  .inp-dt, .inp-dt *, .inp-dt::before, .inp-dt::after,
+  .inp-tm, .inp-tm *, .inp-tm::before, .inp-tm::after,
+  .inp-otp, .inp-otp *, .inp-otp::before, .inp-otp::after,
+  .inp-cur, .inp-cur *, .inp-cur::before, .inp-cur::after,
+  .inp-mask, .inp-mask *, .inp-mask::before, .inp-mask::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.inp-box, .inp-tags, .inp-tag, .inp-ment, .inp-num, .inp-pwd, .inp-srch, .inp-file, .inp-clr, .inp-rng, .inp-dt, .inp-tm, .inp-otp, .inp-cur, .inp-mask) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.inp-box, .inp-tags, .inp-tag, .inp-ment, .inp-num, .inp-pwd, .inp-srch, .inp-file, .inp-clr, .inp-rng, .inp-dt, .inp-tm, .inp-otp, .inp-cur, .inp-mask):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--inp-box-focus-width, 2px) solid var(--inp-box-focus-color, #8b5cf6);
+  outline-offset: var(--inp-box-focus-offset, 2px);
+}

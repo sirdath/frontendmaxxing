@@ -140,3 +140,19 @@
   background: #ffffff;
   border-color: rgba(0, 0, 0, 0.08);
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .file-tree, .file-tree *, .file-tree::before, .file-tree::after,
+  .ft-row, .ft-row *, .ft-row::before, .ft-row::after,
+  .ft-arrow, .ft-arrow *, .ft-arrow::before, .ft-arrow::after,
+  .ft-folder, .ft-folder *, .ft-folder::before, .ft-folder::after,
+  .ft-icon, .ft-icon *, .ft-icon::before, .ft-icon::after,
+  .ft-name, .ft-name *, .ft-name::before, .ft-name::after,
+  .ft-meta, .ft-meta *, .ft-meta::before, .ft-meta::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

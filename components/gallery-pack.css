@@ -136,3 +136,18 @@
 .gal-just > *:nth-child(2n) { background: linear-gradient(135deg, #06b6d4, #8b5cf6); flex-basis: 220px; }
 .gal-just > *:nth-child(3n) { background: linear-gradient(135deg, #f59e0b, #ef4444); flex-basis: 160px; }
 .gal-just > *:nth-child(5n) { background: linear-gradient(135deg, #10b981, #06b6d4); flex-basis: 280px; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .gal-mas, .gal-mas *, .gal-mas::before, .gal-mas::after,
+  .gal-eq, .gal-eq *, .gal-eq::before, .gal-eq::after,
+  .gal-mos, .gal-mos *, .gal-mos::before, .gal-mos::after,
+  .gal-pol, .gal-pol *, .gal-pol::before, .gal-pol::after,
+  .gal-strip, .gal-strip *, .gal-strip::before, .gal-strip::after,
+  .gal-just, .gal-just *, .gal-just::before, .gal-just::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

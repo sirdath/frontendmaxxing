@@ -78,3 +78,20 @@
 .mlib-empty { padding: 3rem; text-align: center; color: var(--m-muted); }
 .mlib-drop { margin: 1.1rem; border: 2px dashed var(--m-border); border-radius: 12px; padding: 2rem; text-align: center; color: var(--m-muted); font-size: .9rem; }
 .mlib-drop.is-over { border-color: var(--m-accent); background: color-mix(in srgb, var(--m-accent) 8%, transparent); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .mlib, .mlib *, .mlib::before, .mlib::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.mlib :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.mlib:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--mlib-focus-width, 2px) solid var(--mlib-focus-color, #8b5cf6);
+  outline-offset: var(--mlib-focus-offset, 2px);
+}

@@ -57,3 +57,20 @@
   font-size: 0.95rem;
 }
 .phin-number::placeholder { color: var(--phin-muted); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .phin, .phin *, .phin::before, .phin::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.phin :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.phin:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--phin-focus-width, 2px) solid var(--phin-focus-color, #8b5cf6);
+  outline-offset: var(--phin-focus-offset, 2px);
+}

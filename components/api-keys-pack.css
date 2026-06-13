@@ -315,3 +315,21 @@
   font: inherit; font-weight: 700;
   cursor: pointer;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ak-row, .ak-row *, .ak-row::before, .ak-row::after,
+  .ak-scopes, .ak-scopes *, .ak-scopes::before, .ak-scopes::after,
+  .ak-scope, .ak-scope *, .ak-scope::before, .ak-scope::after,
+  .ak-hook, .ak-hook *, .ak-hook::before, .ak-hook::after,
+  .ak-secret, .ak-secret *, .ak-secret::before, .ak-secret::after,
+  .ak-rate, .ak-rate *, .ak-rate::before, .ak-rate::after,
+  .ak-sandbox, .ak-sandbox *, .ak-sandbox::before, .ak-sandbox::after,
+  .ak-log, .ak-log *, .ak-log::before, .ak-log::after,
+  .ak-gen, .ak-gen *, .ak-gen::before, .ak-gen::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -190,3 +190,23 @@
 .bdh-light .bdh-add { color: rgba(0, 0, 0, 0.3); }
 .bdh-light .bdh-handle:hover,
 .bdh-light .bdh-add:hover { background: rgba(0, 0, 0, 0.06); color: #000; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .bdh-stack, .bdh-stack *, .bdh-stack::before, .bdh-stack::after,
+  .bdh-block, .bdh-block *, .bdh-block::before, .bdh-block::after,
+  .bdh-handle, .bdh-handle *, .bdh-handle::before, .bdh-handle::after,
+  .bdh-add, .bdh-add *, .bdh-add::before, .bdh-add::after,
+  .bdh-always-on, .bdh-always-on *, .bdh-always-on::before, .bdh-always-on::after,
+  .bdh-content, .bdh-content *, .bdh-content::before, .bdh-content::after,
+  .bdh-ghost, .bdh-ghost *, .bdh-ghost::before, .bdh-ghost::after,
+  .bdh-menu, .bdh-menu *, .bdh-menu::before, .bdh-menu::after,
+  .bdh-tight, .bdh-tight *, .bdh-tight::before, .bdh-tight::after,
+  .bdh-wide, .bdh-wide *, .bdh-wide::before, .bdh-wide::after,
+  .bdh-light, .bdh-light *, .bdh-light::before, .bdh-light::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

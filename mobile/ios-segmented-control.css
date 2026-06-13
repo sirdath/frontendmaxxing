@@ -85,3 +85,14 @@
 }
 
 .ios-seg.ios-seg-inline { font-size: 12px; padding: 1.5px; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ios-seg, .ios-seg *, .ios-seg::before, .ios-seg::after,
+  .iph-light, .iph-light *, .iph-light::before, .iph-light::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

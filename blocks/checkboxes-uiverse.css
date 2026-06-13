@@ -1,0 +1,70 @@
+/* ============================================
+   CHECKBOXES UIVERSE — fancy animated checkboxes (CSS-only)
+   Inspired by uiverse.io community checkboxes (re-implemented vanilla, MIT-spirit credit)
+   ============================================
+   Markup (label wraps a real <input>, so it stays accessible + keyboard-friendly):
+     <label class="cbu cbu-draw">
+       <input type="checkbox" class="cbu-input">
+       <span class="cbu-box"></span>
+       <span class="cbu-label">Remember me</span>
+     </label>
+
+   Variants: cbu-draw cbu-fill cbu-bounce cbu-flip cbu-glow cbu-ripple cbu-heart
+   Tunables: --cbu-c1 --cbu-c2 --cbu-size --cbu-dur
+   ============================================ */
+
+.cbu {
+  --cbu-c1: #8b5cf6; --cbu-c2: #ec4899; --cbu-size: 22px; --cbu-dur: 0.3s;
+  display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; color: inherit;
+}
+.cbu-input { position: absolute; opacity: 0; width: 0; height: 0; }
+.cbu-box {
+  position: relative; flex: 0 0 auto; width: var(--cbu-size); height: var(--cbu-size);
+  border: 2px solid rgba(255, 255, 255, 0.32); border-radius: 6px; display: grid; place-items: center;
+  transition: background var(--cbu-dur) ease, border-color var(--cbu-dur) ease, transform var(--cbu-dur) ease, box-shadow var(--cbu-dur) ease;
+}
+.cbu-input:focus-visible ~ .cbu-box { outline: 2px solid var(--cbu-c1); outline-offset: 2px; }
+/* shared checkmark (rotated L) */
+.cbu-box::after {
+  content: ''; width: 5px; height: 10px; margin-top: -2px; border: solid #fff; border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0); transition: transform var(--cbu-dur) cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+.cbu-input:checked ~ .cbu-box { background: linear-gradient(135deg, var(--cbu-c1), var(--cbu-c2)); border-color: transparent; }
+.cbu-input:checked ~ .cbu-box::after { transform: rotate(45deg) scale(1); }
+
+/* fill — colour washes up from the bottom */
+.cbu-fill .cbu-box { overflow: hidden; }
+.cbu-fill .cbu-box::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--cbu-c1), var(--cbu-c2)); transform: translateY(100%); transition: transform var(--cbu-dur) ease; }
+.cbu-fill .cbu-input:checked ~ .cbu-box { background: transparent; }
+.cbu-fill .cbu-input:checked ~ .cbu-box::before { transform: translateY(0); }
+.cbu-fill .cbu-box::after { z-index: 1; }
+
+/* bounce — pops when toggled */
+.cbu-bounce .cbu-input:checked ~ .cbu-box { animation: cbu-bounce 0.4s cubic-bezier(0.2, 1.4, 0.4, 1); }
+@keyframes cbu-bounce { 0% { transform: scale(1); } 40% { transform: scale(0.8); } 70% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+/* flip — box flips to reveal the check */
+.cbu-flip .cbu-box { transition: transform 0.5s ease, background var(--cbu-dur), border-color var(--cbu-dur); transform-style: preserve-3d; }
+.cbu-flip .cbu-input:checked ~ .cbu-box { transform: rotateY(360deg); }
+
+/* glow — neon halo when checked */
+.cbu-glow .cbu-input:checked ~ .cbu-box { box-shadow: 0 0 8px var(--cbu-c1), 0 0 18px var(--cbu-c1); }
+
+/* ripple — a ring expands once on check */
+.cbu-ripple .cbu-box { overflow: visible; }
+.cbu-ripple .cbu-input:checked ~ .cbu-box::before {
+  content: ''; position: absolute; inset: -2px; border-radius: inherit; border: 2px solid var(--cbu-c1);
+  animation: cbu-ripple 0.5s ease-out;
+}
+@keyframes cbu-ripple { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.8); opacity: 0; } }
+
+/* heart — fills a heart instead of a check */
+.cbu-heart .cbu-box { border-radius: 50%; }
+.cbu-heart .cbu-box::after { content: '♥'; width: auto; height: auto; margin: 0; border: 0; transform: scale(0); font-size: calc(var(--cbu-size) * 0.7); color: #fff; line-height: 1; }
+.cbu-heart .cbu-input:checked ~ .cbu-box { background: linear-gradient(135deg, #f43f5e, #ec4899); }
+.cbu-heart .cbu-input:checked ~ .cbu-box::after { transform: scale(1); }
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .cbu-box, .cbu-box::before, .cbu-box::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

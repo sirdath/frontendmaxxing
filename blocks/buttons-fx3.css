@@ -1,0 +1,87 @@
+/* ============================================
+   BUTTONS FX 3 — luxe / interactive button effects (CSS) + hold-to-confirm (JS)
+   Inspired by liquid-metal CTAs, equalizer buttons, touch-and-hold confirm
+   ============================================
+   Base class `bf3` + a variant. Works on <button>/<a>. Default focus ring kept.
+
+   Usage:
+     <link rel="stylesheet" href="blocks/buttons-fx3.css">
+     <button class="bf3 bf3-metal">Liquid metal</button>
+     <button class="bf3 bf3-wave"><span class="bf3-bars"><i></i><i></i><i></i><i></i></span>Playing</button>
+     <button class="bf3 bf3-shutter">Shutter</button>
+     <button class="bf3 bf3-glow-trail">Glow trail</button>
+     <button class="bf3 bf3-hold" data-hold>Hold to confirm</button>
+     <script src="blocks/buttons-fx3.js"></script>
+     <script>HoldConfirm.init('[data-hold]', { onConfirm: el => console.log('confirmed', el) });</script>
+
+   Variants: bf3-metal bf3-wave bf3-shutter bf3-glow-trail bf3-hold
+   Tunables: --bf3-c1 --bf3-c2 --bf3-dur --bf3-ease --bf3-radius
+   ============================================ */
+
+@property --bf3-a { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+
+.bf3 {
+  --bf3-c1: #8b5cf6;
+  --bf3-c2: #ec4899;
+  --bf3-dur: 0.4s;
+  --bf3-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --bf3-radius: 10px;
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.7rem 1.4rem; border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05); color: #fff; border-radius: var(--bf3-radius);
+  font: inherit; font-weight: 600; cursor: pointer; overflow: hidden; isolation: isolate;
+  transition: transform var(--bf3-dur) var(--bf3-ease), color var(--bf3-dur), box-shadow var(--bf3-dur), border-color var(--bf3-dur);
+}
+.bf3 > * { position: relative; z-index: 1; }
+
+/* liquid metal — chromed gradient flows across */
+.bf3-metal { background: linear-gradient(120deg, #6f6f78, #e9e9f0, #9a9aa6, #ffffff, #8a8a96); background-size: 320% 100%; color: #1a1a22; border-color: rgba(255, 255, 255, 0.4); }
+.bf3-metal:hover, .bf3-metal:focus-visible { animation: bf3-metal 2.2s linear infinite; box-shadow: 0 8px 24px -10px rgba(255, 255, 255, 0.45); }
+@keyframes bf3-metal { to { background-position: 320% 0; } }
+
+/* sound wave — equalizer bars dance (needs .bf3-bars > i × N) */
+.bf3-wave .bf3-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 1em; }
+.bf3-wave .bf3-bars i { width: 3px; height: 100%; background: currentColor; border-radius: 2px; transform-origin: bottom; transform: scaleY(0.35); }
+.bf3-wave:hover .bf3-bars i, .bf3-wave:focus-visible .bf3-bars i { animation: bf3-wave 0.8s ease-in-out infinite; }
+.bf3-wave .bf3-bars i:nth-child(2) { animation-delay: 0.12s; }
+.bf3-wave .bf3-bars i:nth-child(3) { animation-delay: 0.24s; }
+.bf3-wave .bf3-bars i:nth-child(4) { animation-delay: 0.36s; }
+@keyframes bf3-wave { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
+
+/* shutter — a gradient layer drops down to fill */
+.bf3-shutter::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; background: linear-gradient(120deg, var(--bf3-c1), var(--bf3-c2));
+  clip-path: inset(0 0 100% 0); transition: clip-path var(--bf3-dur) var(--bf3-ease);
+}
+.bf3-shutter:hover, .bf3-shutter:focus-visible { color: #fff; border-color: transparent; }
+.bf3-shutter:hover::before, .bf3-shutter:focus-visible::before { clip-path: inset(0 0 0 0); }
+
+/* glow trail — a bright point races around the border */
+.bf3-glow-trail::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: conic-gradient(from var(--bf3-a), transparent 0 74%, var(--bf3-c1) 86%, #fff 90%, var(--bf3-c2) 94%, transparent);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity var(--bf3-dur);
+}
+.bf3-glow-trail:hover, .bf3-glow-trail:focus-visible { border-color: transparent; }
+.bf3-glow-trail:hover::before, .bf3-glow-trail:focus-visible::before { opacity: 1; animation: bf3-trail 1.4s linear infinite; }
+@keyframes bf3-trail { to { --bf3-a: 360deg; } }
+
+/* hold-to-confirm — JS fills --bf3-hold 0→1 while pressed */
+.bf3-hold::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; transform-origin: left;
+  transform: scaleX(var(--bf3-hold, 0)); background: linear-gradient(120deg, var(--bf3-c1), var(--bf3-c2));
+}
+.bf3-hold.is-confirmed { animation: bf3-confirm 0.45s var(--bf3-ease); border-color: transparent; }
+@keyframes bf3-confirm { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--bf3-c1) 50%, transparent); } 60% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--bf3-c1) 0%, transparent); } }
+
+/* ── Accessibility: reduced-motion ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .bf3, .bf3 *, .bf3::before, .bf3::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

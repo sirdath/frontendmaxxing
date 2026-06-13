@@ -1,0 +1,137 @@
+/* ============================================
+   HOVER PRO — Distinctive cursor-aware hover animations (CSS + optional JS)
+   Inspired by Linear card spotlight, holographic trading cards, Aceternity / Cult UI
+   ============================================
+   Usage:
+     <link rel="stylesheet" href="effects/hover-pro.css">
+
+     <!-- Pure CSS (no JS): -->
+     <div class="hvp hvp-glow">Glow + lift</div>
+     <a class="hvp hvp-border-run">Running gradient border</a>
+     <button class="hvp hvp-liquid"><span>Liquid fill</span></button>
+     <div class="hvp hvp-depth"><span>3D depth</span></div>
+     <div class="hvp hvp-holo-sheen">Holographic sheen</div>
+
+     <!-- Cursor-tracked (need hover-pro.js): -->
+     <div class="hvp hvp-spotlight" data-hover="spotlight">Spotlight follows cursor</div>
+     <div class="hvp hvp-border-spotlight" data-hover="border">Border glow follows cursor</div>
+     <div class="hvp hvp-glare" data-hover="glare">3D glare tilt</div>
+     <script src="effects/hover-pro.js"></script>
+     <script>HoverPro.init('[data-hover]');</script>
+
+   Variants: hvp-glow hvp-border-run hvp-liquid hvp-depth hvp-holo-sheen
+             hvp-spotlight hvp-border-spotlight hvp-glare
+   Every tunable is a --hvp-* custom property (accent, accent-2, dur, ease, radius, size).
+   ============================================ */
+
+@property --hvp-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+
+.hvp {
+  --hvp-accent: #8b5cf6;
+  --hvp-accent-2: #ec4899;
+  --hvp-dur: 0.35s;
+  --hvp-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --hvp-radius: 14px;
+  --hvp-size: 240px;            /* spotlight diameter */
+  position: relative;
+  border-radius: var(--hvp-radius);
+  transition: transform var(--hvp-dur) var(--hvp-ease),
+              box-shadow var(--hvp-dur) var(--hvp-ease);
+}
+
+/* ── 1. GLOW — soft accent glow + subtle lift ───────────────── */
+.hvp-glow:hover, .hvp-glow:focus-visible {
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 32px -12px color-mix(in srgb, var(--hvp-accent) 75%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--hvp-accent) 32%, transparent);
+}
+
+/* ── 2. BORDER-RUN — gradient stroke runs around the perimeter ─ */
+.hvp-border-run::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 2px;
+  background: conic-gradient(from var(--hvp-angle),
+    transparent 0 62%, var(--hvp-accent) 80%, var(--hvp-accent-2) 92%, transparent);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity var(--hvp-dur); pointer-events: none;
+}
+.hvp-border-run:hover::before, .hvp-border-run:focus-visible::before {
+  opacity: 1; animation: hvp-run 2.4s linear infinite;
+}
+@keyframes hvp-run { to { --hvp-angle: 360deg; } }
+
+/* ── 3. LIQUID — gooey accent fill rises from the bottom ─────── */
+.hvp-liquid { overflow: hidden; isolation: isolate; }
+.hvp-liquid > * { position: relative; z-index: 1; }
+.hvp-liquid::after {
+  content: ''; position: absolute; left: -12%; right: -12%; bottom: -130%; height: 150%;
+  background: linear-gradient(var(--hvp-accent), var(--hvp-accent-2));
+  border-radius: 42% 42% 0 0 / 60% 60% 0 0;
+  transition: bottom 0.5s var(--hvp-ease); z-index: 0;
+}
+.hvp-liquid:hover::after, .hvp-liquid:focus-visible::after { bottom: -45%; }
+
+/* ── 4. DEPTH — card lifts, inner content pushes toward you ──── */
+.hvp-depth { transform-style: preserve-3d; }
+.hvp-depth > * { transition: transform var(--hvp-dur) var(--hvp-ease); }
+.hvp-depth:hover, .hvp-depth:focus-visible {
+  transform: perspective(700px) translateY(-6px) rotateX(7deg);
+  box-shadow: 0 26px 44px -20px rgba(0, 0, 0, 0.55);
+}
+.hvp-depth:hover > *, .hvp-depth:focus-visible > * { transform: translateZ(34px); }
+
+/* ── 5. HOLO-SHEEN — diagonal holographic light sweep ───────── */
+.hvp-holo-sheen { overflow: hidden; }
+.hvp-holo-sheen::before {
+  content: ''; position: absolute; inset: -1px;
+  background: linear-gradient(115deg, transparent 30%,
+    rgba(255, 255, 255, 0.55) 48%, color-mix(in srgb, var(--hvp-accent) 60%, transparent) 56%, transparent 70%);
+  transform: translateX(-130%); transition: transform 0.75s var(--hvp-ease); pointer-events: none;
+}
+.hvp-holo-sheen:hover::before, .hvp-holo-sheen:focus-visible::before { transform: translateX(130%); }
+
+/* ── 6. SPOTLIGHT — radial light follows the cursor (needs JS) ─ */
+.hvp-spotlight::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(var(--hvp-size) circle at var(--hvp-mx, 50%) var(--hvp-my, 50%),
+    color-mix(in srgb, var(--hvp-accent) 38%, transparent), transparent 62%);
+  opacity: 0; transition: opacity var(--hvp-dur);
+}
+.hvp-spotlight:hover::before, .hvp-spotlight:focus-visible::before { opacity: 1; }
+
+/* ── 7. BORDER-SPOTLIGHT — glowing border arc tracks the cursor (needs JS) ─ */
+.hvp-border-spotlight::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: radial-gradient(180px circle at var(--hvp-mx, 50%) var(--hvp-my, 50%),
+    var(--hvp-accent), color-mix(in srgb, var(--hvp-accent-2) 60%, transparent) 30%, transparent 65%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity var(--hvp-dur);
+}
+.hvp-border-spotlight:hover::before, .hvp-border-spotlight:focus-visible::before { opacity: 1; }
+
+/* ── 8. GLARE — 3D tilt toward cursor + moving glare (needs JS) ─ */
+.hvp-glare {
+  transform: perspective(700px) rotateX(var(--hvp-rx, 0deg)) rotateY(var(--hvp-ry, 0deg));
+  transition: transform 0.12s ease-out;
+}
+.hvp-glare::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(circle at var(--hvp-mx, 50%) var(--hvp-my, 50%),
+    rgba(255, 255, 255, 0.5), transparent 50%);
+  opacity: 0; transition: opacity var(--hvp-dur); mix-blend-mode: overlay;
+}
+.hvp-glare:hover::before, .hvp-glare:focus-visible::before { opacity: 1; }
+
+/* ── Accessibility: reduced-motion (snap, no continuous motion) ─ */
+@media (prefers-reduced-motion: reduce) {
+  .hvp, .hvp *, .hvp::before, .hvp::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .hvp-glare { transform: none !important; }
+}

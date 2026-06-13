@@ -39,3 +39,13 @@
 .mgrid-cyan  { --mg-glow: rgba(34, 211, 238, 0.9); }
 .mgrid-pink  { --mg-glow: rgba(236, 72, 153, 0.9); }
 .mgrid-amber { --mg-glow: rgba(245, 158, 11, 0.9); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .mgrid, .mgrid *, .mgrid::before, .mgrid::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

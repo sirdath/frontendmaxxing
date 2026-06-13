@@ -69,3 +69,13 @@
 .rm-entry-body p { margin: 0 0 .8rem; color: var(--rm-muted); line-height: 1.6; }
 .rm-entry-body ul { color: var(--rm-muted); line-height: 1.7; padding-left: 1.2rem; margin: 0; }
 .rm-entry-media { aspect-ratio: 16/9; border-radius: 12px; border: 1px solid var(--rm-border); background: linear-gradient(135deg, color-mix(in srgb, var(--rm-accent) 16%, transparent), transparent); margin-top: .8rem; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .rm, .rm *, .rm::before, .rm::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

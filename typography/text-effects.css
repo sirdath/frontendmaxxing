@@ -205,3 +205,30 @@
 .text-highlight-reveal:hover {
   background-size: 100% 40%;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient-purple, .text-gradient-purple *, .text-gradient-purple::before, .text-gradient-purple::after,
+  .text-gradient-sunset, .text-gradient-sunset *, .text-gradient-sunset::before, .text-gradient-sunset::after,
+  .text-gradient-ocean, .text-gradient-ocean *, .text-gradient-ocean::before, .text-gradient-ocean::after,
+  .text-gradient-fire, .text-gradient-fire *, .text-gradient-fire::before, .text-gradient-fire::after,
+  .text-gradient-silver, .text-gradient-silver *, .text-gradient-silver::before, .text-gradient-silver::after,
+  .text-gradient-gold, .text-gradient-gold *, .text-gradient-gold::before, .text-gradient-gold::after,
+  .text-gradient-animated, .text-gradient-animated *, .text-gradient-animated::before, .text-gradient-animated::after,
+  .text-stroke, .text-stroke *, .text-stroke::before, .text-stroke::after,
+  .text-knockout, .text-knockout *, .text-knockout::before, .text-knockout::after,
+  .text-shadow, .text-shadow *, .text-shadow::before, .text-shadow::after,
+  .text-neon, .text-neon *, .text-neon::before, .text-neon::after,
+  .text-retro, .text-retro *, .text-retro::before, .text-retro::after,
+  .text-engraved, .text-engraved *, .text-engraved::before, .text-engraved::after,
+  .text-emboss, .text-emboss *, .text-emboss::before, .text-emboss::after,
+  .text-long-shadow, .text-long-shadow *, .text-long-shadow::before, .text-long-shadow::after,
+  .text-select-purple, .text-select-purple *, .text-select-purple::before, .text-select-purple::after,
+  .text-select-blue, .text-select-blue *, .text-select-blue::before, .text-select-blue::after,
+  .text-highlight, .text-highlight *, .text-highlight::before, .text-highlight::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -85,3 +85,28 @@
   pointer-events: none;
   opacity: 0.4;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .eln-host, .eln-host *, .eln-host::before, .eln-host::after,
+  .eln-svg, .eln-svg *, .eln-svg::before, .eln-svg::after,
+  .eln-path, .eln-path *, .eln-path::before, .eln-path::after,
+  .eln-thin, .eln-thin *, .eln-thin::before, .eln-thin::after,
+  .eln-thick, .eln-thick *, .eln-thick::before, .eln-thick::after,
+  .eln-fat, .eln-fat *, .eln-fat::before, .eln-fat::after,
+  .eln-violet, .eln-violet *, .eln-violet::before, .eln-violet::after,
+  .eln-cyan, .eln-cyan *, .eln-cyan::before, .eln-cyan::after,
+  .eln-rose, .eln-rose *, .eln-rose::before, .eln-rose::after,
+  .eln-amber, .eln-amber *, .eln-amber::before, .eln-amber::after,
+  .eln-mint, .eln-mint *, .eln-mint::before, .eln-mint::after,
+  .eln-mono, .eln-mono *, .eln-mono::before, .eln-mono::after,
+  .eln-gradient, .eln-gradient *, .eln-gradient::before, .eln-gradient::after,
+  .eln-glow, .eln-glow *, .eln-glow::before, .eln-glow::after,
+  .eln-rainbow, .eln-rainbow *, .eln-rainbow::before, .eln-rainbow::after,
+  .eln-grid, .eln-grid *, .eln-grid::before, .eln-grid::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

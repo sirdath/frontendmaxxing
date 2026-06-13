@@ -108,3 +108,21 @@
   .bento-grid { --bento-cols: 1; --bento-row: 160px; }
   .bento-item { grid-column: span 1 !important; grid-row: span 1 !important; }
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .bento-grid, .bento-grid *, .bento-grid::before, .bento-grid::after,
+  .bento-item, .bento-item *, .bento-item::before, .bento-item::after,
+  .bento-sm, .bento-sm *, .bento-sm::before, .bento-sm::after,
+  .bento-md, .bento-md *, .bento-md::before, .bento-md::after,
+  .bento-lg, .bento-lg *, .bento-lg::before, .bento-lg::after,
+  .bento-wide, .bento-wide *, .bento-wide::before, .bento-wide::after,
+  .bento-tall, .bento-tall *, .bento-tall::before, .bento-tall::after,
+  .bento-xl, .bento-xl *, .bento-xl::before, .bento-xl::after,
+  .bento-full, .bento-full *, .bento-full::before, .bento-full::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

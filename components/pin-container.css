@@ -118,3 +118,15 @@
   filter: blur(20px);
 }
 .pc-host:hover .pc-card::before { opacity: 0.5; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .pc-host, .pc-host *, .pc-host::before, .pc-host::after,
+  .pc-card, .pc-card *, .pc-card::before, .pc-card::after,
+  .pc-pin, .pc-pin *, .pc-pin::before, .pc-pin::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

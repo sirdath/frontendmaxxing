@@ -104,3 +104,9 @@
   .pulse-btn::after,
   .pulse-btn-dot { animation: none; }
 }
+
+/* ── Accessibility: keyboard focus ring (added by a11y-codemod) ── */
+.pulse-btn:focus-visible {
+  outline: var(--pulse-btn-focus-width, 2px) solid var(--pulse-btn-focus-color, #8b5cf6);
+  outline-offset: var(--pulse-btn-focus-offset, 2px);
+}

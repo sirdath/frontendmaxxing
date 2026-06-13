@@ -235,3 +235,20 @@
   animation: tbp2-spin 0.7s linear infinite;
 }
 @keyframes tbp2-spin { to { transform: rotate(360deg); } }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .tbp2, .tbp2 *, .tbp2::before, .tbp2::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.tbp2 :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.tbp2:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--tbp2-focus-width, 2px) solid var(--tbp2-focus-color, #8b5cf6);
+  outline-offset: var(--tbp2-focus-offset, 2px);
+}

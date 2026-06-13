@@ -157,3 +157,10 @@
   display: flex;
   justify-content: space-between;
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.rte :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.rte:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--rte-focus-width, 2px) solid var(--rte-focus-color, #8b5cf6);
+  outline-offset: var(--rte-focus-offset, 2px);
+}

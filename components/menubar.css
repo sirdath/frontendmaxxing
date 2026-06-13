@@ -88,3 +88,13 @@
 
 /* Light theme */
 .mbar-light { --mbar-bg: #fff; --mbar-fg: #14141e; --mbar-muted: #8a8a96; --mbar-hover: rgba(0,0,0,0.06); --mbar-border: rgba(0,0,0,0.1); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .mbar, .mbar *, .mbar::before, .mbar::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -154,3 +154,10 @@
   margin-top: 18px;
   -webkit-tap-highlight-color: transparent;
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.aplang :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.aplang:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--aplang-focus-width, 2px) solid var(--aplang-focus-color, #8b5cf6);
+  outline-offset: var(--aplang-focus-offset, 2px);
+}

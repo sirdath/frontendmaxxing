@@ -260,3 +260,20 @@
   --ftrp-muted: rgba(12, 12, 20, 0.55);
   --ftrp-border: rgba(0, 0, 0, 0.08);
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ftrp, .ftrp *, .ftrp::before, .ftrp::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+.ftrp :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+.ftrp:is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--ftrp-focus-width, 2px) solid var(--ftrp-focus-color, #8b5cf6);
+  outline-offset: var(--ftrp-focus-offset, 2px);
+}

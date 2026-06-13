@@ -162,3 +162,15 @@
   background: var(--s-accent);
 }
 .sch-strip-day.is-picked .sch-strip-day-dots > i { background: #fff; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .sch-avail, .sch-avail *, .sch-avail::before, .sch-avail::after,
+  .sch-tldrag, .sch-tldrag *, .sch-tldrag::before, .sch-tldrag::after,
+  .sch-strip, .sch-strip *, .sch-strip::before, .sch-strip::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

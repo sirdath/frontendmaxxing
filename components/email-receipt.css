@@ -1,0 +1,455 @@
+/* ============================================
+   EMAIL RECEIPT — Table-safe transactional email templates
+   receipt / order-confirmation / invoice emails that look premium
+   in the browser AND survive email clients (real <table> line items,
+   bulletproof <a> button, no gradients, px sizing, fluid columns)
+   Inspired by Stripe receipts + Shopify order emails
+   ============================================
+   Usage:
+     <div class="rcpt">
+       <div class="rcpt-head">
+         <div class="rcpt-brand"><span class="rcpt-logo"></span>Acme Supply Co.</div>
+         <h1 class="rcpt-title">Order confirmed</h1>
+         <p class="rcpt-meta">Order #10482 &middot; June 12, 2026</p>
+       </div>
+       <div class="rcpt-status rcpt-status--paid">Paid &mdash; $214.00 charged to Visa &middot;&middot;4242</div>
+       <table class="rcpt-items">
+         <thead>
+           <tr><th>Item</th><th class="rcpt-qty">Qty</th><th class="rcpt-amt">Price</th></tr>
+         </thead>
+         <tbody>
+           <tr><td>Field Jacket<span class="rcpt-item-sub">Olive &middot; M</span></td><td class="rcpt-qty">1</td><td class="rcpt-amt">$148.00</td></tr>
+           <tr><td>Merino Beanie<span class="rcpt-item-sub">Charcoal</span></td><td class="rcpt-qty">2</td><td class="rcpt-amt">$48.00</td></tr>
+         </tbody>
+       </table>
+       <table class="rcpt-totals">
+         <tbody>
+           <tr><td>Subtotal</td><td class="rcpt-amt">$196.00</td></tr>
+           <tr><td>Shipping</td><td class="rcpt-amt">$8.00</td></tr>
+           <tr><td>Tax</td><td class="rcpt-amt">$10.00</td></tr>
+           <tr class="rcpt-grand"><td>Total</td><td class="rcpt-amt">$214.00</td></tr>
+         </tbody>
+       </table>
+       <div class="rcpt-card">
+         <span class="rcpt-card-chip">VISA</span>
+         <span class="rcpt-card-digits">&bull;&bull;&bull;&bull; 4242</span>
+         <span class="rcpt-card-exp">exp 09/28</span>
+       </div>
+       <div class="rcpt-address">
+         <div class="rcpt-address-col">
+           <div class="rcpt-address-label">Billing</div>
+           <p>Alice Sterling<br>100 Market Street<br>San Francisco, CA 94103</p>
+         </div>
+         <div class="rcpt-address-col">
+           <div class="rcpt-address-label">Shipping</div>
+           <p>Alice Sterling<br>4 Harbor Lane, Apt 2B<br>Portland, OR 97209</p>
+         </div>
+       </div>
+       <div class="rcpt-cta">
+         <a class="rcpt-btn" href="#">View your order</a>
+         <p class="rcpt-help">Questions? Just reply to this email &mdash; a human reads every message.</p>
+       </div>
+       <div class="rcpt-foot">
+         Acme Supply Co &middot; 100 Market Street, San Francisco, CA<br>
+         You received this because you made a purchase. <a href="#">Unsubscribe</a> &middot; <a href="#">Privacy</a>
+       </div>
+     </div>
+
+   Variants:
+     .rcpt--dark                       dark email canvas (token overrides only)
+     .rcpt--invoice                    invoice flavor — pair with .rcpt-due banner
+                                       + .rcpt-invoice-meta / .rcpt-invoice-cell grid
+                                       (invoice #, due date, bill-to)
+     .rcpt-status--paid | --pending | --refunded   slim confirmation banner states
+   Modifiers:
+     .rcpt-row-alt                     explicit zebra row (inliners can't keep
+                                       :nth-child — add this class for real sends)
+   Email note: for real sends, INLINE these styles (this file is the visual
+   source of truth — e.g. juice/premailer) and keep the <table> markup for
+   items/totals. In a browser preview the classes work exactly as-is.
+   ============================================ */
+
+/* ---- root canvas — 600px centered email, light by default ---- */
+.rcpt {
+  --rcpt-bg: #ffffff;
+  --rcpt-fg: #1a1c23;
+  --rcpt-muted: #6e7480;
+  --rcpt-line: #e8e9ee;
+  --rcpt-zebra: #f7f8fa;
+  --rcpt-accent: #4f46e5;        /* theming hook — your brand color */
+  --rcpt-accent-ink: #ffffff;    /* text on accent */
+  --rcpt-ok: #15803d;
+  --rcpt-ok-bg: #ecfdf3;
+  --rcpt-warn: #b45309;
+  --rcpt-warn-bg: #fff8e6;
+  --rcpt-warn-line: #f3e3bd;
+  --rcpt-neutral-bg: #f4f5f7;
+  --rcpt-chip-bg: #1a1f71;       /* card-brand chip (Visa navy) */
+  --rcpt-radius: 14px;
+  --rcpt-radius-sm: 8px;
+  --rcpt-pad: 32px;
+  --rcpt-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--rcpt-bg);
+  color: var(--rcpt-fg);
+  border: 1px solid var(--rcpt-line);
+  border-radius: var(--rcpt-radius);
+  padding: var(--rcpt-pad) var(--rcpt-pad) 24px;
+  font-family: var(--rcpt-font);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  animation: rcpt-in 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.rcpt *,
+.rcpt *::before,
+.rcpt *::after { box-sizing: border-box; }
+
+@keyframes rcpt-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- dark variant — token overrides only ---- */
+.rcpt--dark {
+  --rcpt-bg: #14151b;
+  --rcpt-fg: #f2f3f7;
+  --rcpt-muted: #9aa0ad;
+  --rcpt-line: #2a2c38;
+  --rcpt-zebra: rgba(255, 255, 255, 0.035);
+  --rcpt-accent: #818cf8;
+  --rcpt-accent-ink: #14151b;
+  --rcpt-ok: #4ade80;
+  --rcpt-ok-bg: rgba(34, 197, 94, 0.12);
+  --rcpt-warn: #fbbf24;
+  --rcpt-warn-bg: rgba(245, 158, 11, 0.1);
+  --rcpt-warn-line: rgba(245, 158, 11, 0.28);
+  --rcpt-neutral-bg: rgba(255, 255, 255, 0.05);
+  --rcpt-chip-bg: #3b4097;
+}
+
+/* ---- head: brand row + headline + order meta ---- */
+.rcpt-head { padding-bottom: 20px; }
+.rcpt-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.rcpt-logo {
+  flex: none;
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--rcpt-radius-sm, 8px);
+  background: var(--rcpt-accent);
+}
+.rcpt-title {
+  margin: 18px 0 4px;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.rcpt-meta {
+  margin: 0;
+  font-size: 13px;
+  color: var(--rcpt-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- status: slim confirmation banner (paid / pending / refunded) ---- */
+.rcpt-status {
+  margin: 0 0 22px;
+  padding: 10px 14px;
+  border-radius: var(--rcpt-radius-sm, 10px);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--rcpt-neutral-bg, #f4f5f7);
+  color: var(--rcpt-muted, #6e7480);
+}
+.rcpt-status::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: currentColor;
+  vertical-align: 1px;
+}
+.rcpt-status--paid {
+  background: var(--rcpt-ok-bg, #ecfdf3);
+  color: var(--rcpt-ok, #15803d);
+}
+.rcpt-status--pending {
+  background: var(--rcpt-warn-bg, #fff8e6);
+  color: var(--rcpt-warn, #b45309);
+}
+.rcpt-status--refunded {
+  background: var(--rcpt-neutral-bg, #f4f5f7);
+  color: var(--rcpt-muted, #6e7480);
+  text-decoration: none;
+}
+
+/* ---- items: real <table>, zebra-subtle rows ---- */
+.rcpt-items {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 18px;
+  font-size: 14px;
+}
+.rcpt-items th {
+  padding: 0 10px 8px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rcpt-muted);
+  border-bottom: 1px solid var(--rcpt-line);
+}
+.rcpt-items td {
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--rcpt-line);
+  vertical-align: top;
+}
+.rcpt-items tbody tr:nth-child(even) td,
+.rcpt-items tr.rcpt-row-alt td { background: var(--rcpt-zebra); }
+.rcpt-item-sub {
+  display: block;
+  font-size: 12px;
+  color: var(--rcpt-muted);
+}
+.rcpt-qty,
+.rcpt-amt {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.rcpt-items .rcpt-qty { width: 52px; color: var(--rcpt-muted); }
+.rcpt-items .rcpt-amt { width: 92px; }
+
+/* ---- totals: subtotal/shipping/tax + grand total with rule above ---- */
+.rcpt-totals {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 22px;
+  font-size: 14px;
+}
+.rcpt-totals td {
+  padding: 5px 10px;
+  color: var(--rcpt-muted);
+}
+.rcpt-totals .rcpt-amt { color: var(--rcpt-fg); }
+.rcpt-totals .rcpt-grand td {
+  padding-top: 12px;
+  border-top: 2px solid var(--rcpt-line);
+  color: var(--rcpt-fg);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* ---- card: payment-method row (brand chip + masked digits) ---- */
+.rcpt-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  border: 1px solid var(--rcpt-line);
+  border-radius: var(--rcpt-radius-sm, 10px);
+  font-size: 13px;
+}
+.rcpt-card-chip {
+  flex: none;
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: var(--rcpt-radius-sm, 6px);
+  background: var(--rcpt-chip-bg);
+  color: var(--rcpt-on-accent, #fff);
+  font-size: 10px;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.12em;
+}
+.rcpt-card-digits {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.rcpt-card-exp {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--rcpt-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- address: billing/shipping columns, stack on narrow widths ----
+   (flex-wrap in browser; degrades to stacked blocks in old engines) */
+.rcpt-address {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 0 0 24px;
+}
+.rcpt-address-col {
+  flex: 1 1 220px;
+  padding: 14px 16px;
+  border: 1px solid var(--rcpt-line);
+  border-radius: var(--rcpt-radius-sm, 10px);
+}
+.rcpt-address-label {
+  margin: 0 0 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--rcpt-muted);
+}
+.rcpt-address-col p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ---- cta: bulletproof button (padded <a>, solid bg, no gradients) ---- */
+.rcpt-cta {
+  padding: 4px 0 24px;
+  text-align: center;
+}
+.rcpt-btn {
+  display: inline-block;
+  padding: 13px 34px;
+  background: var(--rcpt-accent);
+  color: var(--rcpt-accent-ink, #ffffff);
+  border-radius: var(--rcpt-radius-sm, 10px);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(20, 22, 40, 0.16),
+              0 10px 24px -10px rgba(20, 22, 40, 0.35);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.rcpt-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 3px rgba(20, 22, 40, 0.16),
+              0 14px 30px -10px rgba(20, 22, 40, 0.42);
+}
+.rcpt-btn:focus-visible {
+  outline: 2px solid var(--rcpt-accent);
+  outline-offset: 3px;
+}
+.rcpt-help {
+  margin: 14px auto 0;
+  max-width: 380px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--rcpt-muted);
+}
+.rcpt-help a { color: var(--rcpt-muted); }
+
+/* ---- foot: legal / unsubscribe ---- */
+.rcpt-foot {
+  padding-top: 18px;
+  border-top: 1px solid var(--rcpt-line);
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: var(--rcpt-muted);
+  text-align: center;
+}
+.rcpt-foot a {
+  color: var(--rcpt-muted);
+  text-decoration: underline;
+}
+.rcpt-foot a:focus-visible {
+  outline: 2px solid var(--rcpt-accent);
+  outline-offset: 2px;
+  border-radius: var(--rcpt-radius-xs, 2px);
+}
+
+/* ---- invoice variant: due banner + invoice meta grid ----
+   <div class="rcpt rcpt--invoice">
+     <div class="rcpt-due">Payment due June 30, 2026 <span class="rcpt-due-amt">$1,240.00</span></div>
+     <div class="rcpt-invoice-meta">
+       <div class="rcpt-invoice-cell"><span class="rcpt-invoice-label">Invoice</span><b>INV-0042</b></div>
+       <div class="rcpt-invoice-cell"><span class="rcpt-invoice-label">Due date</span><b>Jun 30, 2026</b></div>
+       <div class="rcpt-invoice-cell"><span class="rcpt-invoice-label">Bill to</span><b>Stellar Labs Inc.</b></div>
+     </div>
+   </div> */
+.rcpt-due {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 18px;
+  padding: 11px 14px;
+  border: 1px solid var(--rcpt-warn-line, #f3e3bd);
+  border-radius: var(--rcpt-radius-sm, 10px);
+  background: var(--rcpt-warn-bg, #fff8e6);
+  color: var(--rcpt-warn, #b45309);
+  font-size: 13px;
+  font-weight: 600;
+}
+.rcpt-due-amt {
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rcpt-invoice-meta {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 22px;
+  border: 1px solid var(--rcpt-line);
+  border-radius: var(--rcpt-radius-sm, 10px);
+  overflow: hidden;
+}
+.rcpt-invoice-cell {
+  flex: 1 1 150px;
+  margin: -1px 0 0 -1px;             /* collapses shared hairlines on wrap */
+  padding: 11px 16px 12px;
+  border-top: 1px solid var(--rcpt-line);
+  border-left: 1px solid var(--rcpt-line);
+}
+.rcpt-invoice-label {
+  display: block;
+  margin-bottom: 1px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--rcpt-muted);
+}
+.rcpt-invoice-cell b {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.rcpt--invoice .rcpt-grand td { border-top-color: var(--rcpt-fg); }
+
+/* ---- narrow widths ---- */
+@media (max-width: 480px) {
+  .rcpt { padding: 22px 18px 18px; }
+  .rcpt-title { font-size: 22px; }
+  .rcpt-card-exp { display: none; }
+}
+
+/* ---- print: receipts get printed ---- */
+@media print {
+  .rcpt { border: none; box-shadow: none; animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rcpt { animation: none; }
+  .rcpt-btn { transition: none; }
+  .rcpt-btn:hover { transform: none; }
+}

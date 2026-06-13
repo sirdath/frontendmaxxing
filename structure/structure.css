@@ -201,3 +201,33 @@
 .s-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--gap); text-align: center; }
 .s-stat-num { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .s-stat-label { color: var(--muted); font-size: 0.9rem; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .struct, .struct *, .struct::before, .struct::after,
+  .s-container, .s-container *, .s-container::before, .s-container::after,
+  .s-section, .s-section *, .s-section::before, .s-section::after,
+  .s-eyebrow, .s-eyebrow *, .s-eyebrow::before, .s-eyebrow::after,
+  .s-title, .s-title *, .s-title::before, .s-title::after,
+  .s-lead, .s-lead *, .s-lead::before, .s-lead::after,
+  .s-hero, .s-hero *, .s-hero::before, .s-hero::after,
+  .s-grid, .s-grid *, .s-grid::before, .s-grid::after,
+  .s-split, .s-split *, .s-split::before, .s-split::after,
+  .s-stack, .s-stack *, .s-stack::before, .s-stack::after,
+  .s-cluster, .s-cluster *, .s-cluster::before, .s-cluster::after,
+  .s-card, .s-card *, .s-card::before, .s-card::after,
+  .s-btn, .s-btn *, .s-btn::before, .s-btn::after,
+  .s-nav, .s-nav *, .s-nav::before, .s-nav::after,
+  .s-brand, .s-brand *, .s-brand::before, .s-brand::after,
+  .s-footer, .s-footer *, .s-footer::before, .s-footer::after,
+  .s-reveal, .s-reveal *, .s-reveal::before, .s-reveal::after,
+  .s-logos, .s-logos *, .s-logos::before, .s-logos::after,
+  .s-stats, .s-stats *, .s-stats::before, .s-stats::after,
+  .s-stat-num, .s-stat-num *, .s-stat-num::before, .s-stat-num::after,
+  .s-stat-label, .s-stat-label *, .s-stat-label::before, .s-stat-label::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

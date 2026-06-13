@@ -173,3 +173,17 @@
 .ios-list-light .ios-row-value,
 .ios-list-light .ios-list-section-header,
 .ios-list-light .ios-list-section-footer { color: rgba(60, 60, 67, 0.6); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ios-list, .ios-list *, .ios-list::before, .ios-list::after,
+  .ios-group, .ios-group *, .ios-group::before, .ios-group::after,
+  .ios-row, .ios-row *, .ios-row::before, .ios-row::after,
+  .ios-toggle, .ios-toggle *, .ios-toggle::before, .ios-toggle::after,
+  .iph-light, .iph-light *, .iph-light::before, .iph-light::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

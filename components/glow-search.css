@@ -1,0 +1,65 @@
+/* ============================================
+   GLOW SEARCH — search bar wrapped in a rotating conic-gradient glow border
+   Inspired by uiverse.io by Lakshay-art (re-implemented vanilla, MIT-spirit credit)
+   ============================================
+   A dark search pill ringed by a slowly rotating multi-colour conic gradient,
+   with a blurred glow underneath that intensifies on focus.
+
+   Usage:
+     <link rel="stylesheet" href="components/glow-search.css">
+     <div class="gsb">
+       <span class="gsb-icon">⌕</span>
+       <input class="gsb-input" type="text" placeholder="Search...">
+       <button class="gsb-filter" aria-label="Filter">⛯</button>
+     </div>
+
+   Tunables: --gsb-c1 --gsb-c2 --gsb-c3 --gsb-bg --gsb-speed --gsb-w --gsb-h
+   ============================================ */
+
+@property --gsb-a { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+
+.gsb {
+  --gsb-c1: #402fb5; --gsb-c2: #cf30aa; --gsb-c3: #18116a; --gsb-bg: #010201;
+  --gsb-speed: 5s; --gsb-w: 320px; --gsb-h: 56px; --gsb-radius: 14px;
+  position: relative; display: inline-flex; align-items: center; width: var(--gsb-w); height: var(--gsb-h);
+  border-radius: var(--gsb-radius); isolation: isolate;
+}
+/* rotating conic border (masked to a thin ring) */
+.gsb::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none; z-index: 1;
+  background: conic-gradient(from var(--gsb-a), transparent, var(--gsb-c1) 8%, transparent 22%, transparent 50%, var(--gsb-c2) 60%, transparent 74%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: gsb-rotate var(--gsb-speed) linear infinite;
+}
+/* blurred glow underneath */
+.gsb::after {
+  content: ''; position: absolute; inset: -3px; border-radius: inherit; z-index: -1; opacity: 0.45; filter: blur(16px);
+  background: conic-gradient(from var(--gsb-a), var(--gsb-c3), var(--gsb-c1) 8%, transparent 38%, transparent 50%, var(--gsb-c2) 62%, var(--gsb-c3) 88%);
+  animation: gsb-rotate var(--gsb-speed) linear infinite;
+  transition: opacity 0.6s;
+}
+.gsb:hover::after { opacity: 0.65; }
+.gsb:focus-within::before, .gsb:focus-within::after { animation-duration: calc(var(--gsb-speed) * 0.45); }
+.gsb:focus-within::after { opacity: 0.85; }
+@keyframes gsb-rotate { to { --gsb-a: 360deg; } }
+
+.gsb-input {
+  position: relative; z-index: 2; width: 100%; height: 100%; border: 0; border-radius: var(--gsb-radius);
+  background: var(--gsb-bg); color: #fff; font-size: 1rem; padding: 0 52px; outline: none;
+}
+.gsb-input::placeholder { color: #c0b9c0; }
+.gsb-input:focus-visible { outline: none; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gsb-c2) 40%, transparent); }
+
+.gsb-icon { position: absolute; left: 18px; z-index: 3; color: #c8bfc9; font-size: 1.1rem; display: inline-flex; pointer-events: none; }
+.gsb-filter {
+  position: absolute; right: 8px; z-index: 3; width: 38px; height: 40px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; cursor: pointer; color: #d6d6e6;
+  background: linear-gradient(180deg, #161329, #000, #1d1b4b);
+}
+.gsb-filter:focus-visible { outline: 2px solid var(--gsb-c2); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gsb::before, .gsb::after { animation: none !important; }
+}

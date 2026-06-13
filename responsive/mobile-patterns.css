@@ -167,3 +167,27 @@
 .no-overscroll {
   overscroll-behavior: none;
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .touch-target, .touch-target *, .touch-target::before, .touch-target::after,
+  .touch-expand, .touch-expand *, .touch-expand::before, .touch-expand::after,
+  .safe-area-padding, .safe-area-padding *, .safe-area-padding::before, .safe-area-padding::after,
+  .fixed-bottom-safe, .fixed-bottom-safe *, .fixed-bottom-safe::before, .fixed-bottom-safe::after,
+  .dvh-full, .dvh-full *, .dvh-full::before, .dvh-full::after,
+  .svh-full, .svh-full *, .svh-full::before, .svh-full::after,
+  .lvh-full, .lvh-full *, .lvh-full::before, .lvh-full::after,
+  .dvh-screen, .dvh-screen *, .dvh-screen::before, .dvh-screen::after,
+  .no-select, .no-select *, .no-select::before, .no-select::after,
+  .no-zoom, .no-zoom *, .no-zoom::before, .no-zoom::after,
+  .momentum-scroll, .momentum-scroll *, .momentum-scroll::before, .momentum-scroll::after,
+  .scroll-hidden, .scroll-hidden *, .scroll-hidden::before, .scroll-hidden::after,
+  .swipe-hint, .swipe-hint *, .swipe-hint::before, .swipe-hint::after,
+  .no-pull-refresh, .no-pull-refresh *, .no-pull-refresh::before, .no-pull-refresh::after,
+  .no-overscroll, .no-overscroll *, .no-overscroll::before, .no-overscroll::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

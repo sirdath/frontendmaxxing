@@ -189,3 +189,10 @@
   .morph-btn, .morph-panel { transition: none; }
   .morph-btn.is-loading::after { animation: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.morph-btn, .morph-panel, .morph-discovery) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.morph-btn, .morph-panel, .morph-discovery):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--morph-btn-focus-width, 2px) solid var(--morph-btn-focus-color, #8b5cf6);
+  outline-offset: var(--morph-btn-focus-offset, 2px);
+}

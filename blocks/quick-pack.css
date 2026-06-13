@@ -230,3 +230,25 @@
 }
 .qp-step-labeled > .qp-step-pill.is-done + .qp-step-pill::after,
 .qp-step-labeled > .qp-step-pill.is-active::after { background: var(--q-accent); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .qp-paste, .qp-paste *, .qp-paste::before, .qp-paste::after,
+  .qp-switch, .qp-switch *, .qp-switch::before, .qp-switch::after,
+  .qp-opt, .qp-opt *, .qp-opt::before, .qp-opt::after,
+  .qp-feed, .qp-feed *, .qp-feed::before, .qp-feed::after,
+  .qp-frac, .qp-frac *, .qp-frac::before, .qp-frac::after,
+  .qp-step, .qp-step *, .qp-step::before, .qp-step::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.qp-paste, .qp-switch, .qp-opt, .qp-feed, .qp-frac, .qp-step) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.qp-paste, .qp-switch, .qp-opt, .qp-feed, .qp-frac, .qp-step):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--qp-paste-focus-width, 2px) solid var(--qp-paste-focus-color, #8b5cf6);
+  outline-offset: var(--qp-paste-focus-offset, 2px);
+}

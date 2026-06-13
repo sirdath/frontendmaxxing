@@ -1,0 +1,26 @@
+/* ============================================
+   TASTE · FONTS — curated font pairings (head + body)
+   ============================================
+   Sets only --font-head / --font-body (the two vars structure.css reads), so a
+   coordinated type pairing applies in one attribute. Stops agents defaulting to
+   "Inter everywhere".
+
+   Usage:
+     <body class="struct" data-font-pair="editorial-serif"> … </body>
+
+   Fonts load via the @import below (Google Fonts). For production, remove the
+   @import and self-host the families you use.
+   Pairs: system-clean · grotesk-tech · editorial-serif · luxury-serif
+          geometric-warm · mono-technical · display-bold · humanist-soft
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;600&family=Jost:wght@400;600&family=Manrope:wght@400;700&family=Playfair+Display:wght@500;700&family=Poppins:wght@500;700&family=Sora:wght@400;700;800&family=Space+Grotesk:wght@400;600;700&display=swap');
+
+[data-font-pair="system-clean"]    { --font-head: system-ui, -apple-system, 'Segoe UI', sans-serif; --font-body: system-ui, -apple-system, 'Segoe UI', sans-serif; }
+[data-font-pair="grotesk-tech"]    { --font-head: 'Space Grotesk', system-ui, sans-serif; --font-body: 'Inter', system-ui, sans-serif; }
+[data-font-pair="editorial-serif"] { --font-head: 'Fraunces', Georgia, serif; --font-body: 'Inter', system-ui, sans-serif; }
+[data-font-pair="luxury-serif"]    { --font-head: 'Playfair Display', Georgia, serif; --font-body: 'Jost', system-ui, sans-serif; }
+[data-font-pair="geometric-warm"]  { --font-head: 'Poppins', system-ui, sans-serif; --font-body: 'Manrope', system-ui, sans-serif; }
+[data-font-pair="mono-technical"]  { --font-head: 'Space Grotesk', ui-monospace, monospace; --font-body: ui-monospace, 'SF Mono', Menlo, monospace; }
+[data-font-pair="display-bold"]    { --font-head: 'Sora', system-ui, sans-serif; --font-body: 'Inter', system-ui, sans-serif; }
+[data-font-pair="humanist-soft"]   { --font-head: 'Manrope', system-ui, sans-serif; --font-body: 'Manrope', system-ui, sans-serif; }

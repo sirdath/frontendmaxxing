@@ -194,3 +194,13 @@
   user-select: none;
 }
 .cbb-reaction.is-mine { background: rgba(129, 140, 248, 0.2); border-color: rgba(129, 140, 248, 0.4); }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cbb, .cbb *, .cbb::before, .cbb::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

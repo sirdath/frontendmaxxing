@@ -308,3 +308,10 @@
 @media (prefers-reduced-motion: reduce) {
   .cbp-launch-pulse::after, .cbp-msg.typing > i { animation: none !important; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.cbp-launch, .cbp-win, .cbp-msg, .cbp-prompt, .cbp-qr, .cbp-sug, .cbp-fb) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.cbp-launch, .cbp-win, .cbp-msg, .cbp-prompt, .cbp-qr, .cbp-sug, .cbp-fb):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--cbp-launch-focus-width, 2px) solid var(--cbp-launch-focus-color, #8b5cf6);
+  outline-offset: var(--cbp-launch-focus-offset, 2px);
+}

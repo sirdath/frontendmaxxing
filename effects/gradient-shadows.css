@@ -75,3 +75,13 @@
     drop-shadow(0 8px 24px var(--gsh-c2))
     drop-shadow(0 -4px 12px var(--gsh-c3));
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .gsh, .gsh *, .gsh::before, .gsh::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

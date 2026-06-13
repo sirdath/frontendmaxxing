@@ -127,3 +127,19 @@
 @media (max-width: 600px) {
   .mbs-host { height: 200vh; perspective: 700px; }
 }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .mbs-host, .mbs-host *, .mbs-host::before, .mbs-host::after,
+  .mbs-title, .mbs-title *, .mbs-title::before, .mbs-title::after,
+  .mbs-stage, .mbs-stage *, .mbs-stage::before, .mbs-stage::after,
+  .mbs-lid, .mbs-lid *, .mbs-lid::before, .mbs-lid::after,
+  .mbs-base, .mbs-base *, .mbs-base::before, .mbs-base::after,
+  .mbs-keyboard, .mbs-keyboard *, .mbs-keyboard::before, .mbs-keyboard::after,
+  .mbs-trackpad, .mbs-trackpad *, .mbs-trackpad::before, .mbs-trackpad::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

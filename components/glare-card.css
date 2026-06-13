@@ -85,3 +85,14 @@
 
 .gc-content h3 { margin: 0; font-size: 1.2rem; font-weight: 600; }
 .gc-content p  { margin: 0.35rem 0 0; font-size: 0.85rem; opacity: 0.75; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .gc-host, .gc-host *, .gc-host::before, .gc-host::after,
+  .gc-content, .gc-content *, .gc-content::before, .gc-content::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

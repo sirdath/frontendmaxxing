@@ -239,3 +239,13 @@
 }
 @keyframes vpp-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 .vpp.is-loading .vpp-bigplay { display: none; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .vpp, .vpp *, .vpp::before, .vpp::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

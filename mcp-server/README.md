@@ -1,28 +1,82 @@
 # frontendmaxxing-mcp
 
-> An MCP server that gives Claude Desktop, Cursor, Claude Code, and other MCP-compatible AI agents instant access to the **481 snippets** in [frontendmaxxing](https://github.com/sirdath/frontendmaxxing).
+> An MCP server (v2) that gives Claude Desktop, Cursor, Claude Code, and other MCP-compatible AI agents instant access to the **800+ snippets** in [frontendmaxxing](https://github.com/sirdath/frontendmaxxing).
 
-When connected, your AI assistant gains 7 new tools for finding and using vanilla CSS+JS UI snippets — no cloning, no grepping, no copy-pasting paths. Ask for "a streaming chat component" or "a hero with aurora background" and the agent gets the source code back instantly.
+When connected, your AI assistant gains 22 tools that make the **entire** vault queryable — no cloning, no grepping, no copy-pasting paths. Ask for "a streaming chat component" or "a hero with aurora background" and the agent gets the paste-ready code (CSS + JS companion + usage) back instantly. Or go bigger: `compose_page("saas", preset: "luxury-noir")` assembles a whole themed page scaffold with a real snippet picked per section.
+
+**Everything is queryable:** snippets, skill decision-trees, reference guides, the bundled claude-skills packages (blender/web3d/webgpu), the 55 color palettes as structured token data, and the conventions — all through the MCP surface.
+
+**v2 highlights**
+
+- **BM25 search** with synonym expansion and typo/plural tolerance — search the *vibe*, not the exact tag.
+- **Companion-aware bundling** — `get_snippet` returns the CSS+JS pair, the Usage block, variants, and the live-demo link as one unit.
+- **Structured output** — discovery tools return typed `structuredContent` (not just prose), so agents consume results reliably.
+- **Full doc catalog** — `list_docs`/`get_doc` cover every markdown in the repo (skills, guides, meta, packages); `list_palettes`/`get_palette` expose color themes as data.
+- **`overview()`** — one call to orient: totals, folders, skills, palette groups.
+- **Taste layer** — `compose_page` assembles a whole themed page from the vault; taste presets bind aesthetic + palette + type + motion + density; `coherence_check` scores output for AI-slop tells.
+- **Read-only tool annotations** + a `scaffold-page` prompt + `doc/{name}`, `palette/{name}`, `source/{path}` resource templates.
 
 ## What it exposes
 
 ### Tools
 
+**Orientation & search**
+
 | Tool | Description |
 | --- | --- |
-| `list_components(folder?, kind?, limit?)` | Browse the catalog. Filter by folder (`components`, `ai`, `effects`, etc.) or kind (`CSS` / `JS`). |
-| `search_components(query, limit?)` | Keyword search across tags, descriptions, file names, synonyms. Returns ranked matches. |
-| `recommend(description, limit?)` | Free-form "I need X" → top 5 matches with rationale and matched terms. |
-| `get_source(path)` | Return the full source file. |
-| `get_examples(path)` | Extract the **Usage** block from a file header — quick reference. |
-| `list_categories()` | List all 22 folders with counts + descriptions. |
-| `get_agents_doc()` | Read AGENTS.md — needed if the agent is **adding** new snippets following library conventions. |
+| `overview()` | One-call orientation: totals, folders, skills, palette groups. **Structured.** |
+| `list_categories()` | All folders with counts + descriptions. **Structured.** |
+| `list_components(folder?, kind?, limit?)` | Browse the catalog, filter by folder/kind. **Structured.** |
+| `search_components(query, limit?)` | BM25 search — synonym + fuzzy aware. **Structured (with scores).** |
+| `recommend(description, limit?)` | "I need X" → ranked matches with rationale; flags companions. **Structured.** |
+
+**Use a snippet**
+
+| Tool | Description |
+| --- | --- |
+| `get_snippet(path)` | **The one to use.** Paste-ready bundle: file + CSS/JS companion + Usage + Variants + demo link. |
+| `get_source(path)` | Full source of a single file. |
+| `get_examples(path)` | Just the Usage + Variants blocks. |
+| `get_related(path, limit?)` | Companion + tag-similar neighbours. **Structured.** |
+
+**Docs, skills & palettes**
+
+| Tool | Description |
+| --- | --- |
+| `list_docs(kind?)` | Every markdown doc — skills, guides, meta, claude-skills packages. **Structured.** |
+| `get_doc(name)` | Any doc by name (flexible: `gradients`, `creative-arsenal`, `AGENTS`, `blender-shader-nodes`). |
+| `list_skills()` / `get_skill(name)` | Domain skill decision-trees (gradients, color, gsap, structure, dataviz…). **Structured.** |
+| `list_palettes(mode?, query?)` | The 55 color themes; filter by light/dark or industry. **Structured.** |
+| `get_palette(name)` | A palette's full design tokens + ready-to-paste CSS. **Structured.** |
+| `get_agents_doc()` | AGENTS.md — conventions for **adding** snippets. |
+
+**Design systems** (DESIGN.md, both directions — the refero.design pattern)
+
+| Tool | Description |
+| --- | --- |
+| `design_system(palette?)` | **Generate** a ready DESIGN.md (colors/type/spacing/motion + component→snippet map) from any of the 50 repo palettes. |
+| `apply_design_md(design, genre?)` | **Consume** an external DESIGN.md (or any spec with hex colors) → matched palette + exact-hex override + section-by-section snippet build plan. **Structured.** |
+
+**Taste & composition** (the cohesion layer — see `get_skill("taste")`)
+
+| Tool | Description |
+| --- | --- |
+| `list_taste_presets(aesthetic?)` | The ~12 ready taste bundles (aesthetic + palette + font pair + motion + density + house packs). **Structured.** |
+| `get_taste_preset(name)` | One preset resolved: palette tokens, house component map, avoid-list, paste-ready apply block. **Structured.** |
+| `compose_page(genre, preset?, …, variety_seed?)` | **The headline tool.** Assemble a full renderable page scaffold for a genre with a coordinated taste and a real snippet picked per section slot; `variety_seed` rotates picks for diversity. **Structured.** |
+| `coherence_check(html)` | Score HTML 0–100 for taste-cohesion and list the AI-slop tells to fix (hardcoded hex, unblessed durations, px radii, scale-hovers). **Structured.** |
 
 ### Resources
 
 - `frontendmaxxing://index` — the full tagged inventory
 - `frontendmaxxing://agents` — conventions doc
-- `frontendmaxxing://gradients` — gradient subsystem skill ref
+- `frontendmaxxing://doc/{name}` — any markdown doc (templated; `list` enumerates all ~67)
+- `frontendmaxxing://palette/{name}` — a palette's tokens as JSON (templated; `list` enumerates all 55)
+- `frontendmaxxing://source/{path}` — raw source of any snippet by path (templated)
+
+### Prompts
+
+- `scaffold-page(genre)` — plans a full page for a site genre using the structure skill, a palette, and concrete vault snippets.
 
 ## Install
 
@@ -135,9 +189,11 @@ In Cursor settings → MCP → add a new server using either config above.
 
 ```bash
 cd mcp-server
-node server.js
-# stdio messages on stdout, logs on stderr
-# To test interactively, use the MCP Inspector:
+npm install
+npm test     # unit tests for the search/parse/relation helpers (node:test)
+npm run smoke  # boots the server over stdio and exercises it as a real client
+npm start    # run the server (stdio on stdout, logs on stderr)
+# Or inspect interactively:
 npx @modelcontextprotocol/inspector node server.js
 ```
 
@@ -145,11 +201,15 @@ npx @modelcontextprotocol/inspector node server.js
 
 On startup:
 1. Resolves the library root (env var → parent dir → cwd)
-2. Reads INDEX.md and parses 481 entries
-3. Builds in-memory maps by path / folder / key
+2. Parses INDEX.md (snippets), every markdown doc in the repo (skills/guides/meta/packages), and `colors/palettes.css` (55 themes)
+3. Builds a BM25 search index + companion/relation maps + doc/palette registries
 4. Connects via stdio transport
 
-Search uses simple keyword tokenization with weighted scoring (file name match weighted higher than tag match weighted higher than description match). Good enough for an agent's first pass; the agent can refine.
+**Search** ranks with BM25 over weighted fields (file name > tags > global > folder > description), then layers on:
+- **Synonym expansion** — a curated vibe-synonym map (e.g. `ticker`→`marquee`, `graph`→`chart`, `popup`→`modal`) so a search hits even when the exact tag isn't present.
+- **Fuzzy matching** — plural/singular folding and edit-distance-1 / prefix completion against the vocabulary, so `buttn`→`button` and `gradien`→`gradient` still resolve.
+
+Everything is zero-dependency and offline — no embeddings service required.
 
 ## License
 

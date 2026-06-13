@@ -139,3 +139,13 @@
 .cbk-light .cbk-num { color: #d97706; }
 .cbk-light .cbk-cm  { color: #6b7280; }
 .cbk-light .cbk-fn  { color: #2563eb; }
+
+/* ── Accessibility: reduced-motion (added by a11y-codemod) ── */
+@media (prefers-reduced-motion: reduce) {
+  .cbk, .cbk *, .cbk::before, .cbk::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

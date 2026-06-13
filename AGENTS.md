@@ -20,6 +20,8 @@ This folder is a **vanilla CSS+JS snippet vault** — 765 standalone, copy-paste
 | `gradients.skill.md` | Gradient-specific decision tree | Anything involving color blends, holo, mesh, brand recreations |
 | `gsap.skill.md` | GSAP/JS-animation decision tree (CSS vs GSAP, free-plugin fact, ScrollTrigger/timeline/Flip) | Any JavaScript animation, scroll-driven motion, timelines, `gsap/*` snippets |
 | `structure.skill.md` | Page-architecture decision tree (genre → section sequence → which snippets fill each slot) | Structuring a whole page/site, "what sections do I need for a SaaS/agency/restaurant/store", initial scaffolding from a reference or business type, `structure/*` snippets |
+| `design-system.skill.md` | DESIGN.md → frontendmaxxing — maps a design-taste token spec (refero.design pattern) onto the palettes + per-snippet `--vars` + component slots | "Build like &lt;brand&gt;", applying a DESIGN.md, choosing tokens/type/motion coherently, MCP `design_system(palette)` to generate a DESIGN.md |
+| `taste.skill.md` | Taste/cohesion layer — 6 aesthetic profiles (`taste/*` token presets), ~12 `TastePresets` bundles, anti-AI-slop rules | Making a page look intentional and cohesive, picking aesthetic+palette+font+motion together, avoiding slop tells, MCP `compose_page`/`coherence_check` |
 | `demo/index.html` | Live preview of every snippet | When adding a new file (must register) |
 | `MEMORY.md` (separate, in user memory dir) | Phase summaries | Already loaded for Claude — auto-consulted |
 
@@ -48,6 +50,8 @@ scroll/         Pin, scrub, snap, horizontal-pin, text-reveal
 shaders/        Pure-WebGL fullscreen-quad shaders (noise, mesh, voronoi, godrays, …)
 structure/      Page-architecture: backbone CSS + section transitions/frames + 4 full genre demo pages (see structure.skill.md)
 svg/            SVG animations, gradient defs
+taste/          Taste layer: token-preset CSS (data-aesthetic/density/motion/font-pair) + TastePresets/MotionProfile JS (see taste.skill.md)
+templates/      Prebuilt full-site templates (apps, not snippets — INDEX-exempt): atelier = complete clothing webshop (see templates/README.md)
 transitions/    Page transitions (fade, curtain, morph, View Transitions API)
 typography/     Fluid type, variable fonts, gradient numbers, text effects
 utils/          easing, lerp, dom, performance, smooth-scroll, palette-generator, gradient-builder

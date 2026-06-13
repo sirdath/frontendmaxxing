@@ -196,3 +196,10 @@
 @media (prefers-reduced-motion: reduce) {
   .aiwm-voice-wave > i, .aiwm-think > i, .aiwm-sugg { animation: none !important; transition: none; }
 }
+
+/* ── Accessibility: restore keyboard focus ring (added by a11y-codemod) ── */
+:is(.aiwm-voice, .aiwm-ctxbar, .aiwm-think, .aiwm-bubble, .aiwm-sugg) :is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible,
+:is(.aiwm-voice, .aiwm-ctxbar, .aiwm-think, .aiwm-bubble, .aiwm-sugg):is(a[href], button, input, select, textarea, summary, [tabindex], [role="button"], [role="tab"], [role="option"], [contenteditable="true"]):focus-visible {
+  outline: var(--aiwm-voice-focus-width, 2px) solid var(--aiwm-voice-focus-color, #8b5cf6);
+  outline-offset: var(--aiwm-voice-focus-offset, 2px);
+}
