@@ -11,7 +11,7 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import { parseIndex, buildSearchIndex, buildRelations, tokenize, SYNONYMS, parsePalettes, classifyDoc, docTitle, buildDesignMd, extractDesignTokens, matchPalette, buildApplyPlan, composePage, checkCoherence, GENRE_SEQUENCES } from './server.js';
+import { parseIndex, buildSearchIndex, buildRelations, tokenize, SYNONYMS, parsePalettes, classifyDoc, docTitle, buildDesignMd, extractDesignTokens, matchPalette, buildApplyPlan, composePage, checkCoherence, GENRE_SEQUENCES, composeApp, MOBILE_FLOWS } from './server.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const entries = parseIndex(readFileSync(join(root, 'INDEX.md'), 'utf8'));
@@ -196,6 +196,46 @@ test('checkCoherence: a composed page scores high (cohesive by construction)', (
   const r = composePage('agency', { preset: 'bold-launch' }, composeDeps);
   const c = checkCoherence(r.html);
   assert.ok(c.score >= 90, `composed page should be cohesive, got ${c.score}: ${JSON.stringify(c.counts)}`);
+});
+
+// ---- mobile: composeApp (the .scr-* screen-flow engine) ----
+
+const appDeps = { presets: TastePresets, palByName };
+
+test('MOBILE_FLOWS: every genre is a non-empty list of {screen, shell}', () => {
+  const genres = Object.keys(MOBILE_FLOWS);
+  assert.ok(genres.length >= 8, `expected ≥8 mobile genres, got ${genres.length}`);
+  for (const g of genres) {
+    const flow = MOBILE_FLOWS[g];
+    assert.ok(Array.isArray(flow) && flow.length >= 2, `flow ${g} too short`);
+    for (const s of flow) {
+      assert.ok(s.screen && s.shell, `flow ${g} screen missing screen/shell: ${JSON.stringify(s)}`);
+    }
+  }
+});
+
+test('composeApp: builds a mobile flow with phone frames + a resolved theme', () => {
+  const r = composeApp('social', { seed: 0 }, appDeps);
+  assert.equal(r.platform, 'mobile');
+  assert.ok(r.screens.length >= 2, 'expected a multi-screen flow');
+  assert.ok(r.theme && r.theme.palette, 'theme palette resolved');
+  // one device frame per screen
+  const frames = (r.html.match(/class="scr-frame"/g) || []).length;
+  assert.equal(frames, r.screens.length, `frames (${frames}) should match screens (${r.screens.length})`);
+  // the app-shell stylesheet is linked so the .scr-* shells actually style
+  assert.match(r.html, /structure\/app-shell\.css/);
+});
+
+test('composeApp: unknown genre falls back to a valid flow (no throw)', () => {
+  const r = composeApp('totally-unknown-genre', {}, appDeps);
+  assert.ok(r.screens.length >= 2, 'fallback still produces a flow');
+  assert.equal(r.platform, 'mobile');
+});
+
+test('composeApp: a composed app flow is cohesive (token-driven, low slop)', () => {
+  const r = composeApp('finance', { seed: 0 }, appDeps);
+  const c = checkCoherence(r.html);
+  assert.ok(c.score >= 80, `composed app should be cohesive, got ${c.score}: ${JSON.stringify(c.counts)}`);
 });
 
 test('tokenize splits on non-alphanumerics', () => {

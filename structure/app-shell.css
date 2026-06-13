@@ -1,0 +1,320 @@
+/* ============================================
+   APP SHELL — mobile screen architecture (the .scr-* system)
+   ============================================
+   The mobile counterpart to structure.css. Where `.s-*` builds one scrolling
+   web page, `.scr-*` builds an app SCREEN: a device frame with status bar, nav,
+   a scrolling body between safe areas, and a tab bar. Compose several screens
+   into a FLOW with `.app-flow`. Dogfoods the taste tokens (bg, surface, fg,
+   accent, font, motion), so a palette + data-aesthetic re-skins every screen.
+
+   Usage:
+     <div class="app-flow">                       <!-- a flow = row of screens -->
+       <div class="scr-frame"><div class="scr">   <!-- one phone -->
+         <div class="scr-statusbar"></div>
+         <header class="scr-nav"><span class="scr-nav-title">Home</span></header>
+         <main class="scr-body"> … rows / cards / sections … </main>
+         <nav class="scr-tabbar">
+           <a class="scr-tab is-active"><span class="scr-tab-ico">●</span>Home</a>
+           <a class="scr-tab"><span class="scr-tab-ico">○</span>Search</a>
+         </nav>
+       </div></div>
+     </div>
+
+   A single `.scr` also fills an exact-size viewport on its own (the device lab
+   renders one screen at 393×852). Shells: scr-frame, scr, scr-statusbar,
+   scr-nav(--large), scr-body, scr-tabbar/scr-tab, scr-fab, scr-sheet, scr-hero,
+   scr-section(-head), scr-list/scr-row, scr-card, scr-btn(--ghost/--text),
+   scr-cta, scr-field/scr-input, scr-segment, scr-chip(s), scr-stat(s), scr-avatar.
+   ============================================ */
+
+.app-flow, .scr-frame, .scr {
+  --scr-w: 390px;                 /* logical iPhone width  */
+  --scr-h: 844px;                 /* logical iPhone height */
+  --scr-safe-top: 47px;           /* status bar + notch region */
+  --scr-safe-bottom: 34px;        /* home-indicator region */
+  --scr-bezel: 12px;
+  --scr-pad: 16px;                /* default screen gutter */
+  --scr-tap: 48px;                /* min comfortable tap target */
+  --scr-radius: 14px;
+}
+
+/* ---------- the flow: a row of phone frames ---------- */
+.app-flow {
+  display: flex;
+  gap: clamp(1.2rem, 4vw, 2.6rem);
+  align-items: flex-start;
+  padding: 1.6rem;
+  overflow-x: auto;
+}
+
+/* ---------- the device frame (bezel + dynamic island + home indicator) ---------- */
+.scr-frame {
+  position: relative;
+  width: var(--scr-w);
+  height: var(--scr-h);
+  flex: 0 0 auto;
+  padding: var(--scr-bezel);
+  border-radius: 54px;
+  background: #0a0a0c;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.06) inset,
+    0 30px 70px rgba(0, 0, 0, 0.5);
+}
+.scr-frame::after {                /* dynamic island */
+  content: "";
+  position: absolute;
+  top: calc(var(--scr-bezel) + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92px; height: 26px;
+  border-radius: 16px;
+  background: #0a0a0c;
+  z-index: 6;
+  pointer-events: none;
+}
+.scr-frame > .scr { border-radius: 42px; }
+
+/* ---------- the screen surface ---------- */
+.scr {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg, #0b0b12);
+  color: var(--fg, #f2f3f7);
+  font-family: var(--font-body, system-ui, -apple-system, sans-serif);
+  font-size: 17px;                 /* mobile body baseline */
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+/* a bare .scr (no frame) fills the viewport — the device lab renders it exact-size */
+.scr:not(.scr-frame > .scr) { border-radius: 0; }
+
+/* ---------- status bar ---------- */
+.scr-statusbar {
+  flex: 0 0 auto;
+  height: var(--scr-safe-top);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 28px 8px;
+  font: 600 15px/1 var(--font-body, system-ui, sans-serif);
+  color: var(--fg, #f2f3f7);
+}
+.scr-statusbar::before { content: "9:41"; letter-spacing: 0.02em; }
+.scr-statusbar::after {                       /* signal · wifi · battery */
+  content: "";
+  width: 64px; height: 12px;
+  background:
+    radial-gradient(circle at 6px 9px, currentColor 2px, transparent 2.5px),
+    radial-gradient(circle at 13px 7px, currentColor 2px, transparent 2.5px),
+    radial-gradient(circle at 20px 5px, currentColor 2px, transparent 2.5px),
+    linear-gradient(currentColor, currentColor) 30px 2px / 16px 9px no-repeat,
+    linear-gradient(currentColor, currentColor) 48px 2px / 14px 7px no-repeat;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+}
+
+/* ---------- nav bar ---------- */
+.scr-nav {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 4px var(--scr-pad);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  border-bottom: 0.5px solid var(--border, rgba(255, 255, 255, 0.1));
+  backdrop-filter: saturate(180%) blur(14px);
+}
+.scr-nav-title { flex: 1; text-align: center; font: 600 17px/1.2 var(--font-head, inherit); }
+.scr-nav-left, .scr-nav-right {
+  min-width: 44px; min-height: 44px;
+  display: inline-flex; align-items: center;
+  color: var(--accent, #7c5cff);
+  font-size: 16px;
+}
+.scr-nav-right { justify-content: flex-end; }
+/* iOS large-title nav */
+.scr-nav--large { display: block; border-bottom: 0; padding-bottom: 0.4rem; }
+.scr-nav--large .scr-nav-title { text-align: left; font: 800 clamp(1.7rem, 8vw, 2.1rem)/1.05 var(--font-head, inherit); letter-spacing: -0.02em; padding: 0.3rem 0 0.2rem; }
+
+/* ---------- scrolling body ---------- */
+.scr-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--scr-pad) var(--scr-pad) calc(var(--scr-pad) + var(--scr-safe-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.scr-body--flush { padding-left: 0; padding-right: 0; }     /* edge-to-edge lists */
+
+/* ---------- tab bar ---------- */
+.scr-tabbar {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 8px 6px var(--scr-safe-bottom);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border-top: 0.5px solid var(--border, rgba(255, 255, 255, 0.1));
+  backdrop-filter: saturate(180%) blur(14px);
+}
+.scr-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-height: 44px;
+  font: 500 10px/1.2 var(--font-body, sans-serif);
+  color: var(--muted, rgba(242, 243, 247, 0.55));
+  text-decoration: none;
+}
+.scr-tab-ico { font-size: 22px; line-height: 1; }
+.scr-tab.is-active { color: var(--accent, #7c5cff); }
+
+/* ---------- floating action button ---------- */
+.scr-fab {
+  position: absolute;
+  right: var(--scr-pad);
+  bottom: calc(var(--scr-safe-bottom) + 72px);
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 26px;
+  color: var(--on-accent, #fff);
+  background: var(--accent, #7c5cff);
+  border: 0;
+  box-shadow: var(--ts-elevation, 0 8px 24px rgba(0, 0, 0, 0.3));
+  z-index: 5;
+  transition: transform var(--m-dur, 200ms) var(--m-ease, ease-out);
+}
+.scr-fab:active { transform: scale(0.94); }
+
+/* ---------- bottom sheet ---------- */
+.scr-sheet {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 7;
+  background: var(--surface, #16161f);
+  border-radius: 22px 22px 0 0;
+  padding: 10px var(--scr-pad) calc(var(--scr-pad) + var(--scr-safe-bottom));
+  box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.4);
+}
+.scr-sheet::before { content: ""; display: block; width: 38px; height: 5px; border-radius: 3px; background: var(--border, rgba(255, 255, 255, 0.18)); margin: 0 auto 12px; }
+
+/* ---------- content primitives ---------- */
+.scr-hero { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.4rem 0 0.6rem; }
+.scr-hero h1 { margin: 0; font: 800 clamp(1.7rem, 8vw, 2.2rem)/1.05 var(--font-head, inherit); letter-spacing: -0.02em; }
+.scr-hero p { margin: 0; color: var(--muted, rgba(242, 243, 247, 0.62)); font-size: 16px; line-height: 1.5; }
+
+.scr-section { display: flex; flex-direction: column; gap: 0.7rem; }
+.scr-section-head { display: flex; align-items: baseline; justify-content: space-between; }
+.scr-section-head h2 { margin: 0; font: 700 1.25rem/1.15 var(--font-head, inherit); letter-spacing: -0.01em; }
+.scr-section-head a { color: var(--accent, #7c5cff); font-size: 15px; text-decoration: none; }
+.scr-eyebrow { font: 600 0.72rem/1 var(--font-body, sans-serif); letter-spacing: 0.1em; text-transform: uppercase; color: color-mix(in srgb, var(--accent, #7c5cff) 70%, var(--fg)); }
+
+/* list — the workhorse of app UIs */
+.scr-list { display: flex; flex-direction: column; background: var(--surface, #16161f); border-radius: var(--scr-radius); overflow: hidden; }
+.scr-list--inset { margin: 0 var(--scr-pad); }
+.scr-row {
+  display: flex; align-items: center; gap: 0.8rem;
+  min-height: 52px;
+  padding: 10px 14px;
+  color: var(--fg, #f2f3f7);
+  text-decoration: none;
+  border-bottom: 0.5px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+.scr-row:last-child { border-bottom: 0; }
+.scr-row-ico { width: 30px; height: 30px; flex: 0 0 auto; border-radius: 8px; display: grid; place-items: center; background: color-mix(in srgb, var(--accent, #7c5cff) 16%, transparent); color: color-mix(in srgb, var(--accent, #7c5cff) 70%, var(--fg)); font-size: 16px; }
+.scr-row-main { flex: 1; min-width: 0; }
+.scr-row-title { font-size: 16px; font-weight: 500; }
+.scr-row-sub { font-size: 13px; color: var(--muted, rgba(242, 243, 247, 0.55)); }
+.scr-row-value { color: var(--muted, rgba(242, 243, 247, 0.55)); font-size: 15px; }
+.scr-row-chevron { color: var(--faint, rgba(242, 243, 247, 0.4)); font-size: 18px; }
+
+.scr-card {
+  background: var(--surface, #16161f);
+  border: 0.5px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: var(--scr-radius);
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.scr-card h3 { margin: 0; font: 700 1.05rem/1.2 var(--font-head, inherit); }
+.scr-card p { margin: 0; color: var(--muted, rgba(242, 243, 247, 0.62)); font-size: 15px; line-height: 1.5; }
+.scr-media { width: 100%; aspect-ratio: 16/10; border-radius: 12px; background: color-mix(in srgb, var(--surface) 70%, var(--accent, #7c5cff) 8%); border: 0.5px solid var(--border, rgba(255, 255, 255, 0.08)); }
+
+/* buttons — full-width pills, generous tap target */
+.scr-btn {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 50px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 26px;
+  font: 600 17px/1 var(--font-body, sans-serif);
+  color: var(--on-accent, #fff);
+  background: var(--accent, #7c5cff);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--m-dur, 200ms) var(--m-ease, ease-out), opacity var(--m-dur, 200ms) var(--m-ease, ease-out);
+}
+.scr-btn:active { transform: scale(0.98); opacity: 0.9; }
+.scr-btn--ghost { background: transparent; color: var(--accent, #7c5cff); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--accent, #7c5cff) 60%, transparent); }
+.scr-btn--text { background: transparent; color: var(--accent, #7c5cff); min-height: 44px; }
+.scr-btn--block { width: 100%; }
+
+/* sticky bottom CTA region (above the tab bar / home indicator) */
+.scr-cta {
+  flex: 0 0 auto;
+  display: flex; flex-direction: column; gap: 0.6rem;
+  padding: 12px var(--scr-pad) calc(12px + var(--scr-safe-bottom));
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  border-top: 0.5px solid var(--border, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(14px);
+}
+.scr-cta-note { text-align: center; font-size: 13px; color: var(--muted, rgba(242, 243, 247, 0.55)); }
+
+/* form fields */
+.scr-field { display: flex; flex-direction: column; gap: 6px; }
+.scr-field-label { font-size: 13px; color: var(--muted, rgba(242, 243, 247, 0.62)); padding-left: 2px; }
+.scr-input {
+  width: 100%; box-sizing: border-box;
+  min-height: 50px;
+  padding: 0 16px;
+  font: 17px/1.3 var(--font-body, sans-serif);
+  color: var(--fg, #f2f3f7);
+  background: var(--surface, #16161f);
+  border: 0.5px solid var(--border, rgba(255, 255, 255, 0.12));
+  border-radius: 12px;
+}
+.scr-input::placeholder { color: var(--faint, rgba(242, 243, 247, 0.4)); }
+.scr-input:focus-visible { outline: none; border-color: var(--accent, #7c5cff); }
+
+/* segmented control */
+.scr-segment { display: flex; gap: 2px; padding: 2px; background: color-mix(in srgb, var(--surface) 80%, transparent); border-radius: 10px; }
+.scr-segment button { flex: 1; min-height: 34px; border: 0; border-radius: 8px; background: transparent; color: var(--muted, rgba(242, 243, 247, 0.6)); font: 600 14px/1 var(--font-body, sans-serif); cursor: pointer; }
+.scr-segment button.is-active { background: var(--accent, #7c5cff); color: var(--on-accent, #fff); }
+
+/* chips */
+.scr-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.scr-chip { display: inline-flex; align-items: center; min-height: 34px; padding: 0 14px; border-radius: 17px; background: var(--surface, #16161f); border: 0.5px solid var(--border, rgba(255, 255, 255, 0.1)); font-size: 14px; color: var(--fg, #f2f3f7); }
+.scr-chip.is-active { background: var(--accent, #7c5cff); color: var(--on-accent, #fff); border-color: transparent; }
+
+/* stats */
+.scr-stats { display: flex; gap: 10px; }
+.scr-stat { flex: 1; background: var(--surface, #16161f); border-radius: var(--scr-radius); padding: 14px; text-align: center; }
+.scr-stat b { display: block; font: 800 1.6rem/1 var(--font-head, inherit); letter-spacing: -0.02em; }
+.scr-stat span { font-size: 12px; color: var(--muted, rgba(242, 243, 247, 0.55)); }
+
+/* avatar */
+.scr-avatar { width: 40px; height: 40px; border-radius: 50%; flex: 0 0 auto; background: color-mix(in srgb, var(--accent, #7c5cff) 30%, var(--surface)); display: grid; place-items: center; font: 700 14px/1 var(--font-body, sans-serif); color: var(--fg, #f2f3f7); }
+
+@media (prefers-reduced-motion: reduce) {
+  .scr-fab, .scr-btn { transition: none; }
+}

@@ -772,6 +772,210 @@ export function composePage(genre, opts, deps) {
   return { genre, preset: opts.preset || null, theme: tokenOverrides, tokenOverrides, sections, html, warnings };
 }
 
+// =====================================================
+// MOBILE composition — assemble an app SCREEN FLOW (the .scr-* peer of compose)
+// =====================================================
+// Where composePage builds one scrolling web page of sections, composeApp builds
+// a FLOW of discrete app screens (structure/app-shell.css .scr-* shells), each
+// in a device frame, themed by the same taste tokens. Real vault mobile/
+// components are recommended per screen via MOBILE_SLOT_COMPONENTS (from the
+// classified map); content screens with no component build from shells.
+
+const MOBILE_GENRE_AESTHETIC = { onboarding: 'minimal', social: 'playful', commerce: 'energetic', health: 'minimal', finance: 'technical', productivity: 'minimal', media: 'energetic', saas: 'minimal', app: 'minimal' };
+
+// slot → real vault components to recommend (paths the agent drops in)
+const MOBILE_SLOT_COMPONENTS = {
+  onboarding: ['mobile/app-onboarding-value-props.css', 'mobile/app-onboarding-welcome.css', 'mobile/app-onboarding-pick-goals.css', 'mobile/app-permission-prompt.css'],
+  auth: ['mobile/app-signup.css', 'mobile/app-login.css', 'mobile/app-email-verify.css'],
+  list: ['mobile/ios-list-grouped.css'],
+  settings: ['mobile/app-billing-history.css'],
+  checkout: ['mobile/app-payment-card.css', 'mobile/app-receipt.css'],
+  dashboard: ['mobile/ios-home-screen.css'],
+  paywall: ['mobile/app-paywall.css', 'mobile/app-subscription-tiers.css', 'mobile/app-trial-locked.css'],
+  feed: [], detail: [], profile: [],     // build from .scr-* shells (no standalone component)
+};
+
+// genre → ordered screens. Each: { screen, shell, slot, tab? }
+export const MOBILE_FLOWS = {
+  onboarding: [ { screen: 'Welcome', shell: 'onboarding', slot: 'onboarding' }, { screen: 'Sign up', shell: 'auth', slot: 'auth' }, { screen: 'Home', shell: 'feed', slot: 'feed', tab: 0 } ],
+  social:     [ { screen: 'Feed', shell: 'feed', slot: 'feed', tab: 0 }, { screen: 'Post', shell: 'detail', slot: 'detail' }, { screen: 'Profile', shell: 'profile', slot: 'profile', tab: 3 } ],
+  commerce:   [ { screen: 'Shop', shell: 'feed', slot: 'feed', tab: 0 }, { screen: 'Product', shell: 'detail', slot: 'detail' }, { screen: 'Checkout', shell: 'checkout', slot: 'checkout' } ],
+  health:     [ { screen: 'Today', shell: 'dashboard', slot: 'dashboard', tab: 0 }, { screen: 'Activity', shell: 'detail', slot: 'detail' }, { screen: 'Profile', shell: 'profile', slot: 'profile', tab: 3 } ],
+  finance:    [ { screen: 'Balance', shell: 'dashboard', slot: 'dashboard', tab: 0 }, { screen: 'Activity', shell: 'list', slot: 'list', tab: 2 }, { screen: 'Detail', shell: 'detail', slot: 'detail' } ],
+  productivity:[ { screen: 'Tasks', shell: 'list', slot: 'list', tab: 0 }, { screen: 'Task', shell: 'detail', slot: 'detail' }, { screen: 'Settings', shell: 'settings', slot: 'settings', tab: 3 } ],
+  media:      [ { screen: 'Browse', shell: 'feed', slot: 'feed', tab: 0 }, { screen: 'Now playing', shell: 'detail', slot: 'detail' }, { screen: 'Library', shell: 'list', slot: 'list', tab: 2 } ],
+  saas:       [ { screen: 'Dashboard', shell: 'dashboard', slot: 'dashboard', tab: 0 }, { screen: 'Detail', shell: 'detail', slot: 'detail' }, { screen: 'Settings', shell: 'settings', slot: 'settings', tab: 3 } ],
+  app:        [ { screen: 'Welcome', shell: 'onboarding', slot: 'onboarding' }, { screen: 'Home', shell: 'feed', slot: 'feed', tab: 0 }, { screen: 'Settings', shell: 'settings', slot: 'settings', tab: 3 } ],
+};
+
+// ---- screen-shell helpers (build .scr inner from .scr-* primitives) ----
+const scrBar = '<div class="scr-statusbar"></div>';
+const scrTabs = ['Home', 'Search', 'Activity', 'Profile'];
+const scrTabIco = ['◉', '◌', '◆', '◇'];
+const scrTabbar = (active = 0) => `<nav class="scr-tabbar">${scrTabs.map((t, i) => `<a class="scr-tab${i === active ? ' is-active' : ''}"><span class="scr-tab-ico">${scrTabIco[i]}</span>${t}</a>`).join('')}</nav>`;
+const scrRow = (t, sub, val) => `<a class="scr-row"><span class="scr-row-ico">◆</span><span class="scr-row-main"><div class="scr-row-title">${t}</div>${sub ? `<div class="scr-row-sub">${sub}</div>` : ''}</span>${val ? `<span class="scr-row-value">${val}</span>` : '<span class="scr-row-chevron">›</span>'}</a>`;
+
+const MOBILE_SHELLS = {
+  onboarding: () => `${scrBar}
+    <main class="scr-body" style="justify-content:center;gap:1.4rem;">
+      <div class="scr-media" style="aspect-ratio:1/1;max-width:200px;margin:0 auto;border-radius:24px;"></div>
+      <div class="scr-hero" style="text-align:center;align-items:center;">
+        <h1>Make every day count.</h1>
+        <p>A calmer, more intentional way to get where you're going.</p>
+      </div>
+      <div class="scr-chips" style="justify-content:center;">${['Mindful', 'Daily', 'Private'].map((c, i) => `<span class="scr-chip${i === 0 ? ' is-active' : ''}">${c}</span>`).join('')}</div>
+    </main>
+    <div class="scr-cta"><a class="scr-btn scr-btn--block">Get started</a><a class="scr-btn scr-btn--text">I already have an account</a></div>`,
+  auth: () => `${scrBar}
+    <header class="scr-nav"><span class="scr-nav-left">‹</span><span class="scr-nav-title">Create account</span><span class="scr-nav-right"></span></header>
+    <main class="scr-body">
+      <div class="scr-hero"><h1>Welcome.</h1><p>A few details and you're in.</p></div>
+      <div class="scr-field"><span class="scr-field-label">Name</span><input class="scr-input" placeholder="Jordan Lee"></div>
+      <div class="scr-field"><span class="scr-field-label">Email</span><input class="scr-input" placeholder="you@example.com"></div>
+      <div class="scr-field"><span class="scr-field-label">Password</span><input class="scr-input" type="password" placeholder="••••••••"></div>
+    </main>
+    <div class="scr-cta"><a class="scr-btn scr-btn--block">Continue</a><span class="scr-cta-note">By continuing you agree to the terms</span></div>`,
+  feed: (tab = 0) => `${scrBar}
+    <header class="scr-nav scr-nav--large"><span class="scr-nav-title">Home</span></header>
+    <main class="scr-body">
+      <div class="scr-chips">${['For you', 'Following', 'New', 'Saved'].map((c, i) => `<span class="scr-chip${i === 0 ? ' is-active' : ''}">${c}</span>`).join('')}</div>
+      ${['Quiet mornings, done right', 'The case for slow evenings', 'Five rituals worth keeping'].map((t) => `<article class="scr-card"><div class="scr-media"></div><h3>${t}</h3><p>A short read on building a calmer daily rhythm.</p></article>`).join('')}
+    </main>
+    ${scrTabbar(tab)}`,
+  detail: () => `${scrBar}
+    <header class="scr-nav"><span class="scr-nav-left">‹</span><span class="scr-nav-title"></span><span class="scr-nav-right">⋯</span></header>
+    <main class="scr-body scr-body--flush" style="gap:0;">
+      <div class="scr-media" style="aspect-ratio:4/3;border-radius:0;"></div>
+      <div style="padding:var(--scr-pad);display:flex;flex-direction:column;gap:0.9rem;">
+        <div class="scr-hero"><p class="scr-eyebrow">Featured</p><h1>The case for slow evenings</h1></div>
+        <div class="scr-stats"><div class="scr-stat"><b>6 min</b><span>read</span></div><div class="scr-stat"><b>4.9</b><span>rating</span></div><div class="scr-stat"><b>2.1k</b><span>saved</span></div></div>
+        <p style="color:var(--muted);line-height:1.6;">Winding down is a skill, not a luxury. The last hour of your day sets the tone for the next one — here's how to give it the attention it deserves.</p>
+        <div class="scr-list">${scrRow('Start the ritual', 'Guided · 12 min')}${scrRow('Save for later', 'Added to your library')}</div>
+      </div>
+    </main>
+    <div class="scr-cta"><a class="scr-btn scr-btn--block">Begin</a></div>`,
+  profile: (tab = 3) => `${scrBar}
+    <header class="scr-nav"><span class="scr-nav-left"></span><span class="scr-nav-title">Profile</span><span class="scr-nav-right">Edit</span></header>
+    <main class="scr-body">
+      <div style="display:flex;align-items:center;gap:0.9rem;"><span class="scr-avatar" style="width:60px;height:60px;font-size:20px;">JL</span><div><div style="font:700 1.25rem/1.1 var(--font-head,inherit);">Jordan Lee</div><div style="color:var(--muted);font-size:14px;">Member since 2024</div></div></div>
+      <div class="scr-stats"><div class="scr-stat"><b>128</b><span>days</span></div><div class="scr-stat"><b>42</b><span>streak</span></div><div class="scr-stat"><b>8.4k</b><span>minutes</span></div></div>
+      <div class="scr-list">${scrRow('Notifications', null, 'On')}${scrRow('Privacy', null, null)}${scrRow('Help & support', null, null)}${scrRow('Sign out', null, null)}</div>
+    </main>
+    ${scrTabbar(tab)}`,
+  list: (tab = 0) => `${scrBar}
+    <header class="scr-nav scr-nav--large"><span class="scr-nav-title">Activity</span></header>
+    <main class="scr-body">
+      <div class="scr-segment"><button class="is-active">All</button><button>This week</button><button>Saved</button></div>
+      <div class="scr-list">${scrRow('Morning run', '3.2 km · 18 min', '↑')}${scrRow('Breathing', '10 min · calm')}${scrRow('Sleep', '7h 42m', 'Good')}${scrRow('Focus block', '50 min')}${scrRow('Evening walk', '1.1 km · 14 min')}</div>
+    </main>
+    ${scrTabbar(tab)}`,
+  settings: (tab = 3) => `${scrBar}
+    <header class="scr-nav"><span class="scr-nav-left"></span><span class="scr-nav-title">Settings</span><span class="scr-nav-right"></span></header>
+    <main class="scr-body">
+      <p class="scr-eyebrow" style="padding-left:4px;">Account</p>
+      <div class="scr-list">${scrRow('Profile', null, null)}${scrRow('Subscription', null, 'Pro')}${scrRow('Notifications', null, 'On')}</div>
+      <p class="scr-eyebrow" style="padding-left:4px;">Preferences</p>
+      <div class="scr-list">${scrRow('Appearance', null, 'Dark')}${scrRow('Language', null, 'English')}${scrRow('Privacy', null, null)}</div>
+      <div class="scr-list">${scrRow('Sign out', null, null)}</div>
+    </main>
+    ${scrTabbar(tab)}`,
+  dashboard: (tab = 0) => `${scrBar}
+    <header class="scr-nav scr-nav--large"><span class="scr-nav-title">Today</span></header>
+    <main class="scr-body">
+      <div class="scr-stats"><div class="scr-stat"><b>87%</b><span>goal</span></div><div class="scr-stat"><b>12k</b><span>steps</span></div><div class="scr-stat"><b>6.4h</b><span>focus</span></div></div>
+      <div class="scr-section"><div class="scr-section-head"><h2>Recent</h2><a>See all</a></div><div class="scr-list">${scrRow('Morning run', '3.2 km · 18 min')}${scrRow('Breathing', '10 min · calm')}${scrRow('Sleep', '7h 42m', 'Good')}</div></div>
+      <article class="scr-card"><div class="scr-media"></div><h3>Wind down tonight</h3><p>A 12-minute ritual tuned to your evening.</p></article>
+    </main>
+    ${scrTabbar(tab)}`,
+  checkout: () => `${scrBar}
+    <header class="scr-nav"><span class="scr-nav-left">‹</span><span class="scr-nav-title">Checkout</span><span class="scr-nav-right"></span></header>
+    <main class="scr-body">
+      <div class="scr-list">${scrRow('Oak chair', 'Qty 1', '$180')}${scrRow('Linen throw', 'Qty 2', '$120')}</div>
+      <div class="scr-list"><div class="scr-row"><span class="scr-row-main"><div class="scr-row-title">Subtotal</div></span><span class="scr-row-value">$300</span></div><div class="scr-row"><span class="scr-row-main"><div class="scr-row-title">Shipping</div></span><span class="scr-row-value">$0</span></div><div class="scr-row"><span class="scr-row-main"><div class="scr-row-title" style="font-weight:700;">Total</div></span><span class="scr-row-value" style="color:var(--fg);font-weight:700;">$300</span></div></div>
+      <a class="scr-row" style="border-radius:var(--scr-radius);border:0.5px solid var(--border);"><span class="scr-row-ico">▭</span><span class="scr-row-main"><div class="scr-row-title">Visa •••• 4242</div><div class="scr-row-sub">Default</div></span><span class="scr-row-chevron">›</span></a>
+    </main>
+    <div class="scr-cta"><a class="scr-btn scr-btn--block">Pay $300</a><span class="scr-cta-note">Secure checkout</span></div>`,
+  paywall: () => `${scrBar}
+    <header class="scr-nav"><span class="scr-nav-left">✕</span><span class="scr-nav-title"></span><span class="scr-nav-right"></span></header>
+    <main class="scr-body" style="gap:1.2rem;">
+      <div class="scr-hero" style="text-align:center;align-items:center;"><h1>Go further with Pro.</h1><p>Everything unlocked, ad-free, forever-yours.</p></div>
+      <div class="scr-list">${scrRow('Unlimited rituals', 'No daily cap')}${scrRow('Adaptive soundscapes', 'Tuned to your evening')}${scrRow('Offline downloads', 'Airplane mode welcome')}</div>
+      <div class="scr-stats"><div class="scr-stat" style="outline:2px solid var(--accent);"><b>$8</b><span>monthly</span></div><div class="scr-stat"><b>$60</b><span>yearly · save 38%</span></div></div>
+    </main>
+    <div class="scr-cta"><a class="scr-btn scr-btn--block">Start 14-day free trial</a><a class="scr-btn scr-btn--text">Restore purchase</a></div>`,
+};
+
+function renderComposedApp(genre, t, screens, presetName) {
+  const links = ['structure/structure.css', 'colors/palettes.css', 'taste/density.css', 'taste/motion.css', 'taste/fonts.css', 'taste/aesthetic.css', 'structure/app-shell.css']
+    .map((h) => `  <link rel="stylesheet" href="${h}">`).join('\n');
+  const frames = screens.map((s) => {
+    const inner = (MOBILE_SHELLS[s.shell] || MOBILE_SHELLS.feed)(s.tab ?? 0);
+    return `  <!-- ${s.screen} (${s.shell}): drop in ${s.component || '(build from .scr-* shells)'} -->\n  <div class="scr-frame"><div class="scr">\n    ${inner}\n  </div></div>`;
+  }).join('\n\n');
+  const manifest = screens.map((s) => `     ${(s.screen + ':').padEnd(14)} shell .scr (${s.shell})  →  ${s.component || '(no standalone component — shells only)'}`).join('\n');
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${genre} app${presetName ? ' · ' + presetName : ''} — composed by frontendmaxxing</title>
+${links}
+</head>
+<body class="struct pal-${t.palette}" data-aesthetic="${t.aesthetic}" data-font-pair="${t.fontPair}" data-motion="${t.motion}" data-density="${t.density}" style="background:#0a0a0e;">
+
+<div class="app-flow">
+${frames}
+</div>
+
+<!-- ============================================
+     APP FLOW MANIFEST — real vault mobile/ components to drop into each screen.
+     get_snippet <path> for paste-ready code. Screens render on-brand from the
+     structure/app-shell.css .scr-* shells BEFORE the parts are wired in.
+${manifest}
+     ============================================ -->
+</body>
+</html>`;
+}
+
+// Pure: assemble a renderable app SCREEN FLOW for a genre + taste.
+// deps = { presets, palByName } (search/byPath unused — mobile picks are curated).
+export function composeApp(genre, opts, deps) {
+  opts = opts || {};
+  deps = deps || {};
+  const { presets, palByName } = deps;
+  const warnings = [];
+  genre = String(genre || 'app').toLowerCase();
+  const flow = MOBILE_FLOWS[genre] || MOBILE_FLOWS.app;
+
+  let base = {};
+  if (opts.preset) {
+    const p = presets && presets.get ? presets.get(opts.preset) : null;
+    if (p) base = { aesthetic: p.aesthetic, palette: p.palette, fontPair: p.fontPair, motion: p.motion, density: p.density };
+    else warnings.push(`unknown preset "${opts.preset}" — ignored`);
+  }
+  const aesthetic = opts.aesthetic || base.aesthetic || MOBILE_GENRE_AESTHETIC[genre] || 'minimal';
+  const def = AESTHETIC_DEFAULTS[aesthetic] || AESTHETIC_DEFAULTS.minimal;
+  const fontPair = opts.fontPair || base.fontPair || def.fontPair;
+  const motion = opts.motion || base.motion || def.motion;
+  const density = opts.density || base.density || def.density;
+  let palette = opts.palette || base.palette || def.palette;
+  if (palByName && !palByName.has(palette)) {
+    warnings.push(`palette "${palette}" not found — using "${def.palette}"`);
+    palette = def.palette;
+  }
+  const seed = Number.isFinite(+opts.seed) ? Math.abs(Math.floor(+opts.seed)) : 0;
+
+  const screens = flow.map((sc) => {
+    const cands = MOBILE_SLOT_COMPONENTS[sc.slot] || [];
+    const component = cands.length ? cands[seed % cands.length] : null;
+    return { screen: sc.screen, shell: sc.shell, slot: sc.slot, tab: sc.tab, component };
+  });
+
+  const theme = { palette, aesthetic, fontPair, motion, density };
+  const html = renderComposedApp(genre, theme, screens, opts.preset || null);
+  return { genre, platform: 'mobile', preset: opts.preset || null, theme, tokenOverrides: theme, screens, html, warnings };
+}
+
 // Pure: score an HTML string for taste-cohesion. Mirrors the Phase 5 audit soft
 // checks. Returns { score 0..100, ok, counts, warnings:[{type,count,sample,hint}] }.
 export function checkCoherence(html) {
@@ -1319,6 +1523,45 @@ async function main() {
       '```html', res.html, '```'
     ].filter(Boolean).join('\n');
     return { content: [{ type: 'text', text }], structuredContent: { genre: res.genre, preset: res.preset, theme: res.theme, sections: res.sections, html: res.html, warnings: res.warnings } };
+  });
+
+  // ---- compose_app (mobile: a screen FLOW) ----
+  server.registerTool('compose_app', {
+    title: 'Compose a mobile app flow',
+    description: 'The MOBILE peer of compose_page. Assemble a renderable APP SCREEN FLOW for a genre using structure/app-shell.css .scr-* screen shells (device frame, status bar, nav, safe areas, tab bar, list rows, sticky CTA) + a coordinated taste. Returns a multi-screen flow (each screen a phone) + a manifest naming the real mobile/ component to wire into each screen. Read get_skill("mobile-design") for HIG/flow rules.',
+    inputSchema: {
+      genre: z.string().describe('App genre: onboarding, social, commerce, health, finance, productivity, media, saas, app.'),
+      preset: z.string().optional().describe('Taste preset name (list_taste_presets). Sets all axes at once.'),
+      palette: z.string().optional().describe('Override palette (pal-* name).'),
+      aesthetic: z.enum(['minimal', 'editorial', 'energetic', 'luxury', 'playful', 'technical']).optional(),
+      density: z.enum(['compact', 'normal', 'airy']).optional(),
+      motion: z.enum(['minimal', 'standard', 'playful']).optional(),
+      font_pair: z.string().optional().describe('Override font pairing (data-font-pair value).'),
+      variety_seed: z.number().int().optional().describe('Rotates the per-screen component pick (default 0).')
+    },
+    outputSchema: {
+      genre: z.string(), platform: z.string(), preset: z.string().nullable(),
+      theme: z.object({ palette: z.string(), aesthetic: z.string(), fontPair: z.string(), motion: z.string(), density: z.string() }),
+      screens: z.array(z.object({ screen: z.string(), shell: z.string(), slot: z.string(), tab: z.number().optional(), component: z.string().nullable() })),
+      html: z.string(), warnings: z.array(z.string())
+    },
+    annotations: RO
+  }, async ({ genre, preset, palette, aesthetic, density, motion, font_pair, variety_seed }) => {
+    const res = composeApp(genre, { preset, palette, aesthetic, density, motion, fontPair: font_pair, seed: variety_seed }, { presets: tastePresets, palByName });
+    const known = Object.keys(MOBILE_FLOWS).join(', ');
+    const manifest = res.screens.map((s) => `- **${s.screen}** (\`.scr\` ${s.shell}) → ${s.component ? '`' + s.component + '`' : '_(build from .scr-* shells)_'}`).join('\n');
+    const text = [
+      `# Composed app flow — ${res.genre}${res.preset ? ' · ' + res.preset : ''}  (${res.screens.length} screens)`,
+      `Theme: \`pal-${res.theme.palette}\` · aesthetic \`${res.theme.aesthetic}\` · font \`${res.theme.fontPair}\` · motion \`${res.theme.motion}\` · density \`${res.theme.density}\``,
+      res.warnings.length ? `\n⚠ ${res.warnings.join(' · ')}` : '',
+      !MOBILE_FLOWS[res.genre] ? `\n(unknown genre — used "app" flow; known: ${known})` : '',
+      '\n## Screen manifest (drop a real mobile/ component into each screen)',
+      manifest,
+      '\n## Flow HTML',
+      'Renders on-brand as-is (app-shell .scr-* shells + palette + taste); wire the manifest components in next. Each screen is a phone at 390×844.',
+      '```html', res.html, '```'
+    ].filter(Boolean).join('\n');
+    return { content: [{ type: 'text', text }], structuredContent: { genre: res.genre, platform: res.platform, preset: res.preset, theme: res.theme, screens: res.screens, html: res.html, warnings: res.warnings } };
   });
 
   // ---- coherence_check ----

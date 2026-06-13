@@ -5,6 +5,11 @@ the layer above individual components. Where `gradients.skill.md` decides color
 and `gsap.skill.md` decides motion, this decides **skeleton**: which sections a
 site needs, their sequence, pacing, and how to connect them.
 
+> **Building a mobile app instead of a web page?** This skill is for *web* — a
+> scrolling page of sections. A native app is a *flow of discrete screens*; read
+> **`mobile-design.skill.md`** and use the `.scr-*` shells in
+> `structure/app-shell.css` (MCP `compose_app`, verify with `book_inspect mode:"mobile"`).
+
 > Pair: the **`structure/`** folder. `structure.css` is the backbone (tokens +
 > section rhythm + nav/hero/grid/split/footer shells). `section-transitions.css`
 > connects sections (wave/diagonal/curve…). `section-frames.css` frames a block.

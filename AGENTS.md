@@ -22,6 +22,7 @@ This folder is a **vanilla CSS+JS snippet vault** — 765 standalone, copy-paste
 | `structure.skill.md` | Page-architecture decision tree (genre → section sequence → which snippets fill each slot) | Structuring a whole page/site, "what sections do I need for a SaaS/agency/restaurant/store", initial scaffolding from a reference or business type, `structure/*` snippets |
 | `design-system.skill.md` | DESIGN.md → frontendmaxxing — maps a design-taste token spec (refero.design pattern) onto the palettes + per-snippet `--vars` + component slots | "Build like &lt;brand&gt;", applying a DESIGN.md, choosing tokens/type/motion coherently, MCP `design_system(palette)` to generate a DESIGN.md |
 | `taste.skill.md` | Taste/cohesion layer — 6 aesthetic profiles (`taste/*` token presets), ~12 `TastePresets` bundles, anti-AI-slop rules | Making a page look intentional and cohesive, picking aesthetic+palette+font+motion together, avoiding slop tells, MCP `compose_page`/`coherence_check` |
+| `mobile-design.skill.md` | Native-app (iOS/Android) UI decision tree — HIG/Material conventions, screen-flow archetypes, the `.scr-*` app shells (`structure/app-shell.css`) | Designing a **mobile app** (a flow of screens, not a scrolling web page): "design an app for…", onboarding/feed/detail/profile/checkout flows, MCP `compose_app`, verifying with `book_inspect mode:"mobile"` |
 | `demo/index.html` | Live preview of every snippet | When adding a new file (must register) |
 | `MEMORY.md` (separate, in user memory dir) | Phase summaries | Already loaded for Claude — auto-consulted |
 
@@ -48,7 +49,7 @@ micro/          Tiny micro-interactions (toggle, like, copy, counter)
 responsive/     Breakpoints, dark mode, mobile patterns, skip-link
 scroll/         Pin, scrub, snap, horizontal-pin, text-reveal
 shaders/        Pure-WebGL fullscreen-quad shaders (noise, mesh, voronoi, godrays, …)
-structure/      Page-architecture: backbone CSS + section transitions/frames + 4 full genre demo pages (see structure.skill.md)
+structure/      Page-architecture: backbone CSS + section transitions/frames + genre demos (web, see structure.skill.md) + app-shell.css = the .scr-* native-app screen shells (mobile, see mobile-design.skill.md)
 svg/            SVG animations, gradient defs
 taste/          Taste layer: token-preset CSS (data-aesthetic/density/motion/font-pair) + TastePresets/MotionProfile JS (see taste.skill.md)
 templates/      Prebuilt full-site templates (apps, not snippets — INDEX-exempt): atelier = complete clothing webshop (see templates/README.md)
