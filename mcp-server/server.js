@@ -28,9 +28,11 @@
      scaffold-page
    ============================================ */
 
-import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { z } from 'zod';
+// NOTE: the MCP SDK + zod are imported DYNAMICALLY inside main() (below), not
+// statically here — so the exported pure helpers (parseIndex, composePage,
+// checkCoherence, parsePalettes, …) can be imported by other tools (e.g. the
+// Design Book server) with ZERO node_modules installed. The deps are only
+// needed to actually *run* the MCP server.
 import { readFile, access, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -809,17 +811,22 @@ export function checkCoherence(html) {
   return { score, ok: score >= 80, counts, warnings };
 }
 
-// Zod shapes for structured output
-const SNIPPET_OUT = {
-  file: z.string(), path: z.string(), kind: z.string(), folder: z.string(),
-  global: z.string().nullable(), tags: z.array(z.string()), description: z.string(),
-  demoUrl: z.string()
-};
-
 // =====================================================
 // Server setup
 // =====================================================
 async function main() {
+  // deps are loaded here (not at module top) so the pure helpers stay zero-dep importable
+  const { McpServer, ResourceTemplate } = await import('@modelcontextprotocol/sdk/server/mcp.js');
+  const { StdioServerTransport } = await import('@modelcontextprotocol/sdk/server/stdio.js');
+  const { z } = await import('zod');
+
+  // Zod shape for structured snippet output (used by several tools below)
+  const SNIPPET_OUT = {
+    file: z.string(), path: z.string(), kind: z.string(), folder: z.string(),
+    global: z.string().nullable(), tags: z.array(z.string()), description: z.string(),
+    demoUrl: z.string()
+  };
+
   const libraryRoot = await resolveLibraryRoot();
   const indexText = await readFile(join(libraryRoot, 'INDEX.md'), 'utf8');
   const entries = parseIndex(indexText);
