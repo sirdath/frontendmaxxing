@@ -489,7 +489,7 @@ export function buildApplyPlan(tokens, palette, genre) {
 export const BLESSED_MS = [90, 120, 140, 160, 200, 260, 320, 480];
 
 // Sensible defaults per aesthetic (every palette/value is real).
-const AESTHETIC_DEFAULTS = {
+export const AESTHETIC_DEFAULTS = {
   minimal:   { palette: 'saas-indigo',     fontPair: 'grotesk-tech',    motion: 'minimal',  density: 'airy' },
   editorial: { palette: 'paper',           fontPair: 'editorial-serif', motion: 'standard', density: 'airy' },
   energetic: { palette: 'electric-night',  fontPair: 'display-bold',    motion: 'playful',  density: 'normal' },
@@ -497,7 +497,35 @@ const AESTHETIC_DEFAULTS = {
   playful:   { palette: 'playful-bright',  fontPair: 'geometric-warm',  motion: 'playful',  density: 'normal' },
   technical: { palette: 'vercel-mono',     fontPair: 'mono-technical',  motion: 'minimal',  density: 'compact' },
 };
-const GENRE_AESTHETIC = { saas: 'minimal', agency: 'energetic', portfolio: 'editorial', ecommerce: 'energetic', restaurant: 'luxury', startup: 'energetic', blog: 'editorial', landing: 'minimal' };
+export const GENRE_AESTHETIC = { saas: 'minimal', agency: 'energetic', portfolio: 'editorial', ecommerce: 'energetic', restaurant: 'luxury', startup: 'energetic', blog: 'editorial', landing: 'minimal' };
+
+// Seed-driven palette diversity so "compose N variants and pick" yields visibly
+// DIFFERENT looks, not byte-identical pages. Each list stays on-genre/on-aesthetic;
+// INDEX 0 IS THE CURRENT DEFAULT (def.palette for the genre) so seed 0 is a
+// byte-identical regression guard. Only used when no palette is pinned (opts /
+// preset always win). Aesthetic is deliberately NOT rotated — it cascades into
+// font/motion/density and would break comparability.
+export const GENRE_PALETTE_SHORTLIST = {
+  saas:      ['saas-indigo', 'linear-violet', 'vercel-mono', 'midnight'],
+  agency:    ['electric-night', 'energy-volt', 'neon-night', 'power-orange'],
+  portfolio: ['paper', 'clean-light', 'mono-snow', 'ink'],
+  ecommerce: ['electric-night', 'appetite-red', 'power-orange', 'royal-purple'],
+  restaurant:['luxe-black-gold', 'warm-bistro', 'appetite-red', 'espresso-cream'],
+  startup:   ['electric-night', 'linear-violet', 'energy-volt', 'web3-violet'],
+  blog:      ['paper', 'clean-light', 'cool-gray', 'charcoal'],
+  landing:   ['saas-indigo', 'linear-violet', 'fintech-navy', 'vercel-mono'],
+};
+export const MOBILE_PALETTE_SHORTLIST = {
+  onboarding:  ['saas-indigo', 'linear-violet', 'playful-bright'],
+  social:      ['playful-bright', 'electric-night', 'neon-night'],
+  commerce:    ['electric-night', 'appetite-red', 'royal-purple'],
+  health:      ['saas-indigo', 'wellness-teal', 'care-mint', 'medical-blue'],
+  finance:     ['vercel-mono', 'fintech-navy', 'wealth-emerald'],
+  productivity:['saas-indigo', 'linear-violet', 'midnight'],
+  media:       ['electric-night', 'neon-night', 'festival'],
+  saas:        ['saas-indigo', 'linear-violet', 'vercel-mono'],
+  app:         ['saas-indigo', 'midnight', 'linear-violet'],
+};
 
 // Genre → ordered section sequence. Each section: {slot, query, shell, house?}.
 // `query` feeds BM25 search to gather candidate snippets; `shell` selects the
@@ -749,13 +777,20 @@ export function composePage(genre, opts, deps) {
   const fontPair = opts.fontPair || base.fontPair || def.fontPair;
   const motion = opts.motion || base.motion || def.motion;
   const density = opts.density || base.density || def.density;
-  let palette = opts.palette || base.palette || def.palette;
+  const seed = Number.isFinite(+opts.seed) ? Math.abs(Math.floor(+opts.seed)) : 0;
+  // palette: pinned (opts/preset) always wins; otherwise rotate the genre
+  // shortlist by seed for real visual diversity (shortlist[0] = the old default,
+  // so seed 0 is byte-identical).
+  let palette = opts.palette || base.palette;
+  if (!palette) {
+    const shortlist = GENRE_PALETTE_SHORTLIST[genre];
+    palette = (shortlist && shortlist.length) ? shortlist[seed % shortlist.length] : def.palette;
+  }
   if (palByName && !palByName.has(palette)) {
     warnings.push(`palette "${palette}" not found — using "${def.palette}"`);
     palette = def.palette;
   }
   const house = base.house || {};
-  const seed = Number.isFinite(+opts.seed) ? Math.abs(Math.floor(+opts.seed)) : 0;
 
   // Per-slot pick with variety_seed rotation through real candidates.
   // seed 0 = the house/top-ranked pick for EVERY slot (best quality);
@@ -803,7 +838,7 @@ export function composePage(genre, opts, deps) {
 // components are recommended per screen via MOBILE_SLOT_COMPONENTS (from the
 // classified map); content screens with no component build from shells.
 
-const MOBILE_GENRE_AESTHETIC = { onboarding: 'minimal', social: 'playful', commerce: 'energetic', health: 'minimal', finance: 'technical', productivity: 'minimal', media: 'energetic', saas: 'minimal', app: 'minimal' };
+export const MOBILE_GENRE_AESTHETIC = { onboarding: 'minimal', social: 'playful', commerce: 'energetic', health: 'minimal', finance: 'technical', productivity: 'minimal', media: 'energetic', saas: 'minimal', app: 'minimal' };
 
 // slot → real vault components to recommend (paths the agent drops in)
 const MOBILE_SLOT_COMPONENTS = {
@@ -820,12 +855,12 @@ const MOBILE_SLOT_COMPONENTS = {
 // genre → ordered screens. Each: { screen, shell, slot, tab? }
 export const MOBILE_FLOWS = {
   onboarding: [ { screen: 'Welcome', shell: 'onboarding', slot: 'onboarding' }, { screen: 'Sign up', shell: 'auth', slot: 'auth' }, { screen: 'Home', shell: 'feed', slot: 'feed', tab: 0 } ],
-  social:     [ { screen: 'Feed', shell: 'feed', slot: 'feed', tab: 0 }, { screen: 'Post', shell: 'detail', slot: 'detail' }, { screen: 'Profile', shell: 'profile', slot: 'profile', tab: 3 } ],
+  social:     [ { screen: 'Feed', shell: 'feed', slot: 'feed', tab: 0 }, { screen: 'Post', shell: 'sheet', slot: 'detail' }, { screen: 'Profile', shell: 'profile', slot: 'profile', tab: 3 } ],
   commerce:   [ { screen: 'Shop', shell: 'feed', slot: 'feed', tab: 0 }, { screen: 'Product', shell: 'detail', slot: 'detail' }, { screen: 'Checkout', shell: 'checkout', slot: 'checkout' } ],
   health:     [ { screen: 'Today', shell: 'dashboard', slot: 'dashboard', tab: 0 }, { screen: 'Activity', shell: 'detail', slot: 'detail' }, { screen: 'Profile', shell: 'profile', slot: 'profile', tab: 3 } ],
   finance:    [ { screen: 'Balance', shell: 'dashboard', slot: 'dashboard', tab: 0 }, { screen: 'Activity', shell: 'list', slot: 'list', tab: 2 }, { screen: 'Detail', shell: 'detail', slot: 'detail' } ],
-  productivity:[ { screen: 'Tasks', shell: 'list', slot: 'list', tab: 0 }, { screen: 'Task', shell: 'detail', slot: 'detail' }, { screen: 'Settings', shell: 'settings', slot: 'settings', tab: 3 } ],
-  media:      [ { screen: 'Browse', shell: 'feed', slot: 'feed', tab: 0 }, { screen: 'Now playing', shell: 'detail', slot: 'detail' }, { screen: 'Library', shell: 'list', slot: 'list', tab: 2 } ],
+  productivity:[ { screen: 'Tasks', shell: 'fablist', slot: 'list', tab: 0 }, { screen: 'Task', shell: 'detail', slot: 'detail' }, { screen: 'Settings', shell: 'settings', slot: 'settings', tab: 3 } ],
+  media:      [ { screen: 'Browse', shell: 'feed', slot: 'feed', tab: 0 }, { screen: 'Now playing', shell: 'player', slot: 'detail' }, { screen: 'Library', shell: 'empty', slot: 'list', tab: 2 } ],
   saas:       [ { screen: 'Dashboard', shell: 'dashboard', slot: 'dashboard', tab: 0 }, { screen: 'Detail', shell: 'detail', slot: 'detail' }, { screen: 'Settings', shell: 'settings', slot: 'settings', tab: 3 } ],
   app:        [ { screen: 'Welcome', shell: 'onboarding', slot: 'onboarding' }, { screen: 'Home', shell: 'feed', slot: 'feed', tab: 0 }, { screen: 'Settings', shell: 'settings', slot: 'settings', tab: 3 } ],
 };
@@ -925,6 +960,50 @@ const MOBILE_SHELLS = {
       <div class="scr-stats"><div class="scr-stat" style="outline:2px solid var(--accent);"><b>$8</b><span>monthly</span></div><div class="scr-stat"><b>$60</b><span>yearly · save 38%</span></div></div>
     </main>
     <div class="scr-cta"><a class="scr-btn scr-btn--block">Start 14-day free trial</a><a class="scr-btn scr-btn--text">Restore purchase</a></div>`,
+  // ---- real native patterns (sheets, FAB, player, empty state) ----
+  fablist: (tab = 0) => `${scrBar}
+    <header class="scr-nav scr-nav--large"><span class="scr-nav-title">Tasks</span></header>
+    <main class="scr-body">
+      <div class="scr-segment"><button class="is-active">Today</button><button>Upcoming</button><button>Done</button></div>
+      <div class="scr-list">${scrRow('Design review', '10:00 · Studio')}${scrRow('Write the brief', 'Due today')}${scrRow('Call with Sam', '2:30 · 30 min')}${scrRow('Ship the build', 'Due tomorrow')}</div>
+    </main>
+    <button class="scr-fab">+</button>
+    ${scrTabbar(tab)}`,
+  player: () => `${scrBar}
+    <header class="scr-nav"><span class="scr-nav-left">‹</span><span class="scr-nav-title">Now playing</span><span class="scr-nav-right">⋯</span></header>
+    <main class="scr-body" style="justify-content:space-between;">
+      <div class="scr-media" style="aspect-ratio:1/1;border-radius:20px;margin-top:0.5rem;"></div>
+      <div style="text-align:center;">
+        <div style="font:800 1.5rem/1.1 var(--font-head,inherit);letter-spacing:-0.02em;">Slow Evenings</div>
+        <div style="color:var(--muted);font-size:15px;margin-top:4px;">The Quiet Hours</div>
+      </div>
+      <div>
+        <div style="height:4px;border-radius:2px;background:var(--border);position:relative;"><div style="position:absolute;left:0;top:0;height:4px;width:38%;border-radius:2px;background:var(--accent);"></div></div>
+        <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:6px;"><span>1:24</span><span>-2:11</span></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:2rem;font-size:1.6rem;color:var(--fg);">
+        <span>⏮</span><button class="scr-fab" style="position:static;width:64px;height:64px;">▶</button><span>⏭</span>
+      </div>
+    </main>`,
+  sheet: () => `${scrBar}
+    <header class="scr-nav scr-nav--large"><span class="scr-nav-title">Discover</span></header>
+    <main class="scr-body" style="filter:brightness(0.5);">
+      <article class="scr-card"><div class="scr-media"></div><h3>Featured today</h3></article>
+      <div class="scr-list">${scrRow('Nearby', '12 places')}${scrRow('Trending', 'Updated now')}</div>
+    </main>
+    <div class="scr-sheet">
+      <div class="scr-media" style="aspect-ratio:16/9;"></div>
+      <div class="scr-hero" style="padding-top:0.6rem;"><h1 style="font-size:1.5rem;">The case for slow evenings</h1><p>A 6-minute read on winding down with intention.</p></div>
+      <a class="scr-btn scr-btn--block">Open</a>
+    </div>`,
+  empty: (tab = 2) => `${scrBar}
+    <header class="scr-nav scr-nav--large"><span class="scr-nav-title">Library</span></header>
+    <main class="scr-body" style="justify-content:center;align-items:center;text-align:center;gap:1rem;">
+      <div class="scr-avatar" style="width:72px;height:72px;font-size:30px;opacity:0.7;">◇</div>
+      <div class="scr-hero" style="align-items:center;"><h1 style="font-size:1.4rem;">Nothing saved yet</h1><p>Items you save will show up here for offline access.</p></div>
+      <a class="scr-btn" style="max-width:220px;">Browse library</a>
+    </main>
+    ${scrTabbar(tab)}`,
 };
 
 function renderComposedApp(genre, t, screens, presetName) {
@@ -980,12 +1059,18 @@ export function composeApp(genre, opts, deps) {
   const fontPair = opts.fontPair || base.fontPair || def.fontPair;
   const motion = opts.motion || base.motion || def.motion;
   const density = opts.density || base.density || def.density;
-  let palette = opts.palette || base.palette || def.palette;
+  const seed = Number.isFinite(+opts.seed) ? Math.abs(Math.floor(+opts.seed)) : 0;
+  // seed-driven palette diversity (shortlist[0] = old default → seed 0 unchanged);
+  // pinned palette/preset always wins.
+  let palette = opts.palette || base.palette;
+  if (!palette) {
+    const shortlist = MOBILE_PALETTE_SHORTLIST[genre];
+    palette = (shortlist && shortlist.length) ? shortlist[seed % shortlist.length] : def.palette;
+  }
   if (palByName && !palByName.has(palette)) {
     warnings.push(`palette "${palette}" not found — using "${def.palette}"`);
     palette = def.palette;
   }
-  const seed = Number.isFinite(+opts.seed) ? Math.abs(Math.floor(+opts.seed)) : 0;
 
   const screens = flow.map((sc) => {
     const cands = MOBILE_SLOT_COMPONENTS[sc.slot] || [];

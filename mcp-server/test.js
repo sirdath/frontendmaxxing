@@ -11,7 +11,7 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-import { parseIndex, buildSearchIndex, buildRelations, tokenize, SYNONYMS, parsePalettes, classifyDoc, docTitle, buildDesignMd, extractDesignTokens, matchPalette, buildApplyPlan, composePage, checkCoherence, GENRE_SEQUENCES, composeApp, MOBILE_FLOWS } from './server.js';
+import { parseIndex, buildSearchIndex, buildRelations, tokenize, SYNONYMS, parsePalettes, classifyDoc, docTitle, buildDesignMd, extractDesignTokens, matchPalette, buildApplyPlan, composePage, checkCoherence, GENRE_SEQUENCES, composeApp, MOBILE_FLOWS, GENRE_PALETTE_SHORTLIST, MOBILE_PALETTE_SHORTLIST, AESTHETIC_DEFAULTS, GENRE_AESTHETIC, MOBILE_GENRE_AESTHETIC } from './server.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const entries = parseIndex(readFileSync(join(root, 'INDEX.md'), 'utf8'));
@@ -251,6 +251,26 @@ test('composeApp: unknown genre falls back to a valid flow (no throw)', () => {
   const r = composeApp('totally-unknown-genre', {}, appDeps);
   assert.ok(r.screens.length >= 2, 'fallback still produces a flow');
   assert.equal(r.platform, 'mobile');
+});
+
+test('seed-0 regression guard: every palette shortlist[0] === the genre default (byte-identical)', () => {
+  // the whole point of the shortlists is variety WITHOUT changing seed 0 — index 0
+  // must equal what the old `def.palette` resolution produced, or saved pages drift.
+  for (const g of Object.keys(GENRE_PALETTE_SHORTLIST)) {
+    const expected = AESTHETIC_DEFAULTS[GENRE_AESTHETIC[g]].palette;
+    assert.equal(GENRE_PALETTE_SHORTLIST[g][0], expected, `web ${g}: shortlist[0] must be the seed-0 default`);
+  }
+  for (const g of Object.keys(MOBILE_PALETTE_SHORTLIST)) {
+    const expected = AESTHETIC_DEFAULTS[MOBILE_GENRE_AESTHETIC[g]].palette;
+    assert.equal(MOBILE_PALETTE_SHORTLIST[g][0], expected, `mobile ${g}: shortlist[0] must be the seed-0 default`);
+  }
+  // and prove it end-to-end on the historically-mismatched genre
+  assert.equal(composeApp('health', { seed: 0 }, appDeps).theme.palette, 'saas-indigo', 'health seed-0 unchanged');
+  // every shortlist palette must be a real palette
+  const known = new Set(palettes.map((p) => p.name));
+  for (const tbl of [GENRE_PALETTE_SHORTLIST, MOBILE_PALETTE_SHORTLIST]) {
+    for (const g of Object.keys(tbl)) for (const name of tbl[g]) assert.ok(known.has(name), `palette "${name}" (${g}) exists`);
+  }
 });
 
 test('composeApp: a composed app flow is saveable and flags its imagery deficit', () => {
