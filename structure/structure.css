@@ -230,4 +230,9 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  /* CRITICAL: reveal-on-scroll content must be visible without JS/animation —
+     .s-reveal starts at opacity:0 and is only un-hidden by .is-in. Under
+     reduced-motion (and as a no-JS safety net) force it visible, or the whole
+     page renders blank. */
+  .s-reveal { opacity: 1 !important; transform: none !important; }
 }

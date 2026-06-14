@@ -700,6 +700,28 @@ ${body}
      .s-* shells so it renders on-brand BEFORE the parts are wired in.
 ${manifest}
      ============================================ -->
+<script>
+/* reveal-on-scroll: add .is-in to .s-reveal as it enters view. Without this the
+   shells stay opacity:0 forever (the page renders blank). Guarded for
+   reduced-motion and browsers without IntersectionObserver — both reveal all. */
+(function () {
+  var els = document.querySelectorAll('.s-reveal');
+  if (!els.length) return;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) {
+    for (var i = 0; i < els.length; i++) els[i].classList.add('is-in');
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+  for (var j = 0; j < els.length; j++) io.observe(els[j]);
+  /* anything already above the fold reveals on the next frame */
+  requestAnimationFrame(function () {
+    for (var k = 0; k < els.length; k++) { if (els[k].getBoundingClientRect().top < window.innerHeight) els[k].classList.add('is-in'); }
+  });
+})();
+</script>
 </body>
 </html>`;
 }
@@ -1010,9 +1032,55 @@ export function checkCoherence(html) {
   // 4. slop scale hover (scale(1.0x)/scale(1.1x))
   add('slop-hover', scrub.match(/scale\(\s*1\.(?:0[1-9]|1\d?)\d*\s*\)/g), 'lift with var(--ts-hover-lift) + var(--ts-elevation) instead of scale(1.0x)');
 
-  const penalty = (counts['hardcoded-hex'] || 0) * 4 + (counts['unblessed-duration'] || 0) * 6 + (counts['px-radius'] || 0) * 3 + (counts['slop-hover'] || 0) * 12;
+  // 5. AUTHENTICITY — the "AI tell" law (the #1 thing the council surfaced).
+  //    Measured on the RAW html (url()/gradients matter here, not after scrub).
+  //    Gradients carrying a page with NO real imagery is the single biggest
+  //    "looks AI-generated" signal. Penalties apply ONLY to full pages — a
+  //    component snippet legitimately has no hero image, so it isn't dinged.
+  const isPage = /<!doctype|<body[\s>]/i.test(html);
+  const imgTags = (html.match(/<(?:img|picture|video)[\s>]/gi) || []).length;
+  const canvasTags = (html.match(/<canvas[\s>]/gi) || []).length;
+  const bgImageUrls = (html.match(/background(?:-image)?\s*:\s*[^;}"']*url\(/gi) || []).length;
+  // inline <svg> counts as imagery only when it's a real drawing (has shape
+  // elements and meaningful length) — not a 1-glyph icon.
+  const svgArt = (html.match(/<svg[\s\S]*?<\/svg>/gi) || [])
+    .filter((s) => /<(?:path|polygon|polyline|circle|ellipse|rect)\b/i.test(s) && s.length > 160).length;
+  const imageCount = imgTags + canvasTags + bgImageUrls + svgArt;
+  const gradientCount = (html.match(/(?:linear|radial|conic)-gradient\(/gi) || []).length;
+  const scriptCount = (html.match(/<script[\s>]/gi) || []).length;
+  const motionDecl = /@keyframes|animation\s*:|animation-name\s*:|transition\s*:|data-anim|IntersectionObserver|\.is-in\b/i.test(html);
+  const motionSignals = scriptCount + (motionDecl ? 1 : 0);
+  const tells = [];
+  if (gradientCount >= 2 && imageCount === 0) tells.push('GRADIENT-HEAVY-NO-IMAGERY');
+  if (imageCount === 0) tells.push('NO-IMAGERY');
+  if (motionSignals === 0) tells.push('NO-MOTION');
+  const authenticity = {
+    imageCount, gradientCount, motionSignals,
+    bespoke: imageCount > 0 && !(gradientCount >= 2 && imageCount === 0),
+    tells,
+  };
+  let authPenalty = 0;
+  if (isPage) {
+    if (gradientCount >= 2 && imageCount === 0) {
+      authPenalty += 40; // HARD — the only authenticity check that should breach the save-gate
+      warnings.push({ type: 'gradient-heavy-no-imagery', count: gradientCount, sample: [],
+        hint: 'the #1 AI tell: gradients carrying a page with no real imagery. Generate a hero image (book_generate_image) or mount an illustration (svg/illustrations.js), and drop a gradient.' });
+    }
+    if (imageCount === 0) {
+      authPenalty += 12; // SOFT — signals the deficit on every fresh draft without auto-failing
+      warnings.push({ type: 'no-imagery', count: 1, sample: [],
+        hint: 'no images/illustration/video on the page — add real imagery: book_generate_image for photos, svg/illustrations.js (Illustrations.get/mount) for vector scenes. The biggest "looks AI-generated" tell.' });
+    }
+    if (motionSignals === 0) {
+      authPenalty += 6; // SOFT advisory — a fresh draft may add motion later
+      warnings.push({ type: 'no-motion', count: 1, sample: [],
+        hint: 'no motion at all — wire a reveal-on-scroll or a tasteful transition (taste/motion-profiles.js, animations/*).' });
+    }
+  }
+
+  const penalty = (counts['hardcoded-hex'] || 0) * 4 + (counts['unblessed-duration'] || 0) * 6 + (counts['px-radius'] || 0) * 3 + (counts['slop-hover'] || 0) * 12 + authPenalty;
   const score = Math.max(0, 100 - Math.min(100, penalty));
-  return { score, ok: score >= 80, counts, warnings };
+  return { score, ok: score >= 80, counts, warnings, authenticity };
 }
 
 // =====================================================

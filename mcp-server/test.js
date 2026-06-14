@@ -192,10 +192,31 @@ test('checkCoherence: flags hardcoded hex, passes token-only markup', () => {
   assert.equal(rg.score, 100);
 });
 
-test('checkCoherence: a composed page scores high (cohesive by construction)', () => {
+test('checkCoherence: a composed page is cohesive but flags its imagery deficit', () => {
   const r = composePage('agency', { preset: 'bold-launch' }, composeDeps);
   const c = checkCoherence(r.html);
-  assert.ok(c.score >= 90, `composed page should be cohesive, got ${c.score}: ${JSON.stringify(c.counts)}`);
+  // cohesive by construction (token-driven) — no hardcoded-hex / px-radius / slop-hover
+  assert.ok(!c.counts['hardcoded-hex'] && !c.counts['px-radius'] && !c.counts['slop-hover'], `should be token-clean: ${JSON.stringify(c.counts)}`);
+  // ...but the authenticity scorer SEES that a wireframe has no real imagery
+  assert.ok(c.authenticity, 'returns an authenticity block');
+  assert.equal(c.authenticity.imageCount, 0, 'a fresh wireframe has no imagery');
+  assert.ok(c.authenticity.tells.includes('NO-IMAGERY'), 'flags the imagery deficit');
+  // the deficit is advisory, not a hard fail — the draft stays saveable (>=70)
+  assert.ok(c.score >= 70, `imagery deficit is soft, draft still saveable, got ${c.score}`);
+});
+
+test('checkCoherence: gradient-heavy page with no imagery fails hard (the AI tell)', () => {
+  const slop = '<!doctype html><html><body><section style="background:linear-gradient(120deg,#a1c,#1cf)"><h1>Hi</h1></section><section style="background:radial-gradient(circle,#fff,#ddd)"><p>x</p></section></body></html>';
+  const c = checkCoherence(slop);
+  assert.ok(c.authenticity.tells.includes('GRADIENT-HEAVY-NO-IMAGERY'), 'detects the tell');
+  assert.ok(c.score < 70, `gradient-heavy + no imagery must breach the gate, got ${c.score}`);
+});
+
+test('checkCoherence: a page WITH imagery clears the authenticity bar', () => {
+  const good = '<!doctype html><html><body><section><img src="hero.jpg" alt="hero" width="800" height="600"><h1>Real</h1></section><script>/* reveal */ new IntersectionObserver(()=>{});</script></body></html>';
+  const c = checkCoherence(good);
+  assert.equal(c.authenticity.tells.length, 0, `no tells when imagery+motion present: ${JSON.stringify(c.authenticity)}`);
+  assert.equal(c.score, 100, 'imagery + motion + token-clean = 100');
 });
 
 // ---- mobile: composeApp (the .scr-* screen-flow engine) ----
@@ -232,10 +253,12 @@ test('composeApp: unknown genre falls back to a valid flow (no throw)', () => {
   assert.equal(r.platform, 'mobile');
 });
 
-test('composeApp: a composed app flow is cohesive (token-driven, low slop)', () => {
+test('composeApp: a composed app flow is saveable and flags its imagery deficit', () => {
   const r = composeApp('finance', { seed: 0 }, appDeps);
   const c = checkCoherence(r.html);
-  assert.ok(c.score >= 80, `composed app should be cohesive, got ${c.score}: ${JSON.stringify(c.counts)}`);
+  assert.ok(c.score >= 70, `composed app should stay saveable, got ${c.score}: ${JSON.stringify(c.counts)}`);
+  assert.ok(c.authenticity.tells.includes('NO-IMAGERY'), 'flags that the flow has empty media');
+  assert.equal(c.authenticity.gradientCount, 0, 'token-driven, not gradient slop');
 });
 
 test('tokenize splits on non-alphanumerics', () => {
