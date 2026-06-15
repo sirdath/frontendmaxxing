@@ -4,7 +4,7 @@
    ============================================
    Usage:
      var tray = AttachmentChips.init('.atc-tray', {
-       onAdd: function (file) { /* upload here, return Promise<{progress, done}> */ },
+       onAdd: function (file) {},          // upload here; return Promise<{progress, done}>
        onRemove: function (file) {},
        allow: ['image/*', 'application/pdf', 'text/*'],
        max: 10,

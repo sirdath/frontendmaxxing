@@ -14,7 +14,7 @@
        interim: true,
        autoStop: 3000,                // ms of silence before auto-stop
        onTranscript: function (text, isFinal) { console.log(text); },
-       onAudio: function (blob) { /* MediaRecorder result */ },
+       onAudio: function (blob) {},        // receives the MediaRecorder result blob
        onStart, onStop, onError
      });
 

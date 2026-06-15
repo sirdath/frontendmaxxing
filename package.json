@@ -72,8 +72,13 @@
     "demo": "echo 'Open demo/index.html in your browser — no build step needed.'",
     "stats": "echo 'CSS:' && find . -name \"*.css\" -not -path \"./node_modules/*\" -not -path \"./demo/*\" | wc -l && echo 'JS:' && find . -name \"*.js\" -not -path \"./node_modules/*\" -not -path \"./demo/*\" | wc -l",
     "audit": "node tools/audit.js",
-    "verify": "node tools/audit.js",
-    "audit:strict": "node tools/audit.js --strict"
+    "audit:strict": "node tools/audit.js --strict",
+    "test": "node mcp-server/test.js",
+    "smoke": "node tools/render-smoke.mjs",
+    "smoke:ci": "HARNESS_SOFTWARE=1 node tools/render-smoke.mjs",
+    "smoke:setup": "cd tools && npm install",
+    "verify": "node tools/audit.js && node mcp-server/test.js",
+    "verify:full": "node tools/audit.js && node mcp-server/test.js && node tools/render-smoke.mjs"
   },
   "engines": {
     "node": ">=14"

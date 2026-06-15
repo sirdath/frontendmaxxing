@@ -80,10 +80,19 @@
       return null;
     }
 
-    var fsrc = DEFAULT_FS_PREFIX +
-      (opts.uniforms ? buildUniformDecls(opts.uniforms) : '') +
-      (opts.imageUniforms ? buildSamplerDecls(opts.imageUniforms) : '') +
-      '\n' + (opts.fragmentShader || 'void main() { gl_FragColor = vec4(v_uv, 0.5, 1.0); }');
+    // A fragment that declares its own `precision`/`uniform`s is self-contained
+    // (Shadertoy-style). Prepending our prefix + auto-declared uniforms to it would
+    // redefine those symbols → "redefinition" compile error. Detect that and compile
+    // it as authored; uniform VALUES still bind by name below. A body-only fragment
+    // (just main()/helpers, no declarations) gets the prefix + auto-decls as before.
+    var userFs = opts.fragmentShader || 'void main() { gl_FragColor = vec4(v_uv, 0.5, 1.0); }';
+    var selfContained = /(^|[\s;{])(precision\s|uniform\s)/.test(userFs);
+    var fsrc = selfContained
+      ? userFs
+      : DEFAULT_FS_PREFIX +
+        (opts.uniforms ? buildUniformDecls(opts.uniforms) : '') +
+        (opts.imageUniforms ? buildSamplerDecls(opts.imageUniforms) : '') +
+        '\n' + userFs;
 
     var prog = program(gl, DEFAULT_VS, fsrc);
     if (!prog) return null;

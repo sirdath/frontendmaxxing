@@ -3314,17 +3314,15 @@
   };
 
   P['3d/floating-text.js'] = function (target) {
-    var host = threeStage(target, { height: 300, note: 'Extruded 3D text with hover tilt + bobbing.' });
-    Promise.all([
-      // TextGeometry depends on font loader + text geometry addon
-      loadThreeAddon('loaders/FontLoader.js'),
-      loadThreeAddon('geometries/TextGeometry.js')
-    ]).then(function () {
-      waitForThree(function () {
-        if (!window.FloatingText) return showThreeError(target, 'FloatingText module not loaded');
-        try { window.FloatingText.init(host, { text: 'HELLO', size: 0.7 }); }
-        catch (e) { showThreeError(target, 'init failed: ' + e.message); }
-      });
+    // TextGeometry/FontLoader are ESM-only (examples/jsm) at the pinned three@0.160
+    // — the old examples/js <script> globals were removed. Rather than load dead
+    // URLs, render the snippet's built-in fallback (extruded plate), which is what
+    // a page without the ESM addons gets. See the snippet header for the real setup.
+    var host = threeStage(target, { height: 300, note: 'Extruded 3D text — fallback plate (TextGeometry needs the ESM font addon).' });
+    waitForThree(function () {
+      if (!window.FloatingText) return showThreeError(target, 'FloatingText module not loaded');
+      try { window.FloatingText.init(host, { text: 'HELLO', size: 0.7 }); }
+      catch (e) { showThreeError(target, 'init failed: ' + e.message); }
     });
   };
 
@@ -3840,12 +3838,16 @@
         (opts.note ? '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">' + opts.note + '</div>' : '') +
       '</div>';
     var host = target.querySelector('#dapp-shader-host');
+    // opts.prop picks which fragment export to run — image shaders ship a
+    // texture-free `proceduralFragment` for standalone display (no photo needed).
+    var prop = opts.prop || 'fragment';
     var attempt = function (n) {
       var Shader = window[globalName];
-      if (window.ShaderRunner && Shader && Shader.fragment) {
+      var frag = Shader && (Shader[prop] || Shader.fragment);
+      if (window.ShaderRunner && frag) {
         try {
           window.ShaderRunner.create(host, {
-            fragmentShader: Shader.fragment,
+            fragmentShader: frag,
             uniforms: Shader.defaults || {}
           });
           return;
@@ -3858,17 +3860,51 @@
 
   P['shaders/noise-flow.glsl.js']        = function (t) { shaderStage(t, 'NoiseFlowShader',        { note: 'Flowing simplex noise' }); };
   P['shaders/gradient-mesh.glsl.js']     = function (t) { shaderStage(t, 'GradientMeshShader',     { note: 'Animated 4-stop gradient mesh' }); };
-  P['shaders/liquid-distortion.glsl.js'] = function (t) { shaderStage(t, 'LiquidDistortionShader', { note: 'Fluid-like UV distortion' }); };
+  P['shaders/liquid-distortion.glsl.js'] = function (t) { shaderStage(t, 'LiquidDistortionShader', { note: 'Fluid-like UV distortion', prop: 'proceduralFragment' }); };
   P['shaders/voronoi.glsl.js']           = function (t) { shaderStage(t, 'VoronoiShader',          { note: 'Worley/Voronoi cells' }); };
   P['shaders/kaleidoscope.glsl.js']      = function (t) { shaderStage(t, 'KaleidoscopeShader',     { note: 'Sector-folding kaleidoscope' }); };
   P['shaders/raymarch-sdf.glsl.js']      = function (t) { shaderStage(t, 'RaymarchSDFShader',      { note: 'SDF raymarched primitives' }); };
   P['shaders/godrays.glsl.js']           = function (t) { shaderStage(t, 'GodraysShader',          { note: 'Volumetric god rays' }); };
   P['shaders/plasma.glsl.js']            = function (t) { shaderStage(t, 'PlasmaShader',           { note: 'Classic demoscene plasma' }); };
   P['shaders/fluid.glsl.js']             = function (t) { shaderStage(t, 'FluidShader',            { note: 'Curl-noise fluid simulation' }); };
-  P['shaders/sdf-text.glsl.js']          = function (t) { shaderStage(t, 'SDFTextShader',          { note: 'Signed-distance-field text + glow' }); };
-  P['shaders/halftone.glsl.js']          = function (t) { shaderStage(t, 'HalftoneShader',         { note: 'Halftone dot pattern' }); };
+  P['shaders/sdf-text.glsl.js']          = function (t) { shaderStage(t, 'SDFTextShader',          { note: 'Signed-distance-field text + glow', prop: 'proceduralFragment' }); };
+  P['shaders/halftone.glsl.js']          = function (t) { shaderStage(t, 'HalftoneShader',         { note: 'Halftone dot pattern', prop: 'proceduralFragment' }); };
   P['shaders/gradient-flow.glsl.js']     = function (t) { shaderStage(t, 'GradientFlowShader',     { note: 'Smooth gradient flow' }); };
   P['shaders/mesh-gradient-wgl.glsl.js'] = function (t) { shaderStage(t, 'MeshGradientWGLShader',  { note: 'Whatamesh-style WebGL mesh gradient' }); };
+  P['shaders/pointer-ripple.glsl.js']    = function (t) { shaderStage(t, 'PointerRippleShader',    { note: 'Concentric ripples from the cursor — move your mouse over it' }); };
+
+  // pointer-displace needs an image; supply a self-contained data-URI gradient so
+  // the preview (and the render harness) needs no external asset to draw.
+  P['shaders/pointer-displace.glsl.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">' +
+        '<div id="dapp-shader-host" style="width:100%;max-width:540px;height:320px;border-radius:10px;background:#000;overflow:hidden;"></div>' +
+        '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">Lens warp that pulls the image toward the cursor</div>' +
+      '</div>';
+    var host = target.querySelector('#dapp-shader-host');
+    var tex = document.createElement('canvas'); tex.width = 512; tex.height = 320;
+    var c = tex.getContext('2d');
+    var g = c.createLinearGradient(0, 0, 512, 320);
+    g.addColorStop(0, '#7c5cff'); g.addColorStop(0.5, '#ec4899'); g.addColorStop(1, '#22d3ee');
+    c.fillStyle = g; c.fillRect(0, 0, 512, 320);
+    c.fillStyle = 'rgba(255,255,255,0.16)';
+    for (var i = 0; i < 12; i++) c.fillRect(i * 44, 0, 22, 320);   // stripes make the warp visible
+    var src = tex.toDataURL('image/png');
+    var attempt = function (n) {
+      if (window.ShaderRunner && window.PointerDisplaceShader) {
+        try {
+          window.ShaderRunner.create(host, {
+            fragmentShader: window.PointerDisplaceShader.fragment,
+            uniforms: window.PointerDisplaceShader.defaults,
+            imageUniforms: { u_tex: src }
+          });
+        } catch (e) { console.warn('shader init', e); }
+        return;
+      }
+      if (n < 40) setTimeout(function () { attempt(n + 1); }, 80);
+    };
+    attempt(0);
+  };
 
   // ============================================
   // Remaining major packs — hand-crafted markup

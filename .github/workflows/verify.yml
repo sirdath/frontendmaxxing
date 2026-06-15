@@ -18,5 +18,37 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run audit (hard invariants must pass)
-        run: node tools/audit.js
+      - name: Audit (hard invariants) + MCP tests — zero-dep, must pass
+        run: |
+          node tools/audit.js
+          node mcp-server/test.js
+
+  render-smoke:
+    # Renders every snippet's demo in headless Chrome and asserts zero console/
+    # page errors, a non-empty preview, and drawn pixels for canvas/shader/3D
+    # snippets. Uses SwiftShader-via-ANGLE (HARNESS_SOFTWARE=1) for deterministic
+    # software WebGL on CI. Tracked known-issues are reported but don't fail the gate.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Google Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          install-dependencies: true
+
+      - name: Install harness deps (playwright-core — no bundled browser)
+        run: cd tools && npm ci
+
+      - name: Render-smoke (software WebGL)
+        env:
+          HARNESS_SOFTWARE: '1'
+          HARNESS_CHROME: ${{ steps.setup-chrome.outputs.chrome-path }}
+        run: node tools/render-smoke.mjs
