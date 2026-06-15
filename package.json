@@ -75,6 +75,8 @@
     "audit:strict": "node tools/audit.js --strict",
     "test": "node mcp-server/test.js",
     "smoke": "node tools/render-smoke.mjs",
+    "smoke:dev": "CONCURRENCY=1 node tools/render-smoke.mjs --only",
+    "smoke:safe": "CONCURRENCY=2 node tools/render-smoke.mjs",
     "smoke:ci": "HARNESS_SOFTWARE=1 node tools/render-smoke.mjs",
     "smoke:setup": "cd tools && npm install",
     "verify": "node tools/audit.js && node mcp-server/test.js",

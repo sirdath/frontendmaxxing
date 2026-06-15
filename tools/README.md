@@ -8,12 +8,16 @@ Two gates verify the vault. They are dev tooling only — neither ships to snipp
 | **Dynamic** | `render-smoke.mjs` | `playwright-core` + system Chrome | Every snippet actually *renders* in a real browser with no errors and drawn pixels. |
 
 ```bash
-npm run audit          # static invariants (fast, zero-dep)
-npm run test           # MCP server unit tests
-npm run smoke          # render every snippet in headless Chrome (needs setup below)
-npm run verify         # audit + test  (zero-dep — what CI's first job runs)
-npm run verify:full    # audit + test + smoke  (the complete local gate)
+npm run audit                       # static invariants (fast, zero-dep)
+npm run test                        # MCP server unit tests
+npm run smoke:dev -- <folder>/<file># scoped render of ONE snippet, CONCURRENCY=1 (the authoring loop)
+npm run smoke                       # render every snippet in headless Chrome (full vault, needs setup below)
+npm run smoke:safe                  # full vault throttled to CONCURRENCY=2 (kind to a busy machine)
+npm run verify                      # audit + test  (zero-dep — what CI's first job runs)
+npm run verify:full                 # audit + test + smoke  (the complete local gate)
 ```
+
+The everyday loop while authoring a snippet is `npm run smoke:dev -- <folder>/<file>` — one Chrome context, ~2s, capped at one core so it never fights other work. Run the full vault only before a push (or let CI do it).
 
 ## render-smoke — what it does
 
@@ -42,6 +46,12 @@ node tools/render-smoke.mjs --only a/b,c/d      # comma-separated list of snippe
 node tools/render-smoke.mjs --json              # machine-readable report
 HARNESS_SOFTWARE=1 node tools/render-smoke.mjs  # deterministic software WebGL (CI)
 ```
+
+> **`--only` is a substring match, not an exact-family selector.** `--only blocks/tooltips` also matches `blocks/tooltips-fancy`; `--only card` matches a dozen families. Pass the full `<folder>/<file>` and read the header line — `render-smoke — N families`. If `N` is larger than you expect, your token is too loose; if `N` is `0`, your snippet was filtered out (unregistered / weak-preview / typo) and is **unverified**, which is a red state, not a pass.
+
+### Canvas-required (shaders/ and 3d/)
+
+Every `shaders/` and `3d/` family (except infra like `shaders/runner`, and tracked known-issues) **must** produce a drawing `<canvas>`. If the demo renders a text fallback instead — the signature of a missing or wrong `demo/_previews.js` registration — the harness **fails** it loudly (`expected a <canvas> … but none rendered`). This is the vacuous-pass the harness exists to catch: a new shader/3D snippet that was never wired into the demo can otherwise pass on "preview non-empty" alone. For 3D the harness polls up to ~12s for the canvas to mount (three.js loads from CDN, then SceneRunner inits) before deciding. Animated/sparse canvases are sampled across several frames and judged on the best, so a particle field that's momentarily empty isn't false-failed.
 
 | Env | Effect |
 |---|---|

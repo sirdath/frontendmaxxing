@@ -60,6 +60,11 @@ const CDN_ASSET_FAMILIES = new Set(['media/lottie-player', 'media/rive-player'])
 // whiteboard, minimap of empty content). A canvas with no strokes is correct here,
 // so assert render + zero-error only — not drawn pixels (like MIC visualizers).
 const INTERACTIVE_CANVAS = new Set(['components/canvas-minimap', 'components/whiteboard-pack', 'cursor/cursor-paint', 'cursor/cursor-tool']);
+// shaders/ and 3d/ families MUST produce a drawing <canvas> — if the demo renders a
+// text fallback instead (a missing/incorrect demo registration), that's a real bug,
+// not a pass. These infra files in those folders are the only ones that legitimately
+// render docs/markup instead of a canvas.
+const NON_CANVAS_INFRA = new Set(['shaders/runner']);
 // Explicit, REPORTED known-issues: pre-existing breakage that needs a larger fix
 // than this harness should bundle. Listed in the output and excluded from the hard
 // pass/fail gate so "green" means "everything fixable passes" — never silent.
@@ -130,6 +135,11 @@ async function buildWorklist() {
     f.cdnAsset = CDN_ASSET_FAMILIES.has(f.base);
     f.interactive = INTERACTIVE_CANVAS.has(f.base);
     f.knownIssue = KNOWN_ISSUES.get(f.base) || null;
+    // shaders/3d snippets are expected to draw a canvas; if none appears the demo
+    // rendered a text fallback (bad registration) — a hard fail, not a vacuous pass.
+    const folder = f.rep.path.split('/')[0];
+    f.canvasExpected = (folder === 'shaders' || folder === '3d')
+      && !NON_CANVAS_INFRA.has(f.base) && !f.isMic && !f.cdnAsset && !f.interactive && !f.knownIssue;
   });
   return list;
 }
@@ -143,27 +153,31 @@ const ASSESS = async (opts) => {
   // poll for the preview body to mount + populate (render path is async)
   const body = () => document.getElementById('dapp-preview-body');
   const nonEmpty = (b) => !!(b && (b.querySelector('canvas,svg,img,video') || b.innerText.trim().length > 0 || b.children.length > 0));
+  const hasSizedCanvas = (b) => { const c = b && b.querySelector('canvas'); return !!(c && c.width > 0); };
   // Generous populate window: under concurrent load a heavy preview (e.g. a 6-scene
   // three.js pack) can take seconds to mount. Too short a deadline = false "empty".
-  const deadline = Date.now() + opts.settle + 9000;
-  while (Date.now() < deadline) { if (nonEmpty(body())) break; await sleep(60); }
+  // For canvas-expected (shaders/3d) families, wait for the actual <canvas> to mount
+  // — a CDN three.js load + SceneRunner init lands the canvas well after the text
+  // note does, so polling only for non-empty would miss it and skip the draw check.
+  const ready = opts.canvasExpected ? () => hasSizedCanvas(body()) : () => nonEmpty(body());
+  const deadline = Date.now() + opts.settle + (opts.canvasExpected ? 12000 : 9000);
+  while (Date.now() < deadline) { if (ready()) break; await sleep(60); }
   const b = body();
   const previewOk = nonEmpty(b);
   // let canvases warm up (THREE/shaders need a few frames)
   await raf(); await raf(); await sleep(opts.settle);
-  const canvases = [];
-  for (const c of (b ? b.querySelectorAll('canvas') : [])) {
-    if (!c.width || !c.height) { canvases.push({ drew: false, reason: 'zero-size' }); continue; }
+
+  // Read one canvas → per-channel R/G/B variance (not just luminance — some shaders
+  // vary in hue while luminance stays flat) + a distinct-color count. "drew" = real
+  // spatial signal: brightness OR a channel above noise with >1 color, or simply
+  // many colors. A tainted (cross-origin) canvas is unreadable → assume it drew.
+  const measure = (c) => {
+    if (!c.width || !c.height) return { drew: false, reason: 'zero-size' };
     const W = Math.min(c.width, 64), H = Math.min(c.height, 64);
     const off = document.createElement('canvas'); off.width = W; off.height = H;
     const octx = off.getContext('2d'); let data;
     try { octx.drawImage(c, 0, 0, W, H); data = octx.getImageData(0, 0, W, H).data; }
-    catch (e) { canvases.push({ drew: true, reason: 'tainted-unreadable' }); continue; }
-    // Per-channel variance (not just luminance) — some shaders vary in hue while
-    // keeping luminance flat (e.g. a constant-brightness color spiral). Measuring
-    // only luminance would falsely report those as "didn't draw". Track R/G/B
-    // variance separately + a distinct-color count, and treat any meaningful
-    // signal as "drew".
+    catch (e) { return { drew: true, reason: 'tainted-unreadable' }; }
     let n = 0; const s = [0, 0, 0], sq = [0, 0, 0]; const seen = new Set();
     for (let i = 0; i < data.length; i += 4) {
       for (let k = 0; k < 3; k++) { const v = data[i + k]; s[k] += v; sq[k] += v * v; }
@@ -171,12 +185,25 @@ const ASSESS = async (opts) => {
       seen.add(((data[i] >> 4) << 8) | ((data[i + 1] >> 4) << 4) | (data[i + 2] >> 4));
     }
     const ch = n ? [0, 1, 2].map((k) => sq[k] / n - (s[k] / n) ** 2) : [0, 0, 0];
-    const lumVar = 0.299 * ch[0] + 0.587 * ch[1] + 0.114 * ch[2];
-    const maxVar = Math.max(ch[0], ch[1], ch[2]);
-    // drew when there's real spatial signal: brightness OR per-channel variance
-    // above noise, with >1 distinct color — or simply many distinct colors.
-    const drew = (Math.max(lumVar, maxVar) > 5 && seen.size > 1) || seen.size >= 4;
-    canvases.push({ drew, variance: Math.round(Math.max(lumVar, maxVar)), colors: seen.size });
+    const v = Math.max(0.299 * ch[0] + 0.587 * ch[1] + 0.114 * ch[2], ch[0], ch[1], ch[2]);
+    return { drew: (v > 5 && seen.size > 1) || seen.size >= 4, variance: Math.round(v), colors: seen.size };
+  };
+
+  // Sample each canvas across a few animation frames and keep the BEST signal: an
+  // animated/sparse canvas (e.g. a particle background) can be near-empty on one
+  // unlucky frame but clearly drawn on another — one snapshot would false-fail it.
+  // A truly blank canvas is blank on every frame, so it still fails. Stop early the
+  // moment a frame shows it drew.
+  const canvases = [];
+  for (const c of (b ? b.querySelectorAll('canvas') : [])) {
+    let best = null;
+    for (let sIdx = 0; sIdx < 4; sIdx++) {
+      const m = measure(c);
+      if (!best || (m.drew && !best.drew) || (m.variance || 0) > (best.variance || 0)) best = m;
+      if (best.drew) break;
+      await raf(); await sleep(90);
+    }
+    canvases.push(best);
   }
   return { previewOk, canvases, hasCanvas: canvases.length > 0 };
 };
@@ -207,7 +234,7 @@ async function testFamily(browser, base, fam) {
   try {
     await page.goto(`${base}/demo/index.html#/${fam.rep.path}`, { waitUntil: 'load', timeout: 30000 });
     const settle = fam.cdnAsset ? 600 : (fam.rep.path.startsWith('3d/') || fam.rep.path.startsWith('shaders/')) ? 400 : 250;
-    const res = await page.evaluate(ASSESS, { settle });
+    const res = await page.evaluate(ASSESS, { settle, canvasExpected: !!fam.canvasExpected });
     r.render = res.previewOk;
     // CDN-asset families: the sample .lottie/.riv 404 is expected (graceful no-op),
     // so drop the asset requestfailed/404 from the error set for these.
@@ -225,6 +252,13 @@ async function testFamily(browser, base, fam) {
       r.canvas = bad.length === 0;
       const worst = res.canvases.reduce((a, c) => (c.variance != null && (a == null || c.variance < a.variance) ? c : a), null);
       if (worst) { r.variance = worst.variance; r.colors = worst.colors; }
+    } else if (fam.canvasExpected && !res.hasCanvas) {
+      // shaders/3d family rendered something but NO canvas — the demo fell back to a
+      // text/tile preview, i.e. a missing or wrong demo/_previews.js registration.
+      // This is the vacuous-pass the harness exists to catch — fail it loudly.
+      r.canvas = false;
+      r.errors.unshift('expected a <canvas> (shaders/3d) but none rendered — missing/incorrect demo registration in demo/_previews.js');
+      r.errors = r.errors.slice(0, 6);
     }
   } catch (e) {
     r.errors.push('harness: ' + (e.message || e).slice(0, 200));

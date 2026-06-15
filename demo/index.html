@@ -12,6 +12,11 @@
 
   <!-- Always-loaded shaders runner (needed for any shader preview) -->
   <script src="../shaders/runner.js" defer></script>
+  <!-- Always-loaded 3D scene runner: most 3d/* snippets depend on the shared
+       window.SceneRunner global, which is NOT a same-base companion and so was
+       never loaded per-route — without this they render nothing. THREE is still
+       loaded on demand; this only defines the helper (it uses THREE lazily). -->
+  <script src="../3d/scene-runner.js" defer></script>
 </head>
 <body>
 

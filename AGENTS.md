@@ -176,14 +176,17 @@ Read the file before suggesting it. Don't trust INDEX blindly — verify API mat
 1. Pick the folder (or propose a new top-level one)
 2. Follow the JS/CSS template above
 3. Add the INDEX entry in the right section
-4. Register in `demo/index.html`
-5. Done — no build, no test, just save and refresh demo
+4. Register in `demo/index.html` (and `demo/_previews.js` for canvas/shader/3D — see below)
+5. **Verify:** `node tools/audit.js` (static), then for any **canvas / WebGL / shader / 3D / runtime-JS** snippet `node tools/render-smoke.mjs --only <folder>/<file>` — require `render 1/1`, `console-clean 1/1`, and `canvas-drew 1/1`. Pure CSS/markup: audit + eyeball is enough.
+6. Done — no build step.
+
+> **Canvas/shader/3D snippets render NOTHING until registered.** A new shader/3D snippet with no `P['folder/file']` entry in `demo/_previews.js` (or Usage-HTML / a callable JS global) falls back to a text preview with no `<canvas>`. Registration + `--only` smoke are a pair: registration gives it a drawing surface, smoke proves it actually drew. The harness fails any `shaders/`/`3d/` family that produces no canvas (a missing-registration bug), so an absent `canvas-drew` line there is **red**, not a pass. `--only` is a substring match — pass the full `<folder>/<file>` and check the header says `1 families`; `0 families` means it was filtered out (unregistered/weak-preview) and is **unverified**, not green.
 
 ### "I want to make a change to an existing snippet"
 1. Read the file
 2. Make the edit
 3. If the API surface changed, update the INDEX entry's tags + one-liner
-4. Verify the demo still works (open `demo/index.html` in a browser)
+4. Verify: `node tools/audit.js`, and for canvas/shader/3D/runtime-JS run `node tools/render-smoke.mjs --only <folder>/<file>` (replaces opening `demo/index.html` by hand). See `tools/HARNESS-PLAYBOOK.md` for the full loop.
 
 ### "I want to know what's available in folder X"
 Grep INDEX.md for entries with that folder path, e.g. `grep "components/" INDEX.md`
