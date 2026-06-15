@@ -1,0 +1,19 @@
+{
+  "name": "motion-canvas-card",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Minimal Motion Canvas example for the frontendmaxxing vault — see ../../motion-canvas.skill.md",
+  "scripts": {
+    "serve": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@motion-canvas/core": "^3.17.2",
+    "@motion-canvas/2d": "^3.17.2",
+    "@motion-canvas/ui": "^3.17.2",
+    "@motion-canvas/vite-plugin": "^3.17.2",
+    "@motion-canvas/ffmpeg": "^1.1.0",
+    "typescript": "^5.4.0",
+    "vite": "^5.2.0"
+  }
+}

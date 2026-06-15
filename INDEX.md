@@ -679,6 +679,9 @@
 **duotone.js** `effects/duotone.js` (JS, global: `Duotone`) — tags: duotone image svg-filter true-duotone feColorMatrix feComponentTransfer palette dynamic
   True SVG-filter-based duotone (sharper than blend-mode CSS). `Duotone.apply(el, {palette, dark, light})` + `init('[data-duotone]')`.
 
+**color-grade.css** `effects/color-grade.css` (CSS) — tags: color-grade cinematic film-look lut teal-orange bleach-bypass noir kodak-portra fuji-velvia filter grading cinema vintage cyberpunk
+  Cinematic film looks via stacked CSS `filter()` — `.grade-teal-orange/-bleach-bypass/-noir/-kodak-portra/-fuji-velvia/…` on any img/video/section. Token-driven (--grade-*), grade-soft/strong intensity, split-tone overlay. Zero JS. See `color-grade.skill.md`.
+
 **image-gradient.css** `effects/image-gradient.css` (CSS) — tags: image-gradient mask-image png svg logo icon wordmark gradient-fill silhouette apple-product-color vercel-logo linear-icon brand contain cover holo chrome shimmer two-tone aurora cosmic sunset cyber holo wrap-around png-fill svg-fill logo-fill
   Fill a PNG/SVG/logo with a gradient via `mask-image: var(--src)`. 20+ palette presets (aurora, cosmic, instagram, stripe, vercel, holo, chrome, etc.) + sizes xs→hero + wordmark/banner aspect ratios + anim/spin/hover/shimmer modifiers + two-tone (gradient blend over original) + wrap mode for existing `<img>`.
 
@@ -960,6 +963,15 @@
 **video-hover-preview.js** `media/video-hover-preview.js` (JS, global: `VideoHoverPreview`) — tags: video hover preview autoplay lazy debounce
   `VideoHoverPreview.init('[data-vhp]', {muted, loop, startDelay})` — lazy-injects `<video>`.
 
+**audio-visualizer.js** `media/audio-visualizer.js` (JS, global: `AudioVisualizer`) — tags: audio visualizer webaudio analyser canvas bars wave radial spectrum realtime mic equalizer fft
+  Live Web Audio analyser → canvas, modes bars/wave/radial, source = mic or `<audio>`. `AudioVisualizer.init('.viz', {source, mode})`. Realtime (for static seek/scrub use audio-waveform.js). Static under reduced-motion.
+
+**lottie-player.js** `media/lottie-player.js` (JS, global: `LottiePlayer`) — tags: lottie dotlottie animation player cdn json scroll-seek hover motion-graphics lottiefiles vanilla after-effects
+  Vanilla CDN player for Lottie/dotLottie (@lottiefiles/dotlottie-web, MIT, auto-loaded). `LottiePlayer.init('[data-lottie]')`; triggers load/scroll-seek/hover; reduced-motion static poster. See `lottie-rive.skill.md`.
+
+**rive-player.js** `media/rive-player.js` (JS, global: `RivePlayer`) — tags: rive riv state-machine animation player cdn interactive hover click wasm motion-graphics vanilla
+  Vanilla CDN player for Rive `.riv` state machines (@rive-app/canvas, MIT runtime, auto-loaded). `RivePlayer.init('[data-rive]')`; maps hover/click to SM inputs; reduced-motion idle frame. See `lottie-rive.skill.md`.
+
 ---
 
 ### Micro-interactions & feedback
@@ -1086,6 +1098,12 @@
 **view-transitions.js** `transitions/view-transitions.js` (JS, global: `ViewTransitions`) — tags: view-transitions api wrapper cross-fade fallback flip
   `ViewTransitions.run(callback, {type})` wrapper for `document.startViewTransition()` with FLIP fallback.
 
+**named-transitions.css** `transitions/named-transitions.css` (CSS) — tags: view-transitions named shared-element morph pseudo-element timing vt-fast vt-slow vt-spring reduced-motion
+  Timing for view-transition pseudo-elements so shared-element morphs tween smoothly. `--vt-dur/-ease/-fade`, presets vt-fast/-slow/-spring. Reduced-motion → instant. Pairs with named-transitions.js.
+
+**named-transitions.js** `transitions/named-transitions.js` (JS, global: `NamedTransitions`) — tags: view-transitions shared-element morph thumbnail-to-hero list-to-detail data-vt-morph startViewTransition
+  Shared-element morph on the View Transitions API: `NamedTransitions.morph('.thumb','.hero', swap)` pairs view-transition-name around a DOM swap (thumb→hero, list→detail). `init('[data-vt-morph]', swapFn)` for declarative. Builds on view-transitions.js. See `view-transitions.skill.md`.
+
 **transitions-pro.css** `transitions/transitions-pro.css` (CSS) — tags: page-transition overlay cover reveal circle iris curtain panels blinds stripes venetian rows slide zoom blur blocks mosaic diagonal glitch rgb-split codrops swup barba creative cool route navigation
   Overlay styles for the 11 transitions-pro effects (fade, circle iris, curtain, panels/blinds, diagonal sweep, RGB-split glitch, slide push, zoom-blur, stripes/venetian, rows, blocks/mosaic, split, 3D flip, clock wipe). Driven by transitions-pro.js via data-phase cover/reveal. Tunable --txp-color/dur/ease/stagger.
 
@@ -1095,6 +1113,12 @@
 ---
 
 ### Interactions (gestures & input)
+
+**ui-sounds.js** `interactions/ui-sounds.js` (JS, global: `UiSounds`) — tags: ui-sound sound-effects webaudio click hover success error synthesized mute feedback audio-feedback vercel family
+  Synthesized Web Audio UI sounds — no asset files, no network. `UiSounds.init('[data-ui-sound]')` auto-wires click/hover; `UiSounds.play('success')`. Global mute + volume; lazy autoplay-safe context; silent under prefers-reduced-motion. See `audio-ui.skill.md`.
+
+**sound-react.js** `interactions/sound-react.js` (JS, global: `SoundReact`) — tags: audio-reactive amplitude webaudio analyser css-variable snd-level mic frequency bass treble
+  Drives CSS vars from live audio amplitude: `SoundReact.init('.viz', {source})` writes `--snd-level`/`--snd-bass`/`--snd-treble` each frame (mic or `<audio>`). Style stays in CSS. Freezes for reduced-motion.
 
 **sortable.js** `interactions/sortable.js` (JS, global: `Sortable`) — tags: drag-and-drop sort reorder list HTML5-DnD
   `Sortable.init('#list', {itemSelector, handle, onSort})`. Classes: `.sortable-dragging`/`-over`.
@@ -1211,6 +1235,12 @@
 
 **noise-flow.glsl.js** `shaders/noise-flow.glsl.js` (JS, global: `NoiseFlowShader`) — tags: shader noise fbm domain-warping animated colors lygia
   Animated fBm noise with domain warping. `{fragment, defaults}`.
+
+**pointer-ripple.glsl.js** `shaders/pointer-ripple.glsl.js` (JS, global: `PointerRippleShader`) — tags: shader pointer mouse cursor ripple waves reactive interactive u_mouse hover concentric
+  Concentric waves emanating from the cursor via the runner's `u_mouse`. `ShaderRunner.create(t, {fragmentShader: PointerRippleShader.fragment, uniforms: PointerRippleShader.defaults})`. Tunables u_color/u_freq/u_speed/u_falloff.
+
+**pointer-displace.glsl.js** `shaders/pointer-displace.glsl.js` (JS, global: `PointerDisplaceShader`) — tags: shader pointer mouse cursor displacement lens warp image distortion u_mouse hover chromatic
+  Lens/warp of an image toward the cursor + chromatic split. `ShaderRunner.create(t, {fragmentShader: PointerDisplaceShader.fragment, uniforms: PointerDisplaceShader.defaults, imageUniforms:{u_tex:'photo.jpg'}})`.
 
 **gradient-mesh.glsl.js** `shaders/gradient-mesh.glsl.js` (JS, global: `GradientMeshShader`) — tags: shader gradient mesh stripe-style 4-corner film-grain animated
   Animated 4-corner gradient mesh + grain. `{fragment, defaults}`.

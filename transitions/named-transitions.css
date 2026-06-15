@@ -1,0 +1,53 @@
+/* ============================================
+   NAMED TRANSITIONS — Timing for shared-element view-transition morphs
+   Inspired by Chrome's view-transition styling guidance
+   ============================================
+   Styles the browser's view-transition pseudo-elements so shared-element morphs
+   (driven by transitions/named-transitions.js) tween smoothly. Tune with
+   --vt-dur / --vt-ease / --vt-fade on :root. Reduced-motion collapses to instant.
+
+   Usage:
+     <link rel="stylesheet" href="transitions/named-transitions.css">
+     <!-- pair elements with the same view-transition-name (named-transitions.js does this) -->
+
+   Variants: vt-fast (snappy) · vt-slow (luxe) · vt-spring (overshoot)  on :root or <html>
+   ============================================ */
+
+:root {
+  --vt-dur: 480ms;
+  --vt-ease: cubic-bezier(0.2, 0.9, 0.25, 1);
+  --vt-fade: 320ms;
+}
+
+/* every morphing group (position/size tween between old and new) */
+::view-transition-group(*) {
+  animation-duration: var(--vt-dur);
+  animation-timing-function: var(--vt-ease);
+}
+
+/* the default root cross-fade */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--vt-fade);
+  animation-timing-function: var(--vt-ease);
+}
+
+/* the morphing element's own content cross-fades a touch faster than it moves */
+::view-transition-image-pair(*) {
+  animation-duration: var(--vt-dur);
+  isolation: auto;
+}
+
+/* tuning presets — set the class on <html> */
+.vt-fast   { --vt-dur: 260ms; --vt-fade: 160ms; }
+.vt-slow   { --vt-dur: 480ms; --vt-fade: 320ms; }
+.vt-spring { --vt-ease: cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-image-pair(*) {
+    animation-duration: 0.01ms !important;
+  }
+}

@@ -58,5 +58,9 @@ ffmpeg -i in.mov -c:v hevc_videotoolbox -q:v 65 -tag:v hvc1 out.mp4
 - `videotoolbox` HW encoders = fast/low-power → use for previews/batch; use CPU `libx264/libx265 -crf` for **delivery masters** (better quality-per-byte). AV1 CPU encodes are slow even on M5 — hero assets only.
 - Always `-tag:v hvc1` on HEVC; keep `-pix_fmt yuv420p` for compatibility.
 
+## Alternatives
+- **[`motion-canvas.skill.md`](motion-canvas.skill.md) — `@motion-canvas/*` (MIT, unconditional).** Reach for it for **hand-authored motion graphics** (generator/timeline API, GSAP/After-Effects mental model), fully local render, **no company-size clause**. It's the vault's default video engine; pick Remotion when you need React/JSX layout, data-driven/personalized batch video, or Lambda-scale rendering — and your headcount clears the free tier.
+- **Revideo** — a Motion Canvas fork (MIT) built around a hosted/cloud-render service. Same generator API; avoid unless you specifically want the cloud-render dependency.
+
 ## Files this skill governs
 - The repo's deep `.claude/skills/remotion/` (SKILL.md + ~35 rules incl. `ffmpeg.md`, `lottie.md`, `transitions.md`, `subtitles.md`) covers the in-composition API; this adds the version/licensing/ffmpeg-CLI/Mac layer. Cross-refs: [`local-audio.skill.md`](local-audio.skill.md) (narration/captions), [`lottie-rive.skill.md`](lottie-rive.skill.md) (`@remotion/lottie`), `premium-motion-pipeline` skill.

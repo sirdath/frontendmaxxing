@@ -23,6 +23,10 @@ This folder is a **vanilla CSS+JS snippet vault** — 765 standalone, copy-paste
 | `design-system.skill.md` | DESIGN.md → frontendmaxxing — maps a design-taste token spec (refero.design pattern) onto the palettes + per-snippet `--vars` + component slots | "Build like &lt;brand&gt;", applying a DESIGN.md, choosing tokens/type/motion coherently, MCP `design_system(palette)` to generate a DESIGN.md |
 | `taste.skill.md` | Taste/cohesion layer — 6 aesthetic profiles (`taste/*` token presets), ~12 `TastePresets` bundles, anti-AI-slop rules | Making a page look intentional and cohesive, picking aesthetic+palette+font+motion together, avoiding slop tells, MCP `compose_page`/`coherence_check` |
 | `mobile-design.skill.md` | Native-app (iOS/Android) UI decision tree — HIG/Material conventions, screen-flow archetypes, the `.scr-*` app shells (`structure/app-shell.css`) | Designing a **mobile app** (a flow of screens, not a scrolling web page): "design an app for…", onboarding/feed/detail/profile/checkout flows, MCP `compose_app`, verifying with `book_inspect mode:"mobile"` |
+| `color-grade.skill.md` | Cinematic color grading — CSS-filter film looks vs canvas vs WebGL LUT, film-stock recipes, LUT licensing | Making imagery filmic (teal-orange, bleach-bypass, noir, Portra, Velvia), `effects/color-grade.css`, grading a hero/section |
+| `audio-ui.skill.md` | Sound in the UI — synthesized feedback sounds, audio-reactive visuals, WebAudio autoplay/a11y gotchas | Click/hover/success sounds (`interactions/ui-sounds.js`), audio-reactive CSS/canvas (`sound-react.js`/`media/audio-visualizer.js`) |
+| `view-transitions.skill.md` | Animating between states/pages — View Transitions API vs GSAP Flip vs FLIP, shared-element morphs, SPA/MPA | Morphing thumbnail→hero / list→detail (`transitions/named-transitions.*`), tab/filter transitions, cross-document nav |
+| `motion-canvas.skill.md` | Code-driven motion-graphics / video (MIT, the open engine) | Logo reveals, kinetic typography, animated explainers rendered to mp4 (`examples/motion-canvas-card/`); the open alternative to Remotion |
 | `demo/index.html` | Live preview of every snippet | When adding a new file (must register) |
 | `MEMORY.md` (separate, in user memory dir) | Phase summaries | Already loaded for Claude — auto-consulted |
 
@@ -53,6 +57,7 @@ structure/      Page-architecture: backbone CSS + section transitions/frames + g
 svg/            SVG animations, gradient defs
 taste/          Taste layer: token-preset CSS (data-aesthetic/density/motion/font-pair) + TastePresets/MotionProfile JS (see taste.skill.md)
 templates/      Prebuilt full-site templates (apps, not snippets — INDEX-exempt): atelier = complete clothing webshop (see templates/README.md)
+examples/       Build-based example projects (NOT vanilla snippets, INDEX-exempt): motion-canvas-card = minimal code-driven video (see motion-canvas.skill.md)
 transitions/    Page transitions (fade, curtain, morph, View Transitions API)
 typography/     Fluid type, variable fonts, gradient numbers, text effects
 utils/          easing, lerp, dom, performance, smooth-scroll, palette-generator, gradient-builder
