@@ -75,9 +75,9 @@ Some families can't be asserted on drawn pixels — they're checked for render +
 - **CDN players** whose sample `.lottie`/`.riv` asset 404s in the demo (the lib loads and no-ops gracefully) — `lottie-player`, `rive-player`.
 - **Interactive canvases** that are blank until the user draws — `cursor-paint`, `cursor-tool`, `whiteboard-pack`, `canvas-minimap`.
 
-**Known-issues** are pre-existing breakage that needs a larger fix than this harness should bundle. They are listed in every report and **excluded from the exit-code gate** (so green means "everything fixable passes") but never hidden:
+**Known-issues** are pre-existing breakage that needs a larger fix than this harness should bundle. They are listed in every report and **excluded from the exit-code gate** (so green means "everything fixable passes") but never hidden. The `KNOWN_ISSUES` map is currently **empty** — every family that can be verified passes.
 
-- `3d/postprocessing-bloom` — needs three.js `EffectComposer`/`UnrealBloomPass`, which are ESM-only (`examples/jsm`) at the pinned `three@0.160`; the old `examples/js` `<script>`-tag globals were removed. Tracked for an ESM-addon migration.
+> The last known-issue, `3d/postprocessing-bloom`, was resolved: three.js is now loaded as an ES module via an importmap so its `examples/jsm` postprocessing addons (`EffectComposer`/`UnrealBloomPass`) share one instance and attach to `window.THREE`. The whole vault now passes the gate with no exclusions.
 
 ## CI
 

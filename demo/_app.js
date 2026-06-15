@@ -142,12 +142,15 @@
   function loadThreeOnce() {
     if (window.THREE) return Promise.resolve();
     if (threeLoadPromise) return threeLoadPromise;
-    threeLoadPromise = new Promise(function (resolve) {
-      var script = document.createElement('script');
-      script.src = 'https://unpkg.com/three@0.160.0/build/three.min.js';
-      script.onload = script.onerror = function () { resolve(); };
-      document.head.appendChild(script);
-    });
+    // Load three as an ES module (resolved via the importmap in index.html) and
+    // expose a mutable copy on window.THREE. ESM is required because r160's addons
+    // (EffectComposer, UnrealBloomPass, …) ship only as examples/jsm modules that
+    // `import ... from "three"` — loading three the same way lets those addons share
+    // this exact instance, and the copy stays extensible so addon classes can be
+    // attached to window.THREE (a module namespace itself is frozen).
+    threeLoadPromise = import('three')
+      .then(function (m) { window.THREE = Object.assign({}, m); })
+      .catch(function (e) { console.warn('[demo] three ESM load failed', e); });
     return threeLoadPromise;
   }
   // ===== GSAP CDN loader (core + plugins, loaded on demand for gsap/* snippets) =====

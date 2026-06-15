@@ -68,9 +68,9 @@ const NON_CANVAS_INFRA = new Set(['shaders/runner']);
 // Explicit, REPORTED known-issues: pre-existing breakage that needs a larger fix
 // than this harness should bundle. Listed in the output and excluded from the hard
 // pass/fail gate so "green" means "everything fixable passes" — never silent.
-const KNOWN_ISSUES = new Map([
-  ['3d/postprocessing-bloom', 'needs three EffectComposer/UnrealBloomPass — ESM-only (examples/jsm) at r160; no <script>-tag (examples/js) build exists. Tracked for ESM-addon migration.'],
-]);
+// (Empty: 3d/postprocessing-bloom was resolved via the examples/jsm ESM-addon
+// migration — three is loaded as an ES module and the addons attach to window.THREE.)
+const KNOWN_ISSUES = new Map([]);
 // narrow, explicit benign-noise allow-list (never a broad regex)
 const BENIGN = [/favicon\.ico/i];
 // CDN hosts allowed in ONLINE mode; everything else is aborted for determinism.

@@ -2,19 +2,26 @@
    POSTPROCESSING BLOOM — EffectComposer + UnrealBloomPass setup pattern
    Inspired by three.js postprocessing examples
    ============================================
-   Requires Three.js postprocessing modules. The vanilla build doesn't
-   ship them, so include them as plain script tags first:
-     <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-     <script src="https://unpkg.com/three@0.160.0/examples/js/postprocessing/EffectComposer.js"></script>
-     <script src="https://unpkg.com/three@0.160.0/examples/js/postprocessing/RenderPass.js"></script>
-     <script src="https://unpkg.com/three@0.160.0/examples/js/postprocessing/ShaderPass.js"></script>
-     <script src="https://unpkg.com/three@0.160.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-     <script src="https://unpkg.com/three@0.160.0/examples/js/shaders/CopyShader.js"></script>
-     <script src="https://unpkg.com/three@0.160.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
-     <script src="../3d/scene-runner.js"></script>
+   Requires Three.js + its postprocessing addons. At three r160 the addons ship
+   ONLY as ES modules (examples/jsm) — the old examples/js script-tag globals were
+   removed. So load three as a module and attach the addon classes onto THREE
+   yourself (this snippet reads them off window.THREE):
 
-   Modern Three.js builds use ES modules; this snippet uses the legacy
-   `examples/js` flat-script versions which expose globals on THREE.
+     <script type="importmap">
+     { "imports": {
+         "three": "https://unpkg.com/three@0.160.0/build/three.module.min.js",
+         "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+     }}
+     </script>
+     <script src="../3d/scene-runner.js"></script>
+     <script type="module">
+       import * as THREE from 'three';
+       import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+       import { RenderPass }      from 'three/addons/postprocessing/RenderPass.js';
+       import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+       window.THREE = Object.assign({}, THREE, { EffectComposer, RenderPass, UnrealBloomPass });
+       // now load this file and call PostBloom.init(...)
+     </script>
 
    Usage:
      var demo = PostBloom.init('#container', {
@@ -43,7 +50,7 @@
     }
     var T = root.THREE;
     if (!T.EffectComposer || !T.UnrealBloomPass) {
-      console.warn('[PostBloom] EffectComposer/UnrealBloomPass not loaded. See file header for required script tags.');
+      console.warn('[PostBloom] EffectComposer/UnrealBloomPass not on THREE. See file header for the ES-module setup.');
       return null;
     }
 
@@ -57,6 +64,9 @@
       cameraPosition: [0, 0, 6],
       background: '#020208',
       onResize: function (c) {
+        // SceneRunner fires an initial resize during create(), before composer/bloom
+        // are assigned below — guard so the first call is a harmless no-op.
+        if (!composer || !bloom) return;
         composer.setSize(c.container.clientWidth, c.container.clientHeight);
         bloom.setSize(c.container.clientWidth, c.container.clientHeight);
       },
@@ -64,7 +74,7 @@
         sphereGroup.rotation.y = t * 0.3;
         sphereGroup.rotation.x = t * 0.15;
         // Manual render through composer rather than the renderer's tick
-        composer.render();
+        if (composer) composer.render();
       }
     });
     if (!ctx) return null;

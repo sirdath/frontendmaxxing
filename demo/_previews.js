@@ -3247,18 +3247,9 @@
     });
   };
 
-  // Loads an extra `three/examples/js/...` script and resolves when ready.
-  var addonLoads = {};
-  function loadThreeAddon(path) {
-    if (addonLoads[path]) return addonLoads[path];
-    addonLoads[path] = new Promise(function (resolve) {
-      var s = document.createElement('script');
-      s.src = 'https://unpkg.com/three@0.160.0/examples/js/' + path;
-      s.onload = s.onerror = function () { resolve(); };
-      document.head.appendChild(s);
-    });
-    return addonLoads[path];
-  }
+  // (three addons are now loaded as ES modules via the importmap — see the
+  // postprocessing-bloom preview below — so the old examples/js script loader,
+  // whose URLs were removed at three r160, is gone.)
 
   function showThreeError(target, msg) {
     var host = target.querySelector('#dapp-three-host');
@@ -3328,19 +3319,26 @@
 
   P['3d/postprocessing-bloom.js'] = function (target) {
     var host = threeStage(target, { height: 320, note: 'EffectComposer + UnrealBloom — emissive orbs glow.' });
-    Promise.all([
-      loadThreeAddon('shaders/CopyShader.js'),
-      loadThreeAddon('shaders/LuminosityHighPassShader.js'),
-      loadThreeAddon('postprocessing/EffectComposer.js'),
-      loadThreeAddon('postprocessing/RenderPass.js'),
-      loadThreeAddon('postprocessing/ShaderPass.js'),
-      loadThreeAddon('postprocessing/UnrealBloomPass.js')
-    ]).then(function () {
-      waitForThree(function () {
+    // Wait for window.THREE (the ESM three), then import the jsm postprocessing
+    // addons — they resolve bare "three" via the importmap to the SAME instance, so
+    // attaching their classes to window.THREE keeps the snippet's T.EffectComposer
+    // contract intact (it doesn't import anything; it reads them off window.THREE).
+    waitForThree(function () {
+      Promise.all([
+        import('three/addons/postprocessing/EffectComposer.js'),
+        import('three/addons/postprocessing/RenderPass.js'),
+        import('three/addons/postprocessing/ShaderPass.js'),
+        import('three/addons/postprocessing/UnrealBloomPass.js')
+      ]).then(function (mods) {
+        var T = window.THREE;
+        T.EffectComposer = mods[0].EffectComposer;
+        T.RenderPass = mods[1].RenderPass;
+        T.ShaderPass = mods[2].ShaderPass;
+        T.UnrealBloomPass = mods[3].UnrealBloomPass;
         if (!window.PostBloom) return showThreeError(target, 'PostBloom module not loaded (global is `PostBloom`)');
         try { window.PostBloom.init(host); }
         catch (e) { showThreeError(target, 'init failed: ' + e.message); }
-      });
+      }).catch(function (e) { showThreeError(target, 'bloom addon load failed: ' + e.message); });
     });
   };
 

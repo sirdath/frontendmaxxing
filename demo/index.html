@@ -10,6 +10,19 @@
 
   <link rel="stylesheet" href="_app.css">
 
+  <!-- three.js as ES modules: r160 ships its addons (EffectComposer, UnrealBloom,
+       …) ONLY as examples/jsm ES modules. This importmap lets the demo load three
+       and its addons as modules that share one three instance (window.THREE is set
+       from the same module), so addon globals can be attached to it. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.min.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+
   <!-- Always-loaded shaders runner (needed for any shader preview) -->
   <script src="../shaders/runner.js" defer></script>
   <!-- Always-loaded 3D scene runner: most 3d/* snippets depend on the shared
