@@ -1236,6 +1236,9 @@
 **noise-flow.glsl.js** `shaders/noise-flow.glsl.js` (JS, global: `NoiseFlowShader`) — tags: shader noise fbm domain-warping animated colors lygia
   Animated fBm noise with domain warping. `{fragment, defaults}`.
 
+**aurora.glsl.js** `shaders/aurora.glsl.js` (JS, global: `AuroraShader`) — tags: shader aurora borealis northern-lights curtains fbm flowing night-sky pointer hero background green cyan violet
+  Layered fBm aurora curtains over a night sky, pointer-driven drift. WebGL companion to `backgrounds/aurora.css`. `{fragment, defaults}`.
+
 **pointer-ripple.glsl.js** `shaders/pointer-ripple.glsl.js` (JS, global: `PointerRippleShader`) — tags: shader pointer mouse cursor ripple waves reactive interactive u_mouse hover concentric
   Concentric waves emanating from the cursor via the runner's `u_mouse`. `ShaderRunner.create(t, {fragmentShader: PointerRippleShader.fragment, uniforms: PointerRippleShader.defaults})`. Tunables u_color/u_freq/u_speed/u_falloff.
 

@@ -3869,6 +3869,7 @@
   P['shaders/halftone.glsl.js']          = function (t) { shaderStage(t, 'HalftoneShader',         { note: 'Halftone dot pattern', prop: 'proceduralFragment' }); };
   P['shaders/gradient-flow.glsl.js']     = function (t) { shaderStage(t, 'GradientFlowShader',     { note: 'Smooth gradient flow' }); };
   P['shaders/mesh-gradient-wgl.glsl.js'] = function (t) { shaderStage(t, 'MeshGradientWGLShader',  { note: 'Whatamesh-style WebGL mesh gradient' }); };
+  P['shaders/aurora.glsl.js']            = function (t) { shaderStage(t, 'AuroraShader',            { note: 'Flowing northern-lights curtains — move your mouse to drift them' }); };
   P['shaders/pointer-ripple.glsl.js']    = function (t) { shaderStage(t, 'PointerRippleShader',    { note: 'Concentric ripples from the cursor — move your mouse over it' }); };
 
   // pointer-displace needs an image; supply a self-contained data-URI gradient so
