@@ -1083,6 +1083,130 @@ export function composeApp(genre, opts, deps) {
   return { genre, platform: 'mobile', preset: opts.preset || null, theme, tokenOverrides: theme, screens, html, warnings };
 }
 
+// ============================================================================
+// DECK — third platform peer (web · mobile · deck). 16:9 slide scaffolds composed
+// deterministically from structure/deck.css shells, themed by the taste tokens,
+// content carried per-slide so a composed deck reads real out of the box.
+// ============================================================================
+export const DECK_GENRE_AESTHETIC = { pitch: 'energetic', product: 'minimal', report: 'technical', lecture: 'editorial' };
+export const DECK_PALETTE_SHORTLIST = {
+  pitch: ['cinnabar', 'electric-night', 'saas-indigo'],
+  product: ['saas-indigo', 'clean-light', 'sky-celadon'],
+  report: ['slate-dark', 'fintech-navy', 'charcoal'],
+  lecture: ['ink', 'paper', 'luxe-cream'],
+};
+export const DECK_FLOWS = {
+  pitch: [
+    { slide: 'Title', shell: 'title', slot: 'title', kicker: 'Seed · 2026', title: 'Ship design at the speed of thought.', lead: 'A deterministic design workbench that drafts, verifies, and hands off production-ready UI.', notes: 'Open with the one-line promise. Slow down — let it land.' },
+    { slide: 'Problem', shell: 'bullets', slot: 'problem', title: 'Design is the bottleneck.', bullets: ['Mockups take days; handoff loses fidelity.', 'Every page gets rebuilt from scratch.', 'No way to prove a design actually works.'], notes: 'Name the pain the buyer already feels.' },
+    { slide: 'Solution', shell: 'twocol', slot: 'solution', title: 'One vault, one verified output.', bullets: ['Compose from 900+ vetted snippets', 'Themed by a coherent taste system', "Gated: it renders clean or it doesn't ship"], notes: 'The wedge is verification — nobody else gates.' },
+    { slide: 'How', shell: 'bullets', slot: 'how', title: 'How it works.', bullets: ['Pick a genre → deterministic scaffold', 'Theme with one palette + aesthetic', 'Save-gate renders it headless and proves it'], notes: '' },
+    { slide: 'Traction', shell: 'stats', slot: 'traction', title: 'Early traction.', stats: [{ v: '900+', l: 'vetted snippets' }, { v: '61', l: 'palettes' }, { v: '100%', l: 'gate-verified pages' }], notes: 'Lead with the most credible number.' },
+    { slide: 'Ask', shell: 'bullets', slot: 'ask', title: 'The ask.', bullets: ['$1.5M to scale the vault + cloud render', '18-month runway to 10k teams', 'Hiring two design engineers'], notes: '' },
+    { slide: 'Close', shell: 'quote', slot: 'close', title: 'Design that proves itself.', lead: '— Apex Design', notes: 'End on the tagline. Hold the silence.' },
+  ],
+  product: [
+    { slide: 'Title', shell: 'title', slot: 'title', kicker: 'Product · v2', title: 'Meet the workbench.', lead: 'Composed, not generated — and verified before it ever leaves your hands.', notes: '' },
+    { slide: 'Agenda', shell: 'bullets', slot: 'agenda', title: 'Today', bullets: ['The problem', 'The product', 'Live demo', 'The numbers', "What's next"], notes: '' },
+    { slide: 'Feature', shell: 'twocol', slot: 'feature', title: 'Composed, not generated.', bullets: ['Deterministic scaffolds', 'Real snippet picks per slot', 'Coherent taste tokens'], notes: '' },
+    { slide: 'Demo', shell: 'media', slot: 'demo', title: 'See it run.', lead: 'From a one-line brief to a verified page in seconds.', notes: 'Switch to the live demo here.' },
+    { slide: 'Metrics', shell: 'stats', slot: 'metrics', title: 'By the numbers.', stats: [{ v: '2.5min', l: 'full-vault verify' }, { v: '0', l: 'console errors shipped' }, { v: '676', l: 'snippets render-proofed' }], notes: '' },
+    { slide: 'Roadmap', shell: 'bullets', slot: 'roadmap', title: "What's next.", bullets: ['Deck + editable PPTX export', 'Lottie motion, validated', 'Perceptual color audit'], notes: '' },
+    { slide: 'CTA', shell: 'cta', slot: 'cta', title: 'Start composing.', lead: 'Free while in beta.', cta: 'Get started', notes: '' },
+  ],
+  report: [
+    { slide: 'Title', shell: 'title', slot: 'title', kicker: 'Quarterly Report · Q2', title: 'Design Ops, Q2.', lead: 'Throughput, quality, and what we shipped.', notes: '' },
+    { slide: 'Agenda', shell: 'bullets', slot: 'agenda', title: 'Contents', bullets: ['Highlights', 'KPIs', 'Findings', 'Recommendations'], notes: '' },
+    { slide: 'Divider', shell: 'divider', slot: 'divider', kicker: '01', title: 'The numbers.', notes: '' },
+    { slide: 'KPIs', shell: 'stats', slot: 'kpis', title: 'KPIs.', stats: [{ v: '+38%', l: 'pages shipped' }, { v: '4.9', l: 'quality score' }, { v: '-22%', l: 'rework' }], notes: '' },
+    { slide: 'Findings', shell: 'bullets', slot: 'findings', title: 'What we learned.', bullets: ['Verification cut rework by a fifth', 'One palette per page lifted coherence', 'Decks were the top request'], notes: '' },
+    { slide: 'Chart', shell: 'media', slot: 'chart', title: 'Trend.', lead: '', notes: '' },
+    { slide: 'Takeaways', shell: 'bullets', slot: 'takeaways', title: 'Recommendations.', bullets: ['Make the gate mandatory pre-handoff', 'Invest in the deck pipeline', 'Expand the heritage palettes'], notes: '' },
+  ],
+};
+const deckMedia = '<div class="s-slide-media"></div>';
+const DECK_SHELLS = {
+  title: (s) => `${s.kicker ? `<p class="s-eyebrow">${s.kicker}</p>` : ''}<h1 class="s-slide-title">${s.title}</h1>${s.lead ? `<p class="s-slide-lead">${s.lead}</p>` : ''}`,
+  bullets: (s) => `<h2 class="s-slide-head">${s.title}</h2><ul class="s-slide-bullets">${(s.bullets || []).map((b) => `<li>${b}</li>`).join('')}</ul>`,
+  twocol: (s) => `<h2 class="s-slide-head">${s.title}</h2><div class="s-slide-body"><div class="s-slide-col"><ul class="s-slide-bullets">${(s.bullets || []).map((b) => `<li>${b}</li>`).join('')}</ul></div>${deckMedia}</div>`,
+  stats: (s) => `<h2 class="s-slide-head">${s.title}</h2><div class="s-slide-body" style="align-items:center;"><div class="s-slide-stats">${(s.stats || []).map((x) => `<div class="s-slide-stat"><b>${x.v}</b><span>${x.l}</span></div>`).join('')}</div></div>`,
+  media: (s) => `<h2 class="s-slide-head">${s.title}</h2>${s.lead ? `<p class="s-slide-lead" style="margin-bottom:1rem;">${s.lead}</p>` : ''}<div class="s-slide-body">${deckMedia}</div>`,
+  quote: (s) => `<h1 class="s-slide-title">${s.title}</h1>${s.lead ? `<p class="s-slide-lead" style="margin-top:1.2rem;">${s.lead}</p>` : ''}`,
+  cta: (s) => `<h1 class="s-slide-title">${s.title}</h1>${s.lead ? `<p class="s-slide-lead">${s.lead}</p>` : ''}<div class="s-slide-cta"><a>${s.cta || 'Get started'}</a></div>`,
+  divider: (s) => `${s.kicker ? `<p class="s-eyebrow">${s.kicker}</p>` : ''}<h1 class="s-slide-title">${s.title}</h1>`,
+};
+const DECK_MOD = { title: 'title', quote: 'quote', divider: 'divider', cta: 'center' };
+
+function renderComposedDeck(genre, t, slides, presetName) {
+  const links = ['structure/structure.css', 'colors/palettes.css', 'taste/density.css', 'taste/motion.css', 'taste/fonts.css', 'taste/aesthetic.css', 'structure/deck.css']
+    .map((h) => `  <link rel="stylesheet" href="${h}">`).join('\n');
+  const stage = slides.map((s, i) => {
+    const mod = DECK_MOD[s.shell] ? ` s-slide--${DECK_MOD[s.shell]}` : '';
+    const inner = (DECK_SHELLS[s.shell] || DECK_SHELLS.bullets)(s);
+    const notes = s.notes ? `\n    <aside class="s-notes"><span class="s-notes-label">Speaker notes</span>${s.notes}</aside>` : '';
+    return `  <div class="s-slide-wrap">\n    <section class="s-slide${mod}" data-db-ref="s${i}-${s.slot}">${inner}<span class="s-slide-num">${i + 1} / ${slides.length}</span></section>${notes}\n  </div>`;
+  }).join('\n\n');
+  const manifest = slides.map((s, i) => `     ${(String(i + 1) + '. ' + s.slide + ':').padEnd(20)} .s-slide (${s.shell})`).join('\n');
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${genre} deck${presetName ? ' · ' + presetName : ''} — composed by frontendmaxxing</title>
+${links}
+</head>
+<body class="struct pal-${t.palette}" data-aesthetic="${t.aesthetic}" data-font-pair="${t.fontPair}" data-motion="${t.motion}" data-density="${t.density}">
+<div class="deck-stage">
+${stage}
+</div>
+<!-- ============================================
+     DECK MANIFEST — ${slides.length} slides (16:9). Each .s-slide is a fixed stage;
+     speaker notes are siblings outside the measured box. Export to editable .pptx
+     via book_export_pptx (each slide → native PowerPoint shapes).
+${manifest}
+     ============================================ -->
+</body>
+</html>`;
+}
+
+// Pure: assemble a renderable 16:9 SLIDE DECK for a genre + taste. Mirrors
+// composeApp. deps = { presets, palByName }.
+export function composeDeck(genre, opts, deps) {
+  opts = opts || {};
+  deps = deps || {};
+  const { presets, palByName } = deps;
+  const warnings = [];
+  genre = String(genre || 'pitch').toLowerCase();
+  const flow = DECK_FLOWS[genre] || DECK_FLOWS.pitch;
+
+  let base = {};
+  if (opts.preset) {
+    const p = presets && presets.get ? presets.get(opts.preset) : null;
+    if (p) base = { aesthetic: p.aesthetic, palette: p.palette, fontPair: p.fontPair, motion: p.motion, density: p.density };
+    else warnings.push(`unknown preset "${opts.preset}" — ignored`);
+  }
+  const aesthetic = opts.aesthetic || base.aesthetic || DECK_GENRE_AESTHETIC[genre] || 'minimal';
+  const def = AESTHETIC_DEFAULTS[aesthetic] || AESTHETIC_DEFAULTS.minimal;
+  const fontPair = opts.fontPair || base.fontPair || def.fontPair;
+  const motion = opts.motion || base.motion || def.motion;
+  const density = opts.density || base.density || def.density;
+  const seed = Number.isFinite(+opts.seed) ? Math.abs(Math.floor(+opts.seed)) : 0;
+  let palette = opts.palette || base.palette;
+  if (!palette) {
+    const shortlist = DECK_PALETTE_SHORTLIST[genre];
+    palette = (shortlist && shortlist.length) ? shortlist[seed % shortlist.length] : def.palette;
+  }
+  if (palByName && !palByName.has(palette)) {
+    warnings.push(`palette "${palette}" not found — using "${def.palette}"`);
+    palette = def.palette;
+  }
+
+  const slides = flow.map((s) => ({ ...s }));
+  const theme = { palette, aesthetic, fontPair, motion, density };
+  const html = renderComposedDeck(genre, theme, slides, opts.preset || null);
+  return { genre, platform: 'deck', preset: opts.preset || null, theme, tokenOverrides: theme, slides, html, warnings };
+}
+
 // Pure: score an HTML string for taste-cohesion. Mirrors the Phase 5 audit soft
 // checks. Returns { score 0..100, ok, counts, warnings:[{type,count,sample,hint}] }.
 export function checkCoherence(html) {
