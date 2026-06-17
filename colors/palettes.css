@@ -356,3 +356,41 @@
   --accent:#18181b; --accent-2:#71717a; --on-accent:#ffffff;
   --ok:#16a34a; --warn:#d97706; --danger:#dc2626; --info:#2563eb;
 }
+
+/* ── CHINESE TRADITIONAL ────────────────────── */
+/* Heritage 国色 themes — accents drawn from the traditional Chinese color
+   canon (cinnabar 朱砂, porcelain-blue 青花, ink-jade 黛墨, silk-ochre 缃,
+   rouge 胭脂, sky-celadon 天青). Grounds + harmony pairs tuned for the vault. */
+.pal-cinnabar {
+  --bg:#140a08; --bg-alt:#1d0e0b; --surface:#241310; --border:rgba(237,81,38,.18);
+  --fg:#f8ece6; --muted:#cb9d8e; --faint:#8c665c;
+  --accent:#ed5126; --accent-2:#d4af37; --on-accent:#1a0a06;
+}
+.pal-porcelain-blue { /* (light) */
+  --bg:#fbfaf6; --bg-alt:#f0efe8; --surface:#ffffff; --border:rgba(22,97,171,.15);
+  --fg:#16263e; --muted:#566884; --faint:#98a6bc;
+  --accent:#1661ab; --accent-2:#29b7cb; --on-accent:#ffffff;
+  --ok:#3f7d4e; --warn:#c2840f; --danger:#c0392b; --info:#1661ab;
+}
+.pal-ink-jade {
+  --bg:#0d1110; --bg-alt:#141a18; --surface:#1a2220; --border:rgba(126,178,155,.16);
+  --fg:#eaf1ec; --muted:#9db4a8; --faint:#637268;
+  --accent:#2f9e6e; --accent-2:#c8a35a; --on-accent:#06140d;
+}
+.pal-silk-ochre { /* (light) */
+  --bg:#faf5e9; --bg-alt:#f1e9d6; --surface:#fffdf6; --border:rgba(128,99,50,.16);
+  --fg:#3a2f1c; --muted:#7a6a4c; --faint:#ab9b78;
+  --accent:#bf8a1e; --accent-2:#7e7440; --on-accent:#241c08;
+  --ok:#5b7a32; --warn:#c2840f; --danger:#b5402c; --info:#9a6b3f;
+}
+.pal-rouge {
+  --bg:#160a0d; --bg-alt:#200f13; --surface:#281319; --border:rgba(236,118,150,.16);
+  --fg:#f6e9ec; --muted:#cf9aa6; --faint:#8f6470;
+  --accent:#d23a52; --accent-2:#ec7696; --on-accent:#fff0f2;
+}
+.pal-sky-celadon { /* (light) */
+  --bg:#f2f8f7; --bg-alt:#e6f0ef; --surface:#ffffff; --border:rgba(41,160,180,.16);
+  --fg:#16302f; --muted:#52706f; --faint:#90aaa9;
+  --accent:#2f9bae; --accent-2:#6fb6a8; --on-accent:#06201f;
+  --ok:#3f8a5a; --warn:#c2840f; --danger:#c0392b; --info:#2f7fae;
+}
