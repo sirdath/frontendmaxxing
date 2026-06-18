@@ -497,7 +497,7 @@ export const AESTHETIC_DEFAULTS = {
   playful:   { palette: 'playful-bright',  fontPair: 'geometric-warm',  motion: 'playful',  density: 'normal' },
   technical: { palette: 'vercel-mono',     fontPair: 'mono-technical',  motion: 'minimal',  density: 'compact' },
 };
-export const GENRE_AESTHETIC = { saas: 'minimal', agency: 'energetic', portfolio: 'editorial', ecommerce: 'energetic', restaurant: 'luxury', startup: 'energetic', blog: 'editorial', landing: 'minimal' };
+export const GENRE_AESTHETIC = { saas: 'minimal', agency: 'energetic', portfolio: 'editorial', ecommerce: 'energetic', restaurant: 'luxury', startup: 'energetic', blog: 'editorial', landing: 'minimal', diagram: 'technical', plan: 'technical' };
 
 // Seed-driven palette diversity so "compose N variants and pick" yields visibly
 // DIFFERENT looks, not byte-identical pages. Each list stays on-genre/on-aesthetic;
@@ -514,6 +514,8 @@ export const GENRE_PALETTE_SHORTLIST = {
   startup:   ['electric-night', 'linear-violet', 'energy-volt', 'web3-violet'],
   blog:      ['paper', 'clean-light', 'cool-gray', 'charcoal'],
   landing:   ['saas-indigo', 'linear-violet', 'fintech-navy', 'vercel-mono'],
+  diagram:   ['slate-dark', 'ink', 'vercel-mono', 'fintech-navy'],
+  plan:      ['slate-dark', 'clean-light', 'saas-indigo', 'charcoal'],
 };
 export const MOBILE_PALETTE_SHORTLIST = {
   onboarding:  ['saas-indigo', 'linear-violet', 'playful-bright'],
@@ -603,6 +605,20 @@ export const GENRE_SEQUENCES = {
     { slot: 'features', query: 'feature grid', shell: 'features' },
     { slot: 'testimonial', query: 'testimonial quote', shell: 'testimonial' },
     { slot: 'cta', query: 'cta call to action signup', shell: 'cta', house: 'button' },
+    { slot: 'footer', query: 'footer links', shell: 'footer' },
+  ],
+  diagram: [
+    { slot: 'nav', query: 'navbar header minimal', shell: 'nav' },
+    { slot: 'diagram-title', query: 'section heading eyebrow', shell: 'diagramTitle' },
+    { slot: 'diagram-canvas', query: 'architecture diagram svg nodes edges flowchart', shell: 'diagramCanvas' },
+    { slot: 'diagram-notes', query: 'feature grid annotations notes', shell: 'diagramNotes' },
+    { slot: 'footer', query: 'footer links', shell: 'footer' },
+  ],
+  plan: [
+    { slot: 'nav', query: 'navbar header minimal', shell: 'nav' },
+    { slot: 'plan-header', query: 'section heading eyebrow', shell: 'planHeader' },
+    { slot: 'plan-phases', query: 'steps timeline phases roadmap', shell: 'planPhases' },
+    { slot: 'plan-stack', query: 'tech stack grid chips', shell: 'planStack' },
     { slot: 'footer', query: 'footer links', shell: 'footer' },
   ],
 };
@@ -700,13 +716,72 @@ const SHELLS = {
     </div>
     <div class="s-footer-bottom"><span>© 2026 Northwind</span><span>Made with frontendmaxxing</span></div>
   </div></footer>`,
+
+  // ---- diagram + plan genre shells (token-styled, self-contained SVG graph) ----
+  diagramTitle: () => `<header class="s-section"><div class="s-container-narrow s-stack" style="text-align:center;">
+    <p class="s-eyebrow">Architecture</p>
+    <h1 class="s-title">System overview</h1>
+    <p class="s-lead">How a request flows from the client to the data layer — services, the realtime path, and the stores behind them.</p>
+  </div></header>`,
+  diagramCanvas: () => {
+    const n = {
+      client:   { x: 450, y: 20,  w: 160, h: 62, t: 'Client',       s: 'Web · Mobile',    a: 1 },
+      gateway:  { x: 450, y: 160, w: 160, h: 62, t: 'API Gateway',  s: 'auth · routing' },
+      auth:     { x: 80,  y: 300, w: 185, h: 62, t: 'Auth Service', s: 'OAuth · JWT' },
+      core:     { x: 437, y: 300, w: 185, h: 62, t: 'Core Service', s: 'business logic' },
+      realtime: { x: 795, y: 300, w: 185, h: 62, t: 'Realtime',     s: 'WebSocket' },
+      db:       { x: 250, y: 446, w: 185, h: 62, t: 'Postgres',     s: 'source of truth' },
+      cache:    { x: 625, y: 446, w: 185, h: 62, t: 'Redis',        s: 'cache · queue' },
+    };
+    const E = [['client', 'gateway', 1], ['gateway', 'auth'], ['gateway', 'core', 1], ['gateway', 'realtime'], ['auth', 'db'], ['core', 'db', 1], ['core', 'cache'], ['realtime', 'cache']];
+    const path = (a, b) => { const ax = a.x + a.w / 2, ay = a.y + a.h, bx = b.x + b.w / 2, by = b.y, m = (ay + by) / 2; return `M${ax},${ay} C${ax},${m} ${bx},${m} ${bx},${by}`; };
+    const edges = E.map(([s, t, act]) => `<path class="dgm-edge${act ? ' dgm-edge--active' : ''}" d="${path(n[s], n[t])}"/>`).join('');
+    const nodes = Object.values(n).map((x) => { const cx = x.x + x.w / 2, cy = x.y + x.h / 2; return `<g><rect class="dgm-rect${x.a ? ' dgm-rect--accent' : ''}" x="${x.x}" y="${x.y}" width="${x.w}" height="${x.h}" rx="12"/><text class="dgm-label" x="${cx}" y="${cy - 6}" text-anchor="middle" dominant-baseline="middle">${x.t}</text><text class="dgm-sub" x="${cx}" y="${cy + 14}" text-anchor="middle" dominant-baseline="middle">${x.s}</text></g>`; }).join('');
+    return `<section class="s-section"><div class="s-container"><div class="dgm-stage">
+    <svg class="dgm-svg" viewBox="0 0 1060 540" role="img" aria-label="System architecture diagram">${edges}${nodes}</svg>
+    <div class="dgm-legend"><span><i class="is-accent"></i>Critical path</span><span><i></i>Service</span></div>
+  </div></div></section>`;
+  },
+  diagramNotes: () => `<section class="s-section s-section--alt"><div class="s-container">
+    <div class="s-section-head"><p class="s-eyebrow">Notes</p><h2 class="s-title">How it fits together</h2></div>
+    <div class="s-grid">
+      ${card('API Gateway', 'A single entry point — authentication, rate-limiting, and routing to the right service.')}
+      ${card('Core Service', 'Owns the business logic and is the only writer to the primary Postgres store.')}
+      ${card('Realtime', 'WebSocket fan-out backed by Redis pub/sub for low-latency live updates.')}
+      ${card('Data layer', 'Postgres is the source of truth; Redis carries the cache and background queues.')}
+    </div>
+  </div></section>`,
+  planHeader: () => `<header class="s-section"><div class="s-container-narrow s-stack">
+    <p class="s-eyebrow">Plan · v1</p>
+    <h1 class="s-title">Implementation plan</h1>
+    <p class="s-lead">Scope, phases, and the stack — the shared contract everyone agrees on before any code is written.</p>
+  </div></header>`,
+  planPhases: () => `<section class="s-section"><div class="s-container">
+    <div class="s-section-head"><p class="s-eyebrow">Phases</p><h2 class="s-title">The path to ship</h2></div>
+    <div class="dgm-phases">
+      <div class="dgm-phase"><div class="dgm-phase-num">01</div><div><h3>Foundations</h3><p>Schema, auth, and the deterministic compose path — the spine everything else hangs off.</p></div></div>
+      <div class="dgm-phase"><div class="dgm-phase-num">02</div><div><h3>Core flows</h3><p>The two or three journeys that carry the product; wire each one end to end.</p></div></div>
+      <div class="dgm-phase"><div class="dgm-phase-num">03</div><div><h3>Verify</h3><p>Render-truth and the save-gate — nothing ships that hasn't proven it actually works.</p></div></div>
+      <div class="dgm-phase"><div class="dgm-phase-num">04</div><div><h3>Polish &amp; launch</h3><p>Motion, edge cases, and the launch checklist.</p></div></div>
+    </div>
+  </div></section>`,
+  planStack: () => `<section class="s-section s-section--alt"><div class="s-container">
+    <div class="s-section-head"><p class="s-eyebrow">Stack</p><h2 class="s-title">What we build on</h2></div>
+    <div class="dgm-stack">
+      <div class="dgm-chip"><b>Node + http</b><span>zero-dep server</span></div>
+      <div class="dgm-chip"><b>Postgres</b><span>primary store</span></div>
+      <div class="dgm-chip"><b>Redis</b><span>cache · queue</span></div>
+      <div class="dgm-chip"><b>Headless Chrome</b><span>render-truth gate</span></div>
+    </div>
+  </div></section>`,
 };
 
 function sectionComment(s) {
   return `  <!-- ${s.slot}: drop in ${s.snippet || '(no match — search the vault)'}${s.companions && s.companions.length ? ' + ' + s.companions.join(', ') : ''} -->`;
 }
 function renderComposedHtml(genre, t, sections, presetName) {
-  const links = ['structure/structure.css', 'colors/palettes.css', 'taste/density.css', 'taste/motion.css', 'taste/fonts.css', 'taste/aesthetic.css']
+  const links = ['structure/structure.css', 'colors/palettes.css', 'taste/density.css', 'taste/motion.css', 'taste/fonts.css', 'taste/aesthetic.css',
+    ...(genre === 'diagram' || genre === 'plan' ? ['structure/diagram.css'] : [])]
     .map((h) => `  <link rel="stylesheet" href="${h}">`).join('\n');
   const body = sections.map((s) => sectionComment(s) + '\n  ' + (SHELLS[s.shell] || SHELLS.features)(s)).join('\n\n');
   const manifest = sections.map((s) => `     ${(s.slot + ':').padEnd(13)} ${s.snippet || '(no match)'}${s.companions && s.companions.length ? '  + ' + s.companions.join(', ') : ''}`).join('\n');

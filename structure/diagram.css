@@ -1,0 +1,39 @@
+/* ============================================
+   DIAGRAM — shells for the Design Book "diagram" + "plan" composer genres
+   ============================================
+   Token-only (palette + taste vars), zero-dep. The architecture graph is ONE
+   self-contained <svg> — rect nodes + bezier edges styled via these classes (CSS
+   fill/stroke reference the palette tokens, so no hardcoded color lives in the
+   HTML and the SVG counts as imagery → clears the authenticity gate). Loaded by
+   renderComposedHtml only for genre = diagram | plan.
+   ============================================ */
+.dgm-stage { width: 100%; max-width: 1060px; margin-inline: auto; }
+.dgm-svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+.dgm-edge { fill: none; stroke: var(--border); stroke-width: 2; }
+.dgm-edge--active { stroke: var(--accent); stroke-width: 2.5; }
+.dgm-port { fill: var(--accent); }
+
+.dgm-rect { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+.dgm-rect--accent { fill: color-mix(in srgb, var(--accent) 16%, var(--surface)); stroke: var(--accent); }
+.dgm-rect--ghost { fill: var(--bg-alt); stroke: var(--border); }
+.dgm-label { fill: var(--fg); font: 600 17px/1 var(--font-head, inherit); }
+.dgm-sub { fill: var(--muted); font: 400 12px var(--font-body, inherit); }
+
+.dgm-legend { display: flex; gap: 1.6rem; justify-content: center; flex-wrap: wrap; margin-top: 1.6rem; }
+.dgm-legend span { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.85rem; }
+.dgm-legend i { width: 14px; height: 14px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--border); }
+.dgm-legend i.is-accent { background: color-mix(in srgb, var(--accent) 16%, var(--surface)); border-color: var(--accent); }
+
+/* plan / spec page */
+.dgm-phases { display: flex; flex-direction: column; gap: 1rem; }
+.dgm-phase { display: flex; gap: 1.3rem; align-items: flex-start;
+  padding: 1.3rem 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.dgm-phase-num { flex: none; width: 2.6rem; color: var(--accent);
+  font: 800 1.5rem/1 var(--font-head, inherit); letter-spacing: -0.02em; }
+.dgm-phase h3 { margin: 0 0 0.3rem; }
+.dgm-phase p { margin: 0; color: var(--muted); }
+.dgm-stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; }
+.dgm-chip { padding: 0.9rem 1.1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.dgm-chip b { display: block; color: var(--fg); }
+.dgm-chip span { color: var(--muted); font-size: 0.85rem; }
