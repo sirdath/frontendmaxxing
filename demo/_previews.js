@@ -6519,4 +6519,33 @@
     })(0);
   };
 
+  // ---- cool-design rung 2 (webcam reactive · gyro tilt) ----
+  P['interactions/vision-react.js'] = function (target) {
+    target.innerHTML =
+      '<div id="dapp-vr-stage" style="position:relative;width:100%;max-width:520px;height:300px;margin:0 auto;border-radius:14px;overflow:hidden;background:radial-gradient(120% 120% at 50% 0%, #15213c, #090d18);">' +
+        '<div style="position:absolute;width:90px;height:90px;border-radius:50%;margin:-45px 0 0 -45px;left:calc(var(--vr-x,0.5)*100%);top:calc(var(--vr-y,0.5)*100%);background:radial-gradient(circle, rgba(56,189,248,0.9), rgba(99,102,241,0.1));box-shadow:0 0 60px rgba(56,189,248,0.6);"></div>' +
+        '<div style="position:absolute;left:0;right:0;bottom:0;padding:0.8rem;text-align:center;">' +
+          '<button id="dapp-vr-cam" style="font:600 0.8rem system-ui;padding:0.5rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#fff;cursor:pointer;">Enable camera (hand tracking)</button>' +
+        '</div>' +
+      '</div>' +
+      '<div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:0.5rem;">Pointer-driven now — click to opt into on-device webcam hand tracking</div>';
+    if (!window.VisionReact) return;
+    var vr = window.VisionReact.init(target.querySelector('#dapp-vr-stage'));
+    var btn = target.querySelector('#dapp-vr-cam');
+    if (btn) btn.addEventListener('click', function () { vr.enableCamera(); btn.textContent = 'Camera enabling…'; });
+  };
+
+  P['effects/device-tilt.js'] = function (target) {
+    target.innerHTML =
+      '<div id="dapp-dt-stage" style="position:relative;width:100%;max-width:520px;height:320px;margin:0 auto;border-radius:14px;overflow:hidden;background:radial-gradient(120% 100% at 30% 20%, #1b2440, #0a0e1c);perspective:800px;">' +
+        '<div style="position:absolute;inset:0;transform:translate(calc(var(--tilt-x,0)*10px), calc(var(--tilt-y,0)*10px));background:radial-gradient(60% 60% at 70% 80%, rgba(99,102,241,0.35), transparent);"></div>' +
+        '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform:translate(calc(var(--tilt-x,0)*26px), calc(var(--tilt-y,0)*26px));">' +
+          '<div style="width:120px;height:120px;border-radius:24px;background:linear-gradient(135deg,#38bdf8,#6366f1);box-shadow:0 30px 60px rgba(56,189,248,0.4);"></div>' +
+        '</div>' +
+        '<div style="position:absolute;left:0;right:0;bottom:14px;text-align:center;transform:translate(calc(var(--tilt-x,0)*42px), calc(var(--tilt-y,0)*42px));font:700 1.1rem system-ui;color:#fff;letter-spacing:0.04em;">TILT ME</div>' +
+      '</div>' +
+      '<div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:0.5rem;">Move your pointer (or tilt your phone) — layers parallax by depth</div>';
+    if (window.DeviceTilt) window.DeviceTilt.init(target.querySelector('#dapp-dt-stage'), { max: 14 });
+  };
+
 })();

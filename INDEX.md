@@ -819,6 +819,9 @@
 **parallax.js** `effects/parallax.js` (JS, global: `Parallax`) — tags: parallax scroll layers mouse tilt
   `.scroll()`, `.layers()`, `.mouse()`, `.tilt()`.
 
+**device-tilt.js** `effects/device-tilt.js` (JS, global: `DeviceTilt`) — tags: device-orientation gyroscope tilt parallax living-poster mobile pointer-fallback css-variable tilt-x tilt-y deviceorientation ios-permission
+  `DeviceTilt.init(target, {max, lerp})` writes normalized `--tilt-x`/`--tilt-y` from phone gyro (gamma/beta), falling back to pointer where there's no gyroscope. iOS 13+ asks on first gesture; disabled under reduced-motion.
+
 **particles.js** `effects/particles.js` (JS, global: `Particles`) — tags: particles canvas connect network points hero
   Canvas particle system. Presets: network, snow, dust.
 
@@ -1143,6 +1146,9 @@
 
 **pinch-zoom.js** `interactions/pinch-zoom.js` (JS, global: `PinchZoom`) — tags: pinch zoom pan touch double-tap wheel
   Pinch + wheel zoom + drag pan: `PinchZoom.init(el, {targetSelector, minScale, maxScale, bounds})`.
+
+**vision-react.js** `interactions/vision-react.js` (JS, global: `VisionReact`) — tags: mediapipe webcam hand-tracking face landmarks reactive css-variable vr-x vr-y pointer fallback camera opt-in vision gesture visu-haus
+  `VisionReact.init(target)` writes normalized `--vr-x`/`--vr-y` from the pointer; `.enableCamera()` (user gesture) lazily loads MediaPipe (dynamic import) and switches to live hand tracking. Always degrades to pointer; off under reduced-motion. See `reactive-input.skill.md`.
 
 ---
 
