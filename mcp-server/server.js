@@ -514,8 +514,8 @@ export const GENRE_PALETTE_SHORTLIST = {
   startup:   ['electric-night', 'linear-violet', 'energy-volt', 'web3-violet'],
   blog:      ['paper', 'clean-light', 'cool-gray', 'charcoal'],
   landing:   ['saas-indigo', 'linear-violet', 'fintech-navy', 'vercel-mono'],
-  diagram:   ['slate-dark', 'ink', 'vercel-mono', 'fintech-navy'],
-  plan:      ['slate-dark', 'clean-light', 'saas-indigo', 'charcoal'],
+  diagram:   ['vercel-mono', 'slate-dark', 'ink', 'fintech-navy'],
+  plan:      ['vercel-mono', 'slate-dark', 'clean-light', 'charcoal'],
 };
 export const MOBILE_PALETTE_SHORTLIST = {
   onboarding:  ['saas-indigo', 'linear-violet', 'playful-bright'],

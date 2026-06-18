@@ -6435,4 +6435,88 @@
       }, 40);
     };
 
+  // ---- cool-design first batch (visu.haus-frontier primitives) ----
+  P['shaders/gl-transition-runner.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">' +
+        '<div id="dapp-glt-host" style="width:100%;max-width:540px;height:320px;border-radius:10px;background:#000;overflow:hidden;"></div>' +
+        '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">GPU image-to-image transition (crosswarp) — looping A&#8596;B</div>' +
+      '</div>';
+    var host = target.querySelector('#dapp-glt-host');
+    function tex(c1, c2, label) {
+      var c = document.createElement('canvas'); c.width = c.height = 256;
+      var g = c.getContext('2d');
+      var grad = g.createLinearGradient(0, 0, 256, 256);
+      grad.addColorStop(0, c1); grad.addColorStop(1, c2);
+      g.fillStyle = grad; g.fillRect(0, 0, 256, 256);
+      g.fillStyle = 'rgba(255,255,255,0.9)';
+      g.font = 'bold 110px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText(label, 128, 132);
+      return c.toDataURL();
+    }
+    (function attempt(n) {
+      if (window.GLTransition && window.ShaderRunner) {
+        var t = window.GLTransition.create(host, {
+          from: tex('#0ea5e9', '#1e1b4b', 'A'),
+          to:   tex('#f59e0b', '#7c2d12', 'B'),
+          name: 'crosswarp', duration: 1400, autoplay: true
+        });
+        if (t) { var fwd = true; setInterval(function () { fwd = !fwd; t.play(!fwd); }, 2200); }
+        return;
+      }
+      if (n < 40) setTimeout(function () { attempt(n + 1); }, 80);
+    })(0);
+  };
+
+  P['utils/live-controls.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;gap:1.2rem;align-items:flex-start;flex-wrap:wrap;padding:0.5rem;">' +
+        '<div id="dapp-lc-panel"></div>' +
+        '<div id="dapp-lc-swatch" style="width:140px;height:140px;border-radius:14px;background:hsl(200 80% 55%);"></div>' +
+      '</div>';
+    var panel = target.querySelector('#dapp-lc-panel');
+    var swatch = target.querySelector('#dapp-lc-swatch');
+    var state = { hue: 200, size: 140, round: 14 };
+    function apply() {
+      swatch.style.background = 'hsl(' + state.hue + ' 80% 55%)';
+      swatch.style.width = state.size + 'px';
+      swatch.style.height = state.size + 'px';
+      swatch.style.borderRadius = state.round + 'px';
+    }
+    function go() {
+      if (!window.LiveControls) { setTimeout(go, 80); return; }
+      window.LiveControls.bind(panel, state, {
+        hue:   { min: 0, max: 360, step: 1 },
+        size:  { min: 80, max: 200, step: 1 },
+        round: { min: 0, max: 70, step: 1 }
+      }, { title: 'Live Controls', onChange: apply });
+      apply();
+    }
+    if (window.Tweakpane) return go();
+    var s = document.createElement('script');
+    s.src = (window.LiveControls && window.LiveControls.cdn) || 'https://cdn.jsdelivr.net/npm/tweakpane@3.1.10/dist/tweakpane.min.js';
+    s.onload = go; s.onerror = go;
+    document.head.appendChild(s);
+  };
+
+  P['3d/model-viewer.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">' +
+        '<div id="dapp-mv-host" style="width:100%;max-width:540px;height:340px;border-radius:10px;background:#11131a;overflow:hidden;"></div>' +
+        '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">Declarative 3D — drag to orbit (Google &lt;model-viewer&gt;)</div>' +
+      '</div>';
+    var host = target.querySelector('#dapp-mv-host');
+    (function attempt(n) {
+      if (window.ModelViewer) {
+        window.ModelViewer.init(host, {
+          src: 'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/Duck/glTF-Binary/Duck.glb',
+          alt: 'A rubber duck, lit and orbitable',
+          autoRotate: true, cameraControls: true, shadow: 1, exposure: 1
+        });
+        return;
+      }
+      if (n < 40) setTimeout(function () { attempt(n + 1); }, 80);
+    })(0);
+  };
+
 })();

@@ -899,6 +899,12 @@
 **section-frames.css** `structure/section-frames.css` (CSS) — tags: section-frame wrapper bordered window browser-chrome brackets ticket notch ruled gradient-edge grid-guides label spotlight editorial brutalist hud structural container
   Structural wrappers that frame a block so structure reads at a glance. `.sf` base + variants: outline, inset (double-line editorial), window (mac chrome bar), brackets (HUD corners), ticket (perforated), notch (cut corner), ruled (top accent rule), gradient-edge (gradient left border), grid-guides (blueprint grid), label (notched title tab), spotlight. `--sf-accent` themes them.
 
+**deck.css** `structure/deck.css` (CSS) — tags: deck slide presentation pitch keynote 16:9 aspect-ratio slide-stage title bullets stats media quote cta divider speaker-notes print design-book
+  16:9 slide shells for the Design Book deck genre. `.deck-stage` › `.s-slide` (aspect-ratio 16/9, container-query) with `.s-slide-title/head/lead/bullets/media/stats`; slide kinds `--title/quote/divider/cta`; `.s-notes` outside the measured box; print styles.
+
+**diagram.css** `structure/diagram.css` (CSS) — tags: diagram plan architecture flowchart svg nodes edges bezier graph spec roadmap phases stack technical design-book
+  Token-only shells for the Design Book diagram + plan genres. `.dgm-stage`/`.dgm-svg` host a self-contained architecture SVG (`.dgm-rect` nodes, `.dgm-edge`(--active) bezier edges, `.dgm-label/sub`, `.dgm-legend`); plan side: `.dgm-phases`/`.dgm-phase`(-num), `.dgm-stack`/`.dgm-chip`.
+
 ### Layout
 
 **grid-systems.css** `layout/grid-systems.css` (CSS) — tags: grid columns 12-col layout responsive
@@ -1195,6 +1201,9 @@
 **palette-generator.js** `utils/palette-generator.js` (JS, global: `PaletteGenerator`) — tags: color-theory palette harmony complementary triadic tetradic split-complementary square analogous monochromatic shades tints tones compound adobe-color coolors paletton wcag contrast best-text hsl hex
   Color-theory palette generation from one seed hex. 11 schemes (complementary/triadic/splitComplementary/tetradic/square/analogous/monochromatic/shades/tints/tones/compound) + random/surprise + WCAG contrast helpers + applyToCSS().
 
+**live-controls.js** `utils/live-controls.js` (JS, global: `LiveControls`) — tags: tweakpane live-controls gui sliders tuning uniforms knobs panel debug dat-gui leva real-time tune export visu-haus authoring
+  `LiveControls.bind(target, obj, schema, {onChange})` binds a Tweakpane panel two-way to any object's props (shader uniforms / scene opts) for real-time tuning. No-ops gracefully if Tweakpane (CDN) is absent.
+
 ---
 
 ### 3D (Three.js required)
@@ -1226,12 +1235,18 @@
 **raycast-hover.js** `3d/raycast-hover.js` (JS, global: `RaycastHover`) — tags: three.js raycaster hover pick mouse highlight select
   Mouse-pick highlight + onSelect callback. Layouts: circle/line/grid.
 
+**model-viewer.js** `3d/model-viewer.js` (JS, global: `ModelViewer`) — tags: model-viewer gltf glb 3d showcase product orbit camera-controls ar webxr usdz poster declarative google
+  `ModelViewer.init(target, {src, poster, alt, autoRotate, ar})` mounts a Google <model-viewer> (CDN web component) for an orbitable glTF/GLB + one-tap AR. Degrades to poster; auto-rotate off under reduced-motion. (CDN component bundles its own three — no `window.THREE` needed.)
+
 ---
 
 ### Shaders (pure WebGL, no Three.js)
 
 **runner.js** `shaders/runner.js` (JS, global: `ShaderRunner`) — tags: webgl shader runner fullscreen-quad fragment shader uniforms textures shadertoy
   Vanilla WebGL fullscreen-quad runner. Auto-provides `u_resolution`, `u_time`, `u_mouse`. Pass `uniforms`, `imageUniforms`.
+
+**gl-transition-runner.js** `shaders/gl-transition-runner.js` (JS, global: `GLTransition`) — tags: gl-transitions webgl image transition crossfade crosswarp ripple pixelize wind directional morph gallery hero swap progress shadertoy
+  `GLTransition.create(target, {from, to, name, duration})` — GPU image-to-image transitions on ShaderRunner. Inlined MIT gl-transitions bodies; animates one `progress` 0→1 uniform. Honors reduced-motion (snaps).
 
 **noise-flow.glsl.js** `shaders/noise-flow.glsl.js` (JS, global: `NoiseFlowShader`) — tags: shader noise fbm domain-warping animated colors lygia
   Animated fBm noise with domain warping. `{fragment, defaults}`.
