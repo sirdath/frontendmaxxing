@@ -6548,4 +6548,28 @@
     if (window.DeviceTilt) window.DeviceTilt.init(target.querySelector('#dapp-dt-stage'), { max: 14 });
   };
 
+  // ---- cool-design rung 3 (velocity-warped infinite WebGL drag gallery) ----
+  P['media/webgl-drag-gallery.js'] = function (target) {
+    target.innerHTML =
+      '<div id="dapp-dg-stage" style="width:100%;height:360px;border-radius:14px;overflow:hidden;background:#0a0d18;cursor:grab;"></div>' +
+      '<div style="text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:0.5rem;">Drag or scroll — images bow + RGB-split with velocity, wrapping infinitely</div>';
+    function tile(i, c1, c2) {
+      var c = document.createElement('canvas'); c.width = 600; c.height = 400;
+      var g = c.getContext('2d');
+      var grad = g.createLinearGradient(0, 0, 600, 400);
+      grad.addColorStop(0, c1); grad.addColorStop(1, c2);
+      g.fillStyle = grad; g.fillRect(0, 0, 600, 400);
+      g.fillStyle = 'rgba(255,255,255,0.92)';
+      g.font = 'bold 190px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText(String(i + 1), 300, 212);
+      return c.toDataURL();
+    }
+    var pal = [['#0ea5e9', '#1e1b4b'], ['#f59e0b', '#7c2d12'], ['#22d3ee', '#0f766e'], ['#a855f7', '#3b0764'], ['#ef4444', '#450a0a'], ['#34d399', '#064e3b']];
+    var images = pal.map(function (p, i) { return tile(i, p[0], p[1]); });
+    (function attempt(n) {
+      if (window.DragGallery) { window.DragGallery.init(target.querySelector('#dapp-dg-stage'), { images: images, planeWidth: 7, planeHeight: 5, gap: 1.2 }); return; }
+      if (n < 40) setTimeout(function () { attempt(n + 1); }, 80);
+    })(0);
+  };
+
 })();

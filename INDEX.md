@@ -972,6 +972,9 @@
 **video-hover-preview.js** `media/video-hover-preview.js` (JS, global: `VideoHoverPreview`) — tags: video hover preview autoplay lazy debounce
   `VideoHoverPreview.init('[data-vhp]', {muted, loop, startDelay})` — lazy-injects `<video>`.
 
+**webgl-drag-gallery.js** `media/webgl-drag-gallery.js` (JS, global: `DragGallery`) — tags: webgl ogl gallery infinite drag scroll momentum velocity warp bend rgb-split image-strip carousel codrops awwwards visu-haus
+  `DragGallery.init(target, {images, planeWidth, planeHeight, gap, bend})` — infinite drag/scroll image strip on OGL (zero-dep WebGL, CDN auto-loaded). Planes bow + RGB-split by scroll velocity; wraps infinitely. Degrades to a CSS scroll-snap strip; flat under reduced-motion.
+
 **audio-visualizer.js** `media/audio-visualizer.js` (JS, global: `AudioVisualizer`) — tags: audio visualizer webaudio analyser canvas bars wave radial spectrum realtime mic equalizer fft
   Live Web Audio analyser → canvas, modes bars/wave/radial, source = mic or `<audio>`. `AudioVisualizer.init('.viz', {source, mode})`. Realtime (for static seek/scrub use audio-waveform.js). Static under reduced-motion.
 
