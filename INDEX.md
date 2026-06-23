@@ -1257,6 +1257,9 @@
 **gl-transition-runner.js** `shaders/gl-transition-runner.js` (JS, global: `GLTransition`) — tags: gl-transitions webgl image transition crossfade crosswarp ripple pixelize wind directional morph gallery hero swap progress shadertoy
   `GLTransition.create(target, {from, to, name, duration})` — GPU image-to-image transitions on ShaderRunner. Inlined MIT gl-transitions bodies; animates one `progress` 0→1 uniform. Honors reduced-motion (snaps).
 
+**pingpong.js** `shaders/pingpong.js` (JS, global: `PingPong`) — tags: webgl2 ping-pong fbo multi-pass compute reaction-diffusion gray-scott fluid simulation feedback render-target float-texture turing generative slime
+  `PingPong.init(target, {simShader, displayShader, seedShader, steps, scale})` — multi-pass GPU compute via FBO swap (the primitive ShaderRunner lacks — enables reaction-diffusion/fluid/bloom). Default = Gray-Scott reaction-diffusion, auto-themed from `--accent`. Float FBO + RGBA8 degrade.
+
 **noise-flow.glsl.js** `shaders/noise-flow.glsl.js` (JS, global: `NoiseFlowShader`) — tags: shader noise fbm domain-warping animated colors lygia
   Animated fBm noise with domain warping. `{fragment, defaults}`.
 

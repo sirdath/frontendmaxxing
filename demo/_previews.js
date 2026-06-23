@@ -6572,4 +6572,18 @@
     })(0);
   };
 
+  // ---- multi-pass GPU compute (FBO ping-pong → reaction-diffusion) ----
+  P['shaders/pingpong.js'] = function (target) {
+    target.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">' +
+        '<div id="dapp-pp-host" style="--accent:#22d3ee;width:100%;max-width:560px;height:320px;border-radius:10px;overflow:hidden;background:#0a0d18;"></div>' +
+        '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);">Gray-Scott reaction-diffusion — multi-pass GPU compute (FBO ping-pong), themed from --accent</div>' +
+      '</div>';
+    var host = target.querySelector('#dapp-pp-host');
+    (function attempt(n) {
+      if (window.PingPong) { window.PingPong.init(host, { steps: 10, scale: 0.5 }); return; }
+      if (n < 40) setTimeout(function () { attempt(n + 1); }, 80);
+    })(0);
+  };
+
 })();
