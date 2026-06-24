@@ -6586,4 +6586,43 @@
     })(0);
   };
 
+  // ---- determinism substrate: seeded PRNG + simplex noise ----
+  P['utils/noise.js'] = function (target) {
+    var c = document.createElement('canvas'); c.width = 560; c.height = 320;
+    c.style.cssText = 'width:100%;max-width:560px;border-radius:10px;background:#0a0d18;display:block;margin:0 auto;';
+    target.appendChild(c);
+    var note = document.createElement('div'); note.style.cssText = 'text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:0.5rem;';
+    note.textContent = "Seeded simplex flow field — same seed → identical field (deterministic)"; target.appendChild(note);
+    (function draw(n) {
+      if (!window.Noise) { if (n < 40) setTimeout(function () { draw(n + 1); }, 80); return; }
+      // self-contained seed (prng.js isn't loaded on the noise route) — inline mulberry32
+      var seed = 20240601;
+      var rand = function () { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; var t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+      var N = window.Noise.create(rand);
+      var g = c.getContext('2d'); g.fillStyle = '#0a0d18'; g.fillRect(0, 0, 560, 320); g.lineCap = 'round';
+      for (var y = 12; y < 320; y += 14) for (var x = 12; x < 560; x += 14) {
+        var a = N.noise2D(x * 0.006, y * 0.006) * Math.PI * 2;
+        var len = 6 + (N.noise2D(x * 0.02 + 99, y * 0.02) * 0.5 + 0.5) * 7;
+        var hue = 185 + N.noise2D(x * 0.004, y * 0.004 + 50) * 55;
+        g.strokeStyle = 'hsl(' + hue + ' 82% 62% / 0.85)'; g.lineWidth = 1.6;
+        g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * len, y + Math.sin(a) * len); g.stroke();
+      }
+    })(0);
+  };
+
+  P['utils/prng.js'] = function (target) {
+    var c = document.createElement('canvas'); c.width = 560; c.height = 280;
+    c.style.cssText = 'width:100%;max-width:560px;border-radius:10px;background:#0a0d18;display:block;margin:0 auto;';
+    target.appendChild(c);
+    var note = document.createElement('div'); note.style.cssText = 'text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:0.5rem;';
+    note.textContent = "Seeded scatter — PRNG.create('apex-7') → identical layout every run"; target.appendChild(note);
+    (function draw(n) {
+      if (!window.PRNG) { if (n < 40) setTimeout(function () { draw(n + 1); }, 80); return; }
+      var R = window.PRNG.create('apex-7'); var g = c.getContext('2d'); g.fillStyle = '#0a0d18'; g.fillRect(0, 0, 560, 280);
+      var pal = ['#22d3ee', '#6366f1', '#f59e0b', '#34d399', '#ec4899'];
+      for (var i = 0; i < 150; i++) { g.fillStyle = R.pick(pal); g.globalAlpha = R.float(0.35, 0.9); g.beginPath(); g.arc(R.float(20, 540), R.float(20, 260), R.float(3, 16), 0, 7); g.fill(); }
+      g.globalAlpha = 1;
+    })(0);
+  };
+
 })();

@@ -1195,6 +1195,12 @@
 **lerp.js** `utils/lerp.js` (JS, global: `MathUtils`) — tags: math lerp clamp map smoothstep damp
   `lerp`, `clamp`, `mapRange`, `smoothstep`, `damp`.
 
+**prng.js** `utils/prng.js` (JS, global: `PRNG`) — tags: prng random seed seedable deterministic mulberry32 sfc32 xmur3 reproducible generative shuffle gaussian pick weighted
+  `PRNG.create(seed)` (string or number) → deterministic `next()` [0,1) + `float/int/bool/sign/pick/weighted/shuffle/gaussian`. Same seed = same sequence across engines. Pairs with noise.js for reproducible generative work.
+
+**noise.js** `utils/noise.js` (JS, global: `Noise`) — tags: simplex noise 2d 3d fbm fractal flow-field terrain perlin coherent seedable deterministic generative gustavson
+  `Noise.create(R.next)` → `noise2D/noise3D` in [-1,1] + `fbm2D` octaves. Permutation seeded by an injected PRNG → byte-identical fields. Basis for flow fields / terrain / stippling.
+
 **dom.js** `utils/dom.js` (JS, globals: `DOM`, `$`, `$$`) — tags: dom selector helper delegation events
   `$(sel)`/`$$(sel)` selector helpers, event delegation.
 
