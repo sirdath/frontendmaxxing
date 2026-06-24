@@ -6625,4 +6625,27 @@
     })(0);
   };
 
+  // ---- OKLCH perceptually-even palette ramps ----
+  P['utils/oklch-ramp.js'] = function (target) {
+    (function go(n) {
+      if (!window.OklchRamp) { if (n < 40) setTimeout(function () { go(n + 1); }, 80); return; }
+      var c = document.createElement('canvas'); c.width = 620; c.height = 250;
+      c.style.cssText = 'width:100%;max-width:620px;display:block;margin:0 auto;';
+      target.appendChild(c);
+      var g = c.getContext('2d');
+      var rows = [['Indigo', 264], ['Emerald', 150], ['Rose', 12], ['Amber', 72], ['Cyan', 210]];
+      var rowH = 48, padL = 92, swW = (620 - padL - 14) / 9;
+      rows.forEach(function (pair, ri) {
+        var y = ri * rowH + 8;
+        g.fillStyle = 'rgba(255,255,255,0.78)'; g.font = '600 13px system-ui, sans-serif'; g.textBaseline = 'middle'; g.textAlign = 'left';
+        g.fillText(pair[0], 12, y + 18);
+        window.OklchRamp.ramp(pair[1], { steps: 9, chroma: 0.14 }).forEach(function (s, i) {
+          g.fillStyle = s.hex; g.fillRect(padL + i * swW, y, Math.ceil(swW) - 1, 36);
+        });
+      });
+      var note = document.createElement('div'); note.style.cssText = 'text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:0.5rem;';
+      note.textContent = 'OKLCH ramps — lightness stepped uniformly (perceptually even), chroma boosted at the extremes'; target.appendChild(note);
+    })(0);
+  };
+
 })();

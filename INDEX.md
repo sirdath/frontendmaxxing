@@ -1201,6 +1201,9 @@
 **noise.js** `utils/noise.js` (JS, global: `Noise`) — tags: simplex noise 2d 3d fbm fractal flow-field terrain perlin coherent seedable deterministic generative gustavson
   `Noise.create(R.next)` → `noise2D/noise3D` in [-1,1] + `fbm2D` octaves. Permutation seeded by an injected PRNG → byte-identical fields. Basis for flow fields / terrain / stippling.
 
+**oklch-ramp.js** `utils/oklch-ramp.js` (JS, global: `OklchRamp`) — tags: oklch color ramp palette perceptual lightness-uniform gamut srgb stripe linear premium generator accent tints shades color-theory
+  `OklchRamp.ramp(hue, {steps, chroma})` / `fromAccent(hex)` → a perceptually-even color ramp (L stepped uniformly, chroma boosted at the extremes) + `toHex(L,C,H)`/`fromHex(hex)` OKLCH↔sRGB (exact round-trip). The premium way to build a palette — even steps with no manual nudging.
+
 **dom.js** `utils/dom.js` (JS, globals: `DOM`, `$`, `$$`) — tags: dom selector helper delegation events
   `$(sel)`/`$$(sel)` selector helpers, event delegation.
 
