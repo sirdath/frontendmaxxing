@@ -394,3 +394,11 @@
   --accent:#2f9bae; --accent-2:#6fb6a8; --on-accent:#06201f;
   --ok:#3f8a5a; --warn:#c2840f; --danger:#c0392b; --info:#2f7fae;
 }
+
+/* ── EXPRESSIVE / ARCHETYPE ──────────────────── */
+.pal-neubrutalist { /* (light) */
+  --bg:#fffdf5; --bg-alt:#fff7e0; --surface:#ffffff; --border:#16140f;
+  --fg:#16140f; --muted:#4a463a; --faint:#8a8472;
+  --accent:#ffd23f; --accent-2:#ff5d5d; --on-accent:#16140f;
+  --ok:#2bbb6a; --warn:#ff9f1c; --danger:#ff5d5d; --info:#3da5ff;
+}

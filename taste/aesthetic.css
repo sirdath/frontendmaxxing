@@ -119,6 +119,24 @@
   --ts-hover-lift: -2px;
 }
 
+/* ---- brutalist — 0-radius, solid borders, hard zero-blur offset shadows, flat candy ---- */
+[data-aesthetic="brutalist"] {
+  --font-head: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --m-dur-fast: 90ms; --m-dur: 120ms; --m-dur-slow: 160ms;
+  --m-ease: cubic-bezier(0.2, 0.9, 0.3, 1); --m-stagger: 0ms;
+  --section-y: clamp(3rem, 7vw, 6rem);
+  --gap: clamp(1rem, 2.2vw, 1.6rem);
+  --gutter: clamp(1.1rem, 4vw, 2rem);
+  --radius: 0px; --radius-sm: 0px;
+  --ts-accent-intensity: 1;
+  --ts-elevation: 4px 4px 0 0 var(--fg);
+  --ts-hover-lift: -2px;
+}
+[data-aesthetic="brutalist"] .s-card,
+[data-aesthetic="brutalist"] .s-btn { border: 3px solid var(--fg); border-radius: 0; box-shadow: var(--ts-elevation); }
+[data-aesthetic="brutalist"] .s-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 0 var(--fg); }
+
 @media (prefers-reduced-motion: reduce) {
   [data-aesthetic] { --m-dur-fast: 0.01ms; --m-dur: 0.01ms; --m-dur-slow: 0.01ms; --m-stagger: 0ms; }
 }

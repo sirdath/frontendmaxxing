@@ -132,9 +132,51 @@
       house: { button: 'blocks/buttons-states.css', card: 'components/cards.css', input: 'blocks/inputs-pro.css', hero: 'components/heroes.css', loader: 'blocks/spinner-pack.css' },
       avoid: ['big airy hero whitespace', 'playful spring', 'serif display type'],
     },
+
+    // ---- archetype presets (from web-excellence.skill.md research) ----
+    {
+      name: 'neubrutalist', label: 'Neo-Brutalist',
+      aesthetic: 'brutalist', palette: 'neubrutalist', fontPair: 'display-bold',
+      motion: 'standard', density: 'normal',
+      summary: 'Hard candy on cream: 0-radius, solid black borders, hard zero-blur offset shadows, bold display, flat saturated fills.',
+      house: { button: 'blocks/buttons-pack.css', card: 'components/cards-pack.css', input: 'blocks/inputs-uiverse.css', hero: 'components/hero-pack.css', loader: 'blocks/loaders-pack.css' },
+      avoid: ['rounded corners', 'blurred/soft shadows', 'gradient fills', 'pastel low-contrast', 'serif body'],
+    },
+    {
+      name: 'editorial-swiss', label: 'Editorial Swiss',
+      aesthetic: 'editorial', palette: 'mono-snow', fontPair: 'grotesk-tech',
+      motion: 'standard', density: 'airy',
+      summary: 'Swiss-modern: strict grid, grotesque headlines on a near-white ground, big measure, calm reveals.',
+      house: { button: 'blocks/buttons-sleek.css', card: 'components/cards.css', input: 'blocks/inputs.css', hero: 'components/heroes.css', loader: 'blocks/loaders-text.css' },
+      avoid: ['serif display', 'decorative gradients', 'rounded-bubbly shapes', 'busy multi-color'],
+    },
+    {
+      name: 'dark-luxury-jewel', label: 'Dark Luxury · Jewel',
+      aesthetic: 'luxury', palette: 'wealth-emerald', fontPair: 'luxury-serif',
+      motion: 'standard', density: 'airy',
+      summary: 'Warm-dark prestige: deep jewel ground (not pure black), fine serif, slow glide, generous negative space, one accent.',
+      house: { button: 'blocks/buttons-fx3.css', card: 'components/glare-card.css', input: 'blocks/inputs-pro.css', hero: 'components/heroes-pack.css', loader: 'blocks/loaders-fancy.css' },
+      avoid: ['pure-black background', 'neon multi-color', 'playful spring', 'cramped spacing'],
+    },
+    {
+      name: 'ai-iridescent', label: 'AI Iridescent',
+      aesthetic: 'energetic', palette: 'web3-violet', fontPair: 'grotesk-tech',
+      motion: 'standard', density: 'normal',
+      summary: 'Modern AI/SaaS: OKLCH violet mesh + MANDATORY grain, glassy chrome, crisp grotesque. The grain is what saves it from slop.',
+      house: { button: 'blocks/buttons-fx.css', card: 'components/cards-3d.css', input: 'blocks/inputs-pro.css', hero: 'components/hero-pack.css', loader: 'blocks/loaders-pack.css' },
+      avoid: ['grain-less smooth mesh', 'two-color purple→pink gradient', 'serif body', 'pure-black ground'],
+    },
+    {
+      name: 'maximalist-pop', label: 'Maximalist Pop',
+      aesthetic: 'playful', palette: 'festival', fontPair: 'display-bold',
+      motion: 'playful', density: 'normal',
+      summary: 'Anti-minimal, personality-forward: clashing bold hues on a grid anchor, expressive display, mixed-media energy.',
+      house: { button: 'blocks/buttons-pack.css', card: 'components/cards-pack.css', input: 'blocks/inputs-uiverse.css', hero: 'components/hero-pack.css', loader: 'blocks/loaders-pack.css' },
+      avoid: ['timid pastel', 'corporate grey', 'no grid anchor (chaos)', 'thin hairline type'],
+    },
   ];
 
-  var AESTHETICS = ['minimal', 'editorial', 'energetic', 'luxury', 'playful', 'technical'];
+  var AESTHETICS = ['minimal', 'editorial', 'energetic', 'luxury', 'playful', 'technical', 'brutalist'];
   var FONT_PAIRS = ['system-clean', 'grotesk-tech', 'editorial-serif', 'luxury-serif', 'geometric-warm', 'mono-technical', 'display-bold', 'humanist-soft'];
   var MOTIONS = ['minimal', 'standard', 'playful'];
   var DENSITIES = ['compact', 'normal', 'airy'];
