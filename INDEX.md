@@ -48,6 +48,7 @@
 | Glassmorphism / frosted | `effects/glassmorphism.css` |
 | Gradient text / aurora text | `effects/aurora-text.css`, `typography/text-effects.css` |
 | Text reveal / type-in / scramble | `effects/text-reveal.js`, `effects/text-generate.js`, `effects/text-wave.js`, `scroll/scroll-text-reveal.css/.js`, `effects/text-ripple.js` |
+| Animate TEXT in a VIDEO — entrances/exits/emphasis/kinetic catalog (50+ techniques) + OSS repos + Remotion recipes | `text-animation.skill.md` (read first when the user animates text in a Remotion/motion video) |
 | Image reveal mask (clip-path entrance) | `effects/image-reveal-mask.css/.js` |
 | Image distortion on hover | `effects/image-distortion-hover.css/.js` |
 | Before/after image compare slider | `media/image-compare.css/.js` |
